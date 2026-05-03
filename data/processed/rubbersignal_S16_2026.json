@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "date_collecte": "2026-04-19",
+    "semaine": 16,
+    "annee": 2026,
+    "source": "rubbersignal.com",
+    "version": "2.1"
+  },
+  "prix": {
+    "synthese": {
+      "prix_actuel": 2.36,
+      "periode": "Mar 2025",
+      "variation_pct": 10.8,
+      "tendance": "hausse",
+      "moyenne_3m": 2.227,
+      "moyenne_6m": 2.21,
+      "min_12m": 2.13,
+      "max_12m": 2.36,
+      "prix_chf": 2.124
+    },
+    "historique_bm": [
+      {
+        "periode": "Mar 2025",
+        "prix_usd": 2.36,
+        "source": "IndexMundi",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "Apr 2025",
+        "prix_usd": 2.13,
+        "source": "IndexMundi",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "May 2025",
+        "prix_usd": 2.19,
+        "source": "IndexMundi",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "Jun 2025",
+        "prix_usd": 2.16,
+        "source": "IndexMundi",
+        "unite": "USD/kg"
+      }
+    ],
+    "historique_indexmundi": [
+      {
+        "mois": "Mar 2025",
+        "prix_usd": 2.36,
+        "source": "IndexMundi",
+        "unite": "USD/kg"
+      },
+      {
+        "mois": "Apr 2025",
+        "prix_usd": 2.13,
+        "source": "IndexMundi",
+        "unite": "USD/kg"
+      },
+      {
+        "mois": "May 2025",
+        "prix_usd": 2.19,
+        "source": "IndexMundi",
+        "unite": "USD/kg"
+      },
+      {
+        "mois": "Jun 2025",
+        "prix_usd": 2.16,
+        "source": "IndexMundi",
+        "unite": "USD/kg"
+      }
+    ]
+  },
+  "actualites": {
+    "date_collecte": "2026-04-19",
+    "total_articles": 0,
+    "top_newsletter": [],
+    "tous_articles": []
+  },
+  "rapport": {
+    "titre": "RubberSignal #16 | TSR20 : 2.36 USD/kg ▲ | Semaine 16 - 2026",
+    "date_rapport": "2026-04-19",
+    "semaine": 16,
+    "nb_caracteres": 2663,
+    "fichier_md": "output/rubbersignal_S16_2026.md"
+  }
+}

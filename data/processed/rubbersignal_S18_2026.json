@@ -1,0 +1,137 @@
+{
+  "meta": {
+    "date_collecte": "2026-04-29",
+    "semaine": 18,
+    "annee": 2026,
+    "source": "rubbersignal.com",
+    "version": "2.1"
+  },
+  "prix": {
+    "synthese": {
+      "prix_actuel": 1.68,
+      "periode": "2026-03",
+      "variation_pct": 1.82,
+      "tendance": "hausse",
+      "moyenne_3m": 1.647,
+      "moyenne_6m": 1.598,
+      "min_12m": 1.47,
+      "max_12m": 1.68,
+      "prix_chf": 1.512
+    },
+    "historique_bm": [
+      {
+        "periode": "2026-03",
+        "prix_usd": 1.68,
+        "source": "Données de référence",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2026-02",
+        "prix_usd": 1.65,
+        "source": "Données de référence",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2026-01",
+        "prix_usd": 1.61,
+        "source": "Données de référence",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2025-12",
+        "prix_usd": 1.58,
+        "source": "Données de référence",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2025-11",
+        "prix_usd": 1.55,
+        "source": "Données de référence",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2025-10",
+        "prix_usd": 1.52,
+        "source": "Données de référence",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2025-09",
+        "prix_usd": 1.49,
+        "source": "Données de référence",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2025-08",
+        "prix_usd": 1.47,
+        "source": "Données de référence",
+        "unite": "USD/kg"
+      }
+    ],
+    "historique_indexmundi": []
+  },
+  "actualites": {
+    "date_collecte": "2026-04-29",
+    "total_articles": 3,
+    "top_newsletter": [
+      {
+        "titre": "Mideast war drives up condom, rubber glove prices: manufacturers",
+        "resume": "Prices of rubber products have shot up due to supply chain disruptions stemming from the Middle East war, the world’s largest condom maker and a leading glove manufacturer, both based in Malaysia, said on Friday. Karex, which supplies condoms for brands like …",
+        "lien": "https://www.digitaljournal.com/business/mideast-war-drives-up-condom-rubber-glove-prices-manufacturers/article",
+        "date_fr": "24/04/2026",
+        "source": "Digital Journal",
+        "categorie": "Côte d'Ivoire"
+      },
+      {
+        "titre": "Kerala Planters’ body voices concern over possible crop loss as mercury level soar",
+        "resume": "Prolonged high temperatures and weak pre-monsoon rainfall could severely impact major plantation crops across the State, says APK Chairman T. R. Radhakrishnan",
+        "lien": "https://www.thehindubusinessline.com/economy/agri-business/kerala-planters-body-voices-concern-over-possible-crop-loss-as-mercury-level-soar/article70910972.ece",
+        "date_fr": "27/04/2026",
+        "source": "BusinessLine",
+        "categorie": "Côte d'Ivoire"
+      },
+      {
+        "titre": "mRube trade crosses ₹875 crore, expands to Northeast",
+        "resume": "The platform has significantly widened its footprint beyond traditional rubber-growing regions, making strong inroads into remote areas of Northeast India, particularly Tripura",
+        "lien": "https://www.thehindubusinessline.com/economy/agri-business/mrube-trade-crosses-875-crore-expands-to-northeast/article70896170.ece",
+        "date_fr": "23/04/2026",
+        "source": "BusinessLine",
+        "categorie": "Côte d'Ivoire"
+      }
+    ],
+    "tous_articles": [
+      {
+        "titre": "Kerala Planters’ body voices concern over possible crop loss as mercury level soar",
+        "resume": "Prolonged high temperatures and weak pre-monsoon rainfall could severely impact major plantation crops across the State, says APK Chairman T. R. Radhakrishnan",
+        "lien": "https://www.thehindubusinessline.com/economy/agri-business/kerala-planters-body-voices-concern-over-possible-crop-loss-as-mercury-level-soar/article70910972.ece",
+        "date_fr": "27/04/2026",
+        "source": "BusinessLine",
+        "categorie": "Côte d'Ivoire"
+      },
+      {
+        "titre": "Mideast war drives up condom, rubber glove prices: manufacturers",
+        "resume": "Prices of rubber products have shot up due to supply chain disruptions stemming from the Middle East war, the world’s largest condom maker and a leading glove manufacturer, both based in Malaysia, said on Friday. Karex, which supplies condoms for brands like …",
+        "lien": "https://www.digitaljournal.com/business/mideast-war-drives-up-condom-rubber-glove-prices-manufacturers/article",
+        "date_fr": "24/04/2026",
+        "source": "Digital Journal",
+        "categorie": "Côte d'Ivoire"
+      },
+      {
+        "titre": "mRube trade crosses ₹875 crore, expands to Northeast",
+        "resume": "The platform has significantly widened its footprint beyond traditional rubber-growing regions, making strong inroads into remote areas of Northeast India, particularly Tripura",
+        "lien": "https://www.thehindubusinessline.com/economy/agri-business/mrube-trade-crosses-875-crore-expands-to-northeast/article70896170.ece",
+        "date_fr": "23/04/2026",
+        "source": "BusinessLine",
+        "categorie": "Côte d'Ivoire"
+      }
+    ]
+  },
+  "rapport": {
+    "titre_fr": "RubberSignal #18 | TSR20 : 1.68 USD/kg ▲ | Semaine 18 - 2026",
+    "titre_en": "RubberSignal #18 | TSR20: 1.68 USD/kg ▲ | Week 18 - 2026",
+    "date_rapport": "2026-04-29",
+    "semaine": 18,
+    "fichier_fr": "output/rubbersignal_S18_2026_FR.md",
+    "fichier_en": "output/rubbersignal_S18_2026_EN.md"
+  }
+}
