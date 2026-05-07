@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "date_collecte": "2026-05-07",
+    "semaine": 19,
+    "annee": 2026,
+    "source": "rubbersignal.com",
+    "version": "2.1"
+  },
+  "prix": {
+    "synthese": {
+      "prix_actuel": 1.68,
+      "periode": "2026-03",
+      "variation_pct": 1.82,
+      "tendance": "hausse",
+      "moyenne_3m": 1.647,
+      "moyenne_6m": 1.598,
+      "min_12m": 1.47,
+      "max_12m": 1.68,
+      "prix_chf": 1.512
+    },
+    "historique_bm": [
+      {
+        "periode": "2026-03",
+        "prix_usd": 1.68,
+        "source": "Données de référence",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2026-02",
+        "prix_usd": 1.65,
+        "source": "Données de référence",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2026-01",
+        "prix_usd": 1.61,
+        "source": "Données de référence",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2025-12",
+        "prix_usd": 1.58,
+        "source": "Données de référence",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2025-11",
+        "prix_usd": 1.55,
+        "source": "Données de référence",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2025-10",
+        "prix_usd": 1.52,
+        "source": "Données de référence",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2025-09",
+        "prix_usd": 1.49,
+        "source": "Données de référence",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2025-08",
+        "prix_usd": 1.47,
+        "source": "Données de référence",
+        "unite": "USD/kg"
+      }
+    ],
+    "historique_indexmundi": []
+  },
+  "actualites": {
+    "date_collecte": "2026-05-07",
+    "total_articles": 2,
+    "top_newsletter": [
+      {
+        "titre": "Luca Faloni Suede Sneakers",
+        "resume": "Italian restraint defines the sneaker lineup from Luca Faloni, where craftsmanship and material take priority over flash. Handcrafted in Northern Italy from ultra-soft suede, each pair is lined with breathable calfskin and set on a natural rubber sole, creati…",
+        "lien": "https://uncrate.com/luca-faloni-suede-sneakers/",
+        "date_fr": "05/05/2026",
+        "source": "Uncrate.com",
+        "categorie": "Côte d'Ivoire"
+      },
+      {
+        "titre": "Kerala planters oppose duty cut in natural rubber, warns of blow to farmers livelihood",
+        "resume": "Although natural rubber prices are currently above ₹250 per kg after 14 years, rising production costs—estimated between ₹210 and ₹220 per kg—are reducing farmers’ actual earnings",
+        "lien": "https://www.thehindubusinessline.com/economy/agri-business/kerala-planters-oppose-duty-cut-in-natural-rubber-warns-of-blow-to-farmers-livelihood/article70924965.ece",
+        "date_fr": "30/04/2026",
+        "source": "BusinessLine",
+        "categorie": "Côte d'Ivoire"
+      }
+    ],
+    "tous_articles": [
+      {
+        "titre": "Luca Faloni Suede Sneakers",
+        "resume": "Italian restraint defines the sneaker lineup from Luca Faloni, where craftsmanship and material take priority over flash. Handcrafted in Northern Italy from ultra-soft suede, each pair is lined with breathable calfskin and set on a natural rubber sole, creati…",
+        "lien": "https://uncrate.com/luca-faloni-suede-sneakers/",
+        "date_fr": "05/05/2026",
+        "source": "Uncrate.com",
+        "categorie": "Côte d'Ivoire"
+      },
+      {
+        "titre": "Kerala planters oppose duty cut in natural rubber, warns of blow to farmers livelihood",
+        "resume": "Although natural rubber prices are currently above ₹250 per kg after 14 years, rising production costs—estimated between ₹210 and ₹220 per kg—are reducing farmers’ actual earnings",
+        "lien": "https://www.thehindubusinessline.com/economy/agri-business/kerala-planters-oppose-duty-cut-in-natural-rubber-warns-of-blow-to-farmers-livelihood/article70924965.ece",
+        "date_fr": "30/04/2026",
+        "source": "BusinessLine",
+        "categorie": "Côte d'Ivoire"
+      }
+    ]
+  },
+  "rapport": {
+    "titre_fr": "RubberSignal #19 | TSR20 : 1.68 USD/kg ▲ | Semaine 19 - 2026",
+    "titre_en": "RubberSignal #19 | TSR20: 1.68 USD/kg ▲ | Week 19 - 2026",
+    "date_rapport": "2026-05-07",
+    "semaine": 19,
+    "fichier_fr": "output/rubbersignal_S19_2026_FR.md",
+    "fichier_en": "output/rubbersignal_S19_2026_EN.md"
+  }
+}
