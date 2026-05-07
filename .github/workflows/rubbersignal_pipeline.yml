@@ -1,0 +1,78 @@
+# =============================================================
+# RUBBERSIGNAL.COM — GitHub Actions : Automatisation hebdomadaire
+# Auteur  : Martial Sahiri
+# Objectif: Lancer les 3 scripts R chaque lundi à 6h00 (heure suisse)
+#           et sauvegarder les rapports générés sur GitHub
+# =============================================================
+
+name: RubberSignal Weekly Pipeline
+
+on:
+  # Lancement automatique chaque lundi à 5h00 UTC = 6h00 heure Suisse (CET)
+  schedule:
+    - cron: "0 5 * * 1"
+
+  # Lancement manuel possible depuis GitHub (pour tester)
+  workflow_dispatch:
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # ── Étape 1 : Récupérer le code depuis GitHub ──────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── Étape 2 : Installer R ───────────────────────────────
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.5.2"
+
+      # ── Étape 3 : Installer les packages R nécessaires ─────
+      - name: Install R packages
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            httr
+            jsonlite
+            tidyverse
+            lubridate
+            rvest
+
+      # ── Étape 4 : Créer les dossiers si absents ─────────────
+      - name: Create directories
+        run: |
+          mkdir -p data/raw
+          mkdir -p data/processed
+          mkdir -p output
+
+      # ── Étape 5 : Injecter la clé NewsAPI depuis GitHub Secrets
+      - name: Set NewsAPI key
+        run: echo "NEWSAPI_KEY=${{ secrets.NEWSAPI_KEY }}" >> $GITHUB_ENV
+
+      # ── Étape 6 : Lancer le script 01 — Collecte des prix ──
+      - name: Run Script 01 - Collect prices
+        run: Rscript scripts/01_collect_prices.R
+
+      # ── Étape 7 : Lancer le script 02 — Collecte actualités ─
+      - name: Run Script 02 - Collect news
+        env:
+          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
+        run: Rscript scripts/02_collect_news.R
+
+      # ── Étape 8 : Lancer le script 03 — Générer le rapport ──
+      - name: Run Script 03 - Build report
+        run: Rscript scripts/03_build_report.R
+
+      # ── Étape 9 : Sauvegarder les rapports sur GitHub ───────
+      - name: Commit and push reports
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "RubberSignal Bot"
+          git add output/
+          git add data/
+          git diff --staged --quiet || git commit -m "RubberSignal rapport automatique semaine $(date +'%V') / $(date +'%Y')"
+          git push
