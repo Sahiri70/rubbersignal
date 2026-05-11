@@ -18,12 +18,14 @@ on:
 jobs:
   generate-report:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
 
       # ── Étape 1 : Récupérer le code depuis GitHub ──────────
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       # ── Étape 2 : Installer R ───────────────────────────────
       - name: Setup R

@@ -1,10 +1,9 @@
 # =============================================================
 # RUBBERSIGNAL.COM — Script 02 : Collecte des actualités
 # Auteur  : Martial Sahiri
-# Version : 2.2 — corrigé
-# Objectif: Récupérer chaque semaine les actualités
-#           caoutchouc / Côte d'Ivoire / TSR20 via NewsAPI
-# Prérequis: Script 01 déjà exécuté (JSON intermédiaire existe)
+# Version : 3.0 — réécrit complet
+# Objectif: Récupérer les actualités caoutchouc via NewsAPI
+# Prérequis: Script 01 déjà exécuté
 # Usage   : source("scripts/02_collect_news.R")
 # =============================================================
 
@@ -24,10 +23,10 @@ ANNEE         <- year(DATE_COLLECTE)
 
 NEWSAPI_KEY <- Sys.getenv("NEWSAPI_KEY")
 
-if (NEWSAPI_KEY == "") {
+if (nchar(NEWSAPI_KEY) == 0) {
   stop(paste(
     "ERREUR : Clé NewsAPI introuvable.",
-    "Vérifiez votre fichier .Renviron et redémarrez RStudio.",
+    "Vérifiez votre fichier .Renviron.",
     "La ligne doit être : NEWSAPI_KEY=votre_cle_ici"
   ))
 }
@@ -37,77 +36,91 @@ cat(">> Clé API détectée — OK\n\n")
 
 
 # ── 3. FONCTION : APPEL NEWSAPI ──────────────────────────────
+# Retourne toujours un tibble avec colonnes standardisées
+# ou un tibble vide en cas d'erreur — jamais une erreur fatale
 
-appeler_newsapi <- function(mots_cles, langue = "fr", nb_articles = 10) {
+appeler_newsapi <- function(mots_cles, langue = "en", nb_articles = 8) {
   
   date_debut <- format(DATE_COLLECTE - days(7), "%Y-%m-%d")
   
   url_api <- paste0(
     "https://newsapi.org/v2/everything?",
-    "q=",          URLencode(mots_cles),
-    "&language=",  langue,
-    "&from=",      date_debut,
+    "q=", URLencode(mots_cles, reserved = TRUE),
+    "&language=", langue,
+    "&from=", date_debut,
     "&sortBy=relevancy",
-    "&pageSize=",  nb_articles,
-    "&apiKey=",    NEWSAPI_KEY
+    "&pageSize=", nb_articles,
+    "&apiKey=", NEWSAPI_KEY
   )
   
-  reponse <- tryCatch({
-    GET(url_api, timeout(15))
-  }, error = function(e) {
-    cat("   ATTENTION : NewsAPI inaccessible :", e$message, "\n")
-    return(NULL)
-  })
+  # Requête HTTP avec gestion d'erreur
+  reponse <- tryCatch(
+    GET(url_api, timeout(20)),
+    error = function(e) {
+      cat("   Connexion impossible :", conditionMessage(e), "\n")
+      NULL
+    }
+  )
   
-  if (is.null(reponse)) {
-    cat("   ATTENTION : connexion impossible\n")
+  # Retourner tibble vide si connexion échouée
+  if (is.null(reponse)) return(tibble())
+  
+  # Vérifier le code HTTP
+  code_http <- status_code(reponse)
+  if (code_http != 200) {
+    cat("   Erreur HTTP", code_http, "\n")
     return(tibble())
   }
   
-  if (status_code(reponse) != 200) {
-    cat("   ATTENTION : Erreur HTTP", status_code(reponse), "\n")
-    return(tibble())
-  }
-  
+  # Parser le JSON
   contenu <- content(reponse, as = "text", encoding = "UTF-8")
-  donnees <- fromJSON(contenu, flatten = TRUE)
+  donnees <- tryCatch(
+    fromJSON(contenu, flatten = TRUE),
+    error = function(e) {
+      cat("   Erreur parsing JSON :", conditionMessage(e), "\n")
+      NULL
+    }
+  )
   
-  articles_bruts <- donnees$articles
-  if (is.null(articles_bruts)) {
-    cat("   Aucun article trouvé pour :", mots_cles, "\n")
-    return(tibble())
-  }
+  if (is.null(donnees) || is.null(donnees$articles)) return(tibble())
+  if (!is.data.frame(donnees$articles)) return(tibble())
+  if (nrow(donnees$articles) == 0) return(tibble())
   
-  articles_df <- tryCatch({
-    as.data.frame(articles_bruts, stringsAsFactors = FALSE)
-  }, error = function(e) {
-    cat("   Erreur conversion articles :", e$message, "\n")
-    return(NULL)
-  })
+  # Construire tibble standardisé
+  # Utiliser les noms de colonnes réels de NewsAPI
+  articles_df <- as_tibble(donnees$articles)
   
-  if (is.null(articles_df) || nrow(articles_df) == 0) {
-    cat("   Aucun article exploitable pour :", mots_cles, "\n")
+  # Colonnes attendues de NewsAPI (flatten = TRUE)
+  col_mapping <- c(
+    "title"       = "titre",
+    "description" = "resume",
+    "url"         = "lien",
+    "publishedAt" = "date_publication",
+    "source.name" = "source"
+  )
+  
+  # Sélectionner uniquement les colonnes présentes
+  cols_presentes <- intersect(names(col_mapping), names(articles_df))
+  
+  if (length(cols_presentes) == 0) {
+    cat("   Structure inattendue — colonnes :", paste(names(articles_df), collapse = ", "), "\n")
     return(tibble())
   }
   
   articles <- articles_df %>%
-    as_tibble() %>%
-    select(any_of(c("title", "description", "url",
-                    "publishedAt", "source.name"))) %>%
-    rename_with(~ case_when(
-      . == "title"       ~ "titre",
-      . == "description" ~ "resume",
-      . == "url"         ~ "lien",
-      . == "publishedAt" ~ "date_publication",
-      . == "source.name" ~ "source",
-      TRUE               ~ .
-    )) %>%
+    select(all_of(cols_presentes)) %>%
+    rename(!!!setNames(cols_presentes, col_mapping[cols_presentes])) %>%
     mutate(
-      date_publication = as_datetime(date_publication),
+      date_publication = if ("date_publication" %in% names(.))
+        as_datetime(date_publication)
+      else
+        as_datetime(Sys.time()),
       date_fr          = format(date_publication, "%d/%m/%Y"),
-      mots_cles_query  = mots_cles,
-      resume           = str_trunc(
-        if_else(is.na(resume), "", resume), 300)
+      resume           = if ("resume" %in% names(.))
+        str_trunc(replace_na(resume, ""), 280)
+      else "",
+      lien             = if ("lien" %in% names(.)) lien else "",
+      source           = if ("source" %in% names(.)) source else "—"
     ) %>%
     arrange(desc(date_publication))
   
@@ -118,172 +131,115 @@ appeler_newsapi <- function(mots_cles, langue = "fr", nb_articles = 10) {
 # ── 4. FONCTION : AJOUT CATÉGORIE SÉCURISÉ ───────────────────
 
 ajouter_categorie <- function(df, nom) {
-  if (nrow(df) > 0) {
-    df %>% mutate(categorie = nom)
-  } else {
-    tibble()
-  }
+  if (is.null(df) || nrow(df) == 0) return(tibble())
+  mutate(df, categorie = nom)
 }
 
 
 # ── 5. FONCTION : FILTRE DE PERTINENCE ───────────────────────
-# ── CORRECTION : appliqué systématiquement sur TOUTES les recherches ──
 
 filtrer_pertinence <- function(df) {
-  if (nrow(df) == 0) return(df)
+  if (is.null(df) || nrow(df) == 0) return(tibble())
+  if (!("titre" %in% names(df))) return(tibble())
   
-  mots_obligatoires <- c(
-    "rubber", "caoutchouc", "hévéa", "hevea",
-    "TSR", "latex", "RSS", "elastomer",
-    "plantation", "Michelin", "Bridgestone",
-    "ANRPC", "APROCAG", "SGX"
-  )
+  mots <- c("rubber", "caoutchouc", "hévéa", "hevea", "TSR",
+            "latex", "RSS", "elastomer", "plantation",
+            "Michelin", "Bridgestone", "ANRPC", "APROMAC", "SGX")
   
-  pattern <- paste(tolower(mots_obligatoires), collapse = "|")
+  pattern <- paste(tolower(mots), collapse = "|")
   
-  df %>%
-    filter(
-      str_detect(tolower(titre),  pattern) |
-        str_detect(tolower(resume), pattern)
-    )
+  # Utiliser base R pour éviter les problèmes de scope dplyr
+  titres  <- tolower(df$titre)
+  resumes <- tolower(replace_na(df$resume, ""))
+  
+  idx <- grepl(pattern, titres) | grepl(pattern, resumes)
+  df[idx, ]
 }
 
 
-# ── 6. RECHERCHE 1 : MARCHÉ MONDIAL ──────────────────────────
+# ── 6. FONCTION : AFFICHER RÉSULTAT RECHERCHE ────────────────
+# Fonction utilitaire pour éviter la répétition du code d'affichage
 
-cat(">> Recherche 1 : Marché caoutchouc mondial (EN)...\n")
+afficher_resultat <- function(df, label) {
+  n <- nrow(df)
+  if (n > 0) {
+    cat("   OK —", n, "articles pertinents\n")
+    if ("titre" %in% names(df)) {
+      cat("   Plus récent :", str_trunc(df$titre[1], 60), "\n")
+    }
+  } else {
+    cat("   Aucun résultat pertinent\n")
+  }
+}
 
+
+# ── 7. RECHERCHES NEWSAPI ────────────────────────────────────
+
+cat(">> Recherche 1 : Marché mondial (EN)...\n")
 actu_marche_en <- appeler_newsapi(
-  mots_cles   = "\"natural rubber\" OR \"TSR20\" price market 2026",
-  langue      = "en",
-  nb_articles = 8
+  "natural rubber TSR20 price market",
+  langue = "en", nb_articles = 8
 ) %>% filtrer_pertinence()
+afficher_resultat(actu_marche_en, "Marché mondial")
 
-if (nrow(actu_marche_en) > 0) {
-  cat("   OK —", nrow(actu_marche_en), "articles trouvés\n")
-  cat("   Plus récent :", actu_marche_en$titre[1], "\n")
-} else {
-  cat("   Aucun résultat\n")
-}
-
-
-# ── 7. RECHERCHE 2 : CÔTE D'IVOIRE ───────────────────────────
-
-cat("\n>> Recherche 2 : Caoutchouc Côte d'Ivoire (FR)...\n")
-
+cat("\n>> Recherche 2 : Côte d'Ivoire (FR)...\n")
 actu_ci_fr <- appeler_newsapi(
-  mots_cles   = "\"caoutchouc\" OR \"hévéa\" \"Côte d'Ivoire\"",
-  langue      = "fr",
-  nb_articles = 8
+  "caoutchouc hévéa Côte Ivoire",
+  langue = "fr", nb_articles = 8
 ) %>% filtrer_pertinence()
 
-if (nrow(actu_ci_fr) > 0) {
-  cat("   OK —", nrow(actu_ci_fr), "articles trouvés\n")
-  cat("   Plus récent :", actu_ci_fr$titre[1], "\n")
-} else {
+if (nrow(actu_ci_fr) == 0) {
   cat("   Aucun résultat FR — tentative EN...\n")
-  # ── CORRECTION : filtrer_pertinence appliqué aussi sur le secours ──
   actu_ci_fr <- appeler_newsapi(
-    mots_cles   = "\"natural rubber\" \"Ivory Coast\" OR \"Cote d'Ivoire\"",
-    langue      = "en",
-    nb_articles = 5
+    "natural rubber Ivory Coast Cote Ivoire",
+    langue = "en", nb_articles = 5
   ) %>% filtrer_pertinence()
-  cat("   Résultats EN :", nrow(actu_ci_fr), "articles\n")
 }
-
-
-# ── 8. RECHERCHE 3 : AFRIQUE DE L'OUEST ──────────────────────
+afficher_resultat(actu_ci_fr, "Côte d'Ivoire")
 
 cat("\n>> Recherche 3 : Afrique de l'Ouest (EN)...\n")
-
 actu_afrique <- appeler_newsapi(
-  mots_cles   = "\"natural rubber\" OR \"rubber production\" Africa",
-  langue      = "en",
-  nb_articles = 5
+  "natural rubber Africa production export",
+  langue = "en", nb_articles = 5
 ) %>% filtrer_pertinence()
+afficher_resultat(actu_afrique, "Afrique de l'Ouest")
 
-if (nrow(actu_afrique) > 0) {
-  cat("   OK —", nrow(actu_afrique), "articles trouvés\n")
-} else {
-  cat("   Aucun résultat\n")
-}
-
-
-# ── 9. RECHERCHE 4 : AFRIQUE ÉLARGIE ─────────────────────────
-
-cat("\n>> Recherche 4 : Afrique élargie — Ghana, Nigeria, Cameroun (EN)...\n")
-
+cat("\n>> Recherche 4 : Afrique élargie (EN)...\n")
 actu_afrique_elargie <- appeler_newsapi(
-  mots_cles   = "\"natural rubber\" Ghana Nigeria Cameroon",
-  langue      = "en",
-  nb_articles = 5
+  "natural rubber Ghana Nigeria Cameroon",
+  langue = "en", nb_articles = 5
 ) %>% filtrer_pertinence()
+afficher_resultat(actu_afrique_elargie, "Afrique élargie")
 
-if (nrow(actu_afrique_elargie) > 0) {
-  cat("   OK —", nrow(actu_afrique_elargie), "articles trouvés\n")
-} else {
-  cat("   Aucun résultat\n")
-}
-
-
-# ── 10. RECHERCHE 5 : ASIE ───────────────────────────────────
-
-cat("\n>> Recherche 5 : Asie — Malaisie / Thaïlande (EN)...\n")
-
+cat("\n>> Recherche 5 : Asie (EN)...\n")
 actu_asie <- appeler_newsapi(
-  mots_cles   = "\"natural rubber\" Malaysia Thailand production export",
-  langue      = "en",
-  nb_articles = 5
+  "natural rubber Malaysia Thailand production",
+  langue = "en", nb_articles = 5
 ) %>% filtrer_pertinence()
+afficher_resultat(actu_asie, "Asie")
 
-if (nrow(actu_asie) > 0) {
-  cat("   OK —", nrow(actu_asie), "articles trouvés\n")
-} else {
-  cat("   Aucun résultat\n")
-}
-
-
-# ── 11. RECHERCHE 6 : EUROPE ─────────────────────────────────
-
-cat("\n>> Recherche 6 : Europe — demande importateurs (FR)...\n")
-
+cat("\n>> Recherche 6 : Europe (FR)...\n")
 actu_europe <- appeler_newsapi(
-  mots_cles   = "\"caoutchouc naturel\" Europe importation",
-  langue      = "fr",
-  nb_articles = 4
+  "caoutchouc naturel Europe importation",
+  langue = "fr", nb_articles = 4
 ) %>% filtrer_pertinence()
-
-if (nrow(actu_europe) > 0) {
-  cat("   OK —", nrow(actu_europe), "articles trouvés\n")
-} else {
-  cat("   Tentative EN...\n")
+if (nrow(actu_europe) == 0) {
   actu_europe <- appeler_newsapi(
-    mots_cles   = "\"natural rubber\" Europe import demand",
-    langue      = "en",
-    nb_articles = 4
+    "natural rubber Europe import demand",
+    langue = "en", nb_articles = 4
   ) %>% filtrer_pertinence()
-  cat("   Résultats EN :", nrow(actu_europe), "articles\n")
 }
-
-
-# ── 12. RECHERCHE 7 : INDUSTRIE PNEUMATIQUES ─────────────────
+afficher_resultat(actu_europe, "Europe")
 
 cat("\n>> Recherche 7 : Industrie pneumatiques (EN)...\n")
-
 actu_pneus <- appeler_newsapi(
-  mots_cles   = "\"natural rubber\" tire tyre Michelin Bridgestone demand",
-  langue      = "en",
-  nb_articles = 5
+  "natural rubber tire tyre Michelin Bridgestone",
+  langue = "en", nb_articles = 5
 ) %>% filtrer_pertinence()
-
-if (nrow(actu_pneus) > 0) {
-  cat("   OK —", nrow(actu_pneus), "articles trouvés\n")
-} else {
-  cat("   Aucun résultat\n")
-}
+afficher_resultat(actu_pneus, "Industrie aval")
 
 
-# ── 13. ASSEMBLER TOUTES LES ACTUALITÉS ──────────────────────
+# ── 8. ASSEMBLER TOUTES LES ACTUALITÉS ──────────────────────
 
 cat("\n>> Assemblage des actualités...\n")
 
@@ -305,24 +261,25 @@ if (nrow(tous_articles) > 0 && "lien" %in% names(tous_articles)) {
   cat("   Total articles uniques :", nrow(tous_articles), "\n")
   tous_articles %>%
     count(categorie) %>%
-    pwalk(~ cat("   ", ..1, ":", ..2, "articles\n"))
+    pwalk(~ cat("  ", ..1, ":", ..2, "articles\n"))
 } else {
   cat("   Aucun article pertinent collecté cette semaine\n")
+  tous_articles <- tibble()
 }
 
 
-# ── 14. SÉLECTION ÉDITORIALE AUTOMATIQUE ─────────────────────
+# ── 9. SÉLECTION ÉDITORIALE AUTOMATIQUE ──────────────────────
 
-mots_cles_forts <- c("price", "prix", "market", "marché", "production",
-                     "export", "demand", "TSR", "rubber", "caoutchouc",
-                     "Ivory", "Ivoire", "ANRPC", "hévéa")
+mots_forts <- c("price", "prix", "market", "marché", "production",
+                "export", "demand", "TSR", "rubber", "caoutchouc",
+                "Ivory", "Ivoire", "ANRPC", "hévéa")
 
-if (nrow(tous_articles) > 0) {
+if (nrow(tous_articles) > 0 && "titre" %in% names(tous_articles)) {
   
   articles_scores <- tous_articles %>%
     mutate(
       score_titre = map_int(titre, function(t) {
-        sum(str_detect(tolower(t), tolower(mots_cles_forts)))
+        sum(str_detect(tolower(t), tolower(mots_forts)))
       }),
       score_recence = if_else(
         date_publication >= DATE_COLLECTE - days(3), 2L, 1L
@@ -334,22 +291,22 @@ if (nrow(tous_articles) > 0) {
   
   top_articles <- head(articles_scores, 3)
   
-  cat("\n>> Top 3 articles recommandés pour la newsletter :\n")
+  cat("\n>> Top", nrow(top_articles), "articles sélectionnés :\n")
   for (i in seq_len(nrow(top_articles))) {
-    cat("  ", paste0(i, ")"),
+    cat(" ", paste0(i, ")"),
         "[", top_articles$categorie[i], "]",
-        top_articles$titre[i],
+        str_trunc(top_articles$titre[i], 55),
         "\n     Score :", top_articles$score_total[i],
         "| Date :", top_articles$date_fr[i], "\n\n")
   }
   
 } else {
   top_articles <- tibble()
-  cat("   Aucun article disponible — note éditoriale manuelle cette semaine\n")
+  cat("   Aucun article — note éditoriale manuelle cette semaine\n")
 }
 
 
-# ── 15. SAUVEGARDER LES ACTUALITÉS ───────────────────────────
+# ── 10. SAUVEGARDER ───────────────────────────────────────────
 
 cat(">> Sauvegarde des actualités...\n")
 
@@ -360,9 +317,9 @@ if (nrow(tous_articles) > 0) {
 }
 
 
-# ── 16. ENRICHIR LE JSON DU SCRIPT 01 ────────────────────────
+# ── 11. ENRICHIR LE JSON DU SCRIPT 01 ────────────────────────
 
-cat("\n>> Enrichissement du JSON intermédiaire...\n")
+cat("\n>> Enrichissement du JSON...\n")
 
 fichier_json <- paste0("data/processed/rubbersignal_S", SEMAINE, "_", ANNEE, ".json")
 
@@ -370,19 +327,19 @@ if (file.exists(fichier_json)) {
   
   json_existant <- read_json(fichier_json)
   
+  cols_json <- c("titre", "resume", "lien", "date_fr", "source", "categorie")
+  
   json_existant$actualites <- list(
     date_collecte  = as.character(DATE_COLLECTE),
     total_articles = nrow(tous_articles),
     top_newsletter = if (nrow(top_articles) > 0)
       top_articles %>%
-      select(titre, resume, lien, date_fr,
-             source, categorie) %>%
+      select(any_of(cols_json)) %>%
       as.list() %>% transpose()
     else list(),
     tous_articles  = if (nrow(tous_articles) > 0)
       tous_articles %>%
-      select(titre, resume, lien, date_fr,
-             source, categorie) %>%
+      select(any_of(cols_json)) %>%
       as.list() %>% transpose()
     else list()
   )
@@ -391,18 +348,17 @@ if (file.exists(fichier_json)) {
   cat("   JSON enrichi :", fichier_json, "\n")
   
 } else {
-  cat("   ATTENTION : JSON du script 01 introuvable !\n")
-  cat("   Relancez scripts/01_collect_prices.R d'abord.\n")
+  cat("   ATTENTION : JSON script 01 introuvable — relancez 01 d'abord.\n")
 }
 
 
-# ── 17. RÉSUMÉ FINAL ─────────────────────────────────────────
+# ── 12. RÉSUMÉ FINAL ─────────────────────────────────────────
 
 cat("\n", strrep("=", 50), "\n")
 cat("RÉSUMÉ ACTUALITÉS — Semaine", SEMAINE, "/", ANNEE, "\n")
 cat(strrep("=", 50), "\n")
 cat("Articles pertinents :", nrow(tous_articles), "\n")
-cat("Top newsletter      :", nrow(top_articles), "articles sélectionnés\n")
+cat("Top newsletter      :", nrow(top_articles), "sélectionnés\n")
 cat("JSON enrichi        :", fichier_json, "\n")
 cat(strrep("=", 50), "\n")
 cat("\nProchaine étape : lancer scripts/03_build_report.R\n\n")
