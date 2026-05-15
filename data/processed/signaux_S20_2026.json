@@ -1,0 +1,179 @@
+{
+  "meta": {
+    "date_collecte": "2026-05-15",
+    "semaine": 20,
+    "annee": 2026,
+    "version": "2.1"
+  },
+  "module1_meteo": {
+    "zones": {
+      "Côte d'Ivoire": {
+        "pays": "Côte d'Ivoire",
+        "ville": "Abidjan",
+        "pluie_30j_mm": 79.3,
+        "temp_moyenne_c": 27.7,
+        "score_production": 59,
+        "signal_production": "Neutre"
+      },
+      "Thaïlande": {
+        "pays": "Thaïlande",
+        "ville": "Bangkok",
+        "pluie_30j_mm": 108.9,
+        "temp_moyenne_c": 30.4,
+        "score_production": 62,
+        "signal_production": "Neutre"
+      },
+      "Malaisie": {
+        "pays": "Malaisie",
+        "ville": "Kuala Lumpur",
+        "pluie_30j_mm": 213.9,
+        "temp_moyenne_c": 27.8,
+        "score_production": 83,
+        "signal_production": "Favorable"
+      },
+      "Indonésie": {
+        "pays": "Indonésie",
+        "ville": "Jakarta",
+        "pluie_30j_mm": 179.4,
+        "temp_moyenne_c": 28.3,
+        "score_production": 80,
+        "signal_production": "Favorable"
+      }
+    },
+    "score_offre_mondiale": 71,
+    "signal_offre": "Offre normale — marché équilibré"
+  },
+  "module2_devises": {
+    "USD_CNY": 6.8016,
+    "USD_MYR": 3.9312,
+    "USD_XOF": 561.52,
+    "USD_IDR": 17474,
+    "USD_CHF": 0.7834,
+    "source": "ExchangeRate API",
+    "date": "2026-05-15",
+    "signal_cny": "Yuan fort (-4.2%) — demande soutenue",
+    "signal_myr": "Ringgit fort (-10.65%) — export ralenti"
+  },
+  "module3_demande_aval": {
+    "fred": {
+      "prod_manuf_us": {
+        "serie": "IPMAN",
+        "nom": "Production industrielle US manufacturing",
+        "valeur": 97.995,
+        "valeur_prec": 98.159,
+        "variation_pct": -0.17,
+        "date": "2026-03-01"
+      },
+      "ventes_auto_us": {},
+      "commandes_dur": {
+        "serie": "DGORDER",
+        "nom": "Commandes biens durables US (M USD)",
+        "valeur": 318909,
+        "valeur_prec": 316233,
+        "variation_pct": 0.85,
+        "date": "2026-03-01"
+      },
+      "prod_indus_us": {
+        "serie": "INDPRO",
+        "nom": "Production industrielle US globale",
+        "valeur": 101.7898,
+        "valeur_prec": 102.344,
+        "variation_pct": -0.54,
+        "date": "2026-03-01"
+      },
+      "imports_chine": {
+        "serie": "XTIMVA01CNM667S",
+        "nom": "Importations Chine (proxy demande)",
+        "valeur": 221265100000,
+        "valeur_prec": 219560200000,
+        "variation_pct": 0.78,
+        "date": "2025-12-01"
+      },
+      "permis_constr": {}
+    },
+    "pmi": {
+      "USA": {
+        "pays": "USA",
+        "valeur": 50.2,
+        "signal": "Légère expansion"
+      },
+      "Europe": {
+        "pays": "Europe",
+        "valeur": 49,
+        "signal": "Légère contraction"
+      },
+      "Chine": {
+        "pays": "Chine",
+        "valeur": 51.1,
+        "signal": "Légère expansion"
+      },
+      "Inde": {
+        "pays": "Inde",
+        "valeur": 58.8,
+        "signal": "Forte expansion"
+      },
+      "Japon": {
+        "pays": "Japon",
+        "valeur": 48.7,
+        "signal": "Légère contraction"
+      }
+    },
+    "score_demande": 50,
+    "signal_demande": "Demande neutre — équilibré"
+  },
+  "module4_stocks": {
+    "malaisie_tonnes": null,
+    "malaisie_mois": "2026-04",
+    "malaisie_tendance": "stable",
+    "thailande_tonnes": null,
+    "thailande_mois": "2026-04",
+    "thailande_tendance": "stable",
+    "indonesie_tonnes": null,
+    "indonesie_mois": "2026-04",
+    "indonesie_tendance": "stable",
+    "ci_tonnes": null,
+    "ci_mois": "2026-04",
+    "ci_tendance": "stable",
+    "abidjan_delai_jours": 7,
+    "abidjan_statut": "Normal",
+    "note": "Données à compléter via lgm.gov.my et rubberthai.or.th"
+  },
+  "module5_shipping": {
+    "bdi_valeur": 1450,
+    "wti_valeur": 101.56,
+    "signal_fret": "Fret normal — pas de signal particulier",
+    "tarif_ci_eu_usd_tonne": 85,
+    "delai_abidjan_rotterdam": 14,
+    "source": "BDI estimé + WTI FRED"
+  },
+  "module6_terrain_ci": {
+    "prix_bord_champ_fcfa": 359,
+    "prix_marche_reel_fcfa": null,
+    "disponibilite_latex": 3,
+    "statut_disponibilite": "Normal",
+    "activite_cooperatives": "Normale",
+    "sentiment_planteurs": 3,
+    "note_terrain": "Campagne de récolte en cours. Conditions normales.",
+    "tension_marche_local": "Aucune",
+    "saison_saignee": "Grande saison",
+    "semaine": 20,
+    "date_saisie": "2026-05-15",
+    "source": "Terrain CI — RubberSignal exclusif"
+  },
+  "module7_geopolitique": {
+    "nb_articles": 0,
+    "signal": "Aucune tension détectée",
+    "articles": []
+  },
+  "pre_rsi": {
+    "score": 63,
+    "signal": "Légèrement haussier — marché bien orienté",
+    "detail": {
+      "meteo_w": 17.75,
+      "devise_w": 14,
+      "pmi_w": 12.5,
+      "terrain_w": 9,
+      "geo_w": 9.75
+    }
+  }
+}
