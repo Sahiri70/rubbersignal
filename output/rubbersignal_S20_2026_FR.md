@@ -32,10 +32,10 @@
 | 🇬🇭 Ghana | Producteur régional | Export latex |
 | 🇳🇬 Nigeria | Producteur émergent | Marché local |
 | 🇨🇲 Cameroun | Producteur régional | Export RSS |
-| 🇹🇭 Thaïlande / Thailand | 1er producteur mondial | Référence prix / Price reference |
+| 🇹🇭 Thaïlande / Thailand | 1er producteur mondial | Référence prix |
 | 🇲🇾 Malaisie / Malaysia | 2ème producteur mondial | SGX Futures |
 | 🇸🇬 Singapour / Singapore | Hub négoce mondial | Bourse SGX |
-| 🇪🇺 Europe | Principal importateur | Demande aval / Downstream demand |
+| 🇪🇺 Europe | Principal importateur | Demande aval |
 
 ## 🔍 Analyse de la semaine
 
@@ -63,7 +63,7 @@ Le TSR20 poursuit son mouvement haussier à **2.29 USD/kg** (+1.78% vs période 
 
 **RubberSignal** — Intelligence marché caoutchouc naturel | Afrique de l'Ouest & marchés mondiaux
 
-Collecte automatisée chaque semaine. Données : Banque Mondiale, IndexMundi, NewsAPI.
+*Source prix : Données de secours (LGM 11/05/2026) | 15/05/2026*
 
-*Pour vous abonner ou nous contacter : rubbersignal.substack.com*
+*Pour vous abonner : rubbersignal.substack.com*
 

@@ -32,14 +32,14 @@ Geographic Context
 | 🇬🇭 Ghana | Producteur régional | Export latex |
 | 🇳🇬 Nigeria | Producteur émergent | Marché local |
 | 🇨🇲 Cameroun | Producteur régional | Export RSS |
-| 🇹🇭 Thaïlande / Thailand | 1er producteur mondial | Référence prix / Price reference |
+| 🇹🇭 Thaïlande / Thailand | 1er producteur mondial | Référence prix |
 | 🇲🇾 Malaisie / Malaysia | 2ème producteur mondial | SGX Futures |
 | 🇸🇬 Singapour / Singapore | Hub négoce mondial | Bourse SGX |
-| 🇪🇺 Europe | Principal importateur | Demande aval / Downstream demand |
+| 🇪🇺 Europe | Principal importateur | Demande aval |
 
 🔍 Weekly Analysis
 
-TSR20 continued its upward trend at 2.29 USD/kg (+1.78% vs previous period). The current price stands above its 3-month average (2.247 USD/kg) and its 6-month average (2.173 USD/kg). Over the past 12 months, TSR20 has traded between 1.95 and 2.29 USD/kg — the current level represents 100% of this range.
+TSR20 continued its upward trend at 2.29 USD/kg (+1.78% vs previous period). The current price stands above its 3-month average (2.247 USD/kg) and 6-month average (2.173 USD/kg). Over the past 12 months, TSR20 traded between 1.95 and 2.29 USD/kg — the current level represents 100% of this range.
 
 > This analysis is automatically generated from public data. It does not constitute investment advice.
 
@@ -63,7 +63,7 @@ Key CI Reference Data:
 
 RubberSignal — Natural Rubber Market Intelligence | West Africa & Global Markets
 
-Automated weekly collection. Data sources: World Bank, IndexMundi, NewsAPI.
+Price source: Données de secours (LGM 11/05/2026) | mai 15, 2026
 
-Subscribe or contact us: rubbersignal.substack.com
+Subscribe: rubbersignal.substack.com
 

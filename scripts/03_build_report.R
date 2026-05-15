@@ -1,11 +1,9 @@
 # =============================================================
 # RUBBERSIGNAL.COM — Script 03 : Assemblage du rapport bilingue
 # Auteur  : Martial Sahiri
-# Version : 3.0 — bilingue FR / EN
-# Objectif: Générer deux rapports Markdown séparés
-#           FR : pour abonnés francophones (Afrique de l'Ouest, Europe)
-#           EN : pour abonnés anglophones (Asie, traders internationaux)
-# Prérequis: Scripts 01 et 02 déjà exécutés
+# Version : 4.0 — intégration Pré-RSI (actif semaine 21+)
+# Objectif: Générer deux rapports Markdown séparés FR + EN
+# Prérequis: Scripts 01, 02 et 04 déjà exécutés
 # Usage   : source("scripts/03_build_report.R")
 # =============================================================
 
@@ -24,12 +22,17 @@ ANNEE         <- year(DATE_COLLECTE)
 DATE_FR       <- format(DATE_COLLECTE, "%d %B %Y")
 DATE_EN       <- format(DATE_COLLECTE, "%B %d, %Y")
 
+# ── Semaine d'activation du Pré-RSI dans le rapport ──────────
+# Changer cette valeur pour activer/désactiver
+SEMAINE_ACTIVATION_RSI <- 21
+
 cat("=== RUBBERSIGNAL — Rapport bilingue Semaine", SEMAINE, "/", ANNEE, "===\n\n")
 
 
-# ── 3. LIRE LE JSON ENRICHI ──────────────────────────────────
+# ── 3. LIRE LE JSON ENRICHI (scripts 01 + 02) ────────────────
 
-fichier_json <- paste0("data/processed/rubbersignal_S", SEMAINE, "_", ANNEE, ".json")
+fichier_json <- paste0("data/processed/rubbersignal_S",
+                       SEMAINE, "_", ANNEE, ".json")
 
 if (!file.exists(fichier_json)) {
   stop(paste(
@@ -39,7 +42,47 @@ if (!file.exists(fichier_json)) {
 }
 
 donnees <- read_json(fichier_json)
-cat(">> JSON chargé :", fichier_json, "\n\n")
+cat(">> JSON principal chargé :", fichier_json, "\n\n")
+
+
+# ── 3B. LIRE LE JSON SIGNAUX (script 04) ─────────────────────
+
+fichier_signaux <- paste0("data/processed/signaux_S",
+                          SEMAINE, "_", ANNEE, ".json")
+
+if (file.exists(fichier_signaux)) {
+  signaux        <- read_json(fichier_signaux)
+  pre_rsi        <- signaux$pre_rsi$score                          %||% NA
+  signal_rsi     <- signaux$pre_rsi$signal                         %||% "Indisponible"
+  score_offre    <- signaux$module1_meteo$score_offre_mondiale      %||% NA
+  signal_offre   <- signaux$module1_meteo$signal_offre             %||% ""
+  signal_cny_r   <- signaux$module2_devises$signal_cny             %||% ""
+  signal_myr_r   <- signaux$module2_devises$signal_myr             %||% ""
+  score_demande  <- signaux$module3_demande_aval$score_demande      %||% NA
+  signal_demande <- signaux$module3_demande_aval$signal_demande     %||% ""
+  note_terrain   <- signaux$module6_terrain_ci$note_terrain         %||% ""
+  signal_geo     <- signaux$module7_geopolitique$signal             %||% ""
+  cat(">> Signaux faibles chargés — Pré-RSI :", pre_rsi, "/100\n")
+  if (SEMAINE >= SEMAINE_ACTIVATION_RSI) {
+    cat("   Pré-RSI activé dans le rapport (semaine", SEMAINE,
+        "≥", SEMAINE_ACTIVATION_RSI, ")\n\n")
+  } else {
+    cat("   Pré-RSI désactivé cette semaine (activation semaine",
+        SEMAINE_ACTIVATION_RSI, ")\n\n")
+  }
+} else {
+  pre_rsi        <- NA
+  signal_rsi     <- ""
+  score_offre    <- NA
+  signal_offre   <- ""
+  signal_cny_r   <- ""
+  signal_myr_r   <- ""
+  score_demande  <- NA
+  signal_demande <- ""
+  note_terrain   <- ""
+  signal_geo     <- ""
+  cat(">> Signaux faibles indisponibles — script 04 non exécuté\n\n")
+}
 
 
 # ── 4. EXTRAIRE LES DONNÉES PRIX ─────────────────────────────
@@ -56,6 +99,7 @@ moyenne_3m    <- synthese$moyenne_3m    %||% NA
 moyenne_6m    <- synthese$moyenne_6m    %||% NA
 min_12m       <- synthese$min_12m       %||% NA
 max_12m       <- synthese$max_12m       %||% NA
+source_prix   <- synthese$source        %||% "IndexMundi"
 
 symbole_tendance <- case_when(
   tendance == "hausse" ~ "▲",
@@ -64,58 +108,61 @@ symbole_tendance <- case_when(
   TRUE                 ~ "~"
 )
 
-texte_variation_fr <- if (!is.na(variation_pct)) {
-  paste0(if (variation_pct > 0) "+" else "", round(variation_pct, 2), "%")
-} else "données indisponibles"
+texte_variation_fr <- ifelse(
+  !is.na(variation_pct),
+  paste0(if (variation_pct > 0) "+" else "",
+         round(variation_pct, 2), "%"),
+  "données indisponibles"
+)
 
-texte_variation_en <- if (!is.na(variation_pct)) {
-  paste0(if (variation_pct > 0) "+" else "", round(variation_pct, 2), "%")
-} else "data unavailable"
+texte_variation_en <- ifelse(
+  !is.na(variation_pct),
+  paste0(if (variation_pct > 0) "+" else "",
+         round(variation_pct, 2), "%"),
+  "data unavailable"
+)
 
-cat("   Prix actuel :", prix_actuel, "USD/kg\n")
-cat("   Tendance    :", symbole_tendance, tendance, "(", texte_variation_fr, ")\n")
+cat("   Prix actuel :", prix_actuel, "USD/kg (", source_prix, ")\n")
+cat("   Tendance    :", symbole_tendance, tendance,
+    "(", texte_variation_fr, ")\n")
 
 
 # ── 5. GÉNÉRER L'ANALYSE EN FRANÇAIS ─────────────────────────
 
 cat("\n>> Rédaction analyse FR...\n")
 
-generer_analyse_fr <- function(prix, variation, tendance, moy3m, moy6m, min12, max12) {
-  
+generer_analyse_fr <- function(prix, variation, tendance,
+                               moy3m, moy6m, min12, max12) {
   intro <- case_when(
-    tendance == "hausse" && variation > 2 ~
+    tendance == "hausse" && !is.na(variation) && variation > 2 ~
       paste0("Le marché du TSR20 affiche une progression notable cette semaine, ",
-             "avec un prix atteignant **", prix, " USD/kg** (",
-             "+", round(variation, 2), "% sur la période précédente)."),
-    tendance == "hausse" ~
-      paste0("Le TSR20 poursuit son mouvement haussier à **", prix, " USD/kg** ",
-             "(+", round(variation, 2), "% vs période précédente)."),
-    tendance == "baisse" && abs(variation) > 2 ~
+             "avec un prix atteignant **", prix, " USD/kg** (+",
+             round(variation, 2), "% sur la période précédente)."),
+    tendance == "hausse" && !is.na(variation) ~
+      paste0("Le TSR20 poursuit son mouvement haussier à **", prix,
+             " USD/kg** (+", round(variation, 2), "% vs période précédente)."),
+    tendance == "baisse" && !is.na(variation) && abs(variation) > 2 ~
       paste0("Le marché du TSR20 marque un repli significatif cette semaine, ",
              "le prix reculant à **", prix, " USD/kg** (",
              round(variation, 2), "% sur la période précédente)."),
-    tendance == "baisse" ~
-      paste0("Le TSR20 cède légèrement du terrain à **", prix, " USD/kg** ",
-             "(", round(variation, 2), "% vs période précédente)."),
+    tendance == "baisse" && !is.na(variation) ~
+      paste0("Le TSR20 cède légèrement du terrain à **", prix, " USD/kg** (",
+             round(variation, 2), "% vs période précédente)."),
     TRUE ~
-      paste0("Le TSR20 se stabilise cette semaine à **", prix, " USD/kg**, ",
-             "sans variation significative par rapport à la période précédente.")
+      paste0("Le TSR20 se stabilise cette semaine à **", prix, " USD/kg**.")
   )
-  
   contexte_moy <- if (!is.na(moy3m) && !is.na(moy6m)) {
-    position <- if (prix > moy3m) "au-dessus" else "en-dessous"
-    paste0("Le prix actuel se situe ", position,
-           " de sa moyenne sur 3 mois (", moy3m, " USD/kg) ",
-           "et de sa moyenne sur 6 mois (", moy6m, " USD/kg).")
+    pos <- if (prix > moy3m) "au-dessus" else "en-dessous"
+    paste0("Le prix actuel se situe ", pos, " de sa moyenne sur 3 mois (",
+           moy3m, " USD/kg) et de sa moyenne sur 6 mois (", moy6m, " USD/kg).")
   } else ""
-  
-  contexte_range <- if (!is.na(min12) && !is.na(max12)) {
-    pct_range <- round((prix - min12) / (max12 - min12) * 100)
+  contexte_range <- if (!is.na(min12) && !is.na(max12) &&
+                        max12 > min12) {
+    pct <- round((prix - min12) / (max12 - min12) * 100)
     paste0("Sur les 12 derniers mois, le TSR20 a évolué entre ", min12,
            " et ", max12, " USD/kg — le niveau actuel représente ",
-           pct_range, "% de cette fourchette.")
+           pct, "% de cette fourchette.")
   } else ""
-  
   paste(intro, contexte_moy, contexte_range, sep = " ")
 }
 
@@ -124,66 +171,155 @@ generer_analyse_fr <- function(prix, variation, tendance, moy3m, moy6m, min12, m
 
 cat(">> Rédaction analyse EN...\n")
 
-generer_analyse_en <- function(prix, variation, tendance, moy3m, moy6m, min12, max12) {
-  
+generer_analyse_en <- function(prix, variation, tendance,
+                               moy3m, moy6m, min12, max12) {
   intro <- case_when(
-    tendance == "hausse" && variation > 2 ~
+    tendance == "hausse" && !is.na(variation) && variation > 2 ~
       paste0("The TSR20 market posted a significant gain this week, ",
-             "with prices reaching **", prix, " USD/kg** (",
-             "+", round(variation, 2), "% vs previous period)."),
-    tendance == "hausse" ~
-      paste0("TSR20 continued its upward trend at **", prix, " USD/kg** ",
-             "(+", round(variation, 2), "% vs previous period)."),
-    tendance == "baisse" && abs(variation) > 2 ~
-      paste0("The TSR20 market recorded a significant decline this week, ",
-             "with prices falling to **", prix, " USD/kg** (",
+             "with prices reaching **", prix, " USD/kg** (+",
              round(variation, 2), "% vs previous period)."),
-    tendance == "baisse" ~
-      paste0("TSR20 edged lower to **", prix, " USD/kg** ",
-             "(", round(variation, 2), "% vs previous period)."),
+    tendance == "hausse" && !is.na(variation) ~
+      paste0("TSR20 continued its upward trend at **", prix, " USD/kg** (+",
+             round(variation, 2), "% vs previous period)."),
+    tendance == "baisse" && !is.na(variation) && abs(variation) > 2 ~
+      paste0("The TSR20 market recorded a significant decline this week, ",
+             "falling to **", prix, " USD/kg** (",
+             round(variation, 2), "% vs previous period)."),
+    tendance == "baisse" && !is.na(variation) ~
+      paste0("TSR20 edged lower to **", prix, " USD/kg** (",
+             round(variation, 2), "% vs previous period)."),
     TRUE ~
-      paste0("TSR20 stabilized this week at **", prix, " USD/kg**, ",
-             "with no significant change compared to the previous period.")
+      paste0("TSR20 stabilized this week at **", prix, " USD/kg**.")
   )
-  
   contexte_moy <- if (!is.na(moy3m) && !is.na(moy6m)) {
-    position <- if (prix > moy3m) "above" else "below"
-    paste0("The current price stands ", position,
-           " its 3-month average (", moy3m, " USD/kg) ",
-           "and its 6-month average (", moy6m, " USD/kg).")
+    pos <- if (prix > moy3m) "above" else "below"
+    paste0("The current price stands ", pos, " its 3-month average (",
+           moy3m, " USD/kg) and 6-month average (", moy6m, " USD/kg).")
   } else ""
-  
-  contexte_range <- if (!is.na(min12) && !is.na(max12)) {
-    pct_range <- round((prix - min12) / (max12 - min12) * 100)
-    paste0("Over the past 12 months, TSR20 has traded between ", min12,
+  contexte_range <- if (!is.na(min12) && !is.na(max12) &&
+                        max12 > min12) {
+    pct <- round((prix - min12) / (max12 - min12) * 100)
+    paste0("Over the past 12 months, TSR20 traded between ", min12,
            " and ", max12, " USD/kg — the current level represents ",
-           pct_range, "% of this range.")
+           pct, "% of this range.")
   } else ""
-  
   paste(intro, contexte_moy, contexte_range, sep = " ")
 }
 
 texte_analyse_fr <- generer_analyse_fr(
-  prix = prix_actuel, variation = variation_pct, tendance = tendance,
-  moy3m = moyenne_3m, moy6m = moyenne_6m, min12 = min_12m, max12 = max_12m
+  prix=prix_actuel, variation=variation_pct, tendance=tendance,
+  moy3m=moyenne_3m, moy6m=moyenne_6m, min12=min_12m, max12=max_12m
 )
-
 texte_analyse_en <- generer_analyse_en(
-  prix = prix_actuel, variation = variation_pct, tendance = tendance,
-  moy3m = moyenne_3m, moy6m = moyenne_6m, min12 = min_12m, max12 = max_12m
+  prix=prix_actuel, variation=variation_pct, tendance=tendance,
+  moy3m=moyenne_3m, moy6m=moyenne_6m, min12=min_12m, max12=max_12m
 )
 
-cat("   Analyses générées — OK\n")
+cat("   Analyses FR/EN générées — OK\n")
 
 
-# ── 7. CONSTRUIRE LES SECTIONS COMMUNES ──────────────────────
+# ── 6B. CONSTRUIRE LA SECTION PRÉ-RSI ────────────────────────
+# Visible uniquement à partir de SEMAINE_ACTIVATION_RSI
 
-cat("\n>> Construction des sections...\n")
+cat(">> Construction section Pré-RSI...\n")
 
-# Tableau des grades — identique FR/EN (chiffres universels)
+# Icône selon le score
+icone_rsi <- function(score) {
+  if (is.na(score)) return("➡️")
+  if (score >= 70) "⬆️"
+  else if (score >= 55) "↗️"
+  else if (score >= 45) "➡️"
+  else "↘️"
+}
+
+rapport_rsi_fr <- if (!is.na(pre_rsi) &&
+                      SEMAINE >= SEMAINE_ACTIVATION_RSI) {
+  paste0(
+    "## 📡 Signaux faibles — Pré-RSI\n\n",
+    "### ", icone_rsi(pre_rsi),
+    " RubberSignal Index : **", pre_rsi, " / 100**\n\n",
+    "*", signal_rsi, "*\n\n",
+    "| Signal | Valeur |\n",
+    "|---|---|\n",
+    if (!is.na(score_offre))
+      paste0("| 🌧️ Offre mondiale (météo 4 zones) | Score ",
+             score_offre, "/100 — ", signal_offre, " |\n")
+    else "",
+    if (nchar(signal_cny_r) > 0)
+      paste0("| 💱 Yuan chinois (CNY) | ", signal_cny_r, " |\n")
+    else "",
+    if (nchar(signal_myr_r) > 0)
+      paste0("| 💱 Ringgit malaisien (MYR) | ", signal_myr_r, " |\n")
+    else "",
+    if (!is.na(score_demande))
+      paste0("| 🏭 Demande industrielle | Score ", score_demande,
+             "/100 — ", signal_demande, " |\n")
+    else "",
+    if (nchar(note_terrain) > 0)
+      paste0("| 🌿 Terrain CI | ", note_terrain, " |\n")
+    else "",
+    if (nchar(signal_geo) > 0)
+      paste0("| 🌍 Géopolitique | ", signal_geo, " |\n")
+    else "",
+    "\n> *Le Pré-RSI (RubberSignal Index) est un score composite 0–100 ",
+    "intégrant météo, devises, demande industrielle et données terrain CI. ",
+    "Score > 55 = marché haussier. Score < 45 = marché baissier. ",
+    "Indicateur exclusif RubberSignal.*\n\n",
+    "---\n\n"
+  )
+} else ""
+
+rapport_rsi_en <- if (!is.na(pre_rsi) &&
+                      SEMAINE >= SEMAINE_ACTIVATION_RSI) {
+  paste0(
+    "## 📡 Weak Signals — Pre-RSI\n\n",
+    "### ", icone_rsi(pre_rsi),
+    " RubberSignal Index: **", pre_rsi, " / 100**\n\n",
+    "*", signal_rsi, "*\n\n",
+    "| Signal | Value |\n",
+    "|---|---|\n",
+    if (!is.na(score_offre))
+      paste0("| 🌧️ Global supply (weather — 4 zones) | Score ",
+             score_offre, "/100 — ", signal_offre, " |\n")
+    else "",
+    if (nchar(signal_cny_r) > 0)
+      paste0("| 💱 Chinese Yuan (CNY) | ", signal_cny_r, " |\n")
+    else "",
+    if (nchar(signal_myr_r) > 0)
+      paste0("| 💱 Malaysian Ringgit (MYR) | ", signal_myr_r, " |\n")
+    else "",
+    if (!is.na(score_demande))
+      paste0("| 🏭 Industrial demand | Score ", score_demande,
+             "/100 — ", signal_demande, " |\n")
+    else "",
+    if (nchar(note_terrain) > 0)
+      paste0("| 🌿 CI Field data | ", note_terrain, " |\n")
+    else "",
+    if (nchar(signal_geo) > 0)
+      paste0("| 🌍 Geopolitics | ", signal_geo, " |\n")
+    else "",
+    "\n> *The Pre-RSI (RubberSignal Index) is a composite score 0–100 ",
+    "combining weather, currencies, industrial demand and CI field data. ",
+    "Score > 55 = bullish market. Score < 45 = bearish market. ",
+    "Exclusive RubberSignal indicator.*\n\n",
+    "---\n\n"
+  )
+} else ""
+
+if (SEMAINE >= SEMAINE_ACTIVATION_RSI) {
+  cat("   Pré-RSI :", pre_rsi, "/100 —", signal_rsi, "\n\n")
+} else {
+  cat("   Pré-RSI non publié cette semaine (activation S",
+      SEMAINE_ACTIVATION_RSI, ")\n\n")
+}
+
+
+# ── 7. CONSTRUIRE LES TABLEAUX COMMUNS ───────────────────────
+
+cat(">> Construction des tableaux...\n")
+
 tableau_grades <- paste0(
-  "| Grade | Prix USD/kg | Prix CHF/kg | ",
-  if (TRUE) "Note |" else "Note |", "\n",
+  "| Grade | Prix USD/kg | Prix CHF/kg | Note |\n",
   "|---|---|---|---|\n",
   "| **TSR20** | **", prix_actuel, "** | **",
   round(prix_actuel * 0.90, 3), "** | ",
@@ -199,7 +335,6 @@ tableau_grades <- paste0(
   " | Liquid material |\n\n"
 )
 
-# Tableau géographique — identique FR/EN
 tableau_geo <- paste0(
   "| Zone | Statut / Status | Rôle / Role |\n",
   "|---|---|---|\n",
@@ -207,10 +342,10 @@ tableau_geo <- paste0(
   "| 🇬🇭 Ghana | Producteur régional | Export latex |\n",
   "| 🇳🇬 Nigeria | Producteur émergent | Marché local |\n",
   "| 🇨🇲 Cameroun | Producteur régional | Export RSS |\n",
-  "| 🇹🇭 Thaïlande / Thailand | 1er producteur mondial | Référence prix / Price reference |\n",
+  "| 🇹🇭 Thaïlande / Thailand | 1er producteur mondial | Référence prix |\n",
   "| 🇲🇾 Malaisie / Malaysia | 2ème producteur mondial | SGX Futures |\n",
   "| 🇸🇬 Singapour / Singapore | Hub négoce mondial | Bourse SGX |\n",
-  "| 🇪🇺 Europe | Principal importateur | Demande aval / Downstream demand |\n\n"
+  "| 🇪🇺 Europe | Principal importateur | Demande aval |\n\n"
 )
 
 
@@ -237,7 +372,8 @@ rapport_fr <- paste0(
   "### Variation & tendance\n\n",
   "| Indicateur | Valeur |\n",
   "|---|---|\n",
-  "| Variation vs période préc. | ", texte_variation_fr, " ", symbole_tendance, " |\n",
+  "| Variation vs période préc. | ",
+  texte_variation_fr, " ", symbole_tendance, " |\n",
   "| Moyenne 3 mois | ",
   if (!is.na(moyenne_3m)) paste0(moyenne_3m, " USD/kg") else "—", " |\n",
   "| Moyenne 6 mois | ",
@@ -254,6 +390,9 @@ rapport_fr <- paste0(
   texte_analyse_fr, "\n\n",
   "> *Cette analyse est générée automatiquement à partir de données publiques. ",
   "Elle ne constitue pas un conseil en investissement.*\n\n",
+  
+  # ── PRÉ-RSI FR (vide si semaine < SEMAINE_ACTIVATION_RSI) ──
+  rapport_rsi_fr,
   
   "## 📝 Note éditoriale de la semaine\n\n",
   "*[À compléter manuellement — votre observation terrain : ",
@@ -272,12 +411,12 @@ rapport_fr <- paste0(
   
   "**RubberSignal** — Intelligence marché caoutchouc naturel | ",
   "Afrique de l'Ouest & marchés mondiaux\n\n",
-  "Collecte automatisée chaque semaine. ",
-  "Données : Banque Mondiale, IndexMundi, NewsAPI.\n\n",
-  "*Pour vous abonner ou nous contacter : rubbersignal.substack.com*\n"
+  "*Source prix : ", source_prix, " | ",
+  format(DATE_COLLECTE, "%d/%m/%Y"), "*\n\n",
+  "*Pour vous abonner : rubbersignal.substack.com*\n"
 )
 
-cat("   Rapport FR assemblé —", nchar(rapport_fr), "caractères\n")
+cat("   Rapport FR :", nchar(rapport_fr), "caractères\n")
 
 
 # ── 9. ASSEMBLER LE RAPPORT ANGLAIS ──────────────────────────
@@ -303,7 +442,8 @@ rapport_en <- paste0(
   "### Variation & Trend\n\n",
   "| Indicator | Value |\n",
   "|---|---|\n",
-  "| Change vs previous period | ", texte_variation_en, " ", symbole_tendance, " |\n",
+  "| Change vs previous period | ",
+  texte_variation_en, " ", symbole_tendance, " |\n",
   "| 3-month average | ",
   if (!is.na(moyenne_3m)) paste0(moyenne_3m, " USD/kg") else "—", " |\n",
   "| 6-month average | ",
@@ -320,6 +460,9 @@ rapport_en <- paste0(
   texte_analyse_en, "\n\n",
   "> *This analysis is automatically generated from public data. ",
   "It does not constitute investment advice.*\n\n",
+  
+  # ── PRÉ-RSI EN (vide si semaine < SEMAINE_ACTIVATION_RSI) ──
+  rapport_rsi_en,
   
   "## 📝 Editorial Note\n\n",
   "*[To be completed manually — your field observation this week: ",
@@ -338,29 +481,26 @@ rapport_en <- paste0(
   
   "**RubberSignal** — Natural Rubber Market Intelligence | ",
   "West Africa & Global Markets\n\n",
-  "Automated weekly collection. ",
-  "Data sources: World Bank, IndexMundi, NewsAPI.\n\n",
-  "*Subscribe or contact us: rubbersignal.substack.com*\n"
+  "*Price source: ", source_prix, " | ",
+  format(DATE_COLLECTE, "%B %d, %Y"), "*\n\n",
+  "*Subscribe: rubbersignal.substack.com*\n"
 )
 
-cat("   Rapport EN assemblé —", nchar(rapport_en), "caractères\n")
+cat("   Rapport EN :", nchar(rapport_en), "caractères\n")
 
 
 # ── 10. SAUVEGARDER LES DEUX RAPPORTS ────────────────────────
 
 cat("\n>> Sauvegarde des rapports...\n")
 
-# Rapport français
 fichier_fr <- paste0("output/rubbersignal_S", SEMAINE, "_", ANNEE, "_FR.md")
-writeLines(rapport_fr, fichier_fr, useBytes = FALSE)
-cat("   Rapport FR :", fichier_fr, "\n")
-
-# Rapport anglais
 fichier_en <- paste0("output/rubbersignal_S", SEMAINE, "_", ANNEE, "_EN.md")
-writeLines(rapport_en, fichier_en, useBytes = FALSE)
-cat("   Rapport EN :", fichier_en, "\n")
 
-# Versions texte brut
+writeLines(rapport_fr, fichier_fr, useBytes = FALSE)
+writeLines(rapport_en, fichier_en, useBytes = FALSE)
+cat("   FR :", fichier_fr, "\n")
+cat("   EN :", fichier_en, "\n")
+
 nettoyer_md <- function(texte) {
   texte %>%
     str_remove_all("\\*\\*|\\*|#{1,3} |`|\\[|\\]\\(.*?\\)") %>%
@@ -373,16 +513,17 @@ writeLines(nettoyer_md(rapport_fr),
 writeLines(nettoyer_md(rapport_en),
            paste0("output/rubbersignal_S", SEMAINE, "_", ANNEE, "_EN_plain.txt"),
            useBytes = FALSE)
-cat("   Versions texte brut sauvegardées\n")
+cat("   Versions plain text sauvegardées\n")
 
-# Mettre à jour le JSON final
 donnees$rapport <- list(
-  titre_fr      = titre_fr,
-  titre_en      = titre_en,
-  date_rapport  = as.character(DATE_COLLECTE),
-  semaine       = SEMAINE,
-  fichier_fr    = fichier_fr,
-  fichier_en    = fichier_en
+  titre_fr     = titre_fr,
+  titre_en     = titre_en,
+  date_rapport = as.character(DATE_COLLECTE),
+  semaine      = SEMAINE,
+  fichier_fr   = fichier_fr,
+  fichier_en   = fichier_en,
+  pre_rsi      = pre_rsi,
+  pre_rsi_actif = SEMAINE >= SEMAINE_ACTIVATION_RSI
 )
 write_json(donnees, fichier_json, pretty = TRUE, auto_unbox = TRUE)
 cat("   JSON final mis à jour\n")
@@ -394,14 +535,14 @@ cat("\n", strrep("=", 60), "\n")
 cat("APERÇU RAPPORT FR — Semaine", SEMAINE, "/", ANNEE, "\n")
 cat(strrep("=", 60), "\n\n")
 apercu_fr <- str_split(rapport_fr, "\n")[[1]]
-cat(paste(head(apercu_fr, 30), collapse = "\n"))
+cat(paste(head(apercu_fr, 35), collapse = "\n"))
 cat("\n\n[... rapport complet dans :", fichier_fr, "]\n")
 
 cat("\n", strrep("=", 60), "\n")
 cat("APERÇU RAPPORT EN — Week", SEMAINE, "/", ANNEE, "\n")
 cat(strrep("=", 60), "\n\n")
 apercu_en <- str_split(rapport_en, "\n")[[1]]
-cat(paste(head(apercu_en, 30), collapse = "\n"))
+cat(paste(head(apercu_en, 35), collapse = "\n"))
 cat("\n\n[... full report in:", fichier_en, "]\n")
 
 
@@ -410,13 +551,20 @@ cat("\n\n[... full report in:", fichier_en, "]\n")
 cat("\n\n", strrep("=", 60), "\n")
 cat("RÉSUMÉ SCRIPT 03 — Semaine", SEMAINE, "/", ANNEE, "\n")
 cat(strrep("=", 60), "\n")
-cat("Rapport FR généré  :", fichier_fr, "\n")
-cat("Rapport EN généré  :", fichier_en, "\n")
-cat("Prix TSR20         :", prix_actuel, "USD/kg", symbole_tendance, "\n")
+cat("Rapport FR     :", fichier_fr, "\n")
+cat("Rapport EN     :", fichier_en, "\n")
+cat("Prix TSR20     :", prix_actuel, "USD/kg", symbole_tendance,
+    "(", source_prix, ")\n")
+if (!is.na(pre_rsi)) {
+  cat("Pré-RSI        :", pre_rsi, "/100 —", signal_rsi, "\n")
+  cat("RSI publié     :",
+      if (SEMAINE >= SEMAINE_ACTIVATION_RSI) "OUI" else
+        paste("NON — activation semaine", SEMAINE_ACTIVATION_RSI), "\n")
+}
 cat(strrep("=", 60), "\n")
 cat("\nAction suivante :\n")
 cat("1. Ouvrez", fichier_fr, "→ copiez dans Substack FR\n")
 cat("2. Ouvrez", fichier_en, "→ copiez dans Substack EN\n")
-cat("3. Complétez la note éditoriale dans les deux versions\n")
-cat("4. Publiez les deux articles !\n\n")
-cat("Prochaine étape technique : scripts/04_automate.R (GitHub Actions)\n\n")
+cat("3. Complétez la note éditoriale terrain\n")
+cat("4. Publiez !\n\n")
+cat("Prochaine étape technique : GitHub Actions pipeline\n\n")
