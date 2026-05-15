@@ -94,6 +94,7 @@
     "semaine": 20,
     "fichier_fr": "output/rubbersignal_S20_2026_FR.md",
     "fichier_en": "output/rubbersignal_S20_2026_EN.md"
+<<<<<<< HEAD
   },
   "signaux_faibles": {
     "meta": {
@@ -273,5 +274,7 @@
         "geo_w": 9.75
       }
     }
+=======
+>>>>>>> 2d965fa1f4155d6c0d846c0c1255205753b370c3
   }
 }
