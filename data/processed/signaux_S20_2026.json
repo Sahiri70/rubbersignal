@@ -64,7 +64,14 @@
         "variation_pct": -0.17,
         "date": "2026-03-01"
       },
-      "ventes_auto_us": {},
+      "ventes_auto_us": {
+        "serie": "TOTALSA",
+        "nom": "Ventes automobiles US (millions/an)",
+        "valeur": 16.696,
+        "valeur_prec": 16.098,
+        "variation_pct": 3.71,
+        "date": "2026-03-01"
+      },
       "commandes_dur": {
         "serie": "DGORDER",
         "nom": "Commandes biens durables US (M USD)",
@@ -89,7 +96,14 @@
         "variation_pct": 0.78,
         "date": "2025-12-01"
       },
-      "permis_constr": {}
+      "permis_constr": {
+        "serie": "PERMIT",
+        "nom": "Permis construction US",
+        "valeur": 1363,
+        "valeur_prec": 1538,
+        "variation_pct": -11.38,
+        "date": "2026-03-01"
+      }
     },
     "pmi": {
       "USA": {
@@ -118,8 +132,8 @@
         "signal": "Légère contraction"
       }
     },
-    "score_demande": 50,
-    "signal_demande": "Demande neutre — équilibré"
+    "score_demande": 60,
+    "signal_demande": "Demande modérée — bien orienté"
   },
   "module4_stocks": {
     "malaisie_tonnes": null,
@@ -166,12 +180,12 @@
     "articles": []
   },
   "pre_rsi": {
-    "score": 63,
+    "score": 66,
     "signal": "Légèrement haussier — marché bien orienté",
     "detail": {
       "meteo_w": 17.75,
       "devise_w": 14,
-      "pmi_w": 12.5,
+      "pmi_w": 15,
       "terrain_w": 9,
       "geo_w": 9.75
     }
