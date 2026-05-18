@@ -38,7 +38,7 @@ prix_lgm <- tryCatch({
   texte <- page %>% html_text2()
   
   # Chercher le prix SMR20 en US Cents/Kg
-  # Format attendu : "229.25 (US Cents/Kg)"
+  # Format attendu : "229.255 (US Cents/Kg)"
   match_cents <- regmatches(
     texte,
     regexpr("[0-9]{2,3}\\.[0-9]{1,2}(?=\\s*\\(?US Cents)", texte, perl = TRUE)
@@ -115,11 +115,16 @@ if (!is.na(prix_lgm)) {
   cat("   Source retenue : IndexMundi\n")
   
 } else {
-  # Données de secours — à mettre à jour manuellement chaque mois
-  # Source : https://www.lgm.gov.my ou https://www.indexmundi.com
-  prix_actuel_usd <- 2.29   # ← METTRE À JOUR MANUELLEMENT SI NÉCESSAIRE
-  source_prix     <- "Données de secours (LGM 11/05/2026)"
+  # Données de secours — dernier prix LGM connu
+  # ⚠ METTRE À JOUR CHAQUE SEMAINE si LGM inaccessible
+  # Source : https://www.lgm.gov.my → SMR20 en US Cents/Kg ÷ 100
+  prix_actuel_usd <- 2.2955  # ← Dernier prix LGM connu (18/05/2026)
+  source_prix     <- "LGM Malaysia (18/05/2026) — mise à jour manuelle"
   cat("   Source retenue : données de secours\n")
+  cat("   ⚠ Prix manuel :", prix_actuel_usd, "USD/kg\n")
+  cat("   → Si LGM inaccessible, mettre à jour cette valeur\n")
+  cat("     Source : https://www.lgm.gov.my\n")
+
 }
 
 cat("   Prix TSR20 retenu :", prix_actuel_usd, "USD/kg (", source_prix, ")\n")
