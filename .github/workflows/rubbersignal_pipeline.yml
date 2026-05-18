@@ -77,4 +77,5 @@ jobs:
           git add output/
           git add data/
           git diff --staged --quiet || git commit -m "RubberSignal rapport automatique semaine $(date +'%V') / $(date +'%Y')"
+          git pull --rebase origin master || true
           git push
