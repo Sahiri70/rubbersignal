@@ -127,7 +127,7 @@ The TSR20 market posted a significant gain this week, with prices reaching **2.2
 
 **RubberSignal** — Natural Rubber Market Intelligence | West Africa & Global Markets
 
-*Price source: LGM Malaysia (18/05/2026) — mise à jour manuelle | mai 18, 2026*
+*Price source: LGM Malaysia (18/05/2026) — mise à jour manuelle | May 18, 2026*
 
 *Subscribe: rubbersignal.substack.com*
 
