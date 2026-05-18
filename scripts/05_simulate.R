@@ -125,7 +125,7 @@ for (t in 2:(horizon_max + 1)) {
   epsilon <- rnorm(N_SIMULATIONS, mean = 0, sd = 1)
   trajectoires[, t] <- trajectoires[, t-1] * exp(
     (DRIFT_ANNUEL - 0.5 * VOLATILITE_ANNUELLE^2) * dt +
-    VOLATILITE_HEBDO * epsilon
+      VOLATILITE_HEBDO * epsilon
   )
 }
 
@@ -137,15 +137,15 @@ cat("   Simulation terminée —", N_SIMULATIONS, "trajectoires générées\n\n"
 cat(">> Calcul des statistiques par horizon...\n\n")
 
 resultats_mc <- map(HORIZONS, function(h) {
-
+  
   # Distribution des prix à l'horizon h
   prix_horizon <- trajectoires[, h + 1]
-
+  
   # Statistiques de distribution
   moy     <- round(mean(prix_horizon), 4)
   med     <- round(median(prix_horizon), 4)
   sd_prix <- round(sd(prix_horizon), 4)
-
+  
   # Intervalles de confiance (percentiles)
   p05 <- round(quantile(prix_horizon, 0.05), 4)  # 5ème percentile
   p10 <- round(quantile(prix_horizon, 0.10), 4)  # 10ème percentile
@@ -153,7 +153,7 @@ resultats_mc <- map(HORIZONS, function(h) {
   p75 <- round(quantile(prix_horizon, 0.75), 4)  # 3ème quartile
   p90 <- round(quantile(prix_horizon, 0.90), 4)  # 90ème percentile
   p95 <- round(quantile(prix_horizon, 0.95), 4)  # 95ème percentile
-
+  
   # Probabilités directionnelles
   prob_hausse    <- round(mean(prix_horizon > prix_actuel) * 100, 1)
   prob_baisse    <- round(mean(prix_horizon < prix_actuel) * 100, 1)
@@ -161,14 +161,14 @@ resultats_mc <- map(HORIZONS, function(h) {
   prob_moins5    <- round(mean(prix_horizon < prix_actuel * 0.95) * 100, 1)
   prob_plus10    <- round(mean(prix_horizon > prix_actuel * 1.10) * 100, 1)
   prob_moins10   <- round(mean(prix_horizon < prix_actuel * 0.90) * 100, 1)
-
+  
   # Scénarios (centiles clés pour publication)
   scenario_bear  <- p10   # Scénario pessimiste
   scenario_base  <- moy   # Scénario central
   scenario_bull  <- p90   # Scénario optimiste
-
+  
   cat(sprintf("Horizon %2d semaines (%s) :\n", h,
-      format(DATE_COLLECTE + weeks(h), "%d/%m/%Y")))
+              format(DATE_COLLECTE + weeks(h), "%d/%m/%Y")))
   cat(sprintf("  Scénario pessimiste (10%%)  : %5.3f USD/kg\n", scenario_bear))
   cat(sprintf("  Scénario central (moyenne) : %5.3f USD/kg\n", scenario_base))
   cat(sprintf("  Scénario optimiste (90%%)  : %5.3f USD/kg\n", scenario_bull))
@@ -177,7 +177,7 @@ resultats_mc <- map(HORIZONS, function(h) {
   cat(sprintf("  Prob. hausse vs actuel     : %4.1f%%\n", prob_hausse))
   cat(sprintf("  Prob. +5%% ou plus         : %4.1f%%\n", prob_plus5))
   cat(sprintf("  Prob. -5%% ou plus         : %4.1f%%\n\n", prob_moins5))
-
+  
   list(
     horizon_sem     = h,
     date_horizon    = format(DATE_COLLECTE + weeks(h), "%Y-%m-%d"),
@@ -210,12 +210,12 @@ cat("TEXTE ÉDITORIAL — Prévisions Monte Carlo\n")
 cat(strrep("─", 55), "\n\n")
 
 generer_texte_mc_fr <- function(res4, res12) {
-
+  
   # Interprétation de la tendance
   biais <- if (res4$prob_hausse_pct > 60) "haussier"
-            else if (res4$prob_hausse_pct < 40) "baissier"
-            else "neutre"
-
+  else if (res4$prob_hausse_pct < 40) "baissier"
+  else "neutre"
+  
   paste0(
     "### 📈 Prévisions Monte Carlo — ", N_SIMULATIONS, " simulations\n\n",
     "*Basé sur le Mouvement Brownien Géométrique (Thompson, 2000)*\n\n",
@@ -245,11 +245,11 @@ generer_texte_mc_fr <- function(res4, res12) {
 }
 
 generer_texte_mc_en <- function(res4, res12) {
-
+  
   biais_en <- if (res4$prob_hausse_pct > 60) "bullish"
-              else if (res4$prob_hausse_pct < 40) "bearish"
-              else "neutral"
-
+  else if (res4$prob_hausse_pct < 40) "bearish"
+  else "neutral"
+  
   paste0(
     "### 📈 Monte Carlo Forecasts — ", N_SIMULATIONS, " simulations\n\n",
     "*Based on Geometric Brownian Motion (Thompson, 2000)*\n\n",
@@ -331,8 +331,8 @@ cat("Drift annuel  :", round(DRIFT_ANNUEL * 100, 2), "%/an",
 for (h in HORIZONS) {
   r <- resultats_mc[[paste0("S", h)]]
   cat(sprintf("S+%2d sem. : Bear %5.3f | Base %5.3f | Bull %5.3f | P(↑) %4.1f%%\n",
-      h, r$scenario_bear, r$scenario_base,
-      r$scenario_bull, r$prob_hausse_pct))
+              h, r$scenario_bear, r$scenario_base,
+              r$scenario_bull, r$prob_hausse_pct))
 }
 
 cat("\nFichier MC :", fichier_mc, "\n\n")
@@ -371,9 +371,9 @@ if (!file.exists(fichier_signaux)) {
     note = "Script 04 requis"
   )
 } else {
-
+  
   signaux <- read_json(fichier_signaux)
-
+  
   # Extraire les 5 composantes pondérées du Pré-RSI
   # (mêmes que dans le script 04)
   score_meteo   <- signaux$module1_meteo$score_offre_mondiale %||% 50
@@ -389,33 +389,33 @@ if (!file.exists(fichier_signaux)) {
     nb <- signaux$module7_geopolitique$nb_articles %||% 0
     if (nb == 0) 65 else if (nb <= 2) 50 else if (nb <= 4) 35 else 20
   }
-
+  
   # Poids des composantes (identiques au script 04)
   poids <- c(0.25, 0.20, 0.25, 0.15, 0.15)
   scores_base <- c(score_meteo, score_devise, score_demande,
                    score_terrain, score_geo)
   noms_scores <- c("Météo/Offre", "Devises", "Demande aval",
                    "Terrain CI", "Géopolitique")
-
+  
   # Pré-RSI calculé (vérification)
   pre_rsi_calc <- round(sum(scores_base * poids))
   cat(">> Composantes du Pré-RSI :\n")
   for (i in 1:5) {
     cat(sprintf("   %-15s : %5.1f pts × %.2f = %4.1f pts\n",
-        noms_scores[i], scores_base[i], poids[i],
-        scores_base[i] * poids[i]))
+                noms_scores[i], scores_base[i], poids[i],
+                scores_base[i] * poids[i]))
   }
   cat(sprintf("   %-15s : %5.1f / 100\n", "PRÉ-RSI TOTAL", pre_rsi_calc))
   cat("\n")
-
+  
   # ── BOOTSTRAP : 5000 rééchantillonnages ──────────────────────
   # Thompson recommande 1000-5000 pour les intervalles de confiance
-
+  
   N_BOOT <- 5000
   cat(">> Bootstrap :", N_BOOT, "rééchantillonnages...\n")
-
+  
   set.seed(123)
-
+  
   # Source d'incertitude : chaque composante est connue avec une
   # incertitude estimée (bruit de mesure / subjectivité)
   # On modélise l'incertitude par composante :
@@ -426,17 +426,17 @@ if (!file.exists(fichier_signaux)) {
     terrain = 12,  # ±12 pts — donnée subjective (sentiment planteurs 1-5)
     geo     = 8    # ±8 pts — signal binaire (nb articles)
   )
-
+  
   rsi_boot_scores <- numeric(N_BOOT)
-
+  
   for (b in 1:N_BOOT) {
     # Rééchantillonner chaque composante avec bruit gaussien
     scores_perturbes <- pmax(0, pmin(100,
-      scores_base + rnorm(5, mean = 0, sd = incertitude)
+                                     scores_base + rnorm(5, mean = 0, sd = incertitude)
     ))
     rsi_boot_scores[b] <- sum(scores_perturbes * poids)
   }
-
+  
   # Statistiques du Bootstrap
   rsi_moy  <- round(mean(rsi_boot_scores), 1)
   rsi_med  <- round(median(rsi_boot_scores), 1)
@@ -445,19 +445,19 @@ if (!file.exists(fichier_signaux)) {
   rsi_ic90_haut <- round(quantile(rsi_boot_scores, 0.95), 1)
   rsi_ic80_bas  <- round(quantile(rsi_boot_scores, 0.10), 1)
   rsi_ic80_haut <- round(quantile(rsi_boot_scores, 0.90), 1)
-
+  
   # Stabilité du signal
   stabilite <- if (rsi_sd < 5) "Très stable"
-               else if (rsi_sd < 8) "Stable"
-               else if (rsi_sd < 12) "Modérément stable"
-               else "Incertain"
-
+  else if (rsi_sd < 8) "Stable"
+  else if (rsi_sd < 12) "Modérément stable"
+  else "Incertain"
+  
   # Signal robuste si les bornes IC90 restent du même côté de 50
   signal_robuste <- (rsi_ic90_bas > 50 && rsi_ic90_haut > 50) ||
-                    (rsi_ic90_bas < 50 && rsi_ic90_haut < 50)
-
+    (rsi_ic90_bas < 50 && rsi_ic90_haut < 50)
+  
   cat("   Bootstrap terminé —", N_BOOT, "rééchantillonnages\n\n")
-
+  
   cat(">> Résultats Bootstrap RSI :\n")
   cat(sprintf("   Pré-RSI central       : %5.1f / 100\n", pre_rsi_calc))
   cat(sprintf("   Moyenne bootstrap     : %5.1f / 100\n", rsi_moy))
@@ -469,10 +469,10 @@ if (!file.exists(fichier_signaux)) {
   cat(sprintf("   Stabilité du signal   : %s\n", stabilite))
   cat(sprintf("   Signal robuste (IC90) : %s\n\n",
               if (signal_robuste) "OUI — signal fiable" else
-              "NON — signal incertain (zone 50)"))
-
+                "NON — signal incertain (zone 50)"))
+  
   # ── TEXTE ÉDITORIAL BOOTSTRAP ────────────────────────────────
-
+  
   generer_texte_boot_fr <- function() {
     paste0(
       "### 🎯 Fiabilité du Pré-RSI — Analyse Bootstrap\n\n",
@@ -481,20 +481,20 @@ if (!file.exists(fichier_signaux)) {
       "|---|---|\n",
       "| **Pré-RSI central** | **", pre_rsi_calc, " / 100** |\n",
       "| Intervalle confiance 80% | [", rsi_ic80_bas,
-        " – ", rsi_ic80_haut, "] |\n",
+      " – ", rsi_ic80_haut, "] |\n",
       "| Intervalle confiance 90% | [", rsi_ic90_bas,
-        " – ", rsi_ic90_haut, "] |\n",
+      " – ", rsi_ic90_haut, "] |\n",
       "| Stabilité du signal | ", stabilite, " (±", rsi_sd, " pts) |\n",
       "| Signal robuste | ",
-        if (signal_robuste) "✅ Oui" else "⚠️ Zone d'incertitude",
-        " |\n\n",
+      if (signal_robuste) "✅ Oui" else "⚠️ Zone d'incertitude",
+      " |\n\n",
       "**Interprétation :** Le Pré-RSI de **", pre_rsi_calc,
       "/100** est ",
       if (signal_robuste)
         paste0("statistiquement robuste — même en faisant varier ",
                "les hypothèses, le signal reste **",
                if (pre_rsi_calc >= 55) "haussier" else
-               if (pre_rsi_calc <= 45) "baissier" else "neutre", "**.")
+                 if (pre_rsi_calc <= 45) "baissier" else "neutre", "**.")
       else
         "dans une zone d'incertitude — le signal pourrait basculer en fonction des données terrain CI de la semaine prochaine.",
       "\n\n",
@@ -503,7 +503,7 @@ if (!file.exists(fichier_signaux)) {
       "Un IC90 étroit indique un signal fiable.*\n\n"
     )
   }
-
+  
   generer_texte_boot_en <- function() {
     paste0(
       "### 🎯 Pre-RSI Reliability — Bootstrap Analysis\n\n",
@@ -512,20 +512,20 @@ if (!file.exists(fichier_signaux)) {
       "|---|---|\n",
       "| **Pre-RSI score** | **", pre_rsi_calc, " / 100** |\n",
       "| 80% confidence interval | [", rsi_ic80_bas,
-        " – ", rsi_ic80_haut, "] |\n",
+      " – ", rsi_ic80_haut, "] |\n",
       "| 90% confidence interval | [", rsi_ic90_bas,
-        " – ", rsi_ic90_haut, "] |\n",
+      " – ", rsi_ic90_haut, "] |\n",
       "| Signal stability | ", stabilite, " (±", rsi_sd, " pts) |\n",
       "| Robust signal | ",
-        if (signal_robuste) "✅ Yes" else "⚠️ Uncertainty zone",
-        " |\n\n",
+      if (signal_robuste) "✅ Yes" else "⚠️ Uncertainty zone",
+      " |\n\n",
       "**Interpretation:** The Pre-RSI of **", pre_rsi_calc,
       "/100** is ",
       if (signal_robuste)
         paste0("statistically robust — even when varying ",
                "the assumptions, the signal remains **",
                if (pre_rsi_calc >= 55) "bullish" else
-               if (pre_rsi_calc <= 45) "bearish" else "neutral", "**.")
+                 if (pre_rsi_calc <= 45) "bearish" else "neutral", "**.")
       else
         "in an uncertainty zone — the signal could shift depending on next week's CI field data.",
       "\n\n",
@@ -534,15 +534,15 @@ if (!file.exists(fichier_signaux)) {
       "A narrow IC90 indicates a reliable signal.*\n\n"
     )
   }
-
+  
   texte_boot_fr <- generer_texte_boot_fr()
   texte_boot_en <- generer_texte_boot_en()
-
+  
   cat(">> Texte éditorial Bootstrap généré\n\n")
   cat(texte_boot_fr)
-
+  
   # ── SAUVEGARDER ───────────────────────────────────────────────
-
+  
   rsi_bootstrap <- list(
     disponible       = TRUE,
     n_bootstrap      = N_BOOT,
@@ -589,24 +589,253 @@ cat("MODULE 1 — MONTE CARLO TSR20 :\n")
 for (h in HORIZONS) {
   r <- resultats_mc[[paste0("S", h)]]
   cat(sprintf("  S+%2d sem. : [%5.3f – %5.3f] | Base %5.3f | P(↑) %4.1f%%\n",
-      h, r$p10, r$p90, r$scenario_base, r$prob_hausse_pct))
+              h, r$p10, r$p90, r$scenario_base, r$prob_hausse_pct))
 }
 
 cat("\nMODULE 2 — BOOTSTRAP RSI :\n")
 if (rsi_bootstrap$disponible) {
   cat(sprintf("  Pré-RSI     : %5.1f / 100\n",
-      rsi_bootstrap$pre_rsi_central))
+              rsi_bootstrap$pre_rsi_central))
   cat(sprintf("  IC 90%%      : [%4.1f – %4.1f]\n",
-      rsi_bootstrap$ic90_bas, rsi_bootstrap$ic90_haut))
+              rsi_bootstrap$ic90_bas, rsi_bootstrap$ic90_haut))
   cat(sprintf("  Stabilité   : %s\n", rsi_bootstrap$stabilite))
   cat(sprintf("  Robustesse  : %s\n",
-      if (rsi_bootstrap$signal_robuste) "✅ Signal fiable"
-      else "⚠️ Zone d'incertitude"))
+              if (rsi_bootstrap$signal_robuste) "✅ Signal fiable"
+              else "⚠️ Zone d'incertitude"))
 } else {
   cat("  Non disponible — relancer script 04 d'abord\n")
 }
 
 cat("\n", strrep("=", 60), "\n")
 cat("Fichier MC :", fichier_mc, "\n\n")
-cat("Prochaine étape : Module 3 — Scénarios météo (what-if)\n")
-cat("Puis : intégrer MC + Bootstrap dans script 03\n\n")
+
+
+# ══════════════════════════════════════════════════════════════
+# MODULE 3 — SCÉNARIOS MÉTÉO (MONTE CARLO CONDITIONNEL)
+# What-if simulation — Thompson Chapter 8
+# ══════════════════════════════════════════════════════════════
+
+cat(strrep("─", 55), "\n")
+cat("MODULE 3 — SCÉNARIOS MÉTÉO (Monte Carlo conditionnel)\n")
+cat(strrep("─", 55), "\n\n")
+
+cat("Principe : le scénario météo modifie le drift du GBM\n")
+cat("via la relation offre/prix calibrée sur données ANRPC.\n\n")
+
+# ── DÉFINITION DES SCÉNARIOS ──────────────────────────────────
+
+scenarios <- list(
+  
+  secheresse_ci = list(
+    nom         = "Sécheresse Côte d'Ivoire",
+    nom_en      = "Ivory Coast Drought",
+    emoji       = "🌵",
+    description = "Pluies < 50mm/mois pendant 8 semaines en CI",
+    description_en = "Rainfall < 50mm/month for 8 weeks in CI",
+    choc_offre_mondial = -0.20 * 0.15,
+    elasticite_prix    = -0.40
+  ),
+  
+  inondations_asie = list(
+    nom         = "Inondations Asie du Sud-Est",
+    nom_en      = "Southeast Asia Floods",
+    emoji       = "🌧️",
+    description = "Excès pluie Thaïlande + Malaisie (> 400mm/mois)",
+    description_en = "Excess rainfall Thailand + Malaysia (>400mm/month)",
+    choc_offre_mondial = -0.35 * 0.60,
+    elasticite_prix    = -0.40
+  ),
+  
+  secheresse_globale = list(
+    nom         = "Stress hydrique mondial",
+    nom_en      = "Global Drought Stress",
+    emoji       = "☀️",
+    description = "Sécheresse simultanée CI + Thaïlande + Malaisie",
+    description_en = "Simultaneous drought CI + Thailand + Malaysia",
+    choc_offre_mondial = -0.15 * 0.15 + (-0.25 * 0.60),
+    elasticite_prix    = -0.40
+  ),
+  
+  optimal = list(
+    nom         = "Conditions météo optimales",
+    nom_en      = "Optimal Weather Conditions",
+    emoji       = "🌿",
+    description = "Pluviométrie optimale dans les 4 zones productrices",
+    description_en = "Optimal rainfall across all 4 producing zones",
+    choc_offre_mondial = +0.10,
+    elasticite_prix    = -0.40
+  )
+)
+
+# Calculer l'ajustement de drift pour chaque scénario
+for (s in names(scenarios)) {
+  scenarios[[s]]$ajust_drift  <- scenarios[[s]]$choc_offre_mondial *
+    scenarios[[s]]$elasticite_prix
+  scenarios[[s]]$choc_prix_pct <- round(
+    scenarios[[s]]$ajust_drift * 100, 2)
+}
+
+HORIZON_SCENARIO <- 12
+
+cat(">> Monte Carlo conditionnel —",
+    length(scenarios), "scénarios ×",
+    format(N_SIMULATIONS, big.mark=" "), "simulations...\n\n")
+
+resultats_scenarios <- map(names(scenarios), function(s_nom) {
+  
+  sc <- scenarios[[s_nom]]
+  drift_cond <- DRIFT_ANNUEL + sc$ajust_drift
+  
+  cat(sprintf(">> %s %s\n", sc$emoji, sc$nom))
+  cat(sprintf("   Choc offre : %+.1f%% | Impact prix : %+.2f%% | Drift : %+.2f%%/an\n\n",
+              sc$choc_offre_mondial * 100,
+              sc$choc_prix_pct,
+              drift_cond * 100))
+  
+  set.seed(42 + which(names(scenarios) == s_nom))
+  
+  traj <- matrix(NA_real_,
+                 nrow = N_SIMULATIONS,
+                 ncol = HORIZON_SCENARIO + 1)
+  traj[, 1] <- prix_actuel
+  
+  for (t in 2:(HORIZON_SCENARIO + 1)) {
+    epsilon <- rnorm(N_SIMULATIONS)
+    traj[, t] <- traj[, t-1] * exp(
+      (drift_cond - 0.5 * VOLATILITE_ANNUELLE^2) * dt +
+        VOLATILITE_HEBDO * epsilon
+    )
+  }
+  
+  prix_12 <- traj[, HORIZON_SCENARIO + 1]
+  
+  res <- list(
+    scenario        = s_nom,
+    nom             = sc$nom,
+    nom_en          = sc$nom_en,
+    emoji           = sc$emoji,
+    description     = sc$description,
+    description_en  = sc$description_en,
+    choc_offre_pct  = round(sc$choc_offre_mondial * 100, 1),
+    choc_prix_pct   = sc$choc_prix_pct,
+    drift_cond      = round(drift_cond * 100, 2),
+    p10   = round(quantile(prix_12, 0.10), 3),
+    base  = round(mean(prix_12), 3),
+    p90   = round(quantile(prix_12, 0.90), 3),
+    prob_hausse  = round(mean(prix_12 > prix_actuel) * 100, 1),
+    delta_vs_base = round(mean(prix_12) -
+                            resultats_mc$S12$scenario_base, 3)
+  )
+  
+  cat(sprintf("   Résultat : Bear %.3f | Base %.3f | Bull %.3f | Δ %+.3f\n\n",
+              res$p10, res$base, res$p90, res$delta_vs_base))
+  
+  res
+})
+
+names(resultats_scenarios) <- names(scenarios)
+
+# ── TEXTES ÉDITORIAUX ─────────────────────────────────────────
+
+generer_texte_scenarios_fr <- function() {
+  lignes <- map_chr(resultats_scenarios, function(r) {
+    sprintf("| %s %s | %+.1f%% | %.3f | **%.3f** | %.3f | %+.3f |\n",
+            r$emoji, r$nom, r$choc_offre_pct,
+            r$p10, r$base, r$p90, r$delta_vs_base)
+  })
+  deltas   <- map_dbl(resultats_scenarios, ~ .x$delta_vs_base)
+  top_nom  <- resultats_scenarios[[names(which.max(deltas))]]
+  paste0(
+    "### 🌦️ Scénarios météo — Monte Carlo conditionnel\n\n",
+    "*Impact sur le prix TSR20 à 12 semaines*\n\n",
+    "| Scénario | Choc offre | Bear | Base | Bull | Δ vs référence |\n",
+    "|---|---|---|---|---|---|\n",
+    paste(lignes, collapse = ""), "\n",
+    "**Scénario le plus haussier :** ", top_nom$emoji, " ",
+    top_nom$nom, " (+", top_nom$delta_vs_base, " USD/kg)\n\n",
+    "> *Élasticité prix/offre calibrée sur ANRPC 2015-2025.*\n\n"
+  )
+}
+
+generer_texte_scenarios_en <- function() {
+  lignes <- map_chr(resultats_scenarios, function(r) {
+    sprintf("| %s %s | %+.1f%% | %.3f | **%.3f** | %.3f | %+.3f |\n",
+            r$emoji, r$nom_en, r$choc_offre_pct,
+            r$p10, r$base, r$p90, r$delta_vs_base)
+  })
+  deltas  <- map_dbl(resultats_scenarios, ~ .x$delta_vs_base)
+  top_nom <- resultats_scenarios[[names(which.max(deltas))]]
+  paste0(
+    "### 🌦️ Weather Scenarios — Conditional Monte Carlo\n\n",
+    "*Impact on TSR20 price at 12 weeks*\n\n",
+    "| Scenario | Supply shock | Bear | Base | Bull | Δ vs reference |\n",
+    "|---|---|---|---|---|---|\n",
+    paste(lignes, collapse = ""), "\n",
+    "**Most bullish scenario:** ", top_nom$emoji, " ",
+    top_nom$nom_en, " (+", top_nom$delta_vs_base, " USD/kg)\n\n",
+    "> *Price/supply elasticity calibrated on ANRPC 2015-2025.*\n\n"
+  )
+}
+
+texte_sc_fr <- generer_texte_scenarios_fr()
+texte_sc_en <- generer_texte_scenarios_en()
+
+cat(">> Texte éditorial scénarios généré\n\n")
+cat(texte_sc_fr)
+
+# ── SAUVEGARDER ───────────────────────────────────────────────
+
+json_mc$scenarios_meteo <- list(
+  horizon_semaines = HORIZON_SCENARIO,
+  n_simulations    = N_SIMULATIONS,
+  elasticite_prix  = -0.40,
+  resultats        = resultats_scenarios,
+  texte_fr         = texte_sc_fr,
+  texte_en         = texte_sc_en
+)
+write_json(json_mc, fichier_mc, pretty = TRUE, auto_unbox = TRUE)
+
+if (file.exists(fichier_json)) {
+  jp <- read_json(fichier_json)
+  jp$monte_carlo <- json_mc
+  write_json(jp, fichier_json, pretty = TRUE, auto_unbox = TRUE)
+}
+cat(">> JSON enrichi avec scénarios météo\n\n")
+
+
+# ══════════════════════════════════════════════════════════════
+# RÉSUMÉ FINAL COMPLET SCRIPT 05
+# ══════════════════════════════════════════════════════════════
+
+cat("\n", strrep("=", 60), "\n")
+cat("RÉSUMÉ SCRIPT 05 — Semaine", SEMAINE, "/", ANNEE, "\n")
+cat(strrep("=", 60), "\n\n")
+
+cat("MODULE 1 — MONTE CARLO TSR20 :\n")
+for (h in HORIZONS) {
+  r <- resultats_mc[[paste0("S", h)]]
+  cat(sprintf("  S+%2d sem. : [%5.3f – %5.3f] | Base %5.3f | P(↑) %4.1f%%\n",
+              h, r$p10, r$p90, r$scenario_base, r$prob_hausse_pct))
+}
+
+cat("\nMODULE 2 — BOOTSTRAP RSI :\n")
+if (rsi_bootstrap$disponible) {
+  cat(sprintf("  Pré-RSI : %5.1f/100 | IC90 [%4.1f – %4.1f] | %s\n",
+              rsi_bootstrap$pre_rsi_central,
+              rsi_bootstrap$ic90_bas, rsi_bootstrap$ic90_haut,
+              if (rsi_bootstrap$signal_robuste) "✅ Fiable"
+              else "⚠️ Incertain"))
+}
+
+cat("\nMODULE 3 — SCÉNARIOS MÉTÉO (12 semaines) :\n")
+for (s in names(resultats_scenarios)) {
+  r <- resultats_scenarios[[s]]
+  cat(sprintf("  %s %-32s : Base %5.3f | Δ %+.3f USD/kg\n",
+              r$emoji, r$nom, r$base, r$delta_vs_base))
+}
+
+cat("\n", strrep("=", 60), "\n")
+cat("Fichier MC :", fichier_mc, "\n\n")
+cat("✅ Script 05 complet — 3 modules Thompson opérationnels\n")
+cat("Prochaine étape : intégrer MC + Bootstrap + Scénarios\n")
+cat("dans scripts/03_build_report.R\n\n")
