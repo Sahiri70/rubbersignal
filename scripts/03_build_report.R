@@ -84,6 +84,27 @@ if (file.exists(fichier_signaux)) {
   cat(">> Signaux faibles indisponibles — script 04 non exécuté\n\n")
 }
 
+# ── 3C. LIRE LE JSON MONTE CARLO (script 05) ─────────────────
+
+fichier_mc <- paste0("data/processed/monte_carlo_S",
+                     SEMAINE, "_", ANNEE, ".json")
+
+if (file.exists(fichier_mc)) {
+  mc            <- read_json(fichier_mc)
+  texte_mc_fr   <- mc$texte_fr                  %||% ""
+  texte_mc_en   <- mc$texte_en                  %||% ""
+  texte_boot_fr <- mc$bootstrap_rsi$texte_fr    %||% ""
+  texte_boot_en <- mc$bootstrap_rsi$texte_en    %||% ""
+  texte_sc_fr   <- mc$scenarios_meteo$texte_fr  %||% ""
+  texte_sc_en   <- mc$scenarios_meteo$texte_en  %||% ""
+  cat(">> Monte Carlo chargé — 3 modules disponibles\n\n")
+} else {
+  texte_mc_fr <- texte_mc_en <- ""
+  texte_boot_fr <- texte_boot_en <- ""
+  texte_sc_fr <- texte_sc_en <- ""
+  cat(">> Monte Carlo indisponible — script 05 non exécuté\n\n")
+}
+
 
 # ── 4. EXTRAIRE LES DONNÉES PRIX ─────────────────────────────
 
@@ -393,6 +414,12 @@ rapport_fr <- paste0(
   
   # ── PRÉ-RSI FR (vide si semaine < SEMAINE_ACTIVATION_RSI) ──
   rapport_rsi_fr,
+  if (nchar(texte_mc_fr) > 0 &&
+      SEMAINE >= SEMAINE_ACTIVATION_RSI) texte_mc_fr else "",
+  if (nchar(texte_boot_fr) > 0 &&
+      SEMAINE >= SEMAINE_ACTIVATION_RSI) texte_boot_fr else "",
+  if (nchar(texte_sc_fr) > 0 &&
+      SEMAINE >= SEMAINE_ACTIVATION_RSI) texte_sc_fr else "",
   
   "## 📝 Note éditoriale de la semaine\n\n",
   "*[À compléter manuellement — votre observation terrain : ",
@@ -463,6 +490,12 @@ rapport_en <- paste0(
   
   # ── PRÉ-RSI EN (vide si semaine < SEMAINE_ACTIVATION_RSI) ──
   rapport_rsi_en,
+  if (nchar(texte_mc_en) > 0 &&
+      SEMAINE >= SEMAINE_ACTIVATION_RSI) texte_mc_en else "",
+  if (nchar(texte_boot_en) > 0 &&
+      SEMAINE >= SEMAINE_ACTIVATION_RSI) texte_boot_en else "",
+  if (nchar(texte_sc_en) > 0 &&
+      SEMAINE >= SEMAINE_ACTIVATION_RSI) texte_sc_en else "",
   
   "## 📝 Editorial Note\n\n",
   "*[To be completed manually — your field observation this week: ",
