@@ -1,7 +1,7 @@
 {
   "meta": {
-    "date_collecte": "2026-05-18",
-    "semaine": 21,
+    "date_collecte": "2026-05-25",
+    "semaine": 22,
     "annee": 2026,
     "source": "rubbersignal.com",
     "version": "3.0"
@@ -82,19 +82,19 @@
     "historique_indexmundi": []
   },
   "actualites": {
-    "date_collecte": "2026-05-18",
+    "date_collecte": "2026-05-25",
     "total_articles": 0,
     "top_newsletter": [],
     "tous_articles": []
   },
   "rapport": {
-    "titre_fr": "RubberSignal #21 | TSR20 : 2.2955 USD/kg ▲ | Semaine 21 - 2026",
-    "titre_en": "RubberSignal #21 | TSR20: 2.2955 USD/kg ▲ | Week 21 - 2026",
-    "date_rapport": "2026-05-18",
-    "semaine": 21,
-    "fichier_fr": "output/rubbersignal_S21_2026_FR.md",
-    "fichier_en": "output/rubbersignal_S21_2026_EN.md",
-    "pre_rsi": 68,
+    "titre_fr": "RubberSignal #22 | TSR20 : 2.2955 USD/kg ▲ | Semaine 22 - 2026",
+    "titre_en": "RubberSignal #22 | TSR20: 2.2955 USD/kg ▲ | Week 22 - 2026",
+    "date_rapport": "2026-05-25",
+    "semaine": 22,
+    "fichier_fr": "output/rubbersignal_S22_2026_FR.md",
+    "fichier_en": "output/rubbersignal_S22_2026_EN.md",
+    "pre_rsi": null,
     "pre_rsi_actif": true
   }
 }
