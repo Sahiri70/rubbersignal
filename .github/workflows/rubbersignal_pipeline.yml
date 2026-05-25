@@ -56,17 +56,29 @@ jobs:
         run: echo "NEWSAPI_KEY=${{ secrets.NEWSAPI_KEY }}" >> $GITHUB_ENV
 
       # ── Étape 6 : Lancer le script 01 — Collecte des prix ──
-      - name: Run Script 01 - Collect prices
+     - name: Run Script 01 - Collect prices
+        env:
+          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
         run: Rscript scripts/01_collect_prices.R
 
-      # ── Étape 7 : Lancer le script 02 — Collecte actualités ─
       - name: Run Script 02 - Collect news
         env:
           NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
         run: Rscript scripts/02_collect_news.R
 
-      # ── Étape 8 : Lancer le script 03 — Générer le rapport ──
+      - name: Run Script 04 - Collect signals
+        env:
+          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
+          EXCHANGERATE_KEY: ${{ secrets.EXCHANGERATE_KEY }}
+          FRED_KEY: ${{ secrets.FRED_KEY }}
+        run: Rscript scripts/04_collect_signals.R
+
+      - name: Run Script 05 - Simulate Thompson
+        run: Rscript scripts/05_simulate.R
+
       - name: Run Script 03 - Build report
+        env:
+          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
         run: Rscript scripts/03_build_report.R
 
       # ── Étape 9 : Sauvegarder les rapports sur GitHub ───────
