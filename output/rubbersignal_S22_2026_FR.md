@@ -1,0 +1,69 @@
+# RubberSignal #22 | TSR20 : 2.2955 USD/kg ▲ | Semaine 22 - 2026
+
+*Votre veille hebdomadaire sur le marché du caoutchouc naturel — Afrique de l'Ouest & marchés mondiaux*
+
+---
+
+## 📊 Prix de la semaine
+
+### Grades de caoutchouc naturel
+
+| Grade | Prix USD/kg | Prix CHF/kg | Note |
+|---|---|---|---|
+| **TSR20** | **2.2955** | **2.066** | Référence mondiale / World reference |
+| RSS3 | 2.387 | 2.149 | Premium quality |
+| TSR10 | 2.227 | 2.004 | Technical grade |
+| Latex concentré | 1.882 | 1.694 | Liquid material |
+
+### Variation & tendance
+
+| Indicateur | Valeur |
+|---|---|
+| Variation vs période préc. | +2.02% ▲ |
+| Moyenne 3 mois | 2.248 USD/kg |
+| Moyenne 6 mois | 2.174 USD/kg |
+| Fourchette 12 mois | 1.95 – 2.296 USD/kg |
+
+### Contexte géographique
+
+| Zone | Statut / Status | Rôle / Role |
+|---|---|---|
+| 🇨🇮 Côte d'Ivoire | 1er producteur africain | Export TSR20 |
+| 🇬🇭 Ghana | Producteur régional | Export latex |
+| 🇳🇬 Nigeria | Producteur émergent | Marché local |
+| 🇨🇲 Cameroun | Producteur régional | Export RSS |
+| 🇹🇭 Thaïlande / Thailand | 1er producteur mondial | Référence prix |
+| 🇲🇾 Malaisie / Malaysia | 2ème producteur mondial | SGX Futures |
+| 🇸🇬 Singapour / Singapore | Hub négoce mondial | Bourse SGX |
+| 🇪🇺 Europe | Principal importateur | Demande aval |
+
+## 🔍 Analyse de la semaine
+
+Le marché du TSR20 affiche une progression notable cette semaine, avec un prix atteignant **2.2955 USD/kg** (+2.02% sur la période précédente). Le prix actuel se situe au-dessus de sa moyenne sur 3 mois (2.248 USD/kg) et de sa moyenne sur 6 mois (2.174 USD/kg). Sur les 12 derniers mois, le TSR20 a évolué entre 1.95 et 2.296 USD/kg — le niveau actuel représente 100% de cette fourchette.
+
+> *Cette analyse est générée automatiquement à partir de données publiques. Elle ne constitue pas un conseil en investissement.*
+
+## 📝 Note éditoriale de la semaine
+
+*[À compléter manuellement — votre observation terrain : prix local CI, activité plantation, retour d'un négociant...]*
+
+---
+
+## 🌿 Focus Côte d'Ivoire
+
+*La Côte d'Ivoire est le 1er producteur africain de caoutchouc naturel et figure dans le top 5 mondial. RubberSignal vous apporte chaque semaine une perspective terrain sur la filière ivoirienne.*
+
+**Données de référence CI :**
+
+- Production annuelle : ~1,2 million de tonnes
+- Principal port d'export : Abidjan
+- Organisme de référence : APROCAG
+
+---
+
+**RubberSignal** — Intelligence marché caoutchouc naturel | Afrique de l'Ouest & marchés mondiaux
+
+*Source prix : LGM Malaysia (18/05/2026) — mise à jour manuelle | 25/05/2026*
+
+*Pour vous abonner : rubbersignal.substack.com*
+
