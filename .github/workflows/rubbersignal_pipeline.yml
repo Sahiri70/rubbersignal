@@ -25,11 +25,31 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
+          sudo apt-get install -y \
+            libcurl4-openssl-dev \
+            libssl-dev \
+            libxml2-dev \
+            libharfbuzz-dev \
+            libfribidi-dev \
+            libfreetype6-dev \
+            libpng-dev \
+            libtiff5-dev \
+            libjpeg-dev \
+            libfontconfig1-dev
 
       - name: Install R packages
         run: |
-          Rscript -e "install.packages(c('httr','jsonlite','tidyverse','lubridate','rvest'), repos='https://cran.rstudio.com/')"
+          Rscript -e "
+            options(repos = c(CRAN = 'https://cran.rstudio.com/'))
+            pkgs <- c('httr', 'jsonlite', 'dplyr', 'tidyr', 'purrr',
+                      'stringr', 'readr', 'lubridate', 'rvest', 'tidyverse')
+            for (pkg in pkgs) {
+              if (!requireNamespace(pkg, quietly = TRUE)) {
+                install.packages(pkg, dependencies = TRUE)
+              }
+            }
+            cat('Packages installed OK\n')
+          "
 
       - name: Create directories
         run: |
@@ -55,11 +75,11 @@ jobs:
         run: Rscript scripts/04_collect_signals.R
 
       - name: Run Script 05 - Simulate Thompson
+        env:
+          FRED_KEY: ${{ secrets.FRED_KEY }}
         run: Rscript scripts/05_simulate.R
 
       - name: Run Script 03 - Build report
-        env:
-          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
         run: Rscript scripts/03_build_report.R
 
       - name: Commit and push reports
