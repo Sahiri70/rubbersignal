@@ -25,31 +25,11 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y \
-            libcurl4-openssl-dev \
-            libssl-dev \
-            libxml2-dev \
-            libharfbuzz-dev \
-            libfribidi-dev \
-            libfreetype6-dev \
-            libpng-dev \
-            libtiff5-dev \
-            libjpeg-dev \
-            libfontconfig1-dev
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev libfontconfig1-dev
 
       - name: Install R packages
         run: |
-          Rscript -e "
-            options(repos = c(CRAN = 'https://cran.rstudio.com/'))
-            pkgs <- c('httr', 'jsonlite', 'dplyr', 'tidyr', 'purrr',
-                      'stringr', 'readr', 'lubridate', 'rvest', 'tidyverse')
-            for (pkg in pkgs) {
-              if (!requireNamespace(pkg, quietly = TRUE)) {
-                install.packages(pkg, dependencies = TRUE)
-              }
-            }
-            cat('Packages installed OK\n')
-          "
+          Rscript -e "options(repos=c(CRAN='https://cran.rstudio.com/')); install.packages(c('httr','jsonlite','dplyr','tidyr','purrr','stringr','readr','lubridate','rvest','tidyverse'), dependencies=TRUE)"
 
       - name: Create directories
         run: |
@@ -91,3 +71,4 @@ jobs:
           git diff --staged --quiet || git commit -m "RubberSignal auto S$(date +'%V') $(date +'%Y')"
           git pull --rebase origin master || true
           git push
+
