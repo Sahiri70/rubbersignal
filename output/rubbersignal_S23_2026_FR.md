@@ -45,7 +45,7 @@ Le marché du TSR20 affiche une progression notable cette semaine, avec un prix 
 
 ## 📡 Signaux faibles — Pré-RSI
 
-### ↗️ RubberSignal Index : **66 / 100**
+### ↗️ RubberSignal Index : **68 / 100**
 
 *Légèrement haussier — marché bien orienté*
 
@@ -54,7 +54,7 @@ Le marché du TSR20 affiche une progression notable cette semaine, avec un prix 
 | 🌧️ Offre mondiale (météo 4 zones) | Score 75/100 — Offre abondante — pression baissière |
 | 💱 Yuan chinois (CNY) | Yuan fort (-4.61%) — demande soutenue |
 | 💱 Ringgit malaisien (MYR) | Ringgit fort (-9.89%) — export ralenti |
-| 🏭 Demande industrielle | Score 58/100 — Demande modérée — bien orienté |
+| 🏭 Demande industrielle | Score 65/100 — Demande modérée — bien orienté |
 | 🌿 Terrain CI | Campagne de récolte en cours. Conditions normales. |
 | 🌍 Géopolitique | Aucune tension détectée |
 
@@ -68,11 +68,11 @@ Le marché du TSR20 affiche une progression notable cette semaine, avec un prix 
 
 | Horizon | Scénario pessimiste | Scénario central | Scénario optimiste | Prob. hausse |
 |---|---|---|---|---|
-| **4 semaines** | 2.084 USD/kg | **2.302 USD/kg** | 2.528 USD/kg | 50.3% |
-| **8 semaines** | 2.002 USD/kg | **2.306 USD/kg** | 2.626 USD/kg | 49.4% |
+| **4 semaines** | 2.084 USD/kg | **2.302 USD/kg** | 2.529 USD/kg | 50.3% |
+| **8 semaines** | 2.002 USD/kg | **2.306 USD/kg** | 2.626 USD/kg | 49.5% |
 | **12 semaines** | 1.943 USD/kg | **2.312 USD/kg** | 2.711 USD/kg | 49.5% |
 
-**Lecture :** Le modèle indique un biais **neutre** à 4 semaines, avec 50.3% de probabilité de hausse et une fourchette 80% entre 2.0837 et 2.5284 USD/kg. À 12 semaines, l'incertitude s'élargit : fourchette 80% entre 1.9427 et 2.7107 USD/kg.
+**Lecture :** Le modèle indique un biais **neutre** à 4 semaines, avec 50.3% de probabilité de hausse et une fourchette 80% entre 2.0839 et 2.5286 USD/kg. À 12 semaines, l'incertitude s'élargit : fourchette 80% entre 1.9431 et 2.7112 USD/kg.
 
 > *Ces projections sont issues d'une simulation stochastique. Elles ne constituent pas un conseil en investissement. La volatilité réelle peut différer des paramètres historiques.*
 
@@ -82,13 +82,13 @@ Le marché du TSR20 affiche une progression notable cette semaine, avec un prix 
 
 | Indicateur | Valeur |
 |---|---|
-| **Pré-RSI central** | **66 / 100** |
-| Intervalle confiance 80% | [60.6 – 71.1] |
-| Intervalle confiance 90% | [59.1 – 72.5] |
+| **Pré-RSI central** | **68 / 100** |
+| Intervalle confiance 80% | [62.4 – 72.9] |
+| Intervalle confiance 90% | [60.8 – 74.3] |
 | Stabilité du signal | Très stable (±4 pts) |
 | Signal robuste | ✅ Oui |
 
-**Interprétation :** Le Pré-RSI de **66/100** est statistiquement robuste — même en faisant varier les hypothèses, le signal reste **haussier**.
+**Interprétation :** Le Pré-RSI de **68/100** est statistiquement robuste — même en faisant varier les hypothèses, le signal reste **haussier**.
 
 > *Le Bootstrap estime la robustesse du score face à l'incertitude de mesure de chaque composante. Un IC90 étroit indique un signal fiable.*
 
@@ -99,9 +99,9 @@ Le marché du TSR20 affiche une progression notable cette semaine, avec un prix 
 | Scénario | Choc offre | Bear | Base | Bull | Δ vs référence |
 |---|---|---|---|---|---|
 | 🌵 Sécheresse Côte d'Ivoire | -3.0% | 1.939 | **2.317** | 2.712 | +0.005 |
-| 🌧️ Inondations Asie du Sud-Est | -21.0% | 1.977 | **2.361** | 2.765 | +0.049 |
-| ☀️ Stress hydrique mondial | -17.2% | 1.981 | **2.355** | 2.755 | +0.043 |
-| 🌿 Conditions météo optimales | +10.0% | 1.929 | **2.293** | 2.685 | -0.019 |
+| 🌧️ Inondations Asie du Sud-Est | -21.0% | 1.978 | **2.361** | 2.766 | +0.049 |
+| ☀️ Stress hydrique mondial | -17.2% | 1.982 | **2.355** | 2.756 | +0.043 |
+| 🌿 Conditions météo optimales | +10.0% | 1.929 | **2.293** | 2.686 | -0.019 |
 
 **Scénario le plus haussier :** 🌧️ Inondations Asie du Sud-Est (+0.049 USD/kg)
 

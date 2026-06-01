@@ -88,7 +88,14 @@
         "variation_pct": 0.68,
         "date": "2026-04-01"
       },
-      "imports_chine": {},
+      "imports_chine": {
+        "serie": "XTIMVA01CNM667S",
+        "nom": "Importations Chine (proxy demande)",
+        "valeur": 264466100000,
+        "valeur_prec": 248575700000,
+        "variation_pct": 6.39,
+        "date": "2026-03-01"
+      },
       "permis_constr": {
         "serie": "PERMIT",
         "nom": "Permis construction US",
@@ -125,7 +132,7 @@
         "signal": "Légère contraction"
       }
     },
-    "score_demande": 58,
+    "score_demande": 65,
     "signal_demande": "Demande modérée — bien orienté"
   },
   "module4_stocks": {
@@ -173,12 +180,12 @@
     "articles": []
   },
   "pre_rsi": {
-    "score": 66,
+    "score": 68,
     "signal": "Légèrement haussier — marché bien orienté",
     "detail": {
       "meteo_w": 18.75,
       "devise_w": 14,
-      "pmi_w": 14.5,
+      "pmi_w": 16.25,
       "terrain_w": 9,
       "geo_w": 9.75
     }
