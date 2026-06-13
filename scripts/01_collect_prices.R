@@ -1,9 +1,9 @@
-# # =============================================================
+# =============================================================
 # RUBBERSIGNAL.COM — Script 01 : Collecte des prix
 # Auteur  : Martial Sahiri
-# Version : 3.0 — LGM Malaysia + APROMAC bord-champ CI
-# Objectif: Récupérer chaque semaine les prix TSR20 (LGM)
-#           et le prix bord-champ CI (APROMAC)
+# Version : 3.1 — RSCI + correction taux FCFA/USD + retrait FRED
+# Objectif: Recuperer chaque semaine le prix TSR20 (LGM),
+#           le prix bord-champ CI (APROMAC) et calculer le RSCI
 # Usage   : source("scripts/01_collect_prices.R")
 # =============================================================
 
@@ -16,7 +16,7 @@ library(lubridate)
 library(rvest)
 
 
-# ── 2. PARAMÈTRES GLOBAUX ────────────────────────────────────
+# ── 2. PARAMETRES GLOBAUX ────────────────────────────────────
 
 DATE_COLLECTE <- Sys.Date()
 SEMAINE       <- isoweek(DATE_COLLECTE)
@@ -26,8 +26,8 @@ cat("=== RUBBERSIGNAL — Collecte du", format(DATE_COLLECTE, "%d/%m/%Y"), "===\
 
 
 # ── 3. SOURCE A : PRIX TSR20 — LGM MALAYSIA ──────────────────
-# Lembaga Getah Malaysia — référence officielle SMR20 / TSR20
-# Prix publié chaque jour ouvrable à 15h00 heure Malaisie
+# Lembaga Getah Malaysia — reference officielle SMR20 / TSR20
+# Prix publie chaque jour ouvrable a 15h00 heure Malaisie
 # URL : https://www.lgm.gov.my
 
 cat(">> Collecte prix TSR20 — LGM Malaysia...\n")
@@ -50,7 +50,7 @@ prix_lgm <- tryCatch({
     cat("   OK — SMR20 :", prix_cents, "US Cents/kg =", prix_usd, "USD/kg\n")
     prix_usd
   } else {
-    cat("   Pattern LGM non trouvé — tentative IndexMundi\n")
+    cat("   Pattern LGM non trouve — tentative IndexMundi\n")
     NA
   }
   
@@ -99,10 +99,18 @@ prix_indexmundi_val <- tryCatch({
 })
 
 
-# ── 5. DÉTERMINER LE PRIX TSR20 RETENU ───────────────────────
-# Priorité : LGM > IndexMundi > données de secours
+# ── 5. DETERMINER LE PRIX TSR20 RETENU ───────────────────────
+# Priorite : LGM > IndexMundi > donnees de secours (mise a jour manuelle)
+#
+# NOTE (verifie S23, juin 2026) : une 3e source automatique FRED
+# (serie PRUBBUSDM "Global price of Rubber") repond en HTTP 200 mais
+# retourne un INDICE general (base ~100, valeur ~110.4), PAS un prix
+# TSR20 en USD/kg. L'utiliser comme fallback ferait passer
+# prix_actuel_usd a ~110 USD/kg de maniere silencieuse. Ecartee de la
+# chaine de decision active. Code conserve en reference plus bas
+# (desactive).
 
-cat("\n>> Détermination du prix TSR20 retenu...\n")
+cat("\n>> Determination du prix TSR20 retenu...\n")
 
 if (!is.na(prix_lgm)) {
   prix_actuel_usd <- prix_lgm
@@ -115,24 +123,34 @@ if (!is.na(prix_lgm)) {
   cat("   Source retenue : IndexMundi\n")
   
 } else {
-  # Données de secours — dernier prix LGM connu
-  # ⚠ METTRE À JOUR CHAQUE SEMAINE si LGM inaccessible
-  # Source : https://www.lgm.gov.my → SMR20 en US Cents/Kg ÷ 100
-  prix_actuel_usd <- 2.2955  # ← Dernier prix LGM connu (18/05/2026)
-  source_prix     <- "LGM Malaysia (18/05/2026) — mise à jour manuelle"
-  cat("   Source retenue : données de secours\n")
-  cat("   ⚠ Prix manuel :", prix_actuel_usd, "USD/kg\n")
-  cat("   → Si LGM inaccessible, mettre à jour cette valeur\n")
-  cat("     Source : https://www.lgm.gov.my\n")
-
+  # Donnees de secours — dernier prix LGM connu
+  # METTRE A JOUR CHAQUE SEMAINE si LGM et IndexMundi inaccessibles
+  # Source : https://www.lgm.gov.my -> SMR20 en US Cents/Kg / 100
+  prix_actuel_usd <- 2.3685  # Dernier prix LGM connu (03/06/2026)
+  source_prix     <- "LGM Malaysia (03/06/2026) — mise a jour manuelle"
+  cat("   Source retenue : donnees de secours\n")
+  cat("   Prix manuel :", prix_actuel_usd, "USD/kg\n")
+  cat("   -> Si LGM inaccessible, mettre a jour cette valeur\n")
+  cat("      Source : https://www.lgm.gov.my\n")
 }
 
 cat("   Prix TSR20 retenu :", prix_actuel_usd, "USD/kg (", source_prix, ")\n")
 
+# ── SOURCE FRED — DESACTIVEE, conservee en reference ─────────
+# fred_key <- Sys.getenv("FRED_KEY")
+# url_fred <- paste0(
+#   "https://api.stlouisfed.org/fred/series/observations",
+#   "?series_id=PRUBBUSDM&api_key=", fred_key,
+#   "&sort_order=desc&limit=2&file_type=json")
+# -> PRUBBUSDM = "Global price of Rubber", indice base 100 (~2016),
+#    PAS le TSR20. Verifie S23 : valeur ~110.39 alors que TSR20 LGM
+#    = 2.3685 USD/kg. A reconsiderer uniquement si une formule de
+#    conversion indice -> TSR20 est etablie et validee.
+
 
 # ── 6. CONSTRUIRE L'HISTORIQUE DES PRIX ──────────────────────
 
-# Historique glissant 8 mois — mis à jour avec le prix actuel
+# Historique glissant 8 mois — mis a jour avec le prix actuel
 prix_bm <- tibble(
   periode  = c(
     format(DATE_COLLECTE, "%Y-%m"),
@@ -147,57 +165,113 @@ prix_bm <- tibble(
   prix_usd = c(
     prix_actuel_usd,
     2.25, 2.20, 2.15, 2.10, 2.05, 2.00, 1.95
-    # ↑ Les valeurs passées peuvent être affinées manuellement
-    # avec les données historiques LGM ou IndexMundi
+    # Les valeurs passees peuvent etre affinees manuellement
+    # avec les donnees historiques LGM ou IndexMundi
   ),
   source = source_prix,
   unite  = "USD/kg"
 )
 
 
-# ── 7. SOURCE C : PRIX BORD-CHAMP CI — APROMAC ───────────────
-# Prix officiel mensuel fixé par l'APROMAC
-# Source : apromac.ci / 7info.ci / conseilheveapalmier.ci
-# ⚠ À mettre à jour manuellement chaque 1er du mois
+# ── 7. SOURCE : PRIX BORD-CHAMP CI — APROMAC ─────────────────
+# Prix officiel mensuel fixe par l'APROMAC
+# Source : apromac.ci / fratmat.info / conseilheveapalmier.ci
+# A mettre a jour manuellement chaque 1er du mois
 
 cat("\n>> Prix bord-champ CI — APROMAC...\n")
 
-# ── PARAMÈTRES À METTRE À JOUR MANUELLEMENT CHAQUE MOIS ──────
-PRIX_APROMAC_FCFA  <- 359      # Prix APROMAC en FCFA/kg — mai 2026
-MOIS_APROMAC       <- "2026-05" # Mois de référence
-TAUX_FCFA_USD      <- 0.00158   # Taux de change FCFA/USD
+# ── PARAMETRES A METTRE A JOUR MANUELLEMENT CHAQUE MOIS ──────
+PRIX_APROMAC_FCFA <- 474        # Prix APROMAC en FCFA/kg — juin 2026
+MOIS_APROMAC      <- "2026-06"  # Mois de reference
+# Source : FratMat, 01/06/2026 (Didier Assoumou)
+# https://www.fratmat.info/article/2642261/flash-info/caoutchouc-prix-apromac-juin-2026-474-f-cfa-kg
+
+# ── TAUX DE CHANGE FCFA/USD — via parite fixe FCFA/EUR ───────
+# Le FCFA (XOF) est arrime a l'EUR a un taux FIXE (structurel,
+# ne change jamais) :
+XOF_PAR_EUR <- 655.957
+# Seul le taux EUR/USD varie -> A VERIFIER CHAQUE SEMAINE
+# Source : xe.com / Reuters — verifie le 12/06/2026
+TAUX_EUR_USD <- 1.157
+FCFA_PAR_USD <- round(XOF_PAR_EUR / TAUX_EUR_USD, 2)
 # ─────────────────────────────────────────────────────────────
 
-prix_apromac_usd <- round(PRIX_APROMAC_FCFA * TAUX_FCFA_USD, 3)
+prix_apromac_usd <- round(PRIX_APROMAC_FCFA / FCFA_PAR_USD, 4)
 
-cat("   Prix bord-champ APROMAC :", PRIX_APROMAC_FCFA, "FCFA/kg\n")
-cat("   Équivalent USD          :", prix_apromac_usd, "USD/kg\n")
+cat("   Prix bord-champ APROMAC :", PRIX_APROMAC_FCFA, "FCFA/kg (", MOIS_APROMAC, ")\n")
+cat("   Taux FCFA/USD           :", FCFA_PAR_USD, "(EUR/USD =", TAUX_EUR_USD, ")\n")
+cat("   Equivalent USD          :", prix_apromac_usd, "USD/kg\n")
 
-# Calcul du spread export-planteur
-# ⚠ Donnée stratégique — stockée en JSON uniquement, PAS publiée dans le rapport V1
-spread_usd     <- round(prix_actuel_usd - prix_apromac_usd, 3)
-spread_pct     <- round(spread_usd / prix_actuel_usd * 100, 1)
+# Calcul du spread export-planteur (brut, sans correction DRC)
+# Donnee strategique — stockee en JSON uniquement, PAS publiee dans le rapport V1
+# NOTE : ce spread compare un prix "sec" (TSR20 LGM) a un prix "fonds de
+#        tasse humide" (APROMAC) — meme limite methodologique que celle
+#        resolue pour le RSCI ci-dessous via DRC_OFFICIEL. A corriger
+#        avant toute publication V2 du spread.
+spread_usd <- round(prix_actuel_usd - prix_apromac_usd, 3)
+spread_pct <- round(spread_usd / prix_actuel_usd * 100, 1)
 
 cat("   Spread export-planteur  :", spread_usd, "USD/kg (",
     spread_pct, "% de la valeur export) — confidentiel V2\n")
 
 # Objet bord-champ pour le JSON
 synthese_bord_champ <- list(
-  prix_fcfa          = PRIX_APROMAC_FCFA,
-  prix_usd           = prix_apromac_usd,
-  mois               = MOIS_APROMAC,
-  source             = "APROMAC",
-  taux_fcfa_usd      = TAUX_FCFA_USD,
-  # Spread confidentiel — réservé V2
-  spread_export_usd  = spread_usd,
-  spread_export_pct  = spread_pct,
-  note               = "Spread confidentiel — publication prévue RubberSignal V2"
+  prix_fcfa         = PRIX_APROMAC_FCFA,
+  prix_usd          = prix_apromac_usd,
+  mois              = MOIS_APROMAC,
+  source            = "APROMAC (via FratMat)",
+  fcfa_par_usd      = FCFA_PAR_USD,
+  taux_eur_usd      = TAUX_EUR_USD,
+  spread_export_usd = spread_usd,
+  spread_export_pct = spread_pct,
+  note              = "Spread confidentiel — publication prevue RubberSignal V2"
 )
 
 
-# ── 8. CALCULS DE SYNTHÈSE ────────────────────────────────────
+# ── 7B. RSCI : RUBBERSIGNAL CHAIN INDEX ──────────────────────
+# Part du prix planteur (corrigee DRC) dans le prix international TSR20
+#
+# Cadre legal : Loi N.2017-540 du 03/08/2017 (creation du CHPH)
+# Mecanisme   : decision CHPH n.0037, mai 2022 -> 63% planteurs /
+#               37% transformateurs (contre 61% avant 2022)
+# DRC         : le calcul officiel retient un Dry Rubber Content (DRC)
+#               de reference de 60% pour le fonds de tasse. Sans cette
+#               correction, comparer FCFA/kg (humide) a USD/kg LGM
+#               (sec) n'a pas de sens.
+# Debat ouvert (non integre ici) : usines CI majoritairement TSR10
+#               (grade superieur au TSR20 de reference) -> prime
+#               potentielle non quantifiee a ce stade -> RSCI v2.
 
-cat("\n>> Calcul des statistiques de synthèse...\n")
+cat("\n>> RSCI — RubberSignal Chain Index...\n")
+
+DRC_OFFICIEL       <- 0.60   # CHPH — taux de caoutchouc sec de reference
+MECANISME_OFFICIEL <- 0.63   # CHPH decision mai 2022 — part planteur cible
+
+prix_planteur_sec_usd <- round(prix_apromac_usd / DRC_OFFICIEL, 4)
+rsci_pct              <- round(prix_planteur_sec_usd / prix_actuel_usd * 100, 1)
+rsci_ecart_pts        <- round(rsci_pct - MECANISME_OFFICIEL * 100, 1)
+
+cat("   Prix planteur (DRC-corrige) :", prix_planteur_sec_usd, "USD/kg\n")
+cat("   RSCI (part planteur)        :", rsci_pct, "%\n")
+cat("   Mecanisme officiel CHPH      :", MECANISME_OFFICIEL * 100, "%\n")
+cat("   Ecart vs mecanisme officiel  :", rsci_ecart_pts, "points\n")
+
+synthese_rsci <- list(
+  drc_officiel           = DRC_OFFICIEL,
+  mecanisme_officiel_pct = MECANISME_OFFICIEL * 100,
+  prix_planteur_sec_usd  = prix_planteur_sec_usd,
+  rsci_pct               = rsci_pct,
+  ecart_pts              = rsci_ecart_pts,
+  cadre_legal            = "Loi N.2017-540 du 03/08/2017 - CHPH",
+  mecanisme_source       = "Decision CHPH n.0037 (mai 2022) : 63% planteurs / 37% transformateurs, contre 61% avant",
+  drc_source             = "DRC reference officiel 60% (fonds de tasse) - debat en cours sur DRC reel et grade TSR10 vs TSR20",
+  note                   = "RSCI = part du prix planteur (corrige DRC 60%) dans le prix international TSR20 (LGM)."
+)
+
+
+# ── 8. CALCULS DE SYNTHESE ────────────────────────────────────
+
+cat("\n>> Calcul des statistiques de synthese...\n")
 
 if (nrow(prix_bm) >= 2) {
   
@@ -213,7 +287,7 @@ if (nrow(prix_bm) >= 2) {
   max_12m    <- round(max(prix_bm$prix_usd, na.rm = TRUE), 3)
   
   cat("   Prix actuel    :", prix_actuel_usd, "USD/kg\n")
-  cat("   Variation      :", variation_pct, "% vs période précédente\n")
+  cat("   Variation      :", variation_pct, "% vs periode precedente\n")
   cat("   Tendance       :", tendance, "\n")
   cat("   Moyenne 3 mois :", moyenne_3m, "USD/kg\n")
   cat("   Moyenne 6 mois :", moyenne_6m, "USD/kg\n")
@@ -231,37 +305,37 @@ if (nrow(prix_bm) >= 2) {
   )
   
 } else {
-  cat("   ATTENTION : données insuffisantes\n")
+  cat("   ATTENTION : donnees insuffisantes\n")
   synthese_prix <- list(
     prix_actuel   = prix_actuel_usd,
     periode       = format(DATE_COLLECTE, "%Y-%m"),
     source        = source_prix,
     variation_pct = NA,
-    tendance      = "indéterminée"
+    tendance      = "indeterminee"
   )
 }
 
 
 # ── 9. CONVERSION EN CHF ──────────────────────────────────────
 
-TAUX_USD_CHF <- 0.90  # À vérifier chaque semaine
+TAUX_USD_CHF <- 0.90  # A verifier chaque semaine
 
 synthese_prix$prix_chf <- round(prix_actuel_usd * TAUX_USD_CHF, 3)
 cat("   Prix en CHF    :", synthese_prix$prix_chf, "CHF/kg\n")
 
 
-# ── 10. SAUVEGARDER LES DONNÉES BRUTES ───────────────────────
+# ── 10. SAUVEGARDER LES DONNEES BRUTES ───────────────────────
 
-cat("\n>> Sauvegarde des données brutes...\n")
+cat("\n>> Sauvegarde des donnees brutes...\n")
 
 fichier_csv <- paste0("data/raw/prix_bm_", ANNEE, "_S", SEMAINE, ".csv")
 write_csv(prix_bm, fichier_csv)
-cat("   Sauvegardé :", fichier_csv, "\n")
+cat("   Sauvegarde :", fichier_csv, "\n")
 
 if (nrow(prix_indexmundi_val) > 0) {
   fichier_csv2 <- paste0("data/raw/prix_indexmundi_", ANNEE, "_S", SEMAINE, ".csv")
   write_csv(prix_indexmundi_val, fichier_csv2)
-  cat("   Sauvegardé :", fichier_csv2, "\n")
+  cat("   Sauvegarde :", fichier_csv2, "\n")
 }
 
 
@@ -276,12 +350,13 @@ json_sortie <- list(
     semaine       = SEMAINE,
     annee         = ANNEE,
     source        = "rubbersignal.com",
-    version       = "3.0"
+    version       = "3.1"
   ),
   
   prix = list(
     synthese              = synthese_prix,
-    bord_champ_ci         = synthese_bord_champ,  # Confidentiel V2
+    bord_champ_ci         = synthese_bord_champ,
+    rsci                  = synthese_rsci,
     historique_bm         = prix_bm,
     historique_indexmundi = if (nrow(prix_indexmundi_val) > 0)
       head(prix_indexmundi_val, 6)
@@ -292,13 +367,13 @@ json_sortie <- list(
 
 fichier_json <- paste0("data/processed/rubbersignal_S", SEMAINE, "_", ANNEE, ".json")
 write_json(json_sortie, fichier_json, pretty = TRUE, auto_unbox = TRUE)
-cat("   JSON sauvegardé :", fichier_json, "\n")
+cat("   JSON sauvegarde :", fichier_json, "\n")
 
 
-# ── 12. RÉSUMÉ FINAL ─────────────────────────────────────────
+# ── 12. RESUME FINAL ─────────────────────────────────────────
 
 cat("\n", strrep("=", 55), "\n")
-cat("RÉSUMÉ COLLECTE PRIX — Semaine", SEMAINE, "/", ANNEE, "\n")
+cat("RESUME COLLECTE PRIX — Semaine", SEMAINE, "/", ANNEE, "\n")
 cat(strrep("=", 55), "\n")
 cat("Prix TSR20 actuel  :", prix_actuel_usd, "USD/kg (", source_prix, ")\n")
 cat("Prix en CHF        :", synthese_prix$prix_chf, "CHF/kg\n")
@@ -306,11 +381,14 @@ cat("Tendance           :", synthese_prix$tendance,
     "(", synthese_prix$variation_pct, "%)\n")
 cat("Moyenne 3 mois     :", synthese_prix$moyenne_3m, "USD/kg\n")
 cat("Prix APROMAC CI    :", PRIX_APROMAC_FCFA, "FCFA/kg =",
-    prix_apromac_usd, "USD/kg\n")
+    prix_apromac_usd, "USD/kg (", MOIS_APROMAC, ")\n")
 cat("Spread V2 (confid.):", spread_usd, "USD/kg\n")
+cat("RSCI               :", rsci_pct, "% (ecart vs 63% officiel :", rsci_ecart_pts, "pts)\n")
 cat("Fichier JSON       :", fichier_json, "\n")
 cat(strrep("=", 55), "\n")
-cat("\nProchaine étape : lancer scripts/02_collect_news.R\n\n")
-cat(">> RAPPEL MENSUEL : mettre à jour PRIX_APROMAC_FCFA\n")
-cat("   Source : https://www.7info.ci (recherche 'prix caoutchouc')\n")
-cat("   Ou : https://conseilheveapalmier.ci\n\n")
+cat("\nProchaine etape : lancer scripts/02_collect_news.R\n\n")
+cat(">> RAPPELS MENSUELS / HEBDOMADAIRES :\n")
+cat("   1. PRIX_APROMAC_FCFA + MOIS_APROMAC (mensuel)\n")
+cat("      -> https://www.fratmat.info ou conseilheveapalmier.ci\n")
+cat("   2. TAUX_EUR_USD (hebdomadaire)\n")
+cat("      -> xe.com (parite XOF/EUR fixe a 655.957, ne change jamais)\n\n")
