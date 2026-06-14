@@ -1,4 +1,4 @@
-RubberSignal #24 | TSR20: 2.2955 USD/kg ▲ | Week 24 - 2026
+RubberSignal #24 | TSR20: 2.3685 USD/kg ▲ | Week 24 - 2026
 
 Your weekly natural rubber market intelligence — West Africa & global markets
 
@@ -10,19 +10,19 @@ Natural Rubber Grades
 
 | Grade | Prix USD/kg | Prix CHF/kg | Note |
 |──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
-| TSR20 | 2.2955 | 2.066 | Référence mondiale / World reference |
-| RSS3 | 2.387 | 2.149 | Premium quality |
-| TSR10 | 2.227 | 2.004 | Technical grade |
-| Latex concentré | 1.882 | 1.694 | Liquid material |
+| TSR20 | 2.3685 | 2.132 | Référence mondiale / World reference |
+| RSS3 | 2.463 | 2.217 | Premium quality |
+| TSR10 | 2.297 | 2.068 | Technical grade |
+| Latex concentré | 1.942 | 1.748 | Liquid material |
 
 Variation & Trend
 
 | Indicator | Value |
 |──────────────────────────────|──────────────────────────────|
-| Change vs previous period | +2.02% ▲ |
-| 3-month average | 2.248 USD/kg |
-| 6-month average | 2.174 USD/kg |
-| 12-month range | 1.95 – 2.296 USD/kg |
+| Change vs previous period | +5.27% ▲ |
+| 3-month average | 2.273 USD/kg |
+| 6-month average | 2.186 USD/kg |
+| 12-month range | 1.95 – 2.368 USD/kg |
 
 Geographic Context
 
@@ -39,7 +39,7 @@ Geographic Context
 
 🔍 Weekly Analysis
 
-The TSR20 market posted a significant gain this week, with prices reaching 2.2955 USD/kg (+2.02% vs previous period). The current price stands above its 3-month average (2.248 USD/kg) and 6-month average (2.174 USD/kg). Over the past 12 months, TSR20 traded between 1.95 and 2.296 USD/kg — the current level represents 100% of this range.
+The TSR20 market posted a significant gain this week, with prices reaching 2.3685 USD/kg (+5.27% vs previous period). The current price stands above its 3-month average (2.273 USD/kg) and 6-month average (2.186 USD/kg). Over the past 12 months, TSR20 traded between 1.95 and 2.368 USD/kg — the current level represents 100% of this range.
 
 > This analysis is automatically generated from public data. It does not constitute investment advice.
 
@@ -107,6 +107,26 @@ Most bullish scenario: 🌧️ Southeast Asia Floods (+0.049 USD/kg)
 
 > Price/supply elasticity calibrated on ANRPC 2015-2025.
 
+🇨🇮 RSCI — RubberSignal Chain Index
+
+🟡 Farmer share (DRC-adjusted): 58.8%
+
+First publication of this exclusive RubberSignal indicator. RSCI measures the share of the international TSR20 (LGM) price actually captured by the Ivorian farmer, after adjustment for the official Dry Rubber Content (DRC).
+
+| Indicator | Value |
+|──────────────────────────────|──────────────────────────────|
+| APROMAC price (2026-06) | 474 FCFA/kg |
+| Dry-equivalent farmer price (DRC 60%) | 1.3935 USD/kg |
+| RSCI (farmer share) | 58.8% |
+| Official CHPH mechanism | 63% |
+| Gap | -4.2 points |
+
+The CHPH allocation mechanism (decision n°0037, May 2022 — framework set by Law N°2017-540) provides for 63% of the international price to go to farmers. The current gap between RSCI and this threshold is -4.2 points.
+
+> V1 methodology: DRC used = official rate 60%. The TSR10 premium (CI mills mostly produce TSR10, a higher grade than the TSR20 benchmark) is not yet included — see RSCI v2. Exclusive RubberSignal indicator, tracked weekly.
+
+──────────────────────────────
+
 📝 Editorial Note
 
 To be completed manually — your field observation this week: local CI prices, plantation activity, trader feedback...]
@@ -127,7 +147,7 @@ Key CI Reference Data:
 
 RubberSignal — Natural Rubber Market Intelligence | West Africa & Global Markets
 
-Price source: LGM Malaysia (18/05/2026) — mise à jour manuelle | June 08, 2026
+Price source: LGM Malaysia (03/06/2026) — mise a jour manuelle | juin 14, 2026
 
 Subscribe: rubbersignal.substack.com
 

@@ -92,5 +92,15 @@
       }
     ],
     "historique_indexmundi": []
+  },
+  "rapport": {
+    "titre_fr": "RubberSignal #24 | TSR20 : 2.3685 USD/kg ▲ | Semaine 24 - 2026",
+    "titre_en": "RubberSignal #24 | TSR20: 2.3685 USD/kg ▲ | Week 24 - 2026",
+    "date_rapport": "2026-06-14",
+    "semaine": 24,
+    "fichier_fr": "output/rubbersignal_S24_2026_FR.md",
+    "fichier_en": "output/rubbersignal_S24_2026_EN.md",
+    "pre_rsi": 62,
+    "pre_rsi_actif": true
   }
 }

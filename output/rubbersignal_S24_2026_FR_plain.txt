@@ -1,4 +1,4 @@
-RubberSignal #24 | TSR20 : 2.2955 USD/kg ▲ | Semaine 24 - 2026
+RubberSignal #24 | TSR20 : 2.3685 USD/kg ▲ | Semaine 24 - 2026
 
 Votre veille hebdomadaire sur le marché du caoutchouc naturel — Afrique de l'Ouest & marchés mondiaux
 
@@ -10,19 +10,19 @@ Grades de caoutchouc naturel
 
 | Grade | Prix USD/kg | Prix CHF/kg | Note |
 |──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
-| TSR20 | 2.2955 | 2.066 | Référence mondiale / World reference |
-| RSS3 | 2.387 | 2.149 | Premium quality |
-| TSR10 | 2.227 | 2.004 | Technical grade |
-| Latex concentré | 1.882 | 1.694 | Liquid material |
+| TSR20 | 2.3685 | 2.132 | Référence mondiale / World reference |
+| RSS3 | 2.463 | 2.217 | Premium quality |
+| TSR10 | 2.297 | 2.068 | Technical grade |
+| Latex concentré | 1.942 | 1.748 | Liquid material |
 
 Variation & tendance
 
 | Indicateur | Valeur |
 |──────────────────────────────|──────────────────────────────|
-| Variation vs période préc. | +2.02% ▲ |
-| Moyenne 3 mois | 2.248 USD/kg |
-| Moyenne 6 mois | 2.174 USD/kg |
-| Fourchette 12 mois | 1.95 – 2.296 USD/kg |
+| Variation vs période préc. | +5.27% ▲ |
+| Moyenne 3 mois | 2.273 USD/kg |
+| Moyenne 6 mois | 2.186 USD/kg |
+| Fourchette 12 mois | 1.95 – 2.368 USD/kg |
 
 Contexte géographique
 
@@ -39,7 +39,7 @@ Contexte géographique
 
 🔍 Analyse de la semaine
 
-Le marché du TSR20 affiche une progression notable cette semaine, avec un prix atteignant 2.2955 USD/kg (+2.02% sur la période précédente). Le prix actuel se situe au-dessus de sa moyenne sur 3 mois (2.248 USD/kg) et de sa moyenne sur 6 mois (2.174 USD/kg). Sur les 12 derniers mois, le TSR20 a évolué entre 1.95 et 2.296 USD/kg — le niveau actuel représente 100% de cette fourchette.
+Le marché du TSR20 affiche une progression notable cette semaine, avec un prix atteignant 2.3685 USD/kg (+5.27% sur la période précédente). Le prix actuel se situe au-dessus de sa moyenne sur 3 mois (2.273 USD/kg) et de sa moyenne sur 6 mois (2.186 USD/kg). Sur les 12 derniers mois, le TSR20 a évolué entre 1.95 et 2.368 USD/kg — le niveau actuel représente 100% de cette fourchette.
 
 > Cette analyse est générée automatiquement à partir de données publiques. Elle ne constitue pas un conseil en investissement.
 
@@ -107,6 +107,26 @@ Scénario le plus haussier : 🌧️ Inondations Asie du Sud-Est (+0.049 USD/kg)
 
 > Élasticité prix/offre calibrée sur ANRPC 2015-2025.
 
+🇨🇮 RSCI — RubberSignal Chain Index
+
+🟡 Part planteur (DRC-corrigée) : 58.8%
+
+Première publication de cet indicateur exclusif RubberSignal. Le RSCI mesure la part du prix international TSR20 (LGM) effectivement captée par le planteur ivoirien, après correction du taux de caoutchouc sec (DRC) officiel.
+
+| Indicateur | Valeur |
+|──────────────────────────────|──────────────────────────────|
+| Prix APROMAC (2026-06) | 474 FCFA/kg |
+| Prix planteur, équivalent sec (DRC 60%) | 1.3935 USD/kg |
+| RSCI (part planteur) | 58.8% |
+| Mécanisme officiel CHPH | 63% |
+| Écart | -4.2 points |
+
+Le mécanisme de répartition CHPH (décision n°0037, mai 2022 — cadre fixé par la Loi N°2017-540) prévoit 63% du prix international pour les planteurs. L'écart actuel entre le RSCI et ce seuil est de -4.2 points.
+
+> Méthodologie v1 : DRC retenu = taux officiel 60%. La prime TSR10 (grade majoritairement produit en CI, supérieur au TSR20 de référence) n'est pas encore intégrée — voir RSCI v2. Indicateur exclusif RubberSignal, suivi hebdomadaire.
+
+──────────────────────────────
+
 📝 Note éditoriale de la semaine
 
 À compléter manuellement — votre observation terrain : prix local CI, activité plantation, retour d'un négociant...]
@@ -127,7 +147,7 @@ Données de référence CI :
 
 RubberSignal — Intelligence marché caoutchouc naturel | Afrique de l'Ouest & marchés mondiaux
 
-Source prix : LGM Malaysia (18/05/2026) — mise à jour manuelle | 08/06/2026
+Source prix : LGM Malaysia (03/06/2026) — mise a jour manuelle | 14/06/2026
 
 Pour vous abonner : rubbersignal.substack.com
 

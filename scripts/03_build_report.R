@@ -1,7 +1,7 @@
 # =============================================================
 # RUBBERSIGNAL.COM — Script 03 : Assemblage du rapport bilingue
 # Auteur  : Martial Sahiri
-# Version : 4.0 — intégration Pré-RSI (actif semaine 21+)
+# Version : 4.1 — intégration RSCI (RubberSignal Chain Index)
 # Objectif: Générer deux rapports Markdown séparés FR + EN
 # Prérequis: Scripts 01, 02 et 04 déjà exécutés
 # Usage   : source("scripts/03_build_report.R")
@@ -111,6 +111,37 @@ if (file.exists(fichier_mc)) {
 cat(">> Extraction des données prix...\n")
 
 synthese <- donnees$prix$synthese
+
+# ── RSCI (RubberSignal Chain Index) — script 01 v3.1+ ────────
+
+rsci_data  <- donnees$prix$rsci          %||% NULL
+bord_champ <- donnees$prix$bord_champ_ci %||% NULL
+
+if (!is.null(rsci_data)) {
+  rsci_pct       <- rsci_data$rsci_pct               %||% NA
+  rsci_ecart_pts <- rsci_data$ecart_pts              %||% NA
+  rsci_prix_sec  <- rsci_data$prix_planteur_sec_usd  %||% NA
+  rsci_drc       <- rsci_data$drc_officiel           %||% NA
+  rsci_mecanisme <- rsci_data$mecanisme_officiel_pct %||% NA
+} else {
+  rsci_pct <- NA; rsci_ecart_pts <- NA; rsci_prix_sec <- NA
+  rsci_drc <- NA; rsci_mecanisme <- NA
+}
+
+if (!is.null(bord_champ)) {
+  aprom_fcfa <- bord_champ$prix_fcfa %||% NA
+  aprom_mois <- bord_champ$mois      %||% ""
+} else {
+  aprom_fcfa <- NA
+  aprom_mois <- ""
+}
+
+cat("   RSCI        :",
+    if (!is.na(rsci_pct))
+      paste0(rsci_pct, "% (écart ", rsci_ecart_pts, " pts vs ",
+             rsci_mecanisme, "% officiel)")
+    else "indisponible",
+    "\n")
 
 prix_actuel   <- synthese$prix_actuel   %||% NA
 prix_chf      <- synthese$prix_chf      %||% NA
@@ -327,6 +358,81 @@ rapport_rsi_en <- if (!is.na(pre_rsi) &&
   )
 } else ""
 
+# ── RSCI : section rapport (FR/EN) ───────────────────────────
+
+icone_rsci <- function(ecart) {
+  if (is.na(ecart)) return("➡️")
+  if (ecart >= 0) "🟢"
+  else if (ecart >= -5) "🟡"
+  else "🔴"
+}
+
+rapport_rsci_fr <- if (!is.na(rsci_pct)) {
+  paste0(
+    "## 🇨🇮 RSCI — RubberSignal Chain Index\n\n",
+    "### ", icone_rsci(rsci_ecart_pts),
+    " Part planteur (DRC-corrigée) : **", rsci_pct, "%**\n\n",
+    "*Première publication de cet indicateur exclusif RubberSignal. ",
+    "Le RSCI mesure la part du prix international TSR20 (LGM) ",
+    "effectivement captée par le planteur ivoirien, après correction ",
+    "du taux de caoutchouc sec (DRC) officiel.*\n\n",
+    "| Indicateur | Valeur |\n",
+    "|---|---|\n",
+    "| Prix APROMAC (", aprom_mois, ") | ", aprom_fcfa, " FCFA/kg |\n",
+    "| Prix planteur, équivalent sec (DRC ", round(rsci_drc * 100),
+      "%) | ", rsci_prix_sec, " USD/kg |\n",
+    "| **RSCI** (part planteur) | **", rsci_pct, "%** |\n",
+    "| Mécanisme officiel CHPH | ", rsci_mecanisme, "% |\n",
+    "| Écart | **", if (rsci_ecart_pts > 0) "+" else "", rsci_ecart_pts,
+      " points** |\n\n",
+    "Le mécanisme de répartition CHPH (décision n°0037, mai 2022 — ",
+    "cadre fixé par la Loi N°2017-540) prévoit ", rsci_mecanisme,
+    "% du prix international pour les planteurs. L'écart actuel entre ",
+    "le RSCI et ce seuil est de ",
+    if (rsci_ecart_pts > 0) "+" else "", rsci_ecart_pts, " points.\n\n",
+    "> *Méthodologie v1 : DRC retenu = taux officiel ", round(rsci_drc * 100),
+    "%. La prime TSR10 (grade majoritairement produit en CI, supérieur ",
+    "au TSR20 de référence) n'est pas encore intégrée — voir RSCI v2. ",
+    "Indicateur exclusif RubberSignal, suivi hebdomadaire.*\n\n",
+    "---\n\n"
+  )
+} else ""
+
+rapport_rsci_en <- if (!is.na(rsci_pct)) {
+  paste0(
+    "## 🇨🇮 RSCI — RubberSignal Chain Index\n\n",
+    "### ", icone_rsci(rsci_ecart_pts),
+    " Farmer share (DRC-adjusted): **", rsci_pct, "%**\n\n",
+    "*First publication of this exclusive RubberSignal indicator. ",
+    "RSCI measures the share of the international TSR20 (LGM) price ",
+    "actually captured by the Ivorian farmer, after adjustment for ",
+    "the official Dry Rubber Content (DRC).*\n\n",
+    "| Indicator | Value |\n",
+    "|---|---|\n",
+    "| APROMAC price (", aprom_mois, ") | ", aprom_fcfa, " FCFA/kg |\n",
+    "| Dry-equivalent farmer price (DRC ", round(rsci_drc * 100),
+      "%) | ", rsci_prix_sec, " USD/kg |\n",
+    "| **RSCI** (farmer share) | **", rsci_pct, "%** |\n",
+    "| Official CHPH mechanism | ", rsci_mecanisme, "% |\n",
+    "| Gap | **", if (rsci_ecart_pts > 0) "+" else "", rsci_ecart_pts,
+      " points** |\n\n",
+    "The CHPH allocation mechanism (decision n°0037, May 2022 — ",
+    "framework set by Law N°2017-540) provides for ", rsci_mecanisme,
+    "% of the international price to go to farmers. The current gap ",
+    "between RSCI and this threshold is ",
+    if (rsci_ecart_pts > 0) "+" else "", rsci_ecart_pts, " points.\n\n",
+    "> *V1 methodology: DRC used = official rate ", round(rsci_drc * 100),
+    "%. The TSR10 premium (CI mills mostly produce TSR10, a higher ",
+    "grade than the TSR20 benchmark) is not yet included — see RSCI ",
+    "v2. Exclusive RubberSignal indicator, tracked weekly.*\n\n",
+    "---\n\n"
+  )
+} else ""
+
+cat("   Section RSCI :",
+    if (!is.na(rsci_pct)) "incluse" else "absente (données indisponibles)",
+    "\n")
+
 if (SEMAINE >= SEMAINE_ACTIVATION_RSI) {
   cat("   Pré-RSI :", pre_rsi, "/100 —", signal_rsi, "\n\n")
 } else {
@@ -421,6 +527,7 @@ rapport_fr <- paste0(
   if (nchar(texte_sc_fr) > 0 &&
       SEMAINE >= SEMAINE_ACTIVATION_RSI) texte_sc_fr else "",
   
+  rapport_rsci_fr,
   "## 📝 Note éditoriale de la semaine\n\n",
   "*[À compléter manuellement — votre observation terrain : ",
   "prix local CI, activité plantation, retour d'un négociant...]*\n\n",
@@ -497,6 +604,7 @@ rapport_en <- paste0(
   if (nchar(texte_sc_en) > 0 &&
       SEMAINE >= SEMAINE_ACTIVATION_RSI) texte_sc_en else "",
   
+  rapport_rsci_en,
   "## 📝 Editorial Note\n\n",
   "*[To be completed manually — your field observation this week: ",
   "local CI prices, plantation activity, trader feedback...]*\n\n",
