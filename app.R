@@ -151,7 +151,9 @@ charger_historique <- function(dossier = "data/processed") {
       mc_base_4sem  = as.numeric(d$monte_carlo$resultats$S4$scenario_base %||% NA),
       mc_bear_4sem  = as.numeric(d$monte_carlo$resultats$S4$scenario_bear %||% NA),
       mc_bull_4sem  = as.numeric(d$monte_carlo$resultats$S4$scenario_bull %||% NA),
-      wti           = as.numeric(d$signaux_faibles$module5_shipping$wti_valeur %||% NA)
+      wti           = as.numeric(d$signaux_faibles$module5_shipping$wti_valeur %||% NA),
+      rsci_pct       = as.numeric(d$prix$rsci$rsci_pct       %||% NA),
+      rsci_ecart_pts = as.numeric(d$prix$rsci$ecart_pts      %||% NA)
     )
   })
   historique %>% arrange(annee, semaine) %>% filter(!is.na(prix_tsr20))
@@ -276,6 +278,9 @@ ui <- dashboardPage(
         fluidRow(
           valueBoxOutput("dash_prix",width=3), valueBoxOutput("dash_rsi",width=3),
           valueBoxOutput("dash_var",width=3),  valueBoxOutput("dash_nb",width=3)
+        ),
+        fluidRow(
+          valueBoxOutput("dash_rsci",width=6), valueBoxOutput("dash_rsci_ecart",width=6)
         ),
         fluidRow(box(title="Prix TSR20 — Historique",status="warning",width=12,height=420,
                      plotlyOutput("g_prix_hist",height="360px"))),
@@ -559,6 +564,23 @@ server <- function(input, output, session) {
     h <- historique()
     valueBox(paste(if(!is.null(h))nrow(h) else 0,"semaines"),
              "Historique disponible",icon("calendar"),color="purple")
+  })
+  output$dash_rsci <- renderValueBox({
+    h <- historique()
+    if (is.null(h)||nrow(h)==0) return(valueBox("N/A","RSCI",icon("balance-scale"),color="purple"))
+    d <- tail(h,1); rsci <- d$rsci_pct; e <- d$rsci_ecart_pts
+    valueBox(if(!is.na(rsci))paste0(rsci,"%") else "N/A",
+             "RSCI \u2014 part planteur (DRC-corrigee)",icon("balance-scale"),
+             color=if(is.na(e))"purple" else if(e>=0)"green" else if(e>=-5)"yellow" else "red")
+  })
+  output$dash_rsci_ecart <- renderValueBox({
+    h <- historique()
+    if (is.null(h)||nrow(h)==0) return(valueBox("N/A","Ecart RSCI",icon("balance-scale"),color="purple"))
+    d <- tail(h,1); e <- d$rsci_ecart_pts
+    valueBox(if(!is.na(e))paste0(if(e>0)"+" else "",e," pts") else "N/A",
+             "vs mecanisme officiel CHPH (63%)",
+             icon(if(!is.na(e)&&e>=0)"arrow-up" else "arrow-down"),
+             color=if(is.na(e))"purple" else if(e>=0)"green" else if(e>=-5)"yellow" else "red")
   })
   output$g_prix_hist <- renderPlotly({
     h <- historique(); if(is.null(h)||nrow(h)==0) return(NULL)
