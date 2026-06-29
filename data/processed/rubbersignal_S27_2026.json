@@ -1,0 +1,516 @@
+{
+  "meta": {
+    "date_collecte": "2026-06-29",
+    "semaine": 27,
+    "annee": 2026,
+    "source": "rubbersignal.com",
+    "version": "3.1"
+  },
+  "prix": {
+    "synthese": {
+      "prix_actuel": 2.3685,
+      "periode": "2026-06",
+      "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
+      "variation_pct": 5.27,
+      "tendance": "hausse",
+      "moyenne_3m": 2.273,
+      "moyenne_6m": 2.186,
+      "min_12m": 1.95,
+      "max_12m": 2.368,
+      "prix_chf": 2.132
+    },
+    "bord_champ_ci": {
+      "prix_fcfa": 474,
+      "prix_usd": 0.8361,
+      "mois": "2026-06",
+      "source": "APROMAC (via FratMat)",
+      "fcfa_par_usd": 566.95,
+      "taux_eur_usd": 1.157,
+      "spread_export_usd": 1.532,
+      "spread_export_pct": 64.7,
+      "note": "Spread confidentiel — publication prevue RubberSignal V2"
+    },
+    "rsci": {
+      "drc_officiel": 0.6,
+      "mecanisme_officiel_pct": 63,
+      "prix_planteur_sec_usd": 1.3935,
+      "rsci_pct": 58.8,
+      "ecart_pts": -4.2,
+      "cadre_legal": "Loi N.2017-540 du 03/08/2017 - CHPH",
+      "mecanisme_source": "Decision CHPH n.0037 (mai 2022) : 63% planteurs / 37% transformateurs, contre 61% avant",
+      "drc_source": "DRC reference officiel 60% (fonds de tasse) - debat en cours sur DRC reel et grade TSR10 vs TSR20",
+      "note": "RSCI = part du prix planteur (corrige DRC 60%) dans le prix international TSR20 (LGM)."
+    },
+    "historique_bm": [
+      {
+        "periode": "2026-06",
+        "prix_usd": 2.3685,
+        "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2026-05",
+        "prix_usd": 2.25,
+        "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2026-04",
+        "prix_usd": 2.2,
+        "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2026-03",
+        "prix_usd": 2.15,
+        "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2026-02",
+        "prix_usd": 2.1,
+        "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2026-01",
+        "prix_usd": 2.05,
+        "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2025-12",
+        "prix_usd": 2,
+        "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
+        "unite": "USD/kg"
+      },
+      {
+        "periode": "2025-11",
+        "prix_usd": 1.95,
+        "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
+        "unite": "USD/kg"
+      }
+    ],
+    "historique_indexmundi": []
+  },
+  "actualites": {
+    "date_collecte": "2026-06-29",
+    "total_articles": 0,
+    "top_newsletter": [],
+    "tous_articles": []
+  },
+  "signaux_faibles": {
+    "meta": {
+      "date_collecte": "2026-06-29",
+      "semaine": 27,
+      "annee": 2026,
+      "version": "2.1"
+    },
+    "module1_meteo": {
+      "zones": {
+        "Côte d'Ivoire": {
+          "pays": "Côte d'Ivoire",
+          "ville": "Abidjan",
+          "pluie_30j_mm": 319.6,
+          "temp_moyenne_c": 25.8,
+          "score_production": 76,
+          "signal_production": "Favorable"
+        },
+        "Thaïlande": {
+          "pays": "Thaïlande",
+          "ville": "Bangkok",
+          "pluie_30j_mm": 241.5,
+          "temp_moyenne_c": 29.4,
+          "score_production": 98,
+          "signal_production": "Favorable"
+        },
+        "Malaisie": {
+          "pays": "Malaisie",
+          "ville": "Kuala Lumpur",
+          "pluie_30j_mm": 233.7,
+          "temp_moyenne_c": 28.3,
+          "score_production": 88,
+          "signal_production": "Favorable"
+        },
+        "Indonésie": {
+          "pays": "Indonésie",
+          "ville": "Jakarta",
+          "pluie_30j_mm": 80.5,
+          "temp_moyenne_c": 29.1,
+          "score_production": 48,
+          "signal_production": "Défavorable"
+        }
+      },
+      "score_offre_mondiale": 80,
+      "signal_offre": "Offre abondante — pression baissière"
+    },
+    "module2_devises": {
+      "USD_CNY": 6.8037,
+      "USD_MYR": 4.0876,
+      "USD_XOF": 576.07,
+      "USD_IDR": 17885,
+      "USD_CHF": 0.8099,
+      "source": "ExchangeRate API",
+      "date": "2026-06-29",
+      "signal_cny": "Yuan fort (-4.17%) — demande soutenue",
+      "signal_myr": "Ringgit fort (-7.1%) — export ralenti"
+    },
+    "module3_demande_aval": {
+      "fred": {
+        "prod_manuf_us": {
+          "serie": "IPMAN",
+          "nom": "Production industrielle US manufacturing",
+          "valeur": 98.6353,
+          "valeur_prec": 98.587,
+          "variation_pct": 0.05,
+          "date": "2026-05-01"
+        },
+        "ventes_auto_us": {
+          "serie": "TOTALSA",
+          "nom": "Ventes automobiles US (millions/an)",
+          "valeur": 16.508,
+          "valeur_prec": 16.395,
+          "variation_pct": 0.69,
+          "date": "2026-05-01"
+        },
+        "commandes_dur": {
+          "serie": "DGORDER",
+          "nom": "Commandes biens durables US (M USD)",
+          "valeur": 332050,
+          "valeur_prec": 347618,
+          "variation_pct": -4.48,
+          "date": "2026-05-01"
+        },
+        "prod_indus_us": {
+          "serie": "INDPRO",
+          "nom": "Production industrielle US globale",
+          "valeur": 102.6475,
+          "valeur_prec": 102.509,
+          "variation_pct": 0.14,
+          "date": "2026-05-01"
+        },
+        "imports_chine": {
+          "serie": "XTIMVA01CNM667S",
+          "nom": "Importations Chine (proxy demande)",
+          "valeur": 270641300000,
+          "valeur_prec": 264465700000,
+          "variation_pct": 2.34,
+          "date": "2026-04-01"
+        },
+        "permis_constr": {
+          "serie": "PERMIT",
+          "nom": "Permis construction US",
+          "valeur": 1410,
+          "valeur_prec": 1423,
+          "variation_pct": -0.91,
+          "date": "2026-05-01"
+        }
+      },
+      "pmi": {
+        "USA": {
+          "pays": "USA",
+          "valeur": 50.2,
+          "signal": "Légère expansion"
+        },
+        "Europe": {
+          "pays": "Europe",
+          "valeur": 49,
+          "signal": "Légère contraction"
+        },
+        "Chine": {
+          "pays": "Chine",
+          "valeur": 51.1,
+          "signal": "Légère expansion"
+        },
+        "Inde": {
+          "pays": "Inde",
+          "valeur": 58.8,
+          "signal": "Forte expansion"
+        },
+        "Japon": {
+          "pays": "Japon",
+          "valeur": 48.7,
+          "signal": "Légère contraction"
+        }
+      },
+      "score_demande": 42,
+      "signal_demande": "Demande faible — signal baissier"
+    },
+    "module4_stocks": {
+      "malaisie_tonnes": {},
+      "malaisie_mois": "2026-04",
+      "malaisie_tendance": "stable",
+      "thailande_tonnes": {},
+      "thailande_mois": "2026-04",
+      "thailande_tendance": "stable",
+      "indonesie_tonnes": {},
+      "indonesie_mois": "2026-04",
+      "indonesie_tendance": "stable",
+      "ci_tonnes": {},
+      "ci_mois": "2026-04",
+      "ci_tendance": "stable",
+      "abidjan_delai_jours": 7,
+      "abidjan_statut": "Normal",
+      "note": "Données à compléter via lgm.gov.my et rubberthai.or.th"
+    },
+    "module5_shipping": {
+      "bdi_valeur": 1450,
+      "wti_valeur": 78.94,
+      "signal_fret": "Fret normal — pas de signal particulier",
+      "tarif_ci_eu_usd_tonne": 85,
+      "delai_abidjan_rotterdam": 14,
+      "source": "BDI estimé + WTI FRED"
+    },
+    "module6_terrain_ci": {
+      "prix_bord_champ_fcfa": 359,
+      "prix_marche_reel_fcfa": {},
+      "disponibilite_latex": 3,
+      "statut_disponibilite": "Normal",
+      "activite_cooperatives": "Normale",
+      "sentiment_planteurs": 3,
+      "note_terrain": "Campagne de récolte en cours. Conditions normales.",
+      "tension_marche_local": "Aucune",
+      "saison_saignee": "Grande saison",
+      "semaine": 27,
+      "date_saisie": "2026-06-29",
+      "source": "Terrain CI — RubberSignal exclusif"
+    },
+    "module7_geopolitique": {
+      "nb_articles": 0,
+      "signal": "Aucune tension détectée",
+      "articles": []
+    },
+    "pre_rsi": {
+      "score": 63,
+      "signal": "Légèrement haussier — marché bien orienté",
+      "detail": {
+        "meteo_w": 20,
+        "devise_w": 14,
+        "pmi_w": 10.5,
+        "terrain_w": 9,
+        "geo_w": 9.75
+      }
+    }
+  },
+  "monte_carlo": {
+    "meta": {
+      "date_simulation": "2026-06-29",
+      "semaine": 27,
+      "annee": 2026,
+      "n_simulations": 10000,
+      "modele": "GBM — Thompson (2000)",
+      "prix_actuel": 2.3685,
+      "drift_annuel": 0.0352,
+      "volatilite_an": 0.27,
+      "pre_rsi_utilise": 63
+    },
+    "resultats": {
+      "S4": {
+        "horizon_sem": 4,
+        "date_horizon": "2026-07-27",
+        "prix_actuel": 2.3685,
+        "moyenne": 2.3746,
+        "mediane": 2.3696,
+        "ecart_type": 0.1797,
+        "p05": 2.0903,
+        "p10": 2.1498,
+        "p25": 2.2493,
+        "p75": 2.4897,
+        "p90": 2.6086,
+        "p95": 2.6788,
+        "scenario_bear": 2.1498,
+        "scenario_base": 2.3746,
+        "scenario_bull": 2.6086,
+        "prob_hausse_pct": 50.2,
+        "prob_baisse_pct": 49.8,
+        "prob_plus5_pct": 25.5,
+        "prob_moins5_pct": 25.1,
+        "prob_plus10_pct": 10.3,
+        "prob_moins10_pct": 8.3
+      },
+      "S8": {
+        "horizon_sem": 8,
+        "date_horizon": "2026-08-24",
+        "prix_actuel": 2.3685,
+        "moyenne": 2.379,
+        "mediane": 2.3648,
+        "ecart_type": 0.2526,
+        "p05": 1.987,
+        "p10": 2.0654,
+        "p25": 2.2037,
+        "p75": 2.5423,
+        "p90": 2.709,
+        "p95": 2.8168,
+        "scenario_bear": 2.0654,
+        "scenario_base": 2.379,
+        "scenario_bull": 2.709,
+        "prob_hausse_pct": 49.3,
+        "prob_baisse_pct": 50.7,
+        "prob_plus5_pct": 31.5,
+        "prob_moins5_pct": 31.7,
+        "prob_plus10_pct": 18.5,
+        "prob_moins10_pct": 16
+      },
+      "S12": {
+        "horizon_sem": 12,
+        "date_horizon": "2026-09-21",
+        "prix_actuel": 2.3685,
+        "moyenne": 2.3844,
+        "mediane": 2.3637,
+        "ecart_type": 0.3111,
+        "p05": 1.9116,
+        "p10": 2.0039,
+        "p25": 2.1652,
+        "p75": 2.5819,
+        "p90": 2.7961,
+        "p95": 2.9217,
+        "scenario_bear": 2.0039,
+        "scenario_base": 2.3844,
+        "scenario_bull": 2.7961,
+        "prob_hausse_pct": 49.4,
+        "prob_baisse_pct": 50.6,
+        "prob_plus5_pct": 34.9,
+        "prob_moins5_pct": 35.2,
+        "prob_plus10_pct": 22.8,
+        "prob_moins10_pct": 21.3
+      },
+      "S26": {
+        "horizon_sem": 26,
+        "date_horizon": "2026-12-28",
+        "prix_actuel": 2.3685,
+        "moyenne": 2.4068,
+        "mediane": 2.3616,
+        "ecart_type": 0.4693,
+        "p05": 1.7248,
+        "p10": 1.8488,
+        "p25": 2.0772,
+        "p75": 2.6822,
+        "p90": 3.0145,
+        "p95": 3.2435,
+        "scenario_bear": 1.8488,
+        "scenario_base": 2.4068,
+        "scenario_bull": 3.0145,
+        "prob_hausse_pct": 49.5,
+        "prob_baisse_pct": 50.5,
+        "prob_plus5_pct": 39.5,
+        "prob_moins5_pct": 40,
+        "prob_plus10_pct": 30.3,
+        "prob_moins10_pct": 29.7
+      }
+    },
+    "texte_fr": "### 📈 Prévisions Monte Carlo — 10000 simulations\n\n*Basé sur le Mouvement Brownien Géométrique (Thompson, 2000)*\n\n| Horizon | Scénario pessimiste | Scénario central | Scénario optimiste | Prob. hausse |\n|---|---|---|---|---|\n| **4 semaines** | 2.150 USD/kg | **2.375 USD/kg** | 2.609 USD/kg | 50.2% |\n| **8 semaines** | 2.065 USD/kg | **2.379 USD/kg** | 2.709 USD/kg | 49.3% |\n| **12 semaines** | 2.004 USD/kg | **2.384 USD/kg** | 2.796 USD/kg | 49.4% |\n\n**Lecture :** Le modèle indique un biais **neutre** à 4 semaines, avec 50.2% de probabilité de hausse et une fourchette 80% entre 2.1498 et 2.6086 USD/kg. À 12 semaines, l'incertitude s'élargit : fourchette 80% entre 2.0039 et 2.7961 USD/kg.\n\n> *Ces projections sont issues d'une simulation stochastique. Elles ne constituent pas un conseil en investissement. La volatilité réelle peut différer des paramètres historiques.*\n\n",
+    "texte_en": "### 📈 Monte Carlo Forecasts — 10000 simulations\n\n*Based on Geometric Brownian Motion (Thompson, 2000)*\n\n| Horizon | Bear scenario | Base scenario | Bull scenario | Upside prob. |\n|---|---|---|---|---|\n| **4 weeks** | 2.150 USD/kg | **2.375 USD/kg** | 2.609 USD/kg | 50.2% |\n| **8 weeks** | 2.065 USD/kg | **2.379 USD/kg** | 2.709 USD/kg | 49.3% |\n| **12 weeks** | 2.004 USD/kg | **2.384 USD/kg** | 2.796 USD/kg | 49.4% |\n\n**Reading:** The model shows a **neutral** bias at 4 weeks, with 50.2% probability of upside and an 80% confidence range of 2.1498 to 2.6086 USD/kg. At 12 weeks, uncertainty widens: 80% range from 2.0039 to 2.7961 USD/kg.\n\n> *These projections are generated by stochastic simulation. They do not constitute investment advice. Actual volatility may differ from historical parameters.*\n\n",
+    "bootstrap_rsi": {
+      "disponible": true,
+      "n_bootstrap": 5000,
+      "pre_rsi_central": 63,
+      "moyenne_boot": 63.2,
+      "ecart_type": 4,
+      "ic80_bas": 57.9,
+      "ic80_haut": 68.4,
+      "ic90_bas": 56.3,
+      "ic90_haut": 69.8,
+      "stabilite": "Très stable",
+      "signal_robuste": true,
+      "composantes": {
+        "Météo/Offre": 80,
+        "Devises": 70,
+        "Demande aval": 42,
+        "Terrain CI": 60,
+        "Géopolitique": 65
+      },
+      "incertitudes": {
+        "meteo": 8,
+        "devise": 5,
+        "demande": 10,
+        "terrain": 12,
+        "geo": 8
+      },
+      "texte_fr": "### 🎯 Fiabilité du Pré-RSI — Analyse Bootstrap\n\n*5000 rééchantillonnages (Thompson, 2000)*\n\n| Indicateur | Valeur |\n|---|---|\n| **Pré-RSI central** | **63 / 100** |\n| Intervalle confiance 80% | [57.9 – 68.4] |\n| Intervalle confiance 90% | [56.3 – 69.8] |\n| Stabilité du signal | Très stable (±4 pts) |\n| Signal robuste | ✅ Oui |\n\n**Interprétation :** Le Pré-RSI de **63/100** est statistiquement robuste — même en faisant varier les hypothèses, le signal reste **haussier**.\n\n> *Le Bootstrap estime la robustesse du score face à l'incertitude de mesure de chaque composante. Un IC90 étroit indique un signal fiable.*\n\n",
+      "texte_en": "### 🎯 Pre-RSI Reliability — Bootstrap Analysis\n\n*5000 resamples (Thompson, 2000)*\n\n| Indicator | Value |\n|---|---|\n| **Pre-RSI score** | **63 / 100** |\n| 80% confidence interval | [57.9 – 68.4] |\n| 90% confidence interval | [56.3 – 69.8] |\n| Signal stability | Très stable (±4 pts) |\n| Robust signal | ✅ Yes |\n\n**Interpretation:** The Pre-RSI of **63/100** is statistically robust — even when varying the assumptions, the signal remains **bullish**.\n\n> *Bootstrap estimates score robustness against measurement uncertainty in each component. A narrow IC90 indicates a reliable signal.*\n\n"
+    },
+    "scenarios_meteo": {
+      "horizon_semaines": 12,
+      "n_simulations": 10000,
+      "elasticite_prix": -0.4,
+      "resultats": {
+        "secheresse_ci": {
+          "scenario": "secheresse_ci",
+          "nom": "Sécheresse Côte d'Ivoire",
+          "nom_en": "Ivory Coast Drought",
+          "emoji": "🌵",
+          "description": "Pluies < 50mm/mois pendant 8 semaines en CI",
+          "description_en": "Rainfall < 50mm/month for 8 weeks in CI",
+          "choc_offre_pct": -3,
+          "choc_prix_pct": 1.2,
+          "drift_cond": 4.72,
+          "p10": 2,
+          "base": 2.39,
+          "p90": 2.797,
+          "prob_hausse": 50.2,
+          "delta_vs_base": 0.005
+        },
+        "inondations_asie": {
+          "scenario": "inondations_asie",
+          "nom": "Inondations Asie du Sud-Est",
+          "nom_en": "Southeast Asia Floods",
+          "emoji": "🌧️",
+          "description": "Excès pluie Thaïlande + Malaisie (> 400mm/mois)",
+          "description_en": "Excess rainfall Thailand + Malaysia (>400mm/month)",
+          "choc_offre_pct": -21,
+          "choc_prix_pct": 8.4,
+          "drift_cond": 11.92,
+          "p10": 2.039,
+          "base": 2.435,
+          "p90": 2.853,
+          "prob_hausse": 55.8,
+          "delta_vs_base": 0.051
+        },
+        "secheresse_globale": {
+          "scenario": "secheresse_globale",
+          "nom": "Stress hydrique mondial",
+          "nom_en": "Global Drought Stress",
+          "emoji": "☀️",
+          "description": "Sécheresse simultanée CI + Thaïlande + Malaisie",
+          "description_en": "Simultaneous drought CI + Thailand + Malaysia",
+          "choc_offre_pct": -17.2,
+          "choc_prix_pct": 6.9,
+          "drift_cond": 10.42,
+          "p10": 2.044,
+          "base": 2.429,
+          "p90": 2.842,
+          "prob_hausse": 55.3,
+          "delta_vs_base": 0.045
+        },
+        "optimal": {
+          "scenario": "optimal",
+          "nom": "Conditions météo optimales",
+          "nom_en": "Optimal Weather Conditions",
+          "emoji": "🌿",
+          "description": "Pluviométrie optimale dans les 4 zones productrices",
+          "description_en": "Optimal rainfall across all 4 producing zones",
+          "choc_offre_pct": 10,
+          "choc_prix_pct": -4,
+          "drift_cond": -0.48,
+          "p10": 1.989,
+          "base": 2.365,
+          "p90": 2.77,
+          "prob_hausse": 46.9,
+          "delta_vs_base": -0.019
+        }
+      },
+      "texte_fr": "### 🌦️ Scénarios météo — Monte Carlo conditionnel\n\n*Impact sur le prix TSR20 à 12 semaines*\n\n| Scénario | Choc offre | Bear | Base | Bull | Δ vs référence |\n|---|---|---|---|---|---|\n| 🌵 Sécheresse Côte d'Ivoire | -3.0% | 2.000 | **2.390** | 2.797 | +0.005 |\n| 🌧️ Inondations Asie du Sud-Est | -21.0% | 2.039 | **2.435** | 2.853 | +0.051 |\n| ☀️ Stress hydrique mondial | -17.2% | 2.044 | **2.429** | 2.842 | +0.045 |\n| 🌿 Conditions météo optimales | +10.0% | 1.989 | **2.365** | 2.770 | -0.019 |\n\n**Scénario le plus haussier :** 🌧️ Inondations Asie du Sud-Est (+0.051 USD/kg)\n\n> *Élasticité prix/offre calibrée sur ANRPC 2015-2025.*\n\n",
+      "texte_en": "### 🌦️ Weather Scenarios — Conditional Monte Carlo\n\n*Impact on TSR20 price at 12 weeks*\n\n| Scenario | Supply shock | Bear | Base | Bull | Δ vs reference |\n|---|---|---|---|---|---|\n| 🌵 Ivory Coast Drought | -3.0% | 2.000 | **2.390** | 2.797 | +0.005 |\n| 🌧️ Southeast Asia Floods | -21.0% | 2.039 | **2.435** | 2.853 | +0.051 |\n| ☀️ Global Drought Stress | -17.2% | 2.044 | **2.429** | 2.842 | +0.045 |\n| 🌿 Optimal Weather Conditions | +10.0% | 1.989 | **2.365** | 2.770 | -0.019 |\n\n**Most bullish scenario:** 🌧️ Southeast Asia Floods (+0.051 USD/kg)\n\n> *Price/supply elasticity calibrated on ANRPC 2015-2025.*\n\n"
+    }
+  },
+  "rapport": {
+    "titre_fr": "RubberSignal #27 | TSR20 : 2.3685 USD/kg ▲ | Semaine 27 - 2026",
+    "titre_en": "RubberSignal #27 | TSR20: 2.3685 USD/kg ▲ | Week 27 - 2026",
+    "date_rapport": "2026-06-29",
+    "semaine": 27,
+    "fichier_fr": "output/rubbersignal_S27_2026_FR.md",
+    "fichier_en": "output/rubbersignal_S27_2026_EN.md",
+    "pre_rsi": 63,
+    "pre_rsi_actif": true
+  }
+}
