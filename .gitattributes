@@ -1,0 +1,25 @@
+# Normaliser les fins de ligne : LF partout dans le dépôt
+# Les fichiers texte seront convertis en LF à chaque checkout
+* text=auto eol=lf
+
+# Scripts R — toujours LF
+*.R text eol=lf
+
+# Markdown
+*.md text eol=lf
+
+# JSON / CSV — données pipeline
+*.json text eol=lf
+*.csv text eol=lf
+
+# YAML (GitHub Actions)
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Fichiers binaires — pas de conversion
+*.png binary
+*.jpg binary
+*.pdf binary
+*.odt binary
+*.Rdata binary
+*.rds binary
