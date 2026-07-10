@@ -324,6 +324,77 @@ synthese_prix$prix_chf <- round(prix_actuel_usd * TAUX_USD_CHF, 3)
 cat("   Prix en CHF    :", synthese_prix$prix_chf, "CHF/kg\n")
 
 
+# ── 9C. MARCHÉS MONDIAUX — SAISIE MANUELLE (J-1) ─────────────
+# Cours décalés d'un jour — gratuits sur TradingView / investing.com
+#
+# SICOM  (SGX, Singapour) — TSR20  — USD cts/kg  — ticker : TF
+#   -> https://www.tradingview.com/symbols/SGX-TF1!/
+# TOCOM  (JPX, Tokyo)     — RSS3   — JPY/kg       — ticker : TRB
+#   -> https://www.tradingview.com/symbols/TOCOM-TRB1!/
+# SHFE   (Shanghai)       — SCR WF — CNY/tonne    — ticker : RU
+#   -> https://www.tradingview.com/symbols/SHFE-RU1!/
+#
+# ⚠ A METTRE A JOUR CHAQUE LUNDI AVANT DE LANCER LE PIPELINE
+
+cat("\n>> Marches mondiaux (saisie manuelle J-1)...\n")
+
+SICOM_TSR20_CENTS  <- 216.80  # USD cts/kg  — SGX TF   | investing.com 08/07/2026
+TOCOM_RSS3_JPY     <- 418.00  # JPY/kg      — JPX TRB  | TradingView TOCOM-TRB1! 09/07/2026
+SHFE_RU_CNY_TONNE  <- 15900   # CNY/tonne   — SHFE RU  | ESTIMATION — verifier SHFE-RU1! sur TradingView
+TAUX_JPY_USD       <- 0.00619 # 1 JPY en USD  | USD/JPY = 161.6 le 10/07/2026
+TAUX_CNY_USD       <- 0.1473  # 1 CNY en USD  | USD/CNY =  6.79 le 10/07/2026
+DATE_MARCHES       <- Sys.Date() - 1
+
+# ── Conversions en USD/kg ────────────────────────────────────
+sicom_usd <- round(SICOM_TSR20_CENTS / 100, 4)
+tocom_usd <- round(TOCOM_RSS3_JPY * TAUX_JPY_USD, 4)
+shfe_usd  <- round((SHFE_RU_CNY_TONNE / 1000) * TAUX_CNY_USD, 4)
+
+spread_sicom_lgm <- round(sicom_usd - prix_actuel_usd, 4)
+
+cat("   SICOM  TSR20 :", SICOM_TSR20_CENTS, "cts/kg =", sicom_usd, "USD/kg\n")
+cat("   TOCOM  RSS3  :", TOCOM_RSS3_JPY,    "JPY/kg =", tocom_usd, "USD/kg\n")
+cat("   SHFE   RU    :", SHFE_RU_CNY_TONNE, "CNY/t  =", shfe_usd,  "USD/kg\n")
+cat("   Spread SICOM vs LGM (meme grade TSR20) :", spread_sicom_lgm, "USD/kg\n")
+
+synthese_marches <- list(
+  date_cours       = as.character(DATE_MARCHES),
+  spread_sicom_lgm = spread_sicom_lgm,
+  lgm = list(
+    grade      = "TSR20",
+    bourse     = "LGM (Malaisie)",
+    prix_usd   = prix_actuel_usd,
+    source     = source_prix
+  ),
+  sicom = list(
+    grade      = "TSR20",
+    bourse     = "SGX/SICOM (Singapour)",
+    ticker     = "TF",
+    prix_orig  = SICOM_TSR20_CENTS,
+    unite_orig = "USD cts/kg",
+    prix_usd   = sicom_usd
+  ),
+  tocom = list(
+    grade        = "RSS3",
+    bourse       = "JPX/TOCOM (Tokyo)",
+    ticker       = "TRB",
+    prix_orig    = TOCOM_RSS3_JPY,
+    unite_orig   = "JPY/kg",
+    taux_jpy_usd = TAUX_JPY_USD,
+    prix_usd     = tocom_usd
+  ),
+  shfe = list(
+    grade        = "SCR WF / RSS3",
+    bourse       = "SHFE (Shanghai)",
+    ticker       = "RU",
+    prix_orig    = SHFE_RU_CNY_TONNE,
+    unite_orig   = "CNY/tonne",
+    taux_cny_usd = TAUX_CNY_USD,
+    prix_usd     = shfe_usd
+  )
+)
+
+
 # ── 10. SAUVEGARDER LES DONNEES BRUTES ───────────────────────
 
 cat("\n>> Sauvegarde des donnees brutes...\n")
@@ -357,6 +428,7 @@ json_sortie <- list(
     synthese              = synthese_prix,
     bord_champ_ci         = synthese_bord_champ,
     rsci                  = synthese_rsci,
+    marches_mondiaux      = synthese_marches,
     historique_bm         = prix_bm,
     historique_indexmundi = if (nrow(prix_indexmundi_val) > 0)
       head(prix_indexmundi_val, 6)
@@ -384,11 +456,22 @@ cat("Prix APROMAC CI    :", PRIX_APROMAC_FCFA, "FCFA/kg =",
     prix_apromac_usd, "USD/kg (", MOIS_APROMAC, ")\n")
 cat("Spread V2 (confid.):", spread_usd, "USD/kg\n")
 cat("RSCI               :", rsci_pct, "% (ecart vs 63% officiel :", rsci_ecart_pts, "pts)\n")
+cat(strrep("-", 55), "\n")
+cat("SICOM  TSR20       :", sicom_usd, "USD/kg (", SICOM_TSR20_CENTS, "cts)\n")
+cat("TOCOM  RSS3        :", tocom_usd, "USD/kg (", TOCOM_RSS3_JPY, "JPY/kg)\n")
+cat("SHFE   RU          :", shfe_usd,  "USD/kg (", SHFE_RU_CNY_TONNE, "CNY/t)\n")
+cat("Spread SICOM/LGM   :", spread_sicom_lgm, "USD/kg\n")
 cat("Fichier JSON       :", fichier_json, "\n")
 cat(strrep("=", 55), "\n")
 cat("\nProchaine etape : lancer scripts/02_collect_news.R\n\n")
-cat(">> RAPPELS MENSUELS / HEBDOMADAIRES :\n")
+cat(">> RAPPELS HEBDOMADAIRES (a mettre a jour avant chaque pipeline) :\n")
 cat("   1. PRIX_APROMAC_FCFA + MOIS_APROMAC (mensuel)\n")
 cat("      -> https://www.fratmat.info ou conseilheveapalmier.ci\n")
 cat("   2. TAUX_EUR_USD (hebdomadaire)\n")
-cat("      -> xe.com (parite XOF/EUR fixe a 655.957, ne change jamais)\n\n")
+cat("      -> xe.com (parite XOF/EUR fixe a 655.957, ne change jamais)\n")
+cat("   3. SICOM_TSR20_CENTS (hebdomadaire)\n")
+cat("      -> TradingView : https://www.tradingview.com/symbols/SGX-TF1!/\n")
+cat("   4. TOCOM_RSS3_JPY + TAUX_JPY_USD (hebdomadaire)\n")
+cat("      -> TradingView : https://www.tradingview.com/symbols/TOCOM-TRB1!/\n")
+cat("   5. SHFE_RU_CNY_TONNE + TAUX_CNY_USD (hebdomadaire)\n")
+cat("      -> TradingView : https://www.tradingview.com/symbols/SHFE-RU1!/\n\n")
