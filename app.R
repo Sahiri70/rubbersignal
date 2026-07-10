@@ -1811,13 +1811,13 @@ server <- function(input, output, session) {
   news_ts   <- reactiveVal(NULL)
 
   # Auto-load au démarrage (après le premier rendu UI)
-  session$onFlushed(once = TRUE, fun = function() {
+  session$onFlushed(function() {
     tryCatch({
       d <- charger_news()
       news_data(d)
       news_ts(Sys.time())
     }, error = function(e) NULL)
-  })
+  }, once = TRUE)
 
   # Rafraîchissement manuel
   observeEvent(input$news_refresh, {
