@@ -11,6 +11,7 @@ library(tidyverse)
 library(lubridate)
 library(leaflet)
 library(leaflet.extras)
+library(xml2)
 
 # DONNÉES STATIQUES
 
@@ -200,6 +201,85 @@ calc_corr <- function(x, y) {
   list(r=round(ct$estimate,3), p=round(ct$p.value,4), n=sum(idx))
 }
 
+# ── RUBBER NEWS — Agrégateur RSS ─────────────────────────────
+charger_news <- function() {
+  feeds <- list(
+    list(
+      url       = "https://news.google.com/rss/search?q=%22natural+rubber%22+price+TSR20+futures&hl=en-US&gl=US&ceid=US:en",
+      categorie = "Prix & Marches",
+      couleur   = "#f39c12"
+    ),
+    list(
+      url       = "https://news.google.com/rss/search?q=%22natural+rubber%22+supply+plantation+Thailand+Indonesia&hl=en-US&gl=US&ceid=US:en",
+      categorie = "Geopolitique & Supply",
+      couleur   = "#e74c3c"
+    ),
+    list(
+      url       = "https://news.google.com/rss/search?q=%22natural+rubber%22+tire+tyre+Bridgestone+Michelin+manufacturer&hl=en-US&gl=US&ceid=US:en",
+      categorie = "Industrie & Manuf.",
+      couleur   = "#3498db"
+    ),
+    list(
+      url       = "https://news.google.com/rss/search?q=rubber+conference+exhibition+IRSG+DKT+salon&hl=en-US&gl=US&ceid=US:en",
+      categorie = "Salons & Evenements",
+      couleur   = "#2ecc71"
+    )
+  )
+
+  safe_txt <- function(node) {
+    tryCatch(xml_text(node), error = function(e) NA_character_)
+  }
+
+  articles <- map_df(feeds, function(f) {
+    tryCatch({
+      doc   <- read_xml(f$url)
+      items <- xml_find_all(doc, "//item")
+      if (length(items) == 0) return(NULL)
+      n <- min(10, length(items))
+      map_df(items[seq_len(n)], function(item) {
+        desc_raw <- safe_txt(xml_find_first(item, "description"))
+        desc_clean <- if (!is.na(desc_raw) && nchar(desc_raw) > 0) {
+          d <- gsub("<[^>]+>", "", desc_raw)
+          d <- gsub("&amp;",  "&",  d)
+          d <- gsub("&lt;",   "<",  d)
+          d <- gsub("&gt;",   ">",  d)
+          d <- gsub("&quot;", "\"", d)
+          d <- gsub("&#39;",  "'",  d)
+          substr(trimws(d), 1, 320)
+        } else ""
+
+        tibble(
+          titre      = trimws(safe_txt(xml_find_first(item, "title"))   %||% ""),
+          lien       = trimws(safe_txt(xml_find_first(item, "link"))    %||% ""),
+          source_nom = safe_txt(xml_find_first(item, "source"))         %||% "Google News",
+          date_str   = safe_txt(xml_find_first(item, "pubDate"))        %||% "",
+          description= desc_clean,
+          categorie  = f$categorie,
+          couleur    = f$couleur
+        )
+      })
+    }, error = function(e) NULL)
+  })
+
+  if (is.null(articles) || nrow(articles) == 0) return(NULL)
+
+  articles %>%
+    mutate(
+      source_nom = if_else(is.na(source_nom) | source_nom == "", "Google News", source_nom),
+      date_pub   = tryCatch(
+        as.POSIXct(date_str, format = "%a, %d %b %Y %H:%M:%S %z", tz = "UTC"),
+        error = function(e) NA_POSIXct_
+      ),
+      date_aff   = if_else(
+        !is.na(date_pub),
+        format(date_pub, "%d %b %Y — %H:%M UTC"),
+        date_str
+      )
+    ) %>%
+    arrange(desc(date_pub)) %>%
+    distinct(titre, .keep_all = TRUE)
+}
+
 theme_rs <- function(fig) {
   fig %>% layout(
     paper_bgcolor="#16213e", plot_bgcolor="#16213e",
@@ -227,7 +307,8 @@ ui <- dashboardPage(
       menuItem("Manuf. — Usines",    tabName="manuf_usines", icon=icon("map-marker-alt")),
       menuItem("Manuf. — Correlations", tabName="manuf_corr", icon=icon("chart-bar")),
       tags$hr(style="border-color:#444;margin:8px 15px;"),
-      menuItem("Saisie Prix",            tabName="saisie",      icon=icon("edit"))
+      menuItem("Saisie Prix",            tabName="saisie",      icon=icon("edit")),
+      menuItem("Rubber News",            tabName="news",        icon=icon("newspaper"))
     ),
     tags$hr(style="border-color:#444;"),
     tags$div(
@@ -596,6 +677,44 @@ ui <- dashboardPage(
               tableOutput("s_preview"),
               hr(),
               uiOutput("s_last_values")
+          )
+        )
+      ),
+
+      # ── RUBBER NEWS ──────────────────────────────────────────────
+      tabItem(tabName="news",
+        fluidRow(
+          box(width=12, background="black",
+            style="padding:6px 15px 2px 15px;",
+            fluidRow(
+              column(4,
+                selectInput("news_cat", NULL,
+                  choices = c(
+                    "All categories"        = "ALL",
+                    "Prix & Marches"        = "Prix & Marches",
+                    "Geopolitique & Supply" = "Geopolitique & Supply",
+                    "Industrie & Manuf."    = "Industrie & Manuf.",
+                    "Salons & Evenements"   = "Salons & Evenements"
+                  ),
+                  selected = "ALL", width = "100%"
+                )
+              ),
+              column(3,
+                actionButton("news_refresh", "Refresh",
+                  icon  = icon("sync"),
+                  class = "btn btn-warning btn-sm",
+                  style = "margin-top:25px;"
+                )
+              ),
+              column(5,
+                tags$div(style="margin-top:30px;", uiOutput("news_last_update"))
+              )
+            )
+          )
+        ),
+        fluidRow(
+          column(12,
+            uiOutput("news_cards")
           )
         )
       )
@@ -1685,6 +1804,127 @@ server <- function(input, output, session) {
       saisie_type("danger")
       saisie_msg(paste0("&#10007; Erreur : ", conditionMessage(e)))
     })
+  })
+
+  # ── RUBBER NEWS ───────────────────────────────────────────────
+  news_data <- reactiveVal(NULL)
+  news_ts   <- reactiveVal(NULL)
+
+  # Auto-load au démarrage (après le premier rendu UI)
+  session$onFlushed(once = TRUE, fun = function() {
+    tryCatch({
+      d <- charger_news()
+      news_data(d)
+      news_ts(Sys.time())
+    }, error = function(e) NULL)
+  })
+
+  # Rafraîchissement manuel
+  observeEvent(input$news_refresh, {
+    showNotification("Loading rubber news...", id = "nload",
+                     duration = NULL, type = "message")
+    tryCatch({
+      d <- charger_news()
+      news_data(d)
+      news_ts(Sys.time())
+      removeNotification("nload")
+      showNotification(
+        paste(if (!is.null(d)) nrow(d) else 0, "articles loaded"),
+        type = "message", duration = 3
+      )
+    }, error = function(e) {
+      removeNotification("nload")
+      showNotification(paste("Error:", conditionMessage(e)),
+                       type = "error", duration = 8)
+    })
+  }, ignoreInit = TRUE)
+
+  output$news_last_update <- renderUI({
+    t <- news_ts()
+    if (is.null(t))
+      return(tags$span(style = "color:#666;font-size:12px;",
+                       "Not loaded — click Refresh"))
+    tags$span(style = "color:#666;font-size:12px;",
+              paste("Updated:", format(t, "%d/%m/%Y %H:%M")))
+  })
+
+  output$news_cards <- renderUI({
+    d <- news_data()
+
+    if (is.null(d) || nrow(d) == 0) {
+      return(tags$div(
+        style = "padding:60px;text-align:center;color:#555;",
+        tags$div(style = "font-size:40px;margin-bottom:14px;",
+                 icon("newspaper")),
+        tags$p(style = "font-size:14px;color:#777;",
+               "Click 'Refresh' to load rubber industry news."),
+        tags$p(style = "font-size:11px;color:#444;",
+               "Sources: Google News RSS — TSR20 prices, plantations, manufacturers, trade events")
+      ))
+    }
+
+    cat_sel <- input$news_cat
+    if (!is.null(cat_sel) && cat_sel != "ALL")
+      d <- d %>% filter(categorie == cat_sel)
+
+    if (nrow(d) == 0)
+      return(tags$div(
+        style = "padding:30px;text-align:center;color:#555;",
+        "No articles found for this category."
+      ))
+
+    cards <- map(seq_len(nrow(d)), function(i) {
+      r <- d[i, ]
+      tags$div(
+        style = paste0(
+          "background:#1a1a2e;border-left:4px solid ", r$couleur, ";",
+          "padding:14px 16px;margin:6px 0;border-radius:4px;"
+        ),
+        # Badge + source + date
+        tags$div(
+          style = "margin-bottom:7px;",
+          tags$span(
+            style = paste0(
+              "background:", r$couleur, ";color:#000;",
+              "font-size:10px;font-weight:bold;",
+              "padding:2px 8px;border-radius:10px;margin-right:8px;"
+            ),
+            r$categorie
+          ),
+          tags$span(
+            style = "color:#666;font-size:11px;",
+            paste0(r$source_nom, " · ", r$date_aff)
+          )
+        ),
+        # Title (clickable)
+        tags$a(
+          href   = r$lien,
+          target = "_blank",
+          style  = paste0(
+            "color:#eee;font-weight:600;font-size:14px;",
+            "text-decoration:none;line-height:1.4;display:block;margin-bottom:5px;"
+          ),
+          r$titre
+        ),
+        # Description
+        if (nchar(trimws(r$description)) > 10)
+          tags$p(
+            style = "color:#999;font-size:12px;margin:0;line-height:1.6;",
+            r$description
+          )
+      )
+    })
+
+    tags$div(
+      tags$div(
+        style = "color:#555;font-size:11px;margin-bottom:10px;padding:2px 4px;",
+        paste0(nrow(d), " articles — click any title to read on source site")
+      ),
+      tags$div(
+        style = "max-height:74vh;overflow-y:auto;padding-right:4px;",
+        cards
+      )
+    )
   })
 
 }
