@@ -225,7 +225,9 @@ ui <- dashboardPage(
       menuItem("Plantations",        tabName="plantations",  icon=icon("tree")),
       menuItem("Manuf. — Marche",    tabName="manuf_marche", icon=icon("industry")),
       menuItem("Manuf. — Usines",    tabName="manuf_usines", icon=icon("map-marker-alt")),
-      menuItem("Manuf. — Correlations", tabName="manuf_corr", icon=icon("chart-bar"))
+      menuItem("Manuf. — Correlations", tabName="manuf_corr", icon=icon("chart-bar")),
+      tags$hr(style="border-color:#444;margin:8px 15px;"),
+      menuItem("Saisie Prix",            tabName="saisie",      icon=icon("edit"))
     ),
     tags$hr(style="border-color:#444;"),
     tags$div(
@@ -539,6 +541,63 @@ ui <- dashboardPage(
               status="warning",width=6,height=380,
               uiOutput("mc_interp"))
         )
+      ),
+
+      # ── SAISIE PRIX MARCHÉS MONDIAUX ─────────────────────────
+      tabItem(tabName="saisie",
+        fluidRow(
+          box(title="Saisie hebdomadaire — Marches Mondiaux (J-1)",
+              status="warning", solidHeader=TRUE, width=7,
+              tags$p(style="color:#aaa;font-size:13px;",
+                "Sources TradingView : ",
+                tags$a("SGX-TF1!", href="https://www.tradingview.com/symbols/SGX-TF1!/",
+                       target="_blank", style="color:#f39c12;"),
+                " · ",
+                tags$a("TOCOM-TRB1!", href="https://www.tradingview.com/symbols/TOCOM-TRB1!/",
+                       target="_blank", style="color:#f39c12;"),
+                " · ",
+                tags$a("SHFE-RU1!", href="https://www.tradingview.com/symbols/SHFE-RU1!/",
+                       target="_blank", style="color:#f39c12;"),
+                " — Taux : ",
+                tags$a("xe.com", href="https://www.xe.com", target="_blank",
+                       style="color:#3498db;")
+              ),
+              dateInput("s_date", "Date des cours (J-1) :",
+                        value=Sys.Date()-1, format="dd/mm/yyyy", language="fr"),
+              hr(),
+              tags$b("Cours des bourses", style="color:#eee;"),
+              br(), br(),
+              numericInput("s_sicom", "SICOM TSR20 — SGX  (USD cents/kg)",
+                           value=NA, min=0, step=0.5),
+              numericInput("s_tocom", "TOCOM RSS3 — JPX  (JPY/kg)",
+                           value=NA, min=0, step=1),
+              numericInput("s_shfe",  "SHFE RU — Shanghai  (CNY/tonne)",
+                           value=NA, min=0, step=50),
+              hr(),
+              tags$b("Taux de change du jour", style="color:#eee;"),
+              br(), br(),
+              numericInput("s_jpy",
+                           "1 JPY = ? USD   (ex : 0.00619 si USD/JPY = 161.6)",
+                           value=NA, min=0, step=0.00001),
+              numericInput("s_cny",
+                           "1 CNY = ? USD   (ex : 0.1473 si USD/CNY = 6.79)",
+                           value=NA, min=0, step=0.0001),
+              br(),
+              actionButton("s_save", "  Enregistrer dans le JSON",
+                           icon=icon("save"),
+                           class="btn btn-success btn-lg btn-block"),
+              br(),
+              uiOutput("s_status")
+          ),
+          box(title="Apercu des conversions",
+              status="primary", solidHeader=TRUE, width=5,
+              tags$p(style="color:#aaa;font-size:12px;margin-bottom:10px;",
+                "Mise a jour en temps reel pendant la saisie."),
+              tableOutput("s_preview"),
+              hr(),
+              uiOutput("s_last_values")
+          )
+        )
       )
     )
   )
@@ -548,8 +607,16 @@ ui <- dashboardPage(
 
 server <- function(input, output, session) {
 
-  json_actuel <- reactive({ charger_dernier_json() })
-  historique  <- reactive({ charger_historique() })
+  refresh_trigger <- reactiveVal(0)
+
+  json_actuel <- reactive({
+    refresh_trigger()
+    charger_dernier_json()
+  })
+  historique  <- reactive({
+    refresh_trigger()
+    charger_historique()
+  })
 
   observe({
     d <- json_actuel()
@@ -691,45 +758,48 @@ server <- function(input, output, session) {
   # ── MARCHÉS MONDIAUX ──────────────────────────────────────
 
   output$mr_lgm <- renderValueBox({
-    h <- historique(); if(is.null(h)||nrow(h)==0)
-      return(valueBox("N/A","LGM — TSR20 (Malaisie)",icon("tag"),color="yellow"))
-    d <- tail(h,1)
-    valueBox(paste(round(d$prix_tsr20,4),"USD/kg"),
-             paste0("LGM — TSR20 | S",d$semaine,"/",d$annee),
+    d <- json_actuel()
+    if (is.null(d)) return(valueBox("N/A","LGM — TSR20 (Malaisie)",icon("tag"),color="yellow"))
+    lgm <- as.numeric(d$prix$marches_mondiaux$lgm$prix_usd %||%
+                      d$prix$synthese$prix_actuel            %||%
+                      d$prix$prix_actuel_usd                 %||% NA)
+    sem <- d$meta$semaine %||% "?"; an <- d$meta$annee %||% "?"
+    valueBox(if(!is.na(lgm)) paste(round(lgm,4),"USD/kg") else "N/A",
+             paste0("LGM — TSR20 | S",sem,"/",an),
              icon("tag"), color="yellow")
   })
 
   output$mr_sicom <- renderValueBox({
-    h <- historique(); if(is.null(h)||nrow(h)==0)
-      return(valueBox("N/A","SICOM — TSR20 (Singapour)",icon("chart-line"),color="blue"))
-    d <- tail(h,1)
-    valueBox(if(!is.na(d$sicom_usd)) paste(d$sicom_usd,"USD/kg") else "N/A (saisir)",
+    d <- json_actuel()
+    if (is.null(d)) return(valueBox("N/A","SGX/SICOM — TSR20 | Singapour",icon("chart-line"),color="blue"))
+    val <- as.numeric(d$prix$marches_mondiaux$sicom$prix_usd %||% NA)
+    valueBox(if(!is.na(val)) paste(val,"USD/kg") else "N/A — saisir",
              "SGX/SICOM — TSR20 | Singapour",
              icon("chart-line"), color="blue")
   })
 
   output$mr_tocom <- renderValueBox({
-    h <- historique(); if(is.null(h)||nrow(h)==0)
-      return(valueBox("N/A","TOCOM — RSS3 (Tokyo)",icon("chart-line"),color="red"))
-    d <- tail(h,1)
-    valueBox(if(!is.na(d$tocom_usd)) paste(d$tocom_usd,"USD/kg") else "N/A (saisir)",
+    d <- json_actuel()
+    if (is.null(d)) return(valueBox("N/A","JPX/TOCOM — RSS3 | Tokyo",icon("chart-line"),color="red"))
+    val <- as.numeric(d$prix$marches_mondiaux$tocom$prix_usd %||% NA)
+    valueBox(if(!is.na(val)) paste(val,"USD/kg") else "N/A — saisir",
              "JPX/TOCOM — RSS3 | Tokyo",
              icon("chart-line"), color="red")
   })
 
   output$mr_shfe <- renderValueBox({
-    h <- historique(); if(is.null(h)||nrow(h)==0)
-      return(valueBox("N/A","SHFE — SCR WF (Shanghai)",icon("chart-line"),color="orange"))
-    d <- tail(h,1)
-    valueBox(if(!is.na(d$shfe_usd)) paste(d$shfe_usd,"USD/kg") else "N/A (saisir)",
+    d <- json_actuel()
+    if (is.null(d)) return(valueBox("N/A","SHFE — SCR WF/RSS3 | Shanghai",icon("chart-line"),color="orange"))
+    val <- as.numeric(d$prix$marches_mondiaux$shfe$prix_usd %||% NA)
+    valueBox(if(!is.na(val)) paste(val,"USD/kg") else "N/A — saisir",
              "SHFE — SCR WF/RSS3 | Shanghai",
              icon("chart-line"), color="orange")
   })
 
   output$mr_spread <- renderValueBox({
-    h <- historique(); if(is.null(h)||nrow(h)==0)
-      return(valueBox("N/A","Spread SICOM vs LGM",icon("arrows-alt-h"),color="purple"))
-    d <- tail(h,1); sp <- d$spread_sicom_lgm
+    d <- json_actuel()
+    if (is.null(d)) return(valueBox("N/A","Spread SICOM vs LGM",icon("arrows-alt-h"),color="purple"))
+    sp <- as.numeric(d$prix$marches_mondiaux$spread_sicom_lgm %||% NA)
     valueBox(if(!is.na(sp)) paste0(if(sp>=0)"+" else "",sp," USD/kg") else "N/A",
              "Spread SICOM vs LGM (meme grade TSR20)",
              icon("arrows-alt-h"),
@@ -737,10 +807,12 @@ server <- function(input, output, session) {
   })
 
   output$mr_date <- renderValueBox({
-    h <- historique(); if(is.null(h)||nrow(h)==0)
-      return(valueBox("N/A","Cours J-1",icon("calendar"),color="purple"))
-    valueBox(paste0("Semaine ",tail(h,1)$semaine,"/",tail(h,1)$annee),
-             "Cours decales J-1 (gratuits)",
+    d <- json_actuel()
+    if (is.null(d)) return(valueBox("N/A","Cours J-1",icon("calendar"),color="purple"))
+    dt <- d$prix$marches_mondiaux$date_cours %||% "—"
+    sem <- d$meta$semaine %||% "?"; an <- d$meta$annee %||% "?"
+    valueBox(as.character(dt),
+             paste0("Cours J-1 | S",sem,"/",an),
              icon("calendar"), color="purple")
   })
 
@@ -1482,6 +1554,139 @@ server <- function(input, output, session) {
              style="color:#666;font-size:11px;margin-top:8px;")
     )
   })
+  # ── SAISIE PRIX — Etat du message de retour ──────────────────
+  saisie_msg  <- reactiveVal(NULL)
+  saisie_type <- reactiveVal("success")
+
+  output$s_status <- renderUI({
+    msg <- saisie_msg()
+    if (is.null(msg)) return(NULL)
+    cls <- switch(saisie_type(),
+      success = "alert alert-success",
+      warning = "alert alert-warning",
+      danger  = "alert alert-danger",
+      "alert alert-info")
+    tags$div(class=cls, style="margin-top:12px;", HTML(msg))
+  })
+
+  # ── SAISIE PRIX — Pre-remplissage depuis le JSON actuel ──────
+  observeEvent(json_actuel(), {
+    d <- json_actuel()
+    if (is.null(d)) return()
+    mm <- d$prix$marches_mondiaux
+    if (is.null(mm)) return()
+    dt <- tryCatch(as.Date(mm$date_cours), error=function(e) Sys.Date()-1)
+    updateDateInput(session, "s_date", value=dt)
+    if (!is.null(mm$sicom$prix_orig))
+      updateNumericInput(session, "s_sicom", value=as.numeric(mm$sicom$prix_orig))
+    if (!is.null(mm$tocom$prix_orig))
+      updateNumericInput(session, "s_tocom", value=as.numeric(mm$tocom$prix_orig))
+    if (!is.null(mm$shfe$prix_orig))
+      updateNumericInput(session, "s_shfe",  value=as.numeric(mm$shfe$prix_orig))
+    if (!is.null(mm$tocom$taux_jpy_usd))
+      updateNumericInput(session, "s_jpy",   value=as.numeric(mm$tocom$taux_jpy_usd))
+    if (!is.null(mm$shfe$taux_cny_usd))
+      updateNumericInput(session, "s_cny",   value=as.numeric(mm$shfe$taux_cny_usd))
+  }, ignoreNULL=TRUE)
+
+  # ── SAISIE PRIX — Apercu temps reel ──────────────────────────
+  output$s_preview <- renderTable({
+    sicom <- input$s_sicom; tocom <- input$s_tocom
+    shfe  <- input$s_shfe;  jpy   <- input$s_jpy; cny <- input$s_cny
+    if (any(is.na(c(sicom, tocom, shfe, jpy, cny)))) return(NULL)
+    sicom_usd <- round(sicom / 100, 4)
+    tocom_usd <- round(tocom * jpy, 4)
+    shfe_usd  <- round((shfe / 1000) * cny, 4)
+    d   <- isolate(json_actuel())
+    lgm <- if (!is.null(d)) as.numeric(d$prix$marches_mondiaux$lgm$prix_usd %||% NA) else NA
+    data.frame(
+      Marche  = c("LGM TSR20 (ref)", "SICOM TSR20", "TOCOM RSS3", "SHFE RU"),
+      Saisie  = c(ifelse(is.na(lgm), "—", paste(round(lgm,4), "USD/kg (auto)")),
+                  paste(sicom, "cts/kg"),
+                  paste(tocom, "JPY/kg"),
+                  paste(shfe, "CNY/t")),
+      USD_kg  = c(ifelse(is.na(lgm), "—", format(lgm, nsmall=4)),
+                  format(sicom_usd, nsmall=4),
+                  format(tocom_usd, nsmall=4),
+                  format(shfe_usd,  nsmall=4))
+    )
+  }, striped=TRUE, hover=TRUE, na="—")
+
+  output$s_last_values <- renderUI({
+    d <- json_actuel()
+    if (is.null(d) || is.null(d$prix$marches_mondiaux)) return(NULL)
+    mm <- d$prix$marches_mondiaux
+    tags$div(style="color:#aaa;font-size:12px;margin-top:5px;",
+      tags$b("Valeurs actuellement en base :", style="color:#ddd;"),
+      tags$ul(style="margin-top:6px;",
+        tags$li(paste("SICOM :", mm$sicom$prix_orig %||% "—", "cts/kg")),
+        tags$li(paste("TOCOM :", mm$tocom$prix_orig %||% "—", "JPY/kg")),
+        tags$li(paste("SHFE  :", mm$shfe$prix_orig  %||% "—", "CNY/t")),
+        tags$li(paste("JPY/USD :", mm$tocom$taux_jpy_usd %||% "—")),
+        tags$li(paste("CNY/USD :", mm$shfe$taux_cny_usd  %||% "—")),
+        tags$li(paste("Date  :", mm$date_cours %||% "—"))
+      )
+    )
+  })
+
+  # ── SAISIE PRIX — Sauvegarde dans le JSON ────────────────────
+  observeEvent(input$s_save, {
+    sicom <- input$s_sicom; tocom <- input$s_tocom
+    shfe  <- input$s_shfe;  jpy   <- input$s_jpy; cny <- input$s_cny
+
+    if (any(is.na(c(sicom, tocom, shfe, jpy, cny)))) {
+      saisie_type("warning")
+      saisie_msg("&#9888; Remplissez tous les champs avant d'enregistrer.")
+      return()
+    }
+
+    fichiers <- list.files("data/processed",
+      pattern="rubbersignal_S\\d+_\\d+\\.json", full.names=TRUE)
+    if (length(fichiers) == 0) {
+      saisie_type("danger")
+      saisie_msg("&#10007; Aucun fichier JSON trouve dans data/processed/")
+      return()
+    }
+    fichier_json <- fichiers[which.max(file.mtime(fichiers))]
+
+    tryCatch({
+      d <- read_json(fichier_json, simplifyVector=FALSE)
+
+      sicom_usd <- round(sicom / 100, 4)
+      tocom_usd <- round(tocom * jpy, 4)
+      shfe_usd  <- round((shfe / 1000) * cny, 4)
+      lgm_usd   <- as.numeric(d$prix$marches_mondiaux$lgm$prix_usd %||% NA)
+      spread    <- if (!is.na(lgm_usd)) round(sicom_usd - lgm_usd, 4) else NULL
+
+      d$prix$marches_mondiaux$date_cours       <- as.character(input$s_date)
+      d$prix$marches_mondiaux$spread_sicom_lgm <- spread
+      d$prix$marches_mondiaux$sicom <- list(
+        grade="TSR20", bourse="SGX/SICOM (Singapour)", ticker="TF",
+        prix_orig=sicom, unite_orig="USD cts/kg", prix_usd=sicom_usd
+      )
+      d$prix$marches_mondiaux$tocom <- list(
+        grade="RSS3", bourse="JPX/TOCOM (Tokyo)", ticker="TRB",
+        prix_orig=tocom, unite_orig="JPY/kg", taux_jpy_usd=jpy, prix_usd=tocom_usd
+      )
+      d$prix$marches_mondiaux$shfe <- list(
+        grade="SCR WF / RSS3", bourse="SHFE (Shanghai)", ticker="RU",
+        prix_orig=shfe, unite_orig="CNY/tonne", taux_cny_usd=cny, prix_usd=shfe_usd
+      )
+
+      write_json(d, fichier_json, auto_unbox=TRUE, pretty=TRUE)
+      refresh_trigger(refresh_trigger() + 1)
+
+      saisie_type("success")
+      saisie_msg(paste0("&#10003; Sauvegarde dans <b>", basename(fichier_json),
+                        "</b> a ", format(Sys.time(), "%H:%M:%S")))
+      showNotification("Cours enregistres avec succes !", type="message", duration=4)
+
+    }, error=function(e) {
+      saisie_type("danger")
+      saisie_msg(paste0("&#10007; Erreur : ", conditionMessage(e)))
+    })
+  })
+
 }
 shinyApp(ui = ui, server = server)
 
