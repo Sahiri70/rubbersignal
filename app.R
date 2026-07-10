@@ -152,8 +152,12 @@ charger_historique <- function(dossier = "data/processed") {
       mc_bear_4sem  = as.numeric(d$monte_carlo$resultats$S4$scenario_bear %||% NA),
       mc_bull_4sem  = as.numeric(d$monte_carlo$resultats$S4$scenario_bull %||% NA),
       wti           = as.numeric(d$signaux_faibles$module5_shipping$wti_valeur %||% NA),
-      rsci_pct       = as.numeric(d$prix$rsci$rsci_pct       %||% NA),
-      rsci_ecart_pts = as.numeric(d$prix$rsci$ecart_pts      %||% NA)
+      rsci_pct         = as.numeric(d$prix$rsci$rsci_pct                          %||% NA),
+      rsci_ecart_pts   = as.numeric(d$prix$rsci$ecart_pts                         %||% NA),
+      sicom_usd        = as.numeric(d$prix$marches_mondiaux$sicom$prix_usd        %||% NA),
+      tocom_usd        = as.numeric(d$prix$marches_mondiaux$tocom$prix_usd        %||% NA),
+      shfe_usd         = as.numeric(d$prix$marches_mondiaux$shfe$prix_usd         %||% NA),
+      spread_sicom_lgm = as.numeric(d$prix$marches_mondiaux$spread_sicom_lgm      %||% NA)
     )
   })
   historique %>% arrange(annee, semaine) %>% filter(!is.na(prix_tsr20))
@@ -214,6 +218,7 @@ ui <- dashboardPage(
     width = 280,
     sidebarMenu(
       menuItem("Dashboard",          tabName="dashboard",    icon=icon("tachometer-alt")),
+      menuItem("Marches Mondiaux",   tabName="marches",      icon=icon("globe")),
       menuItem("Correlations",       tabName="correlations", icon=icon("project-diagram")),
       menuItem("Simulateur",         tabName="simulateur",   icon=icon("chart-line")),
       menuItem("Scenarios",          tabName="scenarios",    icon=icon("cloud-rain")),
@@ -295,6 +300,33 @@ ui <- dashboardPage(
               plotlyOutput("g_devises",height="300px")),
           box(title="Monte Carlo — Scenario central 4 sem.",status="warning",width=6,height=360,
               plotlyOutput("g_mc_hist",height="300px"))
+        )
+      ),
+
+      # MARCHÉS MONDIAUX
+      tabItem(tabName="marches",
+        fluidRow(
+          valueBoxOutput("mr_lgm",   width=3),
+          valueBoxOutput("mr_sicom", width=3),
+          valueBoxOutput("mr_tocom", width=3),
+          valueBoxOutput("mr_shfe",  width=3)
+        ),
+        fluidRow(
+          valueBoxOutput("mr_spread", width=6),
+          valueBoxOutput("mr_date",   width=6)
+        ),
+        fluidRow(
+          box(title="Evolution historique — 4 marches (USD/kg)",
+              status="warning", width=12, height=420,
+              plotlyOutput("mr_g_hist", height="360px"))
+        ),
+        fluidRow(
+          box(title="Tableau comparatif — Semaine en cours",
+              status="primary", width=7, height=340,
+              tableOutput("mr_table")),
+          box(title="Note methodologique",
+              status="info", width=5, height=340,
+              uiOutput("mr_info"))
         )
       ),
 
@@ -654,6 +686,131 @@ server <- function(input, output, session) {
       layout(xaxis=list(title="Semaine",gridcolor="#334",tickangle=-45),
              yaxis=list(title="Prix (USD/kg)",gridcolor="#334",tickformat=".3f"),
              margin=list(l=60,r=20,t=10,b=80))
+  })
+
+  # ── MARCHÉS MONDIAUX ──────────────────────────────────────
+
+  output$mr_lgm <- renderValueBox({
+    h <- historique(); if(is.null(h)||nrow(h)==0)
+      return(valueBox("N/A","LGM — TSR20 (Malaisie)",icon("tag"),color="yellow"))
+    d <- tail(h,1)
+    valueBox(paste(round(d$prix_tsr20,4),"USD/kg"),
+             paste0("LGM — TSR20 | S",d$semaine,"/",d$annee),
+             icon("tag"), color="yellow")
+  })
+
+  output$mr_sicom <- renderValueBox({
+    h <- historique(); if(is.null(h)||nrow(h)==0)
+      return(valueBox("N/A","SICOM — TSR20 (Singapour)",icon("chart-line"),color="blue"))
+    d <- tail(h,1)
+    valueBox(if(!is.na(d$sicom_usd)) paste(d$sicom_usd,"USD/kg") else "N/A (saisir)",
+             "SGX/SICOM — TSR20 | Singapour",
+             icon("chart-line"), color="blue")
+  })
+
+  output$mr_tocom <- renderValueBox({
+    h <- historique(); if(is.null(h)||nrow(h)==0)
+      return(valueBox("N/A","TOCOM — RSS3 (Tokyo)",icon("chart-line"),color="red"))
+    d <- tail(h,1)
+    valueBox(if(!is.na(d$tocom_usd)) paste(d$tocom_usd,"USD/kg") else "N/A (saisir)",
+             "JPX/TOCOM — RSS3 | Tokyo",
+             icon("chart-line"), color="red")
+  })
+
+  output$mr_shfe <- renderValueBox({
+    h <- historique(); if(is.null(h)||nrow(h)==0)
+      return(valueBox("N/A","SHFE — SCR WF (Shanghai)",icon("chart-line"),color="orange"))
+    d <- tail(h,1)
+    valueBox(if(!is.na(d$shfe_usd)) paste(d$shfe_usd,"USD/kg") else "N/A (saisir)",
+             "SHFE — SCR WF/RSS3 | Shanghai",
+             icon("chart-line"), color="orange")
+  })
+
+  output$mr_spread <- renderValueBox({
+    h <- historique(); if(is.null(h)||nrow(h)==0)
+      return(valueBox("N/A","Spread SICOM vs LGM",icon("arrows-alt-h"),color="purple"))
+    d <- tail(h,1); sp <- d$spread_sicom_lgm
+    valueBox(if(!is.na(sp)) paste0(if(sp>=0)"+" else "",sp," USD/kg") else "N/A",
+             "Spread SICOM vs LGM (meme grade TSR20)",
+             icon("arrows-alt-h"),
+             color=if(is.na(sp))"purple" else if(abs(sp)<0.05)"green" else "orange")
+  })
+
+  output$mr_date <- renderValueBox({
+    h <- historique(); if(is.null(h)||nrow(h)==0)
+      return(valueBox("N/A","Cours J-1",icon("calendar"),color="purple"))
+    valueBox(paste0("Semaine ",tail(h,1)$semaine,"/",tail(h,1)$annee),
+             "Cours decales J-1 (gratuits)",
+             icon("calendar"), color="purple")
+  })
+
+  output$mr_g_hist <- renderPlotly({
+    h <- historique()
+    if(is.null(h)||nrow(h)==0) return(NULL)
+    fig <- plot_ly()
+    # LGM TSR20 — toujours present
+    fig <- fig %>% add_lines(x=~h$date_label, y=~h$prix_tsr20,
+                              line=list(color="#f39c12",width=2.5), name="LGM TSR20 (USD/kg)",
+                              hovertemplate="%{x}|LGM:%{y:.4f}<extra></extra>")
+    # SICOM TSR20
+    hs <- h %>% filter(!is.na(sicom_usd))
+    if(nrow(hs)>0)
+      fig <- fig %>% add_lines(x=~hs$date_label, y=~hs$sicom_usd,
+                                line=list(color="#3498db",width=2), name="SICOM TSR20 (USD/kg)",
+                                hovertemplate="%{x}|SICOM:%{y:.4f}<extra></extra>")
+    # TOCOM RSS3
+    ht <- h %>% filter(!is.na(tocom_usd))
+    if(nrow(ht)>0)
+      fig <- fig %>% add_lines(x=~ht$date_label, y=~ht$tocom_usd,
+                                line=list(color="#e74c3c",width=2), name="TOCOM RSS3 (USD/kg)",
+                                hovertemplate="%{x}|TOCOM:%{y:.4f}<extra></extra>")
+    # SHFE RU
+    hh <- h %>% filter(!is.na(shfe_usd))
+    if(nrow(hh)>0)
+      fig <- fig %>% add_lines(x=~hh$date_label, y=~hh$shfe_usd,
+                                line=list(color="#e67e22",width=2,dash="dash"), name="SHFE RU (USD/kg)",
+                                hovertemplate="%{x}|SHFE:%{y:.4f}<extra></extra>")
+    fig %>% theme_rs() %>%
+      layout(xaxis=list(title="Semaine",gridcolor="#334",tickangle=-45),
+             yaxis=list(title="Prix (USD/kg)",gridcolor="#334",tickformat=".4f"),
+             legend=list(bgcolor="rgba(0,0,0,0.3)",x=0.01,y=0.99),
+             margin=list(l=60,r=20,t=10,b=80))
+  })
+
+  output$mr_table <- renderTable({
+    h <- historique()
+    if(is.null(h)||nrow(h)==0) return(NULL)
+    d <- tail(h,1)
+    tibble(
+      Bourse  = c("LGM (Malaisie)","SGX/SICOM (Singapour)","JPX/TOCOM (Tokyo)","SHFE (Shanghai)"),
+      Grade   = c("TSR20","TSR20","RSS3","SCR WF / RSS3"),
+      Devise  = c("USD/kg","USD cts/kg → USD/kg","JPY/kg → USD/kg","CNY/t → USD/kg"),
+      `Prix USD/kg` = c(
+        if(!is.na(d$prix_tsr20)) round(d$prix_tsr20,4) else NA,
+        if(!is.na(d$sicom_usd))  round(d$sicom_usd,4)  else NA,
+        if(!is.na(d$tocom_usd))  round(d$tocom_usd,4)  else NA,
+        if(!is.na(d$shfe_usd))   round(d$shfe_usd,4)   else NA
+      ),
+      Ticker  = c("—","TF","TRB","RU"),
+      Source  = c("lgm.gov.my","SGX-TF1!","TOCOM-TRB1!","SHFE-RU1!")
+    )
+  }, striped=TRUE, hover=TRUE, bordered=FALSE,
+     style="color:#eee;background:#16213e;", na="—")
+
+  output$mr_info <- renderUI({
+    tags$div(style="padding:15px;font-size:13px;line-height:1.7;color:#aaa;",
+      tags$p(tags$b("Cours décalés J-1 — gratuits", style="color:#eee;")),
+      tags$p("Les trois bourses affichent leurs cours avec un décalage de 24h à titre gratuit via TradingView."),
+      tags$hr(style="border-color:#334;"),
+      tags$p(tags$b("Grades et comparabilité", style="color:#eee;")),
+      tags$p("Le SICOM et LGM cotent le même grade (TSR20) — le spread entre les deux reflète les frais de transport et l'arbitrage Singapour/Malaisie."),
+      tags$p("Le TOCOM cote le RSS3 (feuille fumée, qualité supérieure) : naturellement plus cher que le TSR20."),
+      tags$p("Le SHFE cote le SCR WF (caoutchouc chinois standard) ou RSS3 importé — libellé en CNY."),
+      tags$hr(style="border-color:#334;"),
+      tags$p(tags$b("Mise à jour", style="color:#eee;")),
+      tags$p("Saisir les 3 cours dans script 01 chaque lundi avant de lancer le pipeline.",
+             style="color:#888;font-size:12px;")
+    )
   })
 
   # ── CORRELATIONS ─────────────────────────────────────────
