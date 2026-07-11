@@ -223,6 +223,39 @@ charger_news <- function() {
       url       = "https://news.google.com/rss/search?q=rubber+conference+exhibition+IRSG+DKT+salon&hl=en-US&gl=US&ceid=US:en",
       categorie = "Salons & Evenements",
       couleur   = "#2ecc71"
+    ),
+    # ── Presse africaine (français) ──────────────────────────────
+    list(
+      url       = "https://www.agenceecofin.com/hevea?format=feed&type=rss",
+      categorie = "Afrique (FR)",
+      couleur   = "#9b59b6"
+    ),
+    list(
+      url       = "https://news.google.com/rss/search?q=caoutchouc+hevea+Afrique+Ivoire&hl=fr&gl=FR&ceid=FR:fr",
+      categorie = "Afrique (FR)",
+      couleur   = "#9b59b6"
+    ),
+    # ── Presse brésilienne (português) ───────────────────────────
+    list(
+      url       = "https://apabor.org.br/feed",
+      categorie = "Bresil (PT)",
+      couleur   = "#1abc9c"
+    ),
+    list(
+      url       = "https://news.google.com/rss/search?q=borracha+natural+Brasil+hevea&hl=pt-BR&gl=BR&ceid=BR:pt-419",
+      categorie = "Bresil (PT)",
+      couleur   = "#1abc9c"
+    ),
+    # ── Presse spécialisée européenne (english) ──────────────────
+    list(
+      url       = "https://www.european-rubber-journal.com/section/1/news.rss",
+      categorie = "Europe — ERJ",
+      couleur   = "#e67e22"
+    ),
+    list(
+      url       = "https://whatnextrubber.com/feed",
+      categorie = "Europe — ERJ",
+      couleur   = "#e67e22"
     )
   )
 
@@ -689,12 +722,19 @@ ui <- dashboardPage(
             fluidRow(
               column(4,
                 selectInput("news_cat", NULL,
-                  choices = c(
-                    "All categories"        = "ALL",
-                    "Prix & Marches"        = "Prix & Marches",
-                    "Geopolitique & Supply" = "Geopolitique & Supply",
-                    "Industrie & Manuf."    = "Industrie & Manuf.",
-                    "Salons & Evenements"   = "Salons & Evenements"
+                  choices = list(
+                    "Toutes"      = list("All categories" = "ALL"),
+                    "Thematique"  = list(
+                      "Prix & Marches"        = "Prix & Marches",
+                      "Geopolitique & Supply" = "Geopolitique & Supply",
+                      "Industrie & Manuf."    = "Industrie & Manuf.",
+                      "Salons & Evenements"   = "Salons & Evenements"
+                    ),
+                    "Regional"    = list(
+                      "Afrique (FR)"  = "Afrique (FR)",
+                      "Bresil (PT)"   = "Bresil (PT)",
+                      "Europe — ERJ"  = "Europe — ERJ"
+                    )
                   ),
                   selected = "ALL", width = "100%"
                 )
