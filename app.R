@@ -788,7 +788,8 @@ ui <- dashboardPage(
           column(12,
             uiOutput("news_cards")
           )
-        ),
+        )
+      ),   # ← ferme tabItem("news")
 
       # ── SIGNAUX FAIBLES ──────────────────────────────────────────
       tabItem(tabName="signaux",
