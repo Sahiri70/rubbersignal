@@ -318,6 +318,32 @@ charger_news <- function() {
     distinct(titre, .keep_all = TRUE)
 }
 
+# ── Helper UI : barre de score colorée ───────────────────────
+barre_score <- function(score, label = NULL) {
+  s   <- if (is.null(score) || is.na(suppressWarnings(as.numeric(score)))) 0
+         else min(100, max(0, as.numeric(score)))
+  col <- if (s >= 65) "#2ecc71" else if (s >= 50) "#f39c12" else "#e74c3c"
+  dir <- if (s >= 65) "Favorable" else if (s >= 50) "Neutre" else "Defavorable"
+  tags$div(
+    style = "margin:4px 0 8px 0;",
+    if (!is.null(label))
+      tags$div(style = "color:#888;font-size:11px;margin-bottom:2px;", label),
+    tags$div(
+      style = "display:flex;justify-content:space-between;margin-bottom:3px;",
+      tags$span(style = "color:#eee;font-size:12px;font-weight:bold;",
+                paste0(round(s), " / 100")),
+      tags$span(style = paste0("color:", col, ";font-size:11px;"), dir)
+    ),
+    tags$div(
+      style = "height:5px;background:#2a2a3e;border-radius:3px;",
+      tags$div(style = paste0(
+        "width:", s, "%;height:100%;background:", col,
+        ";border-radius:3px;"
+      ))
+    )
+  )
+}
+
 theme_rs <- function(fig) {
   fig %>% layout(
     paper_bgcolor="#16213e", plot_bgcolor="#16213e",
@@ -337,6 +363,7 @@ ui <- dashboardPage(
     sidebarMenu(
       menuItem("Dashboard",          tabName="dashboard",    icon=icon("tachometer-alt")),
       menuItem("Marches Mondiaux",   tabName="marches",      icon=icon("globe")),
+      menuItem("Signaux Faibles",    tabName="signaux",      icon=icon("exclamation-triangle")),
       menuItem("Correlations",       tabName="correlations", icon=icon("project-diagram")),
       menuItem("Simulateur",         tabName="simulateur",   icon=icon("chart-line")),
       menuItem("Scenarios",          tabName="scenarios",    icon=icon("cloud-rain")),
@@ -761,6 +788,44 @@ ui <- dashboardPage(
           column(12,
             uiOutput("news_cards")
           )
+        ),
+
+      # ── SIGNAUX FAIBLES ──────────────────────────────────────────
+      tabItem(tabName="signaux",
+
+        # ── Ligne 1 : Pre-RSI + 4 indicateurs clés ───────────────
+        fluidRow(
+          valueBoxOutput("sf_pre_rsi",  width=4),
+          valueBoxOutput("sf_offre",    width=2),
+          valueBoxOutput("sf_demande",  width=2),
+          valueBoxOutput("sf_terrain",  width=2),
+          valueBoxOutput("sf_geo",      width=2)
+        ),
+
+        # ── Ligne 2 : Météo + Devises + Terrain CI ────────────────
+        fluidRow(
+          box(title="M1 — Météo zones productrices",
+              status="info", solidHeader=TRUE, width=4,
+              uiOutput("sf_meteo_detail")),
+          box(title="M2 — Devises (USD/CNY · MYR · FCFA)",
+              status="primary", solidHeader=TRUE, width=4,
+              uiOutput("sf_devises_detail")),
+          box(title="M6 — Terrain CI  ★ Exclusif RubberSignal",
+              status="warning", solidHeader=TRUE, width=4,
+              uiOutput("sf_terrain_detail"))
+        ),
+
+        # ── Ligne 3 : PMI + Shipping + Stocks ────────────────────
+        fluidRow(
+          box(title="M3 — PMI Manufacturing & Demande aval",
+              status="success", solidHeader=TRUE, width=4,
+              uiOutput("sf_pmi_detail")),
+          box(title="M5 — Shipping / Fret maritime",
+              status="danger", solidHeader=TRUE, width=4,
+              uiOutput("sf_shipping_detail")),
+          box(title="M4 — Stocks mondiaux",
+              status="warning", solidHeader=TRUE, width=4,
+              uiOutput("sf_stocks_detail"))
         )
       )
     )
@@ -1849,6 +1914,313 @@ server <- function(input, output, session) {
       saisie_type("danger")
       saisie_msg(paste0("&#10007; Erreur : ", conditionMessage(e)))
     })
+  })
+
+  # ── SIGNAUX FAIBLES ───────────────────────────────────────────
+
+  # Helper interne : couleur selon score
+  sf_col <- function(score) {
+    s <- suppressWarnings(as.numeric(score))
+    if (is.na(s)) return("orange")
+    if (s >= 65) "green" else if (s >= 50) "yellow" else "red"
+  }
+
+  # Pre-RSI — score composite
+  output$sf_pre_rsi <- renderValueBox({
+    d <- json_actuel(); sf <- d$signaux_faibles
+    if (is.null(d) || is.null(sf))
+      return(valueBox("N/A", "Pre-RSI", icon("tachometer-alt"), color="orange"))
+    score  <- as.numeric(sf$pre_rsi$score  %||% NA)
+    signal <- sf$pre_rsi$signal %||% "?"
+    valueBox(
+      if (!is.na(score)) paste0(score, " / 100") else "N/A",
+      paste0("Pre-RSI — ", signal),
+      icon("tachometer-alt"), color = sf_col(score)
+    )
+  })
+
+  output$sf_offre <- renderValueBox({
+    d <- json_actuel(); sf <- d$signaux_faibles
+    if (is.null(d) || is.null(sf))
+      return(valueBox("N/A", "M1 Offre mondiale", icon("cloud-rain"), color="orange"))
+    score <- as.numeric(sf$module1_meteo$score_offre_mondiale %||% NA)
+    valueBox(
+      if (!is.na(score)) paste0(score, "/100") else "N/A",
+      "M1 Offre mondiale", icon("cloud-rain"), color = sf_col(score)
+    )
+  })
+
+  output$sf_demande <- renderValueBox({
+    d <- json_actuel(); sf <- d$signaux_faibles
+    if (is.null(d) || is.null(sf))
+      return(valueBox("N/A", "M3 Demande aval", icon("chart-line"), color="orange"))
+    score <- as.numeric(sf$module3_demande_aval$score_demande %||% NA)
+    valueBox(
+      if (!is.na(score)) paste0(score, "/100") else "N/A",
+      "M3 Demande aval", icon("chart-line"), color = sf_col(score)
+    )
+  })
+
+  output$sf_terrain <- renderValueBox({
+    d <- json_actuel(); sf <- d$signaux_faibles
+    if (is.null(d) || is.null(sf))
+      return(valueBox("N/A", "M6 Terrain CI", icon("map-marker-alt"), color="orange"))
+    tc   <- sf$module6_terrain_ci
+    prix <- as.numeric(tc$prix_bord_champ_fcfa %||% NA)
+    sent <- as.numeric(tc$sentiment_planteurs   %||% NA)
+    col  <- if (!is.na(sent) && sent >= 4) "green" else if (!is.na(sent) && sent >= 3) "yellow" else "red"
+    valueBox(
+      if (!is.na(prix)) paste0(round(prix), " FCFA/kg") else "N/A",
+      "M6 Terrain CI", icon("map-marker-alt"), color = col
+    )
+  })
+
+  output$sf_geo <- renderValueBox({
+    d <- json_actuel(); sf <- d$signaux_faibles
+    if (is.null(d) || is.null(sf))
+      return(valueBox("N/A", "M7 Geopolitique", icon("globe-africa"), color="orange"))
+    nb  <- as.integer(sf$module7_geopolitique$nb_articles %||% 0)
+    col <- if (nb == 0) "green" else if (nb <= 2) "yellow" else "red"
+    valueBox(
+      paste0(nb, " article", if (nb != 1) "s" else ""),
+      "M7 Geopolitique", icon("globe-africa"), color = col
+    )
+  })
+
+  # M1 — Météo détail
+  output$sf_meteo_detail <- renderUI({
+    d <- json_actuel(); sf <- d$signaux_faibles
+    if (is.null(d) || is.null(sf))
+      return(tags$p(style="color:#555;", "Donnees indisponibles"))
+    zones <- sf$module1_meteo$zones
+
+    couleur_sig <- function(s) switch(s %||% "",
+      "Favorable"        = "#2ecc71",
+      "Neutre"           = "#f39c12",
+      "Defavorable"      = "#e74c3c",
+      "Tres defavorable" = "#c0392b", "#888")
+
+    drapeaux <- c("Cote d'Ivoire"="#1F=CI 🇨🇮", "Thaïlande"="🇹🇭",
+                  "Malaisie"="🇲🇾", "Indonésie"="🇮🇩")
+    emoji <- c("Côte d'Ivoire"="🇨🇮","Thaïlande"="🇹🇭",
+               "Malaisie"="🇲🇾","Indonésie"="🇮🇩")
+
+    rows <- imap(emoji, function(flag, pays) {
+      z <- zones[[pays]]; if (is.null(z)) return(NULL)
+      score <- as.numeric(z$score_production %||% 0)
+      sig   <- z$signal_production %||% "?"
+      pluie <- as.numeric(z$pluie_30j_mm   %||% NA)
+      temp  <- as.numeric(z$temp_moyenne_c  %||% NA)
+      tags$div(style = "margin-bottom:11px;",
+        tags$div(style = "display:flex;justify-content:space-between;",
+          tags$span(style = "color:#eee;font-size:12px;font-weight:bold;",
+                    paste(flag, pays)),
+          tags$span(style = paste0("color:", couleur_sig(sig), ";font-size:11px;"), sig)
+        ),
+        tags$div(style = "color:#555;font-size:10px;margin:1px 0 2px 0;",
+          paste0(if (!is.na(pluie)) paste0(pluie, " mm/30j") else "",
+                 if (!is.na(temp))  paste0("  |  ", temp, " °C") else "")
+        ),
+        barre_score(score)
+      )
+    })
+
+    score_g <- as.numeric(sf$module1_meteo$score_offre_mondiale %||% NA)
+    sig_g   <- sf$module1_meteo$signal_offre %||% ""
+
+    tags$div(
+      rows,
+      tags$hr(style = "border-color:#2a2a3e;margin:6px 0;"),
+      tags$div(style = "color:#aaa;font-size:11px;margin-bottom:4px;", sig_g),
+      barre_score(score_g, "Score offre mondiale pondere")
+    )
+  })
+
+  # M2 — Devises
+  output$sf_devises_detail <- renderUI({
+    d <- json_actuel(); sf <- d$signaux_faibles
+    if (is.null(d) || is.null(sf))
+      return(tags$p(style="color:#555;", "Donnees indisponibles"))
+    dev <- sf$module2_devises
+
+    ligne_dev <- function(libelle, valeur, signal, ref_val) {
+      val_n <- suppressWarnings(as.numeric(valeur))
+      ecart <- if (!is.na(val_n) && !is.null(ref_val))
+        round((val_n - ref_val) / ref_val * 100, 2) else NA
+      col <- if (!is.na(ecart) && ecart < -2) "#2ecc71"
+             else if (!is.na(ecart) && ecart > 2) "#e74c3c"
+             else "#f39c12"
+      tags$div(style = "margin-bottom:13px;",
+        tags$div(style = "display:flex;justify-content:space-between;",
+          tags$span(style = "color:#888;font-size:12px;", libelle),
+          tags$span(style = "color:#eee;font-size:14px;font-weight:bold;",
+                    as.character(valeur %||% "N/A"))
+        ),
+        tags$div(style = paste0("color:", col, ";font-size:11px;margin-top:2px;"),
+          signal %||% "")
+      )
+    }
+
+    tags$div(
+      ligne_dev("USD / CNY", dev$USD_CNY, dev$signal_cny, 7.10),
+      ligne_dev("USD / MYR", dev$USD_MYR, dev$signal_myr, 4.40),
+      tags$hr(style = "border-color:#2a2a3e;"),
+      tags$div(style = "display:flex;justify-content:space-between;margin-bottom:6px;",
+        tags$span(style = "color:#888;font-size:12px;", "USD / XOF (FCFA)"),
+        tags$span(style = "color:#eee;font-size:13px;",
+                  as.character(dev$USD_XOF %||% "N/A"))
+      ),
+      tags$div(style = "display:flex;justify-content:space-between;",
+        tags$span(style = "color:#888;font-size:12px;", "USD / IDR"),
+        tags$span(style = "color:#eee;font-size:13px;",
+                  as.character(dev$USD_IDR %||% "N/A"))
+      ),
+      tags$p(style = "color:#444;font-size:10px;margin-top:8px;",
+             paste0("Source : ", dev$source %||% "?",
+                    "  |  ", dev$date %||% ""))
+    )
+  })
+
+  # M6 — Terrain CI
+  output$sf_terrain_detail <- renderUI({
+    d <- json_actuel(); sf <- d$signaux_faibles
+    if (is.null(d) || is.null(sf))
+      return(tags$p(style="color:#555;", "Donnees indisponibles"))
+    tc <- sf$module6_terrain_ci
+
+    sent <- suppressWarnings(as.numeric(tc$sentiment_planteurs %||% 0))
+    etoiles <- paste0(
+      paste(rep("★", min(5, max(0, round(sent)))), collapse=""),
+      paste(rep("☆", 5 - min(5, max(0, round(sent)))), collapse="")
+    )
+
+    ligne <- function(lbl, val, suf="") {
+      tags$div(style="display:flex;justify-content:space-between;margin-bottom:5px;",
+        tags$span(style="color:#888;font-size:12px;", lbl),
+        tags$span(style="color:#eee;font-size:12px;font-weight:bold;",
+                  paste0(as.character(val %||% "N/A"), suf))
+      )
+    }
+
+    tags$div(
+      ligne("Prix bord champ APROMAC", tc$prix_bord_champ_fcfa, " FCFA/kg"),
+      if (!is.null(tc$prix_marche_reel_fcfa) && !is.na(tc$prix_marche_reel_fcfa))
+        ligne("Prix marche reel", tc$prix_marche_reel_fcfa, " FCFA/kg"),
+      ligne("Disponibilite latex",   tc$statut_disponibilite),
+      ligne("Cooperatives",          tc$activite_cooperatives),
+      ligne("Saison de saignee",     tc$saison_saignee),
+      ligne("Tension marche local",  tc$tension_marche_local),
+      tags$div(style="margin:8px 0 4px 0;",
+        tags$span(style="color:#888;font-size:12px;", "Sentiment planteurs  "),
+        tags$span(style="color:#f39c12;font-size:16px;letter-spacing:2px;", etoiles),
+        tags$span(style="color:#555;font-size:11px;", paste0("  ", round(sent), "/5"))
+      ),
+      if (!is.null(tc$note_terrain) && nchar(tc$note_terrain %||% "") > 3)
+        tags$p(style="color:#666;font-size:11px;font-style:italic;margin-top:6px;border-left:2px solid #f39c12;padding-left:6px;",
+               tc$note_terrain)
+    )
+  })
+
+  # M3 — PMI & Demande
+  output$sf_pmi_detail <- renderUI({
+    d <- json_actuel(); sf <- d$signaux_faibles
+    if (is.null(d) || is.null(sf))
+      return(tags$p(style="color:#555;", "Donnees indisponibles"))
+    pmi   <- sf$module3_demande_aval$pmi
+    score <- as.numeric(sf$module3_demande_aval$score_demande %||% 50)
+    sig   <- sf$module3_demande_aval$signal_demande %||% ""
+
+    flags_pmi <- c(USA="🇺🇸", Europe="🇪🇺", Chine="🇨🇳", Inde="🇮🇳", Japon="🇯🇵")
+
+    pmi_rows <- imap(flags_pmi, function(flag, pays) {
+      p <- pmi[[pays]]; if (is.null(p)) return(NULL)
+      val <- suppressWarnings(as.numeric(p$valeur %||% NA))
+      col <- if (!is.na(val) && val >= 52) "#2ecc71"
+             else if (!is.na(val) && val >= 49) "#f39c12"
+             else "#e74c3c"
+      tags$div(style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;",
+        tags$span(style="color:#aaa;font-size:12px;min-width:80px;",
+                  paste(flag, pays)),
+        tags$span(style=paste0("color:",col,";font-size:13px;font-weight:bold;"),
+                  if (!is.na(val)) as.character(val) else "N/A"),
+        tags$span(style="color:#555;font-size:10px;",
+                  p$signal %||% "")
+      )
+    })
+
+    tags$div(
+      tags$p(style="color:#555;font-size:10px;margin-bottom:6px;",
+             "PMI Manufacturing — seuil neutre = 50"),
+      pmi_rows,
+      tags$hr(style="border-color:#2a2a3e;margin:8px 0;"),
+      barre_score(score, "Score demande composite"),
+      tags$p(style="color:#aaa;font-size:11px;margin-top:4px;", sig)
+    )
+  })
+
+  # M5 — Shipping
+  output$sf_shipping_detail <- renderUI({
+    d <- json_actuel(); sf <- d$signaux_faibles
+    if (is.null(d) || is.null(sf))
+      return(tags$p(style="color:#555;", "Donnees indisponibles"))
+    sh <- sf$module5_shipping
+
+    ligne <- function(lbl, val, suf="") {
+      tags$div(style="display:flex;justify-content:space-between;margin-bottom:8px;",
+        tags$span(style="color:#888;font-size:12px;", lbl),
+        tags$span(style="color:#eee;font-size:14px;font-weight:bold;",
+                  paste0(as.character(val %||% "N/A"), suf))
+      )
+    }
+
+    tags$div(
+      ligne("Petrole WTI",           sh$wti_valeur, " USD/baril"),
+      ligne("Baltic Dry Index (BDI)", sh$bdi_valeur, " pts"),
+      tags$hr(style="border-color:#2a2a3e;margin:4px 0 8px 0;"),
+      ligne("Fret CI → Europe",      sh$tarif_ci_eu_usd_tonne, " USD/tonne"),
+      ligne("Delai Abidjan → Rotterdam", sh$delai_abidjan_rotterdam, " jours"),
+      tags$hr(style="border-color:#2a2a3e;margin:4px 0 8px 0;"),
+      tags$p(style="color:#aaa;font-size:11px;", sh$signal_fret %||% ""),
+      tags$p(style="color:#444;font-size:10px;", sh$source %||% "")
+    )
+  })
+
+  # M4 — Stocks
+  output$sf_stocks_detail <- renderUI({
+    d <- json_actuel(); sf <- d$signaux_faibles
+    if (is.null(d) || is.null(sf))
+      return(tags$p(style="color:#555;", "Donnees indisponibles"))
+    st <- sf$module4_stocks
+
+    pays_list <- list(
+      list(flag="🇲🇾", nom="Malaisie",      t=st$malaisie_tonnes,   m=st$malaisie_mois,   td=st$malaisie_tendance),
+      list(flag="🇹🇭", nom="Thaïlande",     t=st$thailande_tonnes,  m=st$thailande_mois,  td=st$thailande_tendance),
+      list(flag="🇮🇩", nom="Indonesie",     t=st$indonesie_tonnes,  m=st$indonesie_mois,  td=st$indonesie_tendance),
+      list(flag="🇨🇮", nom="Cote d'Ivoire", t=st$ci_tonnes,         m=st$ci_mois,         td=st$ci_tendance)
+    )
+
+    rows <- map(pays_list, function(p) {
+      val_txt <- if (is.null(p$t) || is.na(p$t)) "A saisir"
+                 else paste0(format(as.integer(p$t), big.mark=" "), " t")
+      col     <- if (is.null(p$t) || is.na(p$t)) "#444" else "#eee"
+      tags$div(style="display:flex;justify-content:space-between;margin-bottom:6px;",
+        tags$span(style="color:#aaa;font-size:12px;",
+                  paste(p$flag, p$nom, "—", p$m %||% "")),
+        tags$span(style=paste0("color:",col,";font-size:12px;font-weight:bold;"), val_txt)
+      )
+    })
+
+    tags$div(
+      rows,
+      tags$hr(style="border-color:#2a2a3e;margin:6px 0;"),
+      tags$div(style="display:flex;justify-content:space-between;",
+        tags$span(style="color:#888;font-size:12px;", "Port Abidjan"),
+        tags$span(style="color:#eee;font-size:12px;",
+          paste0(st$abidjan_statut %||% "?", " — ", st$abidjan_delai_jours %||% "?", "j"))
+      ),
+      tags$p(style="color:#444;font-size:10px;margin-top:8px;",
+             st$note %||% "Donnees a completer mensuellement")
+    )
   })
 
   # ── RUBBER NEWS ───────────────────────────────────────────────
