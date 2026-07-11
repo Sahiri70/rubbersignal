@@ -220,7 +220,12 @@ charger_news <- function() {
       couleur   = "#3498db"
     ),
     list(
-      url       = "https://news.google.com/rss/search?q=rubber+conference+exhibition+IRSG+DKT+salon&hl=en-US&gl=US&ceid=US:en",
+      url       = "https://news.google.com/rss/search?q=RubberTech+OR+%22Global+Polymer+Summit%22+OR+%22Tire+Technology+Expo%22+OR+%22DKT+2027%22+OR+%22rubber+conference%22+OR+%22PlastPrintPack%22+OR+%22IRC+2027%22+OR+%22rubber+expo%22&hl=en-US&gl=US&ceid=US:en",
+      categorie = "Salons & Evenements",
+      couleur   = "#2ecc71"
+    ),
+    list(
+      url       = "https://news.google.com/rss/search?q=PlastPrintPack+Abidjan+OR+%22West+Africa+PlastPrintPack%22+OR+caoutchouc+salon+Afrique+OR+%22AfroPlast%22+OR+plastique+exposition+Afrique&hl=fr&gl=FR&ceid=FR:fr",
       categorie = "Salons & Evenements",
       couleur   = "#2ecc71"
     ),
