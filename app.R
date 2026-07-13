@@ -12,6 +12,7 @@ library(lubridate)
 library(leaflet)
 library(leaflet.extras)
 library(xml2)
+library(httr2)
 
 # DONNÉES STATIQUES
 
@@ -771,19 +772,27 @@ ui <- dashboardPage(
                   selected = "ALL", width = "100%"
                 )
               ),
-              column(3,
+              column(2,
                 actionButton("news_refresh", "Refresh",
                   icon  = icon("sync"),
                   class = "btn btn-warning btn-sm",
                   style = "margin-top:25px;"
                 )
               ),
-              column(5,
+              column(2,
+                actionButton("news_ai_btn", "Résumé IA",
+                  icon  = icon("robot"),
+                  class = "btn btn-info btn-sm",
+                  style = "margin-top:25px;"
+                )
+              ),
+              column(4,
                 tags$div(style="margin-top:30px;", uiOutput("news_last_update"))
               )
             )
           )
         ),
+        uiOutput("news_ai_summary"),
         fluidRow(
           column(12,
             uiOutput("news_cards")
@@ -2266,85 +2275,64 @@ server <- function(input, output, session) {
               paste("Updated:", format(t, "%d/%m/%Y %H:%M")))
   })
 
-  output$news_cards <- renderUI({
-    d <- news_data()
+  # ── RÉSUMÉ IA ─────────────────────────────────────────────────
+  news_ai_text <- reactiveVal(NULL)
+
+  observeEvent(input$news_ai_btn, {
+    d   <- news_data()
+    key <- Sys.getenv("ANTHROPIC_API_KEY")
 
     if (is.null(d) || nrow(d) == 0) {
-      return(tags$div(
-        style = "padding:60px;text-align:center;color:#555;",
-        tags$div(style = "font-size:40px;margin-bottom:14px;",
-                 icon("newspaper")),
-        tags$p(style = "font-size:14px;color:#777;",
-               "Click 'Refresh' to load rubber industry news."),
-        tags$p(style = "font-size:11px;color:#444;",
-               "Sources: Google News RSS — TSR20 prices, plantations, manufacturers, trade events")
-      ))
+      showNotification("Chargez d'abord les news (Refresh)",
+                       type = "warning", duration = 4)
+      return()
+    }
+    if (nchar(key) < 10) {
+      showNotification(
+        "Clé ANTHROPIC_API_KEY manquante. Ajoutez-la dans .Renviron puis relancez l'app.",
+        type = "error", duration = 8)
+      return()
     }
 
+    # Filtrer par catégorie si active
     cat_sel <- input$news_cat
-    if (!is.null(cat_sel) && cat_sel != "ALL")
-      d <- d %>% filter(categorie == cat_sel)
+    df <- if (!is.null(cat_sel) && cat_sel != "ALL")
+            d %>% filter(categorie == cat_sel) else d
+    df <- head(df, 12)
 
-    if (nrow(d) == 0)
-      return(tags$div(
-        style = "padding:30px;text-align:center;color:#555;",
-        "No articles found for this category."
-      ))
-
-    cards <- map(seq_len(nrow(d)), function(i) {
-      r <- d[i, ]
-      tags$div(
-        style = paste0(
-          "background:#1a1a2e;border-left:4px solid ", r$couleur, ";",
-          "padding:14px 16px;margin:6px 0;border-radius:4px;"
-        ),
-        # Badge + source + date
-        tags$div(
-          style = "margin-bottom:7px;",
-          tags$span(
-            style = paste0(
-              "background:", r$couleur, ";color:#000;",
-              "font-size:10px;font-weight:bold;",
-              "padding:2px 8px;border-radius:10px;margin-right:8px;"
-            ),
-            r$categorie
-          ),
-          tags$span(
-            style = "color:#666;font-size:11px;",
-            paste0(r$source_nom, " · ", r$date_aff)
-          )
-        ),
-        # Title (clickable)
-        tags$a(
-          href   = r$lien,
-          target = "_blank",
-          style  = paste0(
-            "color:#eee;font-weight:600;font-size:14px;",
-            "text-decoration:none;line-height:1.4;display:block;margin-bottom:5px;"
-          ),
-          r$titre
-        ),
-        # Description
-        if (nchar(trimws(r$description)) > 10)
-          tags$p(
-            style = "color:#999;font-size:12px;margin:0;line-height:1.6;",
-            r$description
-          )
-      )
-    })
-
-    tags$div(
-      tags$div(
-        style = "color:#555;font-size:11px;margin-bottom:10px;padding:2px 4px;",
-        paste0(nrow(d), " articles — click any title to read on source site")
-      ),
-      tags$div(
-        style = "max-height:74vh;overflow-y:auto;padding-right:4px;",
-        cards
-      )
+    # Construire le prompt
+    titres <- paste0(
+      seq_len(nrow(df)), ". ", df$titre,
+      " [", df$source_nom, "]",
+      collapse = "\n"
     )
-  })
+    prompt <- paste0(
+      "Tu es un analyste expert du marché mondial du caoutchouc naturel (TSR20). ",
+      "Voici ", nrow(df), " titres de presse récents du secteur :\n\n",
+      titres,
+      "\n\nEn 3 à 4 phrases concises en français, résume les tendances clés et signaux ",
+      "importants pour un opérateur du marché. Sois factuel et précis. ",
+      "Ne commence pas par 'Voici' ou 'Ces titres'."
+    )
 
-}
-shinyApp(ui = ui, server = server)
+    showNotification("Analyse IA en cours...", id = "ai_load",
+                     duration = NULL, type = "message")
+    news_ai_text(NULL)
 
+    tryCatch({
+      resp <- httr2::request("https://api.anthropic.com/v1/messages") |>
+        httr2::req_headers(
+          "x-api-key"         = key,
+          "anthropic-version" = "2023-06-01",
+          "content-type"      = "application/json"
+        ) |>
+        httr2::req_body_json(list(
+          model      = "claude-haiku-4-5-20251001",
+          max_tokens = 400,
+          messages   = list(list(role = "user", content = prompt))
+        )) |>
+        httr2::req_perform()
+
+      result <- httr2::resp_body_json(resp)
+      txt    <- result$content[[1]]$text
+      news_ai_text(
