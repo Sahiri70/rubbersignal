@@ -91,7 +91,36 @@
         "unite": "USD/kg"
       }
     ],
-    "historique_indexmundi": []
+    "historique_indexmundi": [],
+    "marches_mondiaux": {
+      "date_cours": "2026-07-10",
+      "sicom": {
+        "grade": "TSR20",
+        "bourse": "SGX/SICOM (Singapour)",
+        "ticker": "TF",
+        "prix_orig": 3.43,
+        "unite_orig": "USD cts/kg",
+        "prix_usd": 0.0343
+      },
+      "tocom": {
+        "grade": "RSS3",
+        "bourse": "JPX/TOCOM (Tokyo)",
+        "ticker": "TRB",
+        "prix_orig": 419.8,
+        "unite_orig": "JPY/kg",
+        "taux_jpy_usd": 0.0062,
+        "prix_usd": 2.6028
+      },
+      "shfe": {
+        "grade": "SCR WF / RSS3",
+        "bourse": "SHFE (Shanghai)",
+        "ticker": "RU",
+        "prix_orig": 16850,
+        "unite_orig": "CNY/tonne",
+        "taux_cny_usd": 0.15,
+        "prix_usd": 2.5275
+      }
+    }
   },
   "actualites": {
     "date_collecte": "2026-06-15",

@@ -2335,4 +2335,130 @@ server <- function(input, output, session) {
 
       result <- httr2::resp_body_json(resp)
       txt    <- result$content[[1]]$text
-      news_ai_text(
+      news_ai_text(        txt)
+      removeNotification("ai_load")
+    }, error = function(e) {
+      removeNotification("ai_load")
+      showNotification(paste("Erreur API :", conditionMessage(e)),
+                       type = "error", duration = 8)
+    })
+  }, ignoreInit = TRUE)
+
+  output$news_ai_summary <- renderUI({
+    txt <- news_ai_text()
+    if (is.null(txt) || nchar(txt) == 0) return(NULL)
+
+    cat_sel <- input$news_cat
+    label   <- if (!is.null(cat_sel) && cat_sel != "ALL")
+                 paste0("SYNTHÈSE IA — ", cat_sel)
+               else "SYNTHÈSE IA — Hot Rubber News"
+
+    tags$div(
+      style = "padding:4px 0 6px 0;",
+      tags$div(
+        style = paste0(
+          "background:#0d2137;border-left:4px solid #00bcd4;",
+          "padding:14px 18px;border-radius:4px;"
+        ),
+        tags$div(
+          style = "display:flex;align-items:center;margin-bottom:10px;",
+          tags$span(style = "color:#00bcd4;font-size:13px;font-weight:bold;",
+                    icon("robot"), " ", label),
+          tags$span(style = "color:#444;font-size:10px;margin-left:auto;",
+                    paste0("claude-haiku · ", format(Sys.time(), "%H:%M")))
+        ),
+        tags$p(
+          style = "color:#ccc;font-size:13px;line-height:1.75;margin:0;",
+          txt
+        ),
+        tags$div(
+          style = "margin-top:10px;text-align:right;",
+          actionLink("news_ai_clear", "✕ Fermer",
+                     style = "color:#334;font-size:11px;")
+        )
+      )
+    )
+  })
+
+  observeEvent(input$news_ai_clear, {
+    news_ai_text(NULL)
+  }, ignoreInit = TRUE)
+
+  output$news_cards <- renderUI({
+    d <- news_data()
+
+    if (is.null(d) || nrow(d) == 0) {
+      return(tags$div(
+        style = "padding:60px;text-align:center;color:#555;",
+        tags$div(style = "font-size:40px;margin-bottom:14px;",
+                 icon("newspaper")),
+        tags$p(style = "font-size:14px;color:#777;",
+               "Click 'Refresh' to load rubber industry news."),
+        tags$p(style = "font-size:11px;color:#444;",
+               "Sources: Google News RSS — TSR20 prices, plantations, manufacturers, trade events")
+      ))
+    }
+
+    cat_sel <- input$news_cat
+    if (!is.null(cat_sel) && cat_sel != "ALL")
+      d <- d %>% filter(categorie == cat_sel)
+
+    if (nrow(d) == 0)
+      return(tags$div(
+        style = "padding:30px;text-align:center;color:#555;",
+        "No articles found for this category."
+      ))
+
+    cards <- map(seq_len(nrow(d)), function(i) {
+      r <- d[i, ]
+      tags$div(
+        style = paste0(
+          "background:#1a1a2e;border-left:4px solid ", r$couleur, ";",
+          "padding:14px 16px;margin:6px 0;border-radius:4px;"
+        ),
+        tags$div(
+          style = "margin-bottom:7px;",
+          tags$span(
+            style = paste0(
+              "background:", r$couleur, ";color:#000;",
+              "font-size:10px;font-weight:bold;",
+              "padding:2px 8px;border-radius:10px;margin-right:8px;"
+            ),
+            r$categorie
+          ),
+          tags$span(
+            style = "color:#666;font-size:11px;",
+            paste0(r$source_nom, " · ", r$date_aff)
+          )
+        ),
+        tags$a(
+          href   = r$lien,
+          target = "_blank",
+          style  = paste0(
+            "color:#eee;font-weight:600;font-size:14px;",
+            "text-decoration:none;line-height:1.4;display:block;margin-bottom:5px;"
+          ),
+          r$titre
+        ),
+        if (nchar(trimws(r$description)) > 10)
+          tags$p(
+            style = "color:#999;font-size:12px;margin:0;line-height:1.6;",
+            r$description
+          )
+      )
+    })
+
+    tags$div(
+      tags$div(
+        style = "color:#555;font-size:11px;margin-bottom:10px;padding:2px 4px;",
+        paste0(nrow(d), " articles — click any title to read on source site")
+      ),
+      tags$div(
+        style = "max-height:74vh;overflow-y:auto;padding-right:4px;",
+        cards
+      )
+    )
+  })
+
+}
+shinyApp(ui = ui, server = server)
