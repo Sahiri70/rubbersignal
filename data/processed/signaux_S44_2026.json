@@ -1,0 +1,193 @@
+{
+  "meta": {
+    "date_collecte": "2026-10-26",
+    "semaine": 44,
+    "annee": 2026,
+    "version": "2.1"
+  },
+  "module1_meteo": {
+    "zones": {
+      "Côte d'Ivoire": {
+        "pays": "Côte d'Ivoire",
+        "ville": "Abidjan",
+        "pluie_30j_mm": 92.2,
+        "temp_moyenne_c": 26.9,
+        "score_production": 64,
+        "signal_production": "Neutre"
+      },
+      "Thaïlande": {
+        "pays": "Thaïlande",
+        "ville": "Bangkok",
+        "pluie_30j_mm": 196.9,
+        "temp_moyenne_c": 28.7,
+        "score_production": 86,
+        "signal_production": "Favorable"
+      },
+      "Malaisie": {
+        "pays": "Malaisie",
+        "ville": "Kuala Lumpur",
+        "pluie_30j_mm": 306.2,
+        "temp_moyenne_c": 27.7,
+        "score_production": 96,
+        "signal_production": "Favorable"
+      },
+      "Indonésie": {
+        "pays": "Indonésie",
+        "ville": "Jakarta",
+        "pluie_30j_mm": 87.4,
+        "temp_moyenne_c": 29.7,
+        "score_production": 52,
+        "signal_production": "Neutre"
+      }
+    },
+    "score_offre_mondiale": 77,
+    "signal_offre": "Offre abondante — pression baissière"
+  },
+  "module2_devises": {
+    "USD_CNY": 6.6774,
+    "USD_MYR": 4.0853,
+    "USD_XOF": 585.33,
+    "USD_IDR": 18093,
+    "USD_CHF": 0.8246,
+    "source": "ExchangeRate API",
+    "date": "2026-10-26",
+    "signal_cny": "Yuan fort (-5.95%) — demande soutenue",
+    "signal_myr": "Ringgit fort (-7.15%) — export ralenti"
+  },
+  "module3_demande_aval": {
+    "fred": {
+      "prod_manuf_us": {
+        "serie": "IPMAN",
+        "nom": "Production industrielle US manufacturing",
+        "valeur": 99.4361,
+        "valeur_prec": 99.1776,
+        "variation_pct": 0.26,
+        "date": "2026-09-01"
+      },
+      "ventes_auto_us": {
+        "serie": "TOTALSA",
+        "nom": "Ventes automobiles US (millions/an)",
+        "valeur": 16.378,
+        "valeur_prec": 16.98,
+        "variation_pct": -3.55,
+        "date": "2026-09-01"
+      },
+      "commandes_dur": {
+        "serie": "DGORDER",
+        "nom": "Commandes biens durables US (M USD)",
+        "valeur": 338458,
+        "valeur_prec": 338700,
+        "variation_pct": -0.07,
+        "date": "2026-08-01"
+      },
+      "prod_indus_us": {
+        "serie": "INDPRO",
+        "nom": "Production industrielle US globale",
+        "valeur": 103.9506,
+        "valeur_prec": 103.2664,
+        "variation_pct": 0.66,
+        "date": "2026-09-01"
+      },
+      "imports_chine": {
+        "serie": "XTIMVA01CNM667S",
+        "nom": "Importations Chine (proxy demande)",
+        "valeur": 282496200000,
+        "valeur_prec": 279650600000,
+        "variation_pct": 1.02,
+        "date": "2026-08-01"
+      },
+      "permis_constr": {
+        "serie": "PERMIT",
+        "nom": "Permis construction US",
+        "valeur": 1400,
+        "valeur_prec": 1403,
+        "variation_pct": -0.21,
+        "date": "2026-09-01"
+      }
+    },
+    "pmi": {
+      "USA": {
+        "pays": "USA",
+        "valeur": 50.2,
+        "signal": "Légère expansion"
+      },
+      "Europe": {
+        "pays": "Europe",
+        "valeur": 49,
+        "signal": "Légère contraction"
+      },
+      "Chine": {
+        "pays": "Chine",
+        "valeur": 51.1,
+        "signal": "Légère expansion"
+      },
+      "Inde": {
+        "pays": "Inde",
+        "valeur": 58.8,
+        "signal": "Forte expansion"
+      },
+      "Japon": {
+        "pays": "Japon",
+        "valeur": 48.7,
+        "signal": "Légère contraction"
+      }
+    },
+    "score_demande": 40,
+    "signal_demande": "Demande faible — signal baissier"
+  },
+  "module4_stocks": {
+    "malaisie_tonnes": null,
+    "malaisie_mois": "2026-04",
+    "malaisie_tendance": "stable",
+    "thailande_tonnes": null,
+    "thailande_mois": "2026-04",
+    "thailande_tendance": "stable",
+    "indonesie_tonnes": null,
+    "indonesie_mois": "2026-04",
+    "indonesie_tendance": "stable",
+    "ci_tonnes": null,
+    "ci_mois": "2026-04",
+    "ci_tendance": "stable",
+    "abidjan_delai_jours": 7,
+    "abidjan_statut": "Normal",
+    "note": "Données à compléter via lgm.gov.my et rubberthai.or.th"
+  },
+  "module5_shipping": {
+    "bdi_valeur": 1450,
+    "wti_valeur": 107.89,
+    "signal_fret": "Fret normal — pas de signal particulier",
+    "tarif_ci_eu_usd_tonne": 85,
+    "delai_abidjan_rotterdam": 14,
+    "source": "BDI estimé + WTI FRED"
+  },
+  "module6_terrain_ci": {
+    "prix_bord_champ_fcfa": 359,
+    "prix_marche_reel_fcfa": null,
+    "disponibilite_latex": 3,
+    "statut_disponibilite": "Normal",
+    "activite_cooperatives": "Normale",
+    "sentiment_planteurs": 3,
+    "note_terrain": "Campagne de récolte en cours. Conditions normales.",
+    "tension_marche_local": "Aucune",
+    "saison_saignee": "Grande saison",
+    "semaine": 44,
+    "date_saisie": "2026-10-26",
+    "source": "Terrain CI — RubberSignal exclusif"
+  },
+  "module7_geopolitique": {
+    "nb_articles": 0,
+    "signal": "Aucune tension détectée",
+    "articles": []
+  },
+  "pre_rsi": {
+    "score": 62,
+    "signal": "Légèrement haussier — marché bien orienté",
+    "detail": {
+      "meteo_w": 19.25,
+      "devise_w": 14,
+      "pmi_w": 10,
+      "terrain_w": 9,
+      "geo_w": 9.75
+    }
+  }
+}
