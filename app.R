@@ -14,6 +14,13 @@ library(leaflet.extras)
 library(xml2)
 library(httr2)
 
+# ── MODE ADMIN ───────────────────────────────────────────────
+# Lancée depuis RStudio (session interactive) : saisie des prix et résumé IA disponibles.
+# Déployée sur shinyapps.io (non interactive) : version publique, ces fonctions sont
+# masquées ET refusées côté serveur (un visiteur ne peut ni écrire dans les JSON
+# ni déclencher d'appel payant à l'API Claude).
+RS_ADMIN <- interactive()
+
 # DONNÉES STATIQUES
 
 # ── Plantations (FAO/ANRPC 2024) ─────────────────────────────
@@ -373,7 +380,7 @@ ui <- dashboardPage(
       menuItem("Manuf. — Usines",    tabName="manuf_usines", icon=icon("map-marker-alt")),
       menuItem("Manuf. — Correlations", tabName="manuf_corr", icon=icon("chart-bar")),
       tags$hr(style="border-color:#444;margin:8px 15px;"),
-      menuItem("Saisie Prix",            tabName="saisie",      icon=icon("edit")),
+      if (RS_ADMIN) menuItem("Saisie Prix", tabName="saisie",      icon=icon("edit")),
       menuItem("Rubber News",            tabName="news",        icon=icon("newspaper"))
     ),
     tags$hr(style="border-color:#444;"),
@@ -692,6 +699,7 @@ ui <- dashboardPage(
 
       # ── SAISIE PRIX MARCHÉS MONDIAUX ─────────────────────────
       tabItem(tabName="saisie",
+        if (!RS_ADMIN) tags$p(style="color:#aaa;", "Accès réservé.") else
         fluidRow(
           box(title="Saisie hebdomadaire — Marches Mondiaux (J-1)",
               status="warning", solidHeader=TRUE, width=7,
@@ -780,7 +788,7 @@ ui <- dashboardPage(
                 )
               ),
               column(2,
-                actionButton("news_ai_btn", "Résumé IA",
+                if (RS_ADMIN) actionButton("news_ai_btn", "Résumé IA",
                   icon  = icon("robot"),
                   class = "btn btn-info btn-sm",
                   style = "margin-top:25px;"
@@ -1870,6 +1878,7 @@ server <- function(input, output, session) {
 
   # ── SAISIE PRIX — Sauvegarde dans le JSON ────────────────────
   observeEvent(input$s_save, {
+    if (!RS_ADMIN) return()   # refus côté serveur en mode public
     sicom <- input$s_sicom; tocom <- input$s_tocom
     shfe  <- input$s_shfe;  jpy   <- input$s_jpy; cny <- input$s_cny
 
@@ -2279,6 +2288,7 @@ server <- function(input, output, session) {
   news_ai_text <- reactiveVal(NULL)
 
   observeEvent(input$news_ai_btn, {
+    if (!RS_ADMIN) return()   # refus côté serveur en mode public
     d   <- news_data()
     key <- Sys.getenv("ANTHROPIC_API_KEY")
 

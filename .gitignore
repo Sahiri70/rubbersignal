@@ -7,3 +7,10 @@
 .positai
 rsconnect/
 .Renviron
+.Renviron.txt
+*.Renviron*
+$GITHUB_ENV
+.Rhistory*
+*.key
+*.pem
+secrets/
