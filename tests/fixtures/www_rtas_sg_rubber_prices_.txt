@@ -1,0 +1,22 @@
+<html><body>
+<h3>SGX TSR 20 FOB Rubber Futures</h3>
+<p>Official Settlement Prices Closed on Previous Trading Day Issued by SGX</p>
+<table>
+<tr><th colspan="2">SICOM TSR 20 FOB Rubber Futures&nbsp;US Cents Per Kg</th></tr>
+<tr><td>Month</td><td>Settlement Price</td></tr>
+<tr><td>Nov 2026</td><td>260-4</td></tr>
+<tr><td>Dec</td><td>259-4</td></tr>
+<tr><td>Jan 2027</td><td>258-2</td></tr>
+</table>
+<h3>MRB Physical Rubber Reference Prices</h3>
+<p>Reference Prices for Physical Rubber (FOB) issued by MRB</p>
+<p>SMR Nov 2026 | 3.00 PM</p>
+<table>
+<tr><th>Grade</th><th>Sens Per Kg Sellers</th><th>US Cents Per Kg Sellers</th></tr>
+<tr><td>CV</td><td>1284-00</td><td>320-50</td></tr>
+<tr><td>L</td><td>1274-00</td><td>318-00</td></tr>
+<tr><td>5</td><td>1073-50</td><td>267-95</td></tr>
+<tr><td>10</td><td>1058-50</td><td>264-25</td></tr>
+<tr><td>20</td><td>1053-50</td><td>263-00</td></tr>
+</table>
+</body></html>

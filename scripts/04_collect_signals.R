@@ -1,14 +1,15 @@
 # =============================================================
 # RUBBERSIGNAL.COM — Script 04 : Signaux faibles complets V2
 # Auteur  : Martial Sahiri
-# Version : 2.1 — FRED fonctionnel + PMI manuel + Pré-RSI corrigé
+# Version : 2.2 — terrain CI et stocks sans valeurs figées (nov. 2026)
+#           (2.1 : FRED fonctionnel + PMI manuel + Pré-RSI corrigé)
 # Modules :
 #   1. Météo 4 zones productrices (Open-Meteo — automatique)
 #   2. Devises (ExchangeRate API — automatique)
 #   3. Demande aval (FRED automatique + PMI manuel mensuel)
-#   4. Stocks mondiaux (manuel mensuel)
+#   4. Stocks mondiaux (indisponible : aucune source alimentée)
 #   5. Shipping / Fret maritime (BDI + WTI FRED)
-#   6. Terrain CI exclusif (saisie manuelle hebdomadaire)
+#   6. Terrain CI (relevé daté, data/reference/terrain_ci.csv)
 #   7. Géopolitique / Tensions (NewsAPI — automatique)
 #   + Pré-RSI composite 0-100
 # Usage   : source("scripts/04_collect_signals.R")
@@ -40,9 +41,9 @@ cat("  M2 Devises       : automatique (ExchangeRate API)\n")
 cat("  M3 Demande aval  :",
     if (nchar(FRED_KEY) > 0) "FRED auto + PMI manuel"
     else "PMI manuel uniquement", "\n")
-cat("  M4 Stocks        : saisie manuelle mensuelle\n")
+cat("  M4 Stocks        : indisponible (aucune source alimentée)\n")
 cat("  M5 Shipping      : automatique (WTI FRED)\n")
-cat("  M6 Terrain CI    : saisie manuelle hebdomadaire\n")
+cat("  M6 Terrain CI    : relevé daté (data/reference/terrain_ci.csv)\n")
 cat("  M7 Géopolitique  : automatique (NewsAPI)\n\n")
 
 
@@ -361,25 +362,25 @@ cat(strrep("─", 50), "\n\n")
 # · Thaïlande : https://www.rubberthai.or.th
 # · CI        : https://apromac.ci
 
+# v2.2 : aucune source de stocks n'est alimentee depuis avril 2026.
+# Plus aucune tendance « stable » inventee : statut « indisponible ».
+# Quand une source sera trouvee : tonnage + mois + source + date_source.
+
 stocks_manuels <- list(
-  malaisie_tonnes    = NA,      # ← Mettre à jour
-  malaisie_mois      = "2026-04",
-  malaisie_tendance  = "stable",
-  thailande_tonnes   = NA,      # ← Mettre à jour
-  thailande_mois     = "2026-04",
-  thailande_tendance = "stable",
-  indonesie_tonnes   = NA,      # ← Mettre à jour
-  indonesie_mois     = "2026-04",
-  indonesie_tendance = "stable",
-  ci_tonnes          = NA,      # ← Mettre à jour
-  ci_mois            = "2026-04",
-  ci_tendance        = "stable",
-  abidjan_delai_jours = 7,
-  abidjan_statut      = "Normal",
-  note = "Données à compléter via lgm.gov.my et rubberthai.or.th"
+  statut             = "indisponible",
+  libelle            = "Donnée indisponible",
+  malaisie_tonnes    = NA,
+  thailande_tonnes   = NA,
+  indonesie_tonnes   = NA,
+  ci_tonnes          = NA,
+  tendance           = NA,
+  derniere_mise_a_jour_connue = NA,
+  sources_a_explorer = c("https://www.lgm.gov.my", "https://www.rubberthai.or.th", "https://apromac.ci"),
+  note = "Aucune donnée de stocks mesurée : module retiré du rapport (pas de tendance publiée)."
 )
 
-cat(">> Stocks configurés — données à compléter mensuellement\n")
+cat(">> Stocks : DONNÉE INDISPONIBLE (aucune source alimentée)\n")
+cat("::warning::Stocks mondiaux : donnee indisponible (aucune source)\n")
 cat("   · Malaisie  : https://www.lgm.gov.my\n")
 cat("   · Thaïlande : https://www.rubberthai.or.th\n")
 cat("   · CI        : https://apromac.ci\n\n")
@@ -438,30 +439,47 @@ cat(strrep("─", 50), "\n")
 cat("MODULE 6 — TERRAIN CI EXCLUSIF\n")
 cat(strrep("─", 50), "\n\n")
 
-# ⚠ À COMPLÉTER CHAQUE SEMAINE — votre avantage concurrentiel
+# v2.2 : plus aucune valeur codée en dur (ancien 359 FCFA, texte identique
+# chaque semaine, date de saisie = date du jour). Les relevés sont saisis,
+# datés, dans data/reference/terrain_ci.csv :
+#   date_releve, lieu, prix_marche_reel_fcfa, disponibilite_latex (1-5),
+#   sentiment_planteurs (1-5), note_terrain, source
+# Seul un relevé de moins de 7 jours est publié ; sinon « pas de relevé ».
+# Le prix APROMAC officiel vient du script 01 (data/reference/prix_apromac.csv).
 
-terrain_ci <- list(
-  prix_bord_champ_fcfa   = 359,    # ← Prix APROMAC officiel
-  prix_marche_reel_fcfa  = NA,     # ← Prix réel observé (si différent)
-  disponibilite_latex    = 3,      # ← 1 à 5 (1=pénurie, 5=abondant)
-  statut_disponibilite   = "Normal",
-  activite_cooperatives  = "Normale",
-  sentiment_planteurs    = 3,      # ← 1 à 5
-  note_terrain = "Campagne de récolte en cours. Conditions normales.",
-  tension_marche_local   = "Aucune",
-  saison_saignee         = "Grande saison",
-  semaine      = SEMAINE,
-  date_saisie  = as.character(DATE_COLLECTE),
-  source       = "Terrain CI — RubberSignal exclusif"
-)
+lire_terrain_ci <- function(f = "data/reference/terrain_ci.csv", date_ref = DATE_COLLECTE,
+                            max_jours = 7) {
+  absent <- list(statut = "absent", libelle = "Pas de relevé terrain cette semaine",
+                 note_terrain = "", sentiment_planteurs = NA, disponibilite_latex = NA,
+                 prix_marche_reel_fcfa = NA, date_releve = NA, lieu = NA, source = NA,
+                 semaine = SEMAINE, fichier_saisie = f)
+  if (!file.exists(f)) return(absent)
+  t <- tryCatch(read.csv(f, stringsAsFactors = FALSE, encoding = "UTF-8"), error = function(e) data.frame())
+  if (nrow(t) == 0 || !"date_releve" %in% names(t)) return(absent)
+  t$date_releve <- suppressWarnings(as.Date(t$date_releve))
+  age <- as.numeric(date_ref - t$date_releve)
+  t <- t[!is.na(age) & age >= 0 & age <= max_jours, , drop = FALSE]
+  if (nrow(t) == 0) return(absent)
+  r <- t[order(t$date_releve, decreasing = TRUE)[1], ]
+  num <- function(x, a, b) { v <- suppressWarnings(as.numeric(x)); if (length(v) == 1 && is.finite(v) && v >= a && v <= b) v else NA }
+  list(statut = "ok", libelle = paste0("Relevé du ", format(r$date_releve, "%d/%m/%Y"), " (", r$lieu, ")"),
+       note_terrain = if (is.na(r$note_terrain)) "" else as.character(r$note_terrain),
+       sentiment_planteurs = num(r$sentiment_planteurs, 1, 5),
+       disponibilite_latex = num(r$disponibilite_latex, 1, 5),
+       prix_marche_reel_fcfa = num(r$prix_marche_reel_fcfa, 100, 2000),
+       date_releve = as.character(r$date_releve), lieu = r$lieu, source = r$source,
+       semaine = SEMAINE, fichier_saisie = f)
+}
 
-cat(">> Données terrain CI :\n")
-cat("   Prix APROMAC     :", terrain_ci$prix_bord_champ_fcfa, "FCFA/kg\n")
-cat("   Disponibilité    :", terrain_ci$statut_disponibilite, "\n")
-cat("   Coopératives     :", terrain_ci$activite_cooperatives, "\n")
-cat("   Sentiment        :", terrain_ci$sentiment_planteurs, "/5\n")
-cat("   Saison           :", terrain_ci$saison_saignee, "\n")
-cat("   Note terrain     :", terrain_ci$note_terrain, "\n\n")
+terrain_ci <- lire_terrain_ci()
+
+cat(">> Données terrain CI :", terrain_ci$libelle, "\n")
+if (terrain_ci$statut == "ok") {
+  cat("   Sentiment        :", terrain_ci$sentiment_planteurs, "/5\n")
+  cat("   Note terrain     :", terrain_ci$note_terrain, "\n\n")
+} else {
+  cat("::warning::Terrain CI : pas de releve terrain date de moins de 7 jours\n\n")
+}
 
 
 # ══════════════════════════════════════════════════════════════
@@ -604,7 +622,10 @@ score_devise_w <- (if (!is.na(ecart_cny) && ecart_cny < -2) 70
 score_pmi_w <- demande_aval$score_demande * 0.25
 
 # Composante 4 — Terrain CI (poids 15%)
-score_terrain_w <- (terrain_ci$sentiment_planteurs / 5 * 100) * 0.15
+# v2.2 : sans relevé daté, la composante est ABSENTE (pas de 3/5 par défaut) :
+# les poids des autres composantes sont renormalisés pour sommer à 100 %.
+terrain_dispo   <- identical(terrain_ci$statut, "ok") && is.finite(terrain_ci$sentiment_planteurs)
+score_terrain_w <- if (terrain_dispo) (terrain_ci$sentiment_planteurs / 5 * 100) * 0.15 else 0
 
 # Composante 5 — Géopolitique (poids 15%)
 score_geo_w <- (if (geopolitique$nb_articles == 0) 65
@@ -612,9 +633,13 @@ score_geo_w <- (if (geopolitique$nb_articles == 0) 65
                 else if (geopolitique$nb_articles <= 4) 35
                 else 20) * 0.15
 
-pre_rsi <- round(score_meteo_w + score_devise_w + score_pmi_w +
-                   score_terrain_w + score_geo_w)
+poids_total <- 0.25 + 0.20 + 0.25 + (if (terrain_dispo) 0.15 else 0) + 0.15
+pre_rsi <- round((score_meteo_w + score_devise_w + score_pmi_w +
+                    score_terrain_w + score_geo_w) / poids_total)
 pre_rsi <- min(100, max(0, pre_rsi))
+composantes_absentes <- if (terrain_dispo) character() else "Terrain CI"
+if (!terrain_dispo)
+  cat("   Composante Terrain CI absente : poids renormalisés (total", poids_total, ")\n")
 
 signal_rsi <- case_when(
   pre_rsi >= 70 ~ "Haussier — conditions favorables",
@@ -645,7 +670,7 @@ json_signaux <- list(
     date_collecte = as.character(DATE_COLLECTE),
     semaine       = SEMAINE,
     annee         = ANNEE,
-    version       = "2.1"
+    version       = "2.2"
   ),
   module1_meteo        = list(zones=meteo_resultats,
                               score_offre_mondiale=score_offre_mondiale,
@@ -664,16 +689,20 @@ json_signaux <- list(
       meteo_w   = score_meteo_w,
       devise_w  = score_devise_w,
       pmi_w     = score_pmi_w,
-      terrain_w = score_terrain_w,
+      terrain_w = if (terrain_dispo) score_terrain_w else NA,
       geo_w     = score_geo_w
-    )
+    ),
+    poids_total_disponible = poids_total,
+    composantes_absentes   = composantes_absentes,
+    methode = "Somme pondérée des composantes disponibles, divisée par la somme de leurs poids"
   )
 )
 
 fichier_signaux <- paste0(
   "data/processed/signaux_S", SEMAINE, "_", ANNEE, ".json"
 )
-write_json(json_signaux, fichier_signaux, pretty=TRUE, auto_unbox=TRUE)
+write_json(json_signaux, fichier_signaux, pretty=TRUE, auto_unbox=TRUE,
+           na="null", null="null")
 cat("   JSON signaux :", fichier_signaux, "\n")
 
 fichier_json <- paste0(
@@ -682,7 +711,7 @@ fichier_json <- paste0(
 if (file.exists(fichier_json)) {
   jp <- read_json(fichier_json)
   jp$signaux_faibles <- json_signaux
-  write_json(jp, fichier_json, pretty=TRUE, auto_unbox=TRUE)
+  write_json(jp, fichier_json, pretty=TRUE, auto_unbox=TRUE, na="null", null="null")
   cat("   JSON principal enrichi\n")
 }
 
@@ -717,16 +746,17 @@ for (p in names(demande_aval$pmi)) {
               demande_aval$pmi[[p]]$signal))
 }
 
-cat("\nM4 STOCKS : données à compléter mensuellement\n")
+cat("\nM4 STOCKS : donnée indisponible (aucune source)\n")
 
 cat("\nM5 SHIPPING : Signal —", shipping$signal_fret, "\n")
 if (!is.na(shipping$wti_valeur))
   cat("   WTI :", shipping$wti_valeur, "USD/baril\n")
 
-cat("\nM6 TERRAIN CI :\n")
-cat("   Prix APROMAC :", terrain_ci$prix_bord_champ_fcfa, "FCFA/kg\n")
-cat("   Sentiment    :", terrain_ci$sentiment_planteurs, "/5\n")
-cat("   Note         :", terrain_ci$note_terrain, "\n")
+cat("\nM6 TERRAIN CI :", terrain_ci$libelle, "\n")
+if (terrain_dispo) {
+  cat("   Sentiment    :", terrain_ci$sentiment_planteurs, "/5\n")
+  cat("   Note         :", terrain_ci$note_terrain, "\n")
+}
 
 cat("\nM7 GÉOPOLITIQUE :", geopolitique$signal, "\n")
 

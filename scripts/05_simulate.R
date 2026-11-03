@@ -1,7 +1,8 @@
 # =============================================================
 # RUBBERSIGNAL.COM — Script 05 : Modèles Thompson
 # Auteur  : Martial Sahiri
-# Version : 1.0 — Sprint 2 : Monte Carlo TSR20
+# Version : 1.1 — sans prix de secours ni terrain par défaut (nov. 2026)
+#           (1.0 — Sprint 2 : Monte Carlo TSR20)
 # Référence : "Simulation, A Modeler's Approach" — J.R. Thompson
 # Objectif: Simuler la distribution des prix futurs TSR20
 #           et produire des fourchettes probabilistes
@@ -30,14 +31,30 @@ cat("=== RUBBERSIGNAL — Modèles Thompson du",
 fichier_json <- paste0("data/processed/rubbersignal_S",
                        SEMAINE, "_", ANNEE, ".json")
 
-if (file.exists(fichier_json)) {
-  donnees     <- read_json(fichier_json)
-  prix_actuel <- donnees$prix$synthese$prix_actuel %||% 2.29
-  cat(">> Prix TSR20 actuel chargé :", prix_actuel, "USD/kg\n\n")
-} else {
-  prix_actuel <- 2.29
-  cat(">> JSON non trouvé — prix de secours :", prix_actuel, "USD/kg\n\n")
+# v1.1 : plus de prix de secours (ancien 2.29 USD/kg code en dur). Sans
+# cotation hebdomadaire fraiche (<= 14 jours), aucune simulation n'est
+# publiee : le JSON l'indique et le script s'arrete proprement.
+if (!file.exists(fichier_json))
+  stop("JSON introuvable : ", fichier_json, " - lancer le script 01 d'abord.")
+donnees     <- read_json(fichier_json)
+prix_actuel <- suppressWarnings(as.numeric(donnees$prix$synthese$prix_actuel))
+if (length(prix_actuel) != 1 || !is.finite(prix_actuel)) {
+  msg_fr <- paste0("> *Simulation Monte Carlo non calculée cette semaine : aucune cotation ",
+                   "hebdomadaire TSR20 de moins de 14 jours.*\n\n")
+  msg_en <- paste0("> *Monte Carlo simulation not computed this week: no weekly TSR20 ",
+                   "quote less than 14 days old.*\n\n")
+  donnees$monte_carlo <- list(disponible = FALSE,
+                              raison = "Pas de cotation hebdomadaire fraiche (prix_actuel = NA)",
+                              texte_fr = msg_fr, texte_en = msg_en)
+  write_json(donnees$monte_carlo, paste0("data/processed/monte_carlo_S", SEMAINE, "_", ANNEE, ".json"),
+             pretty = TRUE, auto_unbox = TRUE, na = "null", null = "null")
+  write_json(donnees, fichier_json, pretty = TRUE, auto_unbox = TRUE, na = "null", null = "null")
+  cat("::warning::Monte Carlo non calcule : pas de cotation hebdomadaire fraiche\n")
+  if (!interactive()) quit(save = "no", status = 0)
+  stop("Monte Carlo non calcule : pas de cotation hebdomadaire fraiche (arret volontaire).")
 }
+cat(">> Prix TSR20 actuel chargé :", prix_actuel, "USD/kg (",
+    donnees$prix$synthese$date_source %||% "date inconnue", ")\n\n")
 
 
 # ══════════════════════════════════════════════════════════════
@@ -314,7 +331,7 @@ cat("   JSON Monte Carlo :", fichier_mc, "\n")
 if (file.exists(fichier_json)) {
   jp <- read_json(fichier_json)
   jp$monte_carlo <- json_mc
-  write_json(jp, fichier_json, pretty = TRUE, auto_unbox = TRUE)
+  write_json(jp, fichier_json, pretty = TRUE, auto_unbox = TRUE, na = "null", null = "null")
   cat("   JSON principal enrichi\n")
 }
 
@@ -383,15 +400,19 @@ if (!file.exists(fichier_signaux)) {
     if (ecart < -2) 70 else if (ecart > 2) 30 else 50
   }
   score_demande <- signaux$module3_demande_aval$score_demande %||% 50
-  score_terrain <- (signaux$module6_terrain_ci$sentiment_planteurs
-                    %||% 3) / 5 * 100
+  # v1.1 : pas de 3/5 par defaut ; sans releve date, poids terrain = 0
+  sent_terrain  <- suppressWarnings(as.numeric(signaux$module6_terrain_ci$sentiment_planteurs))
+  terrain_dispo <- identical(signaux$module6_terrain_ci$statut, "ok") &&
+    length(sent_terrain) == 1 && is.finite(sent_terrain)
+  score_terrain <- if (terrain_dispo) sent_terrain / 5 * 100 else 0
   score_geo     <- {
     nb <- signaux$module7_geopolitique$nb_articles %||% 0
     if (nb == 0) 65 else if (nb <= 2) 50 else if (nb <= 4) 35 else 20
   }
   
   # Poids des composantes (identiques au script 04)
-  poids <- c(0.25, 0.20, 0.25, 0.15, 0.15)
+  poids <- c(0.25, 0.20, 0.25, if (terrain_dispo) 0.15 else 0, 0.15)
+  poids <- poids / sum(poids)   # renormalise si une composante est absente (meme regle que 04)
   scores_base <- c(score_meteo, score_devise, score_demande,
                    score_terrain, score_geo)
   noms_scores <- c("Météo/Offre", "Devises", "Demande aval",
@@ -572,7 +593,7 @@ cat(">> JSON enrichi avec Bootstrap RSI\n")
 if (file.exists(fichier_json)) {
   jp <- read_json(fichier_json)
   jp$monte_carlo <- json_mc
-  write_json(jp, fichier_json, pretty = TRUE, auto_unbox = TRUE)
+  write_json(jp, fichier_json, pretty = TRUE, auto_unbox = TRUE, na = "null", null = "null")
   cat(">> JSON principal mis à jour\n")
 }
 
@@ -798,7 +819,7 @@ write_json(json_mc, fichier_mc, pretty = TRUE, auto_unbox = TRUE)
 if (file.exists(fichier_json)) {
   jp <- read_json(fichier_json)
   jp$monte_carlo <- json_mc
-  write_json(jp, fichier_json, pretty = TRUE, auto_unbox = TRUE)
+  write_json(jp, fichier_json, pretty = TRUE, auto_unbox = TRUE, na = "null", null = "null")
 }
 cat(">> JSON enrichi avec scénarios météo\n\n")
 

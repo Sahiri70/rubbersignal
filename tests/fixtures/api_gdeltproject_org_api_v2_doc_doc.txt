@@ -1,0 +1,4 @@
+{"articles":[
+ {"url":"https://7info.ci/filiere","title":"FILIÈRE HÉVÉA : Le prix du caoutchouc naturel fixé à 484 FCFA le Kg pour septembre 2026","seendate":"20260902T080000Z"},
+ {"url":"https://fratmat.info/a","title":"Caoutchouc/ prix Apromac août 2026: 474 fcfa/ KG","seendate":"20260801T080000Z"}
+]}

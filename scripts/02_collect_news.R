@@ -39,40 +39,42 @@ cat(">> Clé API détectée — OK\n\n")
 # Retourne toujours un tibble avec colonnes standardisées
 # ou un tibble vide en cas d'erreur — jamais une erreur fatale
 
+# Diagnostic de chaque appel (v3.1) : code HTTP, code d'erreur NewsAPI,
+# nombre de resultats bruts. Jamais la cle (elle passe en en-tete HTTP,
+# plus dans l'URL, pour ne pas apparaitre dans un message d'erreur).
+DIAG_NEWS <- list()
+diag_news <- function(requete, langue, http, code_api = NA, message_api = NA, total = NA, recus = 0) {
+  if (!is.na(message_api)) message_api <- gsub(NEWSAPI_KEY, "****", message_api, fixed = TRUE)
+  DIAG_NEWS[[length(DIAG_NEWS) + 1]] <<- list(
+    requete = requete, langue = langue, http = http, code_api = code_api,
+    message_api = message_api, total_resultats = total, articles_recus = recus)
+}
+
 appeler_newsapi <- function(mots_cles, langue = "en", nb_articles = 8) {
-  
+
   date_debut <- format(DATE_COLLECTE - days(7), "%Y-%m-%d")
-  
-  url_api <- paste0(
-    "https://newsapi.org/v2/everything?",
-    "q=", URLencode(mots_cles, reserved = TRUE),
-    "&language=", langue,
-    "&from=", date_debut,
-    "&sortBy=relevancy",
-    "&pageSize=", nb_articles,
-    "&apiKey=", NEWSAPI_KEY
-  )
-  
-  # Requête HTTP avec gestion d'erreur
+
+  # Requête HTTP avec gestion d'erreur (clé en en-tête X-Api-Key)
   reponse <- tryCatch(
-    GET(url_api, timeout(20)),
+    GET("https://newsapi.org/v2/everything",
+        query = list(q = mots_cles, language = langue, from = date_debut,
+                     sortBy = "relevancy", pageSize = nb_articles),
+        add_headers(`X-Api-Key` = NEWSAPI_KEY),
+        timeout(20)),
     error = function(e) {
-      cat("   Connexion impossible :", conditionMessage(e), "\n")
+      cat("   Connexion impossible :", gsub(NEWSAPI_KEY, "****", conditionMessage(e), fixed = TRUE), "\n")
       NULL
     }
   )
-  
+
   # Retourner tibble vide si connexion échouée
-  if (is.null(reponse)) return(tibble())
-  
-  # Vérifier le code HTTP
-  code_http <- status_code(reponse)
-  if (code_http != 200) {
-    cat("   Erreur HTTP", code_http, "\n")
+  if (is.null(reponse)) {
+    diag_news(mots_cles, langue, http = NA, code_api = "connexion_impossible")
     return(tibble())
   }
-  
-  # Parser le JSON
+
+  # Parser le JSON (aussi en cas d'erreur : NewsAPI renvoie code + message)
+  code_http <- status_code(reponse)
   contenu <- content(reponse, as = "text", encoding = "UTF-8")
   donnees <- tryCatch(
     fromJSON(contenu, flatten = TRUE),
@@ -81,7 +83,20 @@ appeler_newsapi <- function(mots_cles, langue = "en", nb_articles = 8) {
       NULL
     }
   )
-  
+
+  # Vérifier le code HTTP
+  if (code_http != 200) {
+    cat("   Erreur HTTP", code_http, "-", donnees$code %||% "", "\n")
+    cat("::warning::NewsAPI HTTP ", code_http, " ", donnees$code %||% "", "\n", sep = "")
+    diag_news(mots_cles, langue, http = code_http, code_api = donnees$code %||% NA,
+              message_api = donnees$message %||% NA)
+    return(tibble())
+  }
+
+  diag_news(mots_cles, langue, http = code_http, code_api = donnees$status %||% NA,
+            total = donnees$totalResults %||% NA,
+            recus = if (is.data.frame(donnees$articles)) nrow(donnees$articles) else 0)
+
   if (is.null(donnees) || is.null(donnees$articles)) return(tibble())
   if (!is.data.frame(donnees$articles)) return(tibble())
   if (nrow(donnees$articles) == 0) return(tibble())
@@ -328,9 +343,23 @@ if (file.exists(fichier_json)) {
   json_existant <- read_json(fichier_json)
   
   cols_json <- c("titre", "resume", "lien", "date_fr", "source", "categorie")
-  
+
+  # Statut explicite : le rapport affiche « indisponible » plutot qu'un vide
+  https     <- vapply(DIAG_NEWS, function(d) as.character(d$http %||% NA), character(1))
+  bruts     <- sum(vapply(DIAG_NEWS, function(d) as.numeric(d$articles_recus %||% 0), numeric(1)))
+  raison_actu <- if (nrow(tous_articles) > 0) NA_character_
+    else if (length(https) > 0 && all(is.na(https) | https != "200"))
+      paste0("NewsAPI en erreur sur toutes les requetes (HTTP ", paste(unique(https), collapse = "/"), ")")
+    else if (bruts == 0) "NewsAPI repond (HTTP 200) mais aucune requete ne renvoie d'article sur la periode"
+    else paste0(bruts, " articles bruts recus, aucun retenu par le filtre de pertinence")
+  if (!is.na(raison_actu)) cat("::warning::Actualites indisponibles : ", raison_actu, "\n", sep = "")
+
   json_existant$actualites <- list(
     date_collecte  = as.character(DATE_COLLECTE),
+    statut         = if (nrow(tous_articles) > 0) "ok" else "indisponible",
+    raison         = raison_actu,
+    source         = "NewsAPI /v2/everything (7 derniers jours)",
+    diagnostic     = DIAG_NEWS,
     total_articles = nrow(tous_articles),
     top_newsletter = if (nrow(top_articles) > 0)
       top_articles %>%
@@ -344,7 +373,8 @@ if (file.exists(fichier_json)) {
     else list()
   )
   
-  write_json(json_existant, fichier_json, pretty = TRUE, auto_unbox = TRUE)
+  write_json(json_existant, fichier_json, pretty = TRUE, auto_unbox = TRUE,
+             na = "null", null = "null")
   cat("   JSON enrichi :", fichier_json, "\n")
   
 } else {

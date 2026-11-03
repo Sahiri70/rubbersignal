@@ -1,13 +1,34 @@
 # =============================================================
 # RUBBERSIGNAL.COM — Script 01 : Collecte des prix
 # Auteur  : Martial Sahiri
-# Version : 3.1 — RSCI + correction taux FCFA/USD + retrait FRED
-# Objectif: Recuperer chaque semaine le prix TSR20 (LGM),
-#           le prix bord-champ CI (APROMAC) et calculer le RSCI
-# Usage   : source("scripts/01_collect_prices.R")
+# Version : 4.0 — AUTOMATIQUE, plus aucune saisie manuelle
+#           (octobre 2026)
+# Objectif: Recuperer chaque semaine le prix TSR20, le taux de change,
+#           le prix bord-champ CI (APROMAC) et calculer le RSCI.
+# Changements vs v3.1 :
+#   - taux EUR/USD, JPY, CNY, CHF : automatiques (BCE)
+#   - prix TSR20 : chaine LGM/MRB > rtas.sg (MRB) > SGX > IndexMundi,
+#     plus de prix de secours code en dur (arret si tout echoue)
+#   - prix APROMAC : extrait automatiquement de la presse, historise
+#     dans data/reference/apromac_history.csv ; statut de fraicheur
+#   - historique TSR20 : reel (data/reference/tsr20_hebdo.csv),
+#     l'ancien historique 2.25/2.20/... code en dur est supprime
+#   - SICOM : automatique (SGX) ; TOCOM et SHFE : non collectes
+#     automatiquement (NA, jamais de valeur figee)
+#   - bloc controle_qualite ajoute au JSON
+# Changements v4.1 (novembre 2026, corrections rapport S45) :
+#   - cotation hebdo datee (date_source) ; > 14 jours ou sans date :
+#     prix_actuel = NA, jamais presentee comme prix actuel
+#   - references mensuelles libres : FMI PRUBBUSDM (FRED, cents/lb ->
+#     USD/kg) et Banque mondiale Pink Sheet TSR20
+#   - APROMAC : saisie datee data/reference/prix_apromac.csv (prioritaire)
+#     + historique presse ; alerte si le mois en cours manque
+#   - RSCI v2 : taux officiel en vigueur au mois du prix (61/63/66 %),
+#     reference TSR20 du mois precedent, DRC 60 % a confirmer
+# Usage   : source("scripts/01_collect_prices.R")   (depuis la racine)
 # =============================================================
 
-# ── 1. CHARGER LES PACKAGES ──────────────────────────────────
+# ── 1. CHARGER LES PACKAGES ET LE MODULE DE SOURCES ──────────
 
 library(httr)
 library(jsonlite)
@@ -15,382 +36,378 @@ library(tidyverse)
 library(lubridate)
 library(rvest)
 
+if (file.exists("scripts/00_sources.R")) {
+  source("scripts/00_sources.R")
+} else {
+  source("00_sources.R")
+}
+
 
 # ── 2. PARAMETRES GLOBAUX ────────────────────────────────────
 
-DATE_COLLECTE <- Sys.Date()
+# RUBBERSIGNAL_TODAY : uniquement pour les tests (rejouer une date)
+DATE_COLLECTE <- as.Date(Sys.getenv("RUBBERSIGNAL_TODAY", as.character(Sys.Date())))
 SEMAINE       <- isoweek(DATE_COLLECTE)
 ANNEE         <- year(DATE_COLLECTE)
+
+dir.create("data/raw",       recursive = TRUE, showWarnings = FALSE)
+dir.create("data/processed", recursive = TRUE, showWarnings = FALSE)
+dir.create("data/reference", recursive = TRUE, showWarnings = FALSE)
+
+ALERTES <- character()   # tout ce qui est degrade est liste ici
 
 cat("=== RUBBERSIGNAL — Collecte du", format(DATE_COLLECTE, "%d/%m/%Y"), "===\n\n")
 
 
-# ── 3. SOURCE A : PRIX TSR20 — LGM MALAYSIA ──────────────────
-# Lembaga Getah Malaysia — reference officielle SMR20 / TSR20
-# Prix publie chaque jour ouvrable a 15h00 heure Malaisie
-# URL : https://www.lgm.gov.my
+# ── 3. TAUX DE CHANGE (BCE) ──────────────────────────────────
 
-cat(">> Collecte prix TSR20 — LGM Malaysia...\n")
+cat(">> Taux de change (BCE)...\n")
 
-prix_lgm <- tryCatch({
-  
-  page <- read_html("https://www.lgm.gov.my", options = "NOERROR")
-  texte <- page %>% html_text2()
-  
-  # Chercher le prix SMR20 en US Cents/Kg
-  # Format attendu : "229.255 (US Cents/Kg)"
-  match_cents <- regmatches(
-    texte,
-    regexpr("[0-9]{2,3}\\.[0-9]{1,2}(?=\\s*\\(?US Cents)", texte, perl = TRUE)
-  )
-  
-  if (length(match_cents) > 0) {
-    prix_cents <- as.numeric(match_cents[1])
-    prix_usd   <- round(prix_cents / 100, 4)
-    cat("   OK — SMR20 :", prix_cents, "US Cents/kg =", prix_usd, "USD/kg\n")
-    prix_usd
-  } else {
-    cat("   Pattern LGM non trouve — tentative IndexMundi\n")
-    NA
-  }
-  
-}, error = function(e) {
-  cat("   LGM inaccessible :", conditionMessage(e), "\n")
-  NA
-})
+fx <- rs_fx()
+if (is.null(fx)) stop("Taux de change : aucune source accessible. Arret volontaire.")
+
+XOF_PAR_EUR  <- 655.957            # parite FIXE XOF/EUR (arrimage), ne change jamais
+TAUX_EUR_USD <- fx$eur_usd
+FCFA_PAR_USD <- round(XOF_PAR_EUR / TAUX_EUR_USD, 2)
+
+TAUX_JPY_USD <- if (is.finite(fx$eur_jpy)) round(TAUX_EUR_USD / fx$eur_jpy, 6) else NA_real_
+TAUX_CNY_USD <- if (is.finite(fx$eur_cny)) round(TAUX_EUR_USD / fx$eur_cny, 5) else NA_real_
+TAUX_USD_CHF <- if (is.finite(fx$eur_chf)) round(fx$eur_chf / TAUX_EUR_USD, 4) else NA_real_
+
+if (!is.na(fx$date) && as.numeric(DATE_COLLECTE - as.Date(fx$date)) > 7)
+  ALERTES <- c(ALERTES, paste0("Taux de change date du ", fx$date, " (plus de 7 jours)"))
+
+cat("   EUR/USD =", TAUX_EUR_USD, "(", fx$date, ",", fx$source, ")\n")
+cat("   FCFA/USD =", FCFA_PAR_USD, "\n")
 
 
-# ── 4. SOURCE B : PRIX TSR20 — INDEXMUNDI (SECOURS) ──────────
+# ── 4. PRIX TSR20 ────────────────────────────────────────────
 
-cat("\n>> Collecte prix IndexMundi (source de secours)...\n")
+cat("\n>> Prix TSR20...\n")
 
-prix_indexmundi_val <- tryCatch({
-  
-  page_html <- read_html(
-    "https://www.indexmundi.com/commodities/?commodity=rubber&months=12"
-  )
-  
-  tableau <- page_html %>%
-    html_element("table") %>%
-    html_table(header = TRUE)
-  
-  tableau_propre <- tableau %>%
-    as_tibble() %>%
-    rename_with(~ c("mois", "prix_usd", "variation"), .cols = 1:3) %>%
-    filter(!is.na(prix_usd), prix_usd != "") %>%
-    mutate(
-      prix_usd = as.numeric(gsub("[^0-9.]", "", prix_usd)),
-      source   = "IndexMundi",
-      unite    = "USD/kg"
-    ) %>%
-    select(mois, prix_usd, source, unite) %>%
-    filter(!is.na(prix_usd))
-  
-  if (nrow(tableau_propre) > 0) {
-    cat("   OK — IndexMundi :", tableau_propre$prix_usd[1],
-        "USD/kg (", tableau_propre$mois[1], ")\n")
-  }
-  
-  tableau_propre
-  
-}, error = function(e) {
-  cat("   IndexMundi inaccessible :", conditionMessage(e), "\n")
-  tibble()
-})
-
-
-# ── 5. DETERMINER LE PRIX TSR20 RETENU ───────────────────────
-# Priorite : LGM > IndexMundi > donnees de secours (mise a jour manuelle)
-#
-# NOTE (verifie S23, juin 2026) : une 3e source automatique FRED
-# (serie PRUBBUSDM "Global price of Rubber") repond en HTTP 200 mais
-# retourne un INDICE general (base ~100, valeur ~110.4), PAS un prix
-# TSR20 en USD/kg. L'utiliser comme fallback ferait passer
-# prix_actuel_usd a ~110 USD/kg de maniere silencieuse. Ecartee de la
-# chaine de decision active. Code conserve en reference plus bas
-# (desactive).
-
-cat("\n>> Determination du prix TSR20 retenu...\n")
-
-if (!is.na(prix_lgm)) {
-  prix_actuel_usd <- prix_lgm
-  source_prix     <- "LGM Malaysia"
-  cat("   Source retenue : LGM Malaysia\n")
-  
-} else if (nrow(prix_indexmundi_val) > 0 && !is.na(prix_indexmundi_val$prix_usd[1])) {
-  prix_actuel_usd <- prix_indexmundi_val$prix_usd[1]
-  source_prix     <- "IndexMundi"
-  cat("   Source retenue : IndexMundi\n")
-  
-} else {
-  # Donnees de secours — dernier prix LGM connu
-  # METTRE A JOUR CHAQUE SEMAINE si LGM et IndexMundi inaccessibles
-  # Source : https://www.lgm.gov.my -> SMR20 en US Cents/Kg / 100
-  prix_actuel_usd <- 2.3685  # Dernier prix LGM connu (03/06/2026)
-  source_prix     <- "LGM Malaysia (03/06/2026) — mise a jour manuelle"
-  cat("   Source retenue : donnees de secours\n")
-  cat("   Prix manuel :", prix_actuel_usd, "USD/kg\n")
-  cat("   -> Si LGM inaccessible, mettre a jour cette valeur\n")
-  cat("      Source : https://www.lgm.gov.my\n")
-}
+tsr <- rs_tsr20()          # s'arrete avec une erreur claire si tout echoue
+prix_actuel_usd <- tsr$usd
+source_prix     <- tsr$source
+ALERTES         <- c(ALERTES, tsr$alertes)
 
 cat("   Prix TSR20 retenu :", prix_actuel_usd, "USD/kg (", source_prix, ")\n")
+if (length(tsr$candidats) > 1)
+  cat("   Sources concordantes :", length(tsr$candidats),
+      "| ecart max :", tsr$divergence_max_pct, "%\n")
 
-# ── SOURCE FRED — DESACTIVEE, conservee en reference ─────────
-# fred_key <- Sys.getenv("FRED_KEY")
-# url_fred <- paste0(
-#   "https://api.stlouisfed.org/fred/series/observations",
-#   "?series_id=PRUBBUSDM&api_key=", fred_key,
-#   "&sort_order=desc&limit=2&file_type=json")
-# -> PRUBBUSDM = "Global price of Rubber", indice base 100 (~2016),
-#    PAS le TSR20. Verifie S23 : valeur ~110.39 alors que TSR20 LGM
-#    = 2.3685 USD/kg. A reconsiderer uniquement si une formule de
-#    conversion indice -> TSR20 est etablie et validee.
+# Garde-fou : rejeter une valeur absurde (ex. un indice base 100 pris pour un prix)
+if (!is.finite(prix_actuel_usd) || prix_actuel_usd < 1 || prix_actuel_usd > 5)
+  stop("Prix TSR20 hors plage plausible (1-5 USD/kg) : ", prix_actuel_usd)
+
+# Fraicheur (v4.1) : une cotation de plus de 14 jours, ou sans date, n'est
+# JAMAIS presentee comme prix actuel (ni dans le titre du rapport).
+fr_hebdo         <- rs_fraicheur(tsr$date_source, DATE_COLLECTE, RS_MAX_JOURS_HEBDO)
+prix_hebdo_frais <- identical(fr_hebdo$statut, "frais")
+cat("   Date de la cotation :", tsr$date_source %||% "inconnue",
+    "| statut :", fr_hebdo$statut, "\n")
+if (!prix_hebdo_frais)
+  ALERTES <- c(ALERTES, sprintf(
+    "TSR20 hebdo : cotation %s (date de source %s, seuil %d jours) - non presentee comme prix actuel",
+    fr_hebdo$statut, tsr$date_source %||% "inconnue", RS_MAX_JOURS_HEBDO))
 
 
-# ── 6. CONSTRUIRE L'HISTORIQUE DES PRIX ──────────────────────
+# ── 4 bis. REFERENCES MENSUELLES LIBRES (FMI / Banque mondiale) ──
+# NOTE (v4.1) : FRED PRUBBUSDM est bien un PRIX (US cents/lb, verifie sur
+# l'API FRED le 03/11/2026), pas un indice base 100 : il est reintegre
+# comme reference mensuelle, converti en USD/kg.
 
-# Historique glissant 8 mois — mis a jour avec le prix actuel
-prix_bm <- tibble(
-  periode  = c(
-    format(DATE_COLLECTE, "%Y-%m"),
-    format(DATE_COLLECTE %m-% months(1), "%Y-%m"),
-    format(DATE_COLLECTE %m-% months(2), "%Y-%m"),
-    format(DATE_COLLECTE %m-% months(3), "%Y-%m"),
-    format(DATE_COLLECTE %m-% months(4), "%Y-%m"),
-    format(DATE_COLLECTE %m-% months(5), "%Y-%m"),
-    format(DATE_COLLECTE %m-% months(6), "%Y-%m"),
-    format(DATE_COLLECTE %m-% months(7), "%Y-%m")
-  ),
-  prix_usd = c(
-    prix_actuel_usd,
-    2.25, 2.20, 2.15, 2.10, 2.05, 2.00, 1.95
-    # Les valeurs passees peuvent etre affinees manuellement
-    # avec les donnees historiques LGM ou IndexMundi
-  ),
-  source = source_prix,
-  unite  = "USD/kg"
+cat("\n>> References mensuelles (FMI via FRED, Banque mondiale)...\n")
+
+fmi <- rs_fred_prubbusdm()
+bm  <- rs_wb_pinksheet_tsr20()
+if (is.null(fmi)) ALERTES <- c(ALERTES, "Reference mensuelle FMI (FRED PRUBBUSDM) indisponible")
+if (is.null(bm))  ALERTES <- c(ALERTES, "Reference mensuelle Banque mondiale (Pink Sheet TSR20) indisponible")
+
+# Une moyenne mensuelle est datee a la fin de son mois ; seuil 45 jours.
+ref_mensuelle <- function(x, source_si_absent) {
+  if (is.null(x))
+    return(rs_valeur(NA_real_, "USD/kg", source_si_absent, NA, "indisponible cette semaine",
+                     statut = "indisponible"))
+  fin <- seq(as.Date(x$date_source), by = "1 month", length.out = 2)[2] - 1
+  fr  <- rs_fraicheur(fin, DATE_COLLECTE, RS_MAX_JOURS_MENSUEL)
+  if (!identical(fr$statut, "frais"))
+    ALERTES <<- c(ALERTES, sprintf("%s : derniere valeur %s, plus de %d jours apres la fin du mois",
+                                   x$source, x$periode, RS_MAX_JOURS_MENSUEL))
+  rs_valeur(x$valeur, x$unite, x$source, x$date_source, x$methode,
+            periode = x$periode, valeur_orig = x$valeur_orig %||% NA_real_,
+            unite_orig = x$unite_orig %||% NA_character_, url = x$url,
+            statut = if (identical(fr$statut, "frais")) "derniere_valeur_disponible" else "perime",
+            age_jours_fin_periode = fr$age_jours)
+}
+reference_mensuelle <- list(
+  fmi_prubbusdm = ref_mensuelle(fmi, "FMI, Global price of Rubber (FRED, serie PRUBBUSDM)"),
+  bm_tsr20      = ref_mensuelle(bm,  "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)"),
+  note = "Dernieres moyennes mensuelles publiees (sources libres). Fraicheur mesuree depuis la fin du mois (seuil 45 jours)."
 )
+cat("   FMI PRUBBUSDM :", reference_mensuelle$fmi_prubbusdm$valeur, "USD/kg (",
+    reference_mensuelle$fmi_prubbusdm$periode %||% "-", ")\n")
+cat("   BM TSR20      :", reference_mensuelle$bm_tsr20$valeur, "USD/kg (",
+    reference_mensuelle$bm_tsr20$periode %||% "-", ")\n")
 
 
-# ── 7. SOURCE : PRIX BORD-CHAMP CI — APROMAC ─────────────────
-# Prix officiel mensuel fixe par l'APROMAC
-# Source : apromac.ci / fratmat.info / conseilheveapalmier.ci
-# A mettre a jour manuellement chaque 1er du mois
+# ── 5. HISTORIQUE REEL DU PRIX ───────────────────────────────
+
+# Une cotation perimee n'entre pas dans l'historique (sinon fausse variation).
+f_hist_tsr <- "data/reference/tsr20_hebdo.csv"
+h_tsr <- if (prix_hebdo_frais) {
+  rs_hist_tsr20_maj(DATE_COLLECTE, prix_actuel_usd, source_prix, tsr$indice, f = f_hist_tsr)
+} else if (file.exists(f_hist_tsr)) {
+  utils::read.csv(f_hist_tsr, stringsAsFactors = FALSE)
+} else {
+  data.frame(cle = character(), date = character(), prix_usd = numeric(),
+             source = character(), indice = character(), stringsAsFactors = FALSE)
+}
+hs    <- h_tsr[h_tsr$indice == tsr$indice, , drop = FALSE]   # memes indices uniquement
+n_hs  <- nrow(hs)
+
+# Moyennes mensuelles de NOTRE historique hebdomadaire reel
+prix_hebdo_mensuel <- hs %>%
+  mutate(periode = format(as.Date(date), "%Y-%m")) %>%
+  group_by(periode) %>%
+  summarise(prix_usd = round(mean(prix_usd), 4), .groups = "drop") %>%
+  arrange(desc(periode)) %>%
+  head(8) %>%
+  mutate(source = source_prix, unite = "USD/kg")
+
+# historique_bm = vraie serie Banque mondiale (Pink Sheet), plus de valeurs figees
+prix_bm <- if (!is.null(bm)) {
+  as_tibble(head(bm$serie, 8)) %>%
+    transmute(periode, prix_usd = usd_kg, source = bm$source, unite = "USD/kg",
+              date_source = paste0(periode, "-01"))
+} else tibble()
+
+
+# ── 6. PRIX BORD-CHAMP CI — APROMAC (automatique) ────────────
 
 cat("\n>> Prix bord-champ CI — APROMAC...\n")
 
-# ── PARAMETRES A METTRE A JOUR MANUELLEMENT CHAQUE MOIS ──────
-PRIX_APROMAC_FCFA <- 474        # Prix APROMAC en FCFA/kg — juin 2026
-MOIS_APROMAC      <- "2026-06"  # Mois de reference
-# Source : FratMat, 01/06/2026 (Didier Assoumou)
-# https://www.fratmat.info/article/2642261/flash-info/caoutchouc-prix-apromac-juin-2026-474-f-cfa-kg
+items <- rs_articles_apromac()
+cat("   Articles examines :", length(items), "\n")
+cons  <- rs_consensus_apromac(items, DATE_COLLECTE)
+if (nrow(cons) > 0)
+  cat("   Prix trouves :", paste(cons$mois, cons$prix_fcfa, collapse = " | "), "\n")
+upd   <- rs_hist_apromac_maj(cons, aujourdhui = DATE_COLLECTE)   # historique presse (auto)
+ALERTES <- c(ALERTES, upd$alertes)
 
-# ── TAUX DE CHANGE FCFA/USD — via parite fixe FCFA/EUR ───────
-# Le FCFA (XOF) est arrime a l'EUR a un taux FIXE (structurel,
-# ne change jamais) :
-XOF_PAR_EUR <- 655.957
-# Seul le taux EUR/USD varie -> A VERIFIER CHAQUE SEMAINE
-# Source : xe.com / Reuters — verifie le 12/06/2026
-TAUX_EUR_USD <- 1.157
-FCFA_PAR_USD <- round(XOF_PAR_EUR / TAUX_EUR_USD, 2)
-# ─────────────────────────────────────────────────────────────
+# v4.1 : la saisie datee data/reference/prix_apromac.csv prime sur la presse.
+apromac_manuel <- rs_apromac_manuel_lire("data/reference/prix_apromac.csv")
+fus <- rs_apromac_fusion(apromac_manuel, upd$historique)
+ALERTES <- c(ALERTES, fus$alertes)
+ap  <- rs_apromac_dernier(fus$historique, DATE_COLLECTE)
+ap$statut <- if (ap$age_mois == 0) "ok" else if (ap$age_mois == 1) "reporte" else "perime"
+
+PRIX_APROMAC_FCFA <- ap$prix_fcfa
+MOIS_APROMAC      <- ap$mois
+
+# Alerte VISIBLE des que le prix du mois en cours manque (l'APROMAC publie
+# vers le 1er-5 : en debut de mois, saisir le prix des sa parution).
+if (isTRUE(ap$mois_courant_manquant)) ALERTES <- c(ALERTES, ap$alerte)
 
 prix_apromac_usd <- round(PRIX_APROMAC_FCFA / FCFA_PAR_USD, 4)
 
-cat("   Prix bord-champ APROMAC :", PRIX_APROMAC_FCFA, "FCFA/kg (", MOIS_APROMAC, ")\n")
-cat("   Taux FCFA/USD           :", FCFA_PAR_USD, "(EUR/USD =", TAUX_EUR_USD, ")\n")
+cat("   Prix APROMAC retenu     :", PRIX_APROMAC_FCFA, "FCFA/kg (", MOIS_APROMAC,
+    ", statut :", ap$statut, ", origine :", ap$origine, ")\n")
 cat("   Equivalent USD          :", prix_apromac_usd, "USD/kg\n")
 
-# Calcul du spread export-planteur (brut, sans correction DRC)
-# Donnee strategique — stockee en JSON uniquement, PAS publiee dans le rapport V1
-# NOTE : ce spread compare un prix "sec" (TSR20 LGM) a un prix "fonds de
-#        tasse humide" (APROMAC) — meme limite methodologique que celle
-#        resolue pour le RSCI ci-dessous via DRC_OFFICIEL. A corriger
-#        avant toute publication V2 du spread.
-spread_usd <- round(prix_actuel_usd - prix_apromac_usd, 3)
-spread_pct <- round(spread_usd / prix_actuel_usd * 100, 1)
+# Spread export-planteur (brut, sans correction DRC) — confidentiel V2
+# Calcule seulement si la cotation hebdomadaire est fraiche.
+spread_usd <- if (prix_hebdo_frais) round(prix_actuel_usd - prix_apromac_usd, 3) else NA_real_
+spread_pct <- if (prix_hebdo_frais) round(spread_usd / prix_actuel_usd * 100, 1) else NA_real_
 
-cat("   Spread export-planteur  :", spread_usd, "USD/kg (",
-    spread_pct, "% de la valeur export) — confidentiel V2\n")
-
-# Objet bord-champ pour le JSON
 synthese_bord_champ <- list(
   prix_fcfa         = PRIX_APROMAC_FCFA,
   prix_usd          = prix_apromac_usd,
   mois              = MOIS_APROMAC,
-  source            = "APROMAC (via FratMat)",
+  type_prix         = ap$type,
+  statut            = ap$statut,
+  age_mois          = ap$age_mois,
+  mois_courant      = ap$mois_courant,
+  mois_courant_manquant = ap$mois_courant_manquant,
+  alerte            = ap$alerte,
+  origine           = ap$origine,
+  source            = ap$source,
+  source_url        = ap$url,
+  date_publication  = ap$date_publication,
+  fichier_saisie    = "data/reference/prix_apromac.csv",
+  historique        = fus$historique[, c("mois", "prix_fcfa", "type", "source", "url", "date_publication", "origine")],
   fcfa_par_usd      = FCFA_PAR_USD,
   taux_eur_usd      = TAUX_EUR_USD,
+  taux_date         = fx$date,
   spread_export_usd = spread_usd,
   spread_export_pct = spread_pct,
   note              = "Spread confidentiel — publication prevue RubberSignal V2"
 )
 
 
-# ── 7B. RSCI : RUBBERSIGNAL CHAIN INDEX ──────────────────────
-# Part du prix planteur (corrigee DRC) dans le prix international TSR20
-#
+# ── 7. RSCI : RUBBERSIGNAL CHAIN INDEX (v2, mecanisme 2026) ──
+# Part du prix planteur (corrigee DRC) dans le prix de reference TSR20.
 # Cadre legal : Loi N.2017-540 du 03/08/2017 (creation du CHPH)
-# Mecanisme   : decision CHPH n.0037, mai 2022 -> 63% planteurs /
-#               37% transformateurs (contre 61% avant 2022)
-# DRC         : le calcul officiel retient un Dry Rubber Content (DRC)
-#               de reference de 60% pour le fonds de tasse. Sans cette
-#               correction, comparer FCFA/kg (humide) a USD/kg LGM
-#               (sec) n'a pas de sens.
-# Debat ouvert (non integre ici) : usines CI majoritairement TSR10
-#               (grade superieur au TSR20 de reference) -> prime
-#               potentielle non quantifiee a ce stade -> RSCI v2.
+# Mecanisme   : taux en vigueur AU MOIS DU PRIX APROMAC (table datee
+#               RS_MECANISME_CHPH, scripts/00_regles.R) : 61 % -> 63 %
+#               (mai 2022) -> 66 % (depuis le 01/05/2026).
+# Reference   : comme le mecanisme officiel 2026, cotation SGX TSR20 du
+#               MOIS PRECEDENT, ici la moyenne mensuelle Banque mondiale
+#               (Pink Sheet, serie TSR20 = SGX/SICOM, source libre).
+# DRC         : 60 % de reference, A CONFIRMER apres la reforme 2026.
+# Debat ouvert (non integre) : prime TSR10 vs TSR20 -> RSCI v3.
 
 cat("\n>> RSCI — RubberSignal Chain Index...\n")
 
-DRC_OFFICIEL       <- 0.60   # CHPH — taux de caoutchouc sec de reference
-MECANISME_OFFICIEL <- 0.63   # CHPH decision mai 2022 — part planteur cible
+DRC_OFFICIEL <- RS_DRC_REFERENCE
+mois_ref_rsci <- rs_mois_precedent(MOIS_APROMAC)
+ref_rsci_usd  <- if (!is.null(bm)) bm$serie$usd_kg[bm$serie$periode == mois_ref_rsci][1] else NA_real_
+ref_rsci_usd  <- ref_rsci_usd %||% NA_real_
 
-prix_planteur_sec_usd <- round(prix_apromac_usd / DRC_OFFICIEL, 4)
-rsci_pct              <- round(prix_planteur_sec_usd / prix_actuel_usd * 100, 1)
-rsci_ecart_pts        <- round(rsci_pct - MECANISME_OFFICIEL * 100, 1)
+calc <- rs_calcul_rsci(PRIX_APROMAC_FCFA, FCFA_PAR_USD, ref_rsci_usd, MOIS_APROMAC, DRC_OFFICIEL)
+prix_planteur_sec_usd <- calc$prix_planteur_sec_usd
+rsci_pct              <- calc$rsci_pct
+rsci_ecart_pts        <- calc$ecart_pts
+MECANISME_OFFICIEL    <- calc$taux$part_planteur_pct / 100
 
-cat("   Prix planteur (DRC-corrige) :", prix_planteur_sec_usd, "USD/kg\n")
-cat("   RSCI (part planteur)        :", rsci_pct, "%\n")
-cat("   Mecanisme officiel CHPH      :", MECANISME_OFFICIEL * 100, "%\n")
-cat("   Ecart vs mecanisme officiel  :", rsci_ecart_pts, "points\n")
+if (is.finite(rsci_pct)) {
+  cat("   Mois du RSCI                :", MOIS_APROMAC, "(reference TSR20 de", mois_ref_rsci, ":",
+      ref_rsci_usd, "USD/kg)\n")
+  cat("   Prix planteur (DRC-corrige) :", prix_planteur_sec_usd, "USD/kg\n")
+  cat("   RSCI (part planteur)        :", rsci_pct, "%\n")
+  cat("   Taux officiel en vigueur    :", calc$taux$part_planteur_pct, "%\n")
+  cat("   Ecart vs mecanisme officiel :", rsci_ecart_pts, "points\n")
+} else {
+  ALERTES <- c(ALERTES, sprintf(
+    "RSCI non calcule : reference TSR20 Banque mondiale de %s indisponible (prix APROMAC de %s)",
+    mois_ref_rsci, MOIS_APROMAC))
+  cat("   RSCI NON CALCULE : reference TSR20 de", mois_ref_rsci, "indisponible\n")
+}
 
 synthese_rsci <- list(
+  mois_rsci              = MOIS_APROMAC,
   drc_officiel           = DRC_OFFICIEL,
-  mecanisme_officiel_pct = MECANISME_OFFICIEL * 100,
+  drc_statut             = RS_DRC_STATUT,
+  mecanisme_officiel_pct = calc$taux$part_planteur_pct,
+  mecanisme_date_effet   = calc$taux$date_effet,
+  mecanisme_source       = calc$taux$reference,
+  mecanisme_url          = calc$taux$url,
+  historique_mecanisme   = transform(RS_MECANISME_CHPH, date_effet = as.character(date_effet)),
   prix_planteur_sec_usd  = prix_planteur_sec_usd,
   rsci_pct               = rsci_pct,
   ecart_pts              = rsci_ecart_pts,
+  statut_donnee          = ap$statut,
+  mois_apromac_utilise   = ap$mois,
+  prix_apromac           = rs_valeur(PRIX_APROMAC_FCFA, "FCFA/kg", ap$source, ap$date_publication %||% NA,
+                                     paste0("Prix officiel APROMAC du mois ", ap$mois, " (", ap$type, ")"),
+                                     url = ap$url, origine = ap$origine),
+  reference_tsr20        = rs_valeur(ref_rsci_usd, "USD/kg",
+                                     "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+                                     paste0(mois_ref_rsci, "-01"),
+                                     "Moyenne mensuelle du mois precedant le prix APROMAC (regle du mecanisme 2026 : cotations SGX-SICOM TSR20 du mois precedent)"),
+  taux_change            = rs_valeur(FCFA_PAR_USD, "FCFA/USD", fx$source, fx$date,
+                                     "655.957 FCFA/EUR (parite fixe) / EUR-USD BCE du jour de collecte"),
   cadre_legal            = "Loi N.2017-540 du 03/08/2017 - CHPH",
-  mecanisme_source       = "Decision CHPH n.0037 (mai 2022) : 63% planteurs / 37% transformateurs, contre 61% avant",
-  drc_source             = "DRC reference officiel 60% (fonds de tasse) - debat en cours sur DRC reel et grade TSR10 vs TSR20",
-  note                   = "RSCI = part du prix planteur (corrige DRC 60%) dans le prix international TSR20 (LGM)."
+  drc_source             = "DRC reference 60% (fonds de tasse), a confirmer apres reforme 2026 - debat en cours sur DRC reel et grade TSR10 vs TSR20",
+  methode                = "RSCI = (prix APROMAC du mois / taux FCFA-USD / DRC) / TSR20 Banque mondiale du mois precedent x 100 ; compare au taux officiel en vigueur au mois du prix APROMAC.",
+  note                   = "RSCI = part du prix planteur (corrige DRC) dans le prix de reference TSR20 du mois precedent."
 )
 
 
-# ── 8. CALCULS DE SYNTHESE ────────────────────────────────────
+# ── 8. CALCULS DE SYNTHESE ───────────────────────────────────
 
-cat("\n>> Calcul des statistiques de synthese...\n")
+cat("\n>> Statistiques de synthese...\n")
 
-if (nrow(prix_bm) >= 2) {
-  
-  prix_precedent <- prix_bm$prix_usd[2]
-  variation_pct  <- round(
-    (prix_actuel_usd - prix_precedent) / prix_precedent * 100, 2
-  )
-  tendance <- if (variation_pct > 0) "hausse" else if (variation_pct < 0) "baisse" else "stable"
-  
-  moyenne_3m <- round(mean(prix_bm$prix_usd[1:min(3, nrow(prix_bm))]), 3)
-  moyenne_6m <- round(mean(prix_bm$prix_usd[1:min(6, nrow(prix_bm))]), 3)
-  min_12m    <- round(min(prix_bm$prix_usd, na.rm = TRUE), 3)
-  max_12m    <- round(max(prix_bm$prix_usd, na.rm = TRUE), 3)
-  
-  cat("   Prix actuel    :", prix_actuel_usd, "USD/kg\n")
-  cat("   Variation      :", variation_pct, "% vs periode precedente\n")
-  cat("   Tendance       :", tendance, "\n")
-  cat("   Moyenne 3 mois :", moyenne_3m, "USD/kg\n")
-  cat("   Moyenne 6 mois :", moyenne_6m, "USD/kg\n")
-  
-  synthese_prix <- list(
-    prix_actuel   = prix_actuel_usd,
-    periode       = format(DATE_COLLECTE, "%Y-%m"),
-    source        = source_prix,
-    variation_pct = variation_pct,
-    tendance      = tendance,
-    moyenne_3m    = moyenne_3m,
-    moyenne_6m    = moyenne_6m,
-    min_12m       = min_12m,
-    max_12m       = max_12m
-  )
-  
+if (prix_hebdo_frais && n_hs >= 2) {
+  prix_precedent <- hs$prix_usd[n_hs - 1]
+  variation_pct  <- round((prix_actuel_usd - prix_precedent) / prix_precedent * 100, 2)
+  tendance <- if (variation_pct > 0.5) "hausse" else if (variation_pct < -0.5) "baisse" else "stable"
 } else {
-  cat("   ATTENTION : donnees insuffisantes\n")
-  synthese_prix <- list(
-    prix_actuel   = prix_actuel_usd,
-    periode       = format(DATE_COLLECTE, "%Y-%m"),
-    source        = source_prix,
-    variation_pct = NA,
-    tendance      = "indeterminee"
-  )
+  variation_pct <- NA_real_
+  tendance      <- "indeterminee"
 }
+fenetre <- function(k, minimum) {
+  if (n_hs >= minimum) tail(hs$prix_usd, k) else numeric()
+}
+v3  <- fenetre(13, 4); v6 <- fenetre(26, 8); v12 <- fenetre(52, 4)
+moyenne_3m <- if (length(v3)  > 0) round(mean(v3), 3)  else NA_real_
+moyenne_6m <- if (length(v6)  > 0) round(mean(v6), 3)  else NA_real_
+min_12m    <- if (length(v12) > 0) round(min(v12), 3)  else NA_real_
+max_12m    <- if (length(v12) > 0) round(max(v12), 3)  else NA_real_
+
+cat("   Historique reel :", n_hs, "semaine(s) pour l'indice", tsr$indice, "\n")
+cat("   Variation :", variation_pct, "% | tendance :", tendance, "\n")
+
+synthese_prix <- list(
+  # prix_actuel = NA si la cotation a plus de 14 jours ou n'a pas de date
+  prix_actuel   = if (prix_hebdo_frais) prix_actuel_usd else NA_real_,
+  periode       = if (!is.na(tsr$date_source)) format(as.Date(tsr$date_source), "%Y-%m") else NA_character_,
+  date_source   = tsr$date_source,
+  statut_fraicheur = fr_hebdo$statut,
+  age_jours     = fr_hebdo$age_jours,
+  prix_hebdo    = rs_valeur(prix_actuel_usd, "USD/kg", source_prix, tsr$date_source,
+                            "Cotation quotidienne lue le jour de collecte (priorite LGM > MRB via rtas.sg > SGX > IndexMundi) ; perimee au-dela de 14 jours",
+                            indice = tsr$indice, statut = fr_hebdo$statut, age_jours = fr_hebdo$age_jours),
+  source        = source_prix,
+  indice        = tsr$indice,
+  variation_pct = variation_pct,
+  tendance      = tendance,
+  moyenne_3m    = moyenne_3m,
+  moyenne_6m    = moyenne_6m,
+  min_12m       = min_12m,
+  max_12m       = max_12m,
+  semaines_historique = n_hs,
+  note_historique = "Variation = vs semaine precedente ; moyennes/min/max sur historique reel (NA tant que l'historique est trop court)",
+  prix_chf      = if (prix_hebdo_frais && is.finite(TAUX_USD_CHF)) round(prix_actuel_usd * TAUX_USD_CHF, 3) else NA_real_
+)
+cat("   Prix en CHF :", synthese_prix$prix_chf, "CHF/kg\n")
 
 
-# ── 9. CONVERSION EN CHF ──────────────────────────────────────
+# ── 9. MARCHES MONDIAUX ──────────────────────────────────────
+# SICOM (SGX TSR20) : automatique. TOCOM (RSS3) et SHFE (RU) : pas de
+# source gratuite fiable -> NA, jamais de valeur figee dans le code.
 
-TAUX_USD_CHF <- 0.90  # A verifier chaque semaine
+cat("\n>> Marches mondiaux...\n")
 
-synthese_prix$prix_chf <- round(prix_actuel_usd * TAUX_USD_CHF, 3)
-cat("   Prix en CHF    :", synthese_prix$prix_chf, "CHF/kg\n")
+DATE_MARCHES <- DATE_COLLECTE - 1
+sicom_cents  <- tsr$sgx_cents
+sicom_usd    <- if (is.finite(sicom_cents)) round(sicom_cents / 100, 4) else NA_real_
+spread_sicom_lgm <- if (is.finite(sicom_usd)) round(sicom_usd - prix_actuel_usd, 4) else NA_real_
 
-
-# ── 9C. MARCHÉS MONDIAUX — SAISIE MANUELLE (J-1) ─────────────
-# Cours décalés d'un jour — gratuits sur TradingView / investing.com
-#
-# SICOM  (SGX, Singapour) — TSR20  — USD cts/kg  — ticker : TF
-#   -> https://www.tradingview.com/symbols/SGX-TF1!/
-# TOCOM  (JPX, Tokyo)     — RSS3   — JPY/kg       — ticker : TRB
-#   -> https://www.tradingview.com/symbols/TOCOM-TRB1!/
-# SHFE   (Shanghai)       — SCR WF — CNY/tonne    — ticker : RU
-#   -> https://www.tradingview.com/symbols/SHFE-RU1!/
-#
-# ⚠ A METTRE A JOUR CHAQUE LUNDI AVANT DE LANCER LE PIPELINE
-
-cat("\n>> Marches mondiaux (saisie manuelle J-1)...\n")
-
-SICOM_TSR20_CENTS  <- 216.80  # USD cts/kg  — SGX TF   | investing.com 08/07/2026
-TOCOM_RSS3_JPY     <- 418.00  # JPY/kg      — JPX TRB  | TradingView TOCOM-TRB1! 09/07/2026
-SHFE_RU_CNY_TONNE  <- 15900   # CNY/tonne   — SHFE RU  | ESTIMATION — verifier SHFE-RU1! sur TradingView
-TAUX_JPY_USD       <- 0.00619 # 1 JPY en USD  | USD/JPY = 161.6 le 10/07/2026
-TAUX_CNY_USD       <- 0.1473  # 1 CNY en USD  | USD/CNY =  6.79 le 10/07/2026
-DATE_MARCHES       <- Sys.Date() - 1
-
-# ── Conversions en USD/kg ────────────────────────────────────
-sicom_usd <- round(SICOM_TSR20_CENTS / 100, 4)
-tocom_usd <- round(TOCOM_RSS3_JPY * TAUX_JPY_USD, 4)
-shfe_usd  <- round((SHFE_RU_CNY_TONNE / 1000) * TAUX_CNY_USD, 4)
-
-spread_sicom_lgm <- round(sicom_usd - prix_actuel_usd, 4)
-
-cat("   SICOM  TSR20 :", SICOM_TSR20_CENTS, "cts/kg =", sicom_usd, "USD/kg\n")
-cat("   TOCOM  RSS3  :", TOCOM_RSS3_JPY,    "JPY/kg =", tocom_usd, "USD/kg\n")
-cat("   SHFE   RU    :", SHFE_RU_CNY_TONNE, "CNY/t  =", shfe_usd,  "USD/kg\n")
-cat("   Spread SICOM vs LGM (meme grade TSR20) :", spread_sicom_lgm, "USD/kg\n")
+cat("   SICOM TSR20 :", sicom_cents, "cts/kg =", sicom_usd, "USD/kg\n")
+cat("   TOCOM RSS3 / SHFE RU : non collectes automatiquement (NA)\n")
 
 synthese_marches <- list(
   date_cours       = as.character(DATE_MARCHES),
   spread_sicom_lgm = spread_sicom_lgm,
   lgm = list(
-    grade      = "TSR20",
-    bourse     = "LGM (Malaisie)",
-    prix_usd   = prix_actuel_usd,
-    source     = source_prix
+    grade    = "TSR20/SMR20",
+    bourse   = "MRB/LGM (Malaisie)",
+    prix_usd = prix_actuel_usd,
+    source   = source_prix,
+    date_source = tsr$date_source,
+    statut_fraicheur = fr_hebdo$statut
   ),
   sicom = list(
     grade      = "TSR20",
     bourse     = "SGX/SICOM (Singapour)",
     ticker     = "TF",
-    prix_orig  = SICOM_TSR20_CENTS,
+    contrat    = tsr$sgx_mois,
+    prix_orig  = sicom_cents,
     unite_orig = "USD cts/kg",
-    prix_usd   = sicom_usd
+    prix_usd   = sicom_usd,
+    statut     = if (is.finite(sicom_usd)) "auto" else "indisponible"
   ),
   tocom = list(
-    grade        = "RSS3",
-    bourse       = "JPX/TOCOM (Tokyo)",
-    ticker       = "TRB",
-    prix_orig    = TOCOM_RSS3_JPY,
-    unite_orig   = "JPY/kg",
-    taux_jpy_usd = TAUX_JPY_USD,
-    prix_usd     = tocom_usd
+    grade = "RSS3", bourse = "JPX/TOCOM (Tokyo)", ticker = "TRB",
+    prix_orig = NA_real_, unite_orig = "JPY/kg",
+    taux_jpy_usd = TAUX_JPY_USD, prix_usd = NA_real_,
+    statut = "non_collecte_auto"
   ),
   shfe = list(
-    grade        = "SCR WF / RSS3",
-    bourse       = "SHFE (Shanghai)",
-    ticker       = "RU",
-    prix_orig    = SHFE_RU_CNY_TONNE,
-    unite_orig   = "CNY/tonne",
-    taux_cny_usd = TAUX_CNY_USD,
-    prix_usd     = shfe_usd
+    grade = "SCR WF / RSS3", bourse = "SHFE (Shanghai)", ticker = "RU",
+    prix_orig = NA_real_, unite_orig = "CNY/tonne",
+    taux_cny_usd = TAUX_CNY_USD, prix_usd = NA_real_,
+    statut = "non_collecte_auto"
   )
 )
 
@@ -403,42 +420,68 @@ fichier_csv <- paste0("data/raw/prix_bm_", ANNEE, "_S", SEMAINE, ".csv")
 write_csv(prix_bm, fichier_csv)
 cat("   Sauvegarde :", fichier_csv, "\n")
 
-if (nrow(prix_indexmundi_val) > 0) {
+prix_indexmundi_val <- tibble()
+if (!is.null(tsr$indexmundi) && nrow(tsr$indexmundi) > 0) {
+  prix_indexmundi_val <- as_tibble(tsr$indexmundi) %>%
+    mutate(source = "IndexMundi", unite = "USD/kg")
   fichier_csv2 <- paste0("data/raw/prix_indexmundi_", ANNEE, "_S", SEMAINE, ".csv")
   write_csv(prix_indexmundi_val, fichier_csv2)
   cat("   Sauvegarde :", fichier_csv2, "\n")
 }
 
 
-# ── 11. CONSTRUIRE LE JSON DE SORTIE ─────────────────────────
+# ── 11. CONTROLE QUALITE + JSON DE SORTIE ────────────────────
 
-cat("\n>> Construction du JSON de sortie...\n")
+cat("\n>> Controle qualite...\n")
+
+controle_qualite <- list(
+  statut_global = if (length(ALERTES) == 0) "ok" else "degrade",
+  alertes       = as.list(ALERTES),
+  tsr20 = list(
+    source = source_prix, indice = tsr$indice,
+    nb_sources = length(tsr$candidats),
+    divergence_max_pct = tsr$divergence_max_pct,
+    candidats = tsr$candidats
+  ),
+  taux_change = list(source = fx$source, date = fx$date),
+  apromac = list(statut = ap$statut, mois = ap$mois, age_mois = ap$age_mois,
+                 mois_courant_manquant = ap$mois_courant_manquant, origine = ap$origine,
+                 articles_examines = length(items), prix_trouves = nrow(cons)),
+  fraicheur = list(tsr20_hebdo = fr_hebdo$statut, tsr20_date_source = tsr$date_source,
+                   seuil_hebdo_jours = RS_MAX_JOURS_HEBDO, seuil_mensuel_jours = RS_MAX_JOURS_MENSUEL)
+)
+
+for (a in ALERTES) cat("::warning::", a, "\n", sep = "")   # visible dans GitHub Actions
+cat("   Statut global :", controle_qualite$statut_global, "\n")
 
 json_sortie <- list(
-  
+
   meta = list(
     date_collecte = as.character(DATE_COLLECTE),
     semaine       = SEMAINE,
     annee         = ANNEE,
     source        = "rubbersignal.com",
-    version       = "3.1"
+    version       = "4.1"
   ),
-  
+
   prix = list(
     synthese              = synthese_prix,
+    reference_mensuelle   = reference_mensuelle,
     bord_champ_ci         = synthese_bord_champ,
     rsci                  = synthese_rsci,
     marches_mondiaux      = synthese_marches,
     historique_bm         = prix_bm,
+    historique_hebdo_mensuel = prix_hebdo_mensuel,
     historique_indexmundi = if (nrow(prix_indexmundi_val) > 0)
-      head(prix_indexmundi_val, 6)
-    else
-      list()
-  )
+      head(prix_indexmundi_val, 6) else list()
+  ),
+
+  controle_qualite = controle_qualite
 )
 
 fichier_json <- paste0("data/processed/rubbersignal_S", SEMAINE, "_", ANNEE, ".json")
-write_json(json_sortie, fichier_json, pretty = TRUE, auto_unbox = TRUE)
+write_json(json_sortie, fichier_json, pretty = TRUE, auto_unbox = TRUE,
+           na = "null", null = "null")
 cat("   JSON sauvegarde :", fichier_json, "\n")
 
 
@@ -447,31 +490,19 @@ cat("   JSON sauvegarde :", fichier_json, "\n")
 cat("\n", strrep("=", 55), "\n")
 cat("RESUME COLLECTE PRIX — Semaine", SEMAINE, "/", ANNEE, "\n")
 cat(strrep("=", 55), "\n")
-cat("Prix TSR20 actuel  :", prix_actuel_usd, "USD/kg (", source_prix, ")\n")
+cat("Prix TSR20 lu      :", prix_actuel_usd, "USD/kg (", source_prix, ", date",
+    tsr$date_source %||% "inconnue", ",", fr_hebdo$statut, ")\n")
+cat("Ref. FMI mensuelle :", reference_mensuelle$fmi_prubbusdm$valeur, "USD/kg (",
+    reference_mensuelle$fmi_prubbusdm$periode %||% "-", ")\n")
 cat("Prix en CHF        :", synthese_prix$prix_chf, "CHF/kg\n")
-cat("Tendance           :", synthese_prix$tendance,
-    "(", synthese_prix$variation_pct, "%)\n")
-cat("Moyenne 3 mois     :", synthese_prix$moyenne_3m, "USD/kg\n")
-cat("Prix APROMAC CI    :", PRIX_APROMAC_FCFA, "FCFA/kg =",
-    prix_apromac_usd, "USD/kg (", MOIS_APROMAC, ")\n")
-cat("Spread V2 (confid.):", spread_usd, "USD/kg\n")
-cat("RSCI               :", rsci_pct, "% (ecart vs 63% officiel :", rsci_ecart_pts, "pts)\n")
-cat(strrep("-", 55), "\n")
-cat("SICOM  TSR20       :", sicom_usd, "USD/kg (", SICOM_TSR20_CENTS, "cts)\n")
-cat("TOCOM  RSS3        :", tocom_usd, "USD/kg (", TOCOM_RSS3_JPY, "JPY/kg)\n")
-cat("SHFE   RU          :", shfe_usd,  "USD/kg (", SHFE_RU_CNY_TONNE, "CNY/t)\n")
-cat("Spread SICOM/LGM   :", spread_sicom_lgm, "USD/kg\n")
+cat("Tendance           :", tendance, "(", variation_pct, "%)\n")
+cat("Prix APROMAC CI    :", PRIX_APROMAC_FCFA, "FCFA/kg =", prix_apromac_usd,
+    "USD/kg (", MOIS_APROMAC, ",", ap$statut, ")\n")
+cat("RSCI               :", rsci_pct, "% (", MOIS_APROMAC, "; ecart vs",
+    calc$taux$part_planteur_pct, "% officiel :", rsci_ecart_pts, "pts)\n")
+cat("SICOM  TSR20       :", sicom_usd, "USD/kg\n")
+cat("Qualite            :", controle_qualite$statut_global, "\n")
 cat("Fichier JSON       :", fichier_json, "\n")
 cat(strrep("=", 55), "\n")
 cat("\nProchaine etape : lancer scripts/02_collect_news.R\n\n")
-cat(">> RAPPELS HEBDOMADAIRES (a mettre a jour avant chaque pipeline) :\n")
-cat("   1. PRIX_APROMAC_FCFA + MOIS_APROMAC (mensuel)\n")
-cat("      -> https://www.fratmat.info ou conseilheveapalmier.ci\n")
-cat("   2. TAUX_EUR_USD (hebdomadaire)\n")
-cat("      -> xe.com (parite XOF/EUR fixe a 655.957, ne change jamais)\n")
-cat("   3. SICOM_TSR20_CENTS (hebdomadaire)\n")
-cat("      -> TradingView : https://www.tradingview.com/symbols/SGX-TF1!/\n")
-cat("   4. TOCOM_RSS3_JPY + TAUX_JPY_USD (hebdomadaire)\n")
-cat("      -> TradingView : https://www.tradingview.com/symbols/TOCOM-TRB1!/\n")
-cat("   5. SHFE_RU_CNY_TONNE + TAUX_CNY_USD (hebdomadaire)\n")
-cat("      -> TradingView : https://www.tradingview.com/symbols/SHFE-RU1!/\n\n")
+cat(">> Saisie mensuelle : ajouter le prix APROMAC du mois dans data/reference/prix_apromac.csv (v4.1).\n")

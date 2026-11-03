@@ -41,6 +41,7 @@ jobs:
       - name: Run Script 01 - Collect prices
         env:
           NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
+          FRED_KEY: ${{ secrets.FRED_KEY }}
         run: Rscript scripts/01_collect_prices.R
 
       - name: Run Script 02 - Collect news

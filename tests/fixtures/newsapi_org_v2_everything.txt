@@ -1,0 +1,6 @@
+{"status":"ok","articles":[
+ {"title":"Côte d’Ivoire: Prix du caoutchouc : 484 FCFA/kg en septembre 2026","description":"L'APROMAC a fixé le prix du mois de septembre 2026 à 484 FCFA le kilogramme.","url":"https://businessactuality.com/x"},
+ {"title":"Hévéa, le prix du kilogramme du caoutchouc grimpe à plus 500 FCFA en octobre","description":"Le prix APROMAC d'octobre 2026 dépasse 500 FCFA/kg.","url":"https://7info.ci/y"},
+ {"title":"Le prix du Kg de caoutchouc passe de 317 f à 343 fcfa","description":"Ancien article.","url":"https://cgeci.com/z"},
+ {"title":"Cacao : les prix bord champ","description":"Prix du cacao 1200 FCFA le kilo en septembre 2026","url":"https://example.org/c"}
+]}
