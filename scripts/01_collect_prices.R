@@ -1,8 +1,10 @@
 # =============================================================
 # RUBBERSIGNAL.COM — Script 01 : Collecte des prix
 # Auteur  : Martial Sahiri
-# Version : 4.0 — AUTOMATIQUE, plus aucune saisie manuelle
-#           (octobre 2026)
+# Version : 4.2 — collecte automatique + saisies datees (APROMAC dans
+#           data/reference/prix_apromac.csv) ; nature T/O/D/E/J et version
+#           de methode sur chaque valeur publiee (novembre 2026)
+#           (4.0 — octobre 2026 : sources automatiques)
 # Objectif: Recuperer chaque semaine le prix TSR20, le taux de change,
 #           le prix bord-champ CI (APROMAC) et calculer le RSCI.
 # Changements vs v3.1 :
@@ -25,6 +27,11 @@
 #     + historique presse ; alerte si le mois en cours manque
 #   - RSCI v2 : taux officiel en vigueur au mois du prix (61/63/66 %),
 #     reference TSR20 du mois precedent, DRC 60 % a confirmer
+# Changements v4.2 (mission 2, novembre 2026) :
+#   - champs IOSCO `nature` et `version_methode` (scripts/00_regles.R, section 7)
+#   - `publiable` (registre des licences, 00_regles.R section 8)
+#   - historique Banque mondiale TSR20 sur 61 mois (estimation de volatilite, script 05)
+#   - taux USD/CHF (BCE) date dans la synthese
 # Usage   : source("scripts/01_collect_prices.R")   (depuis la racine)
 # =============================================================
 
@@ -119,7 +126,7 @@ if (!prix_hebdo_frais)
 cat("\n>> References mensuelles (FMI via FRED, Banque mondiale)...\n")
 
 fmi <- rs_fred_prubbusdm()
-bm  <- rs_wb_pinksheet_tsr20()
+bm  <- rs_wb_pinksheet_tsr20(n = 61)   # 61 mois = 60 rendements (volatilite, script 05)
 if (is.null(fmi)) ALERTES <- c(ALERTES, "Reference mensuelle FMI (FRED PRUBBUSDM) indisponible")
 if (is.null(bm))  ALERTES <- c(ALERTES, "Reference mensuelle Banque mondiale (Pink Sheet TSR20) indisponible")
 
@@ -139,9 +146,14 @@ ref_mensuelle <- function(x, source_si_absent) {
             statut = if (identical(fr$statut, "frais")) "derniere_valeur_disponible" else "perime",
             age_jours_fin_periode = fr$age_jours)
 }
+ref_iosco <- function(x, serie) {
+  info <- rs_serie_info(serie)
+  rs_iosco(c(x, list(serie = serie, publiable = info$publiable, licence = info$licence)),
+           info$nature, "reference_mensuelle")
+}
 reference_mensuelle <- list(
-  fmi_prubbusdm = ref_mensuelle(fmi, "FMI, Global price of Rubber (FRED, serie PRUBBUSDM)"),
-  bm_tsr20      = ref_mensuelle(bm,  "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)"),
+  fmi_prubbusdm = ref_iosco(ref_mensuelle(fmi, "FMI, Global price of Rubber (FRED, serie PRUBBUSDM)"), "FMI_PRUBBUSDM"),
+  bm_tsr20      = ref_iosco(ref_mensuelle(bm,  "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)"), "BM_TSR20"),
   note = "Dernieres moyennes mensuelles publiees (sources libres). Fraicheur mesuree depuis la fin du mois (seuil 45 jours)."
 )
 cat("   FMI PRUBBUSDM :", reference_mensuelle$fmi_prubbusdm$valeur, "USD/kg (",
@@ -176,7 +188,7 @@ prix_hebdo_mensuel <- hs %>%
 
 # historique_bm = vraie serie Banque mondiale (Pink Sheet), plus de valeurs figees
 prix_bm <- if (!is.null(bm)) {
-  as_tibble(head(bm$serie, 8)) %>%
+  as_tibble(bm$serie) %>%      # 61 mois (n = 61 ci-dessus)
     transmute(periode, prix_usd = usd_kg, source = bm$source, unite = "USD/kg",
               date_source = paste0(periode, "-01"))
 } else tibble()
@@ -202,6 +214,9 @@ ap  <- rs_apromac_dernier(fus$historique, DATE_COLLECTE)
 ap$statut <- if (ap$age_mois == 0) "ok" else if (ap$age_mois == 1) "reporte" else "perime"
 
 PRIX_APROMAC_FCFA <- ap$prix_fcfa
+# Date de la source : date de publication (saisie) sinon date du releve presse automatique
+AP_DATE_SOURCE <- as.character(ap$date_publication %||% ap$date_releve_presse %||% NA_character_)
+AP_DATE_TYPE   <- if (!is.na(ap$date_publication %||% NA)) "date de publication" else if (!is.na(AP_DATE_SOURCE)) "date du releve presse automatique (publication non datee)" else "inconnue"
 MOIS_APROMAC      <- ap$mois
 
 # Alerte VISIBLE des que le prix du mois en cours manque (l'APROMAC publie
@@ -242,6 +257,11 @@ synthese_bord_champ <- list(
   spread_export_pct = spread_pct,
   note              = "Spread confidentiel — publication prevue RubberSignal V2"
 )
+synthese_bord_champ <- rs_iosco(c(synthese_bord_champ,
+                                  list(valeur = PRIX_APROMAC_FCFA, unite = "FCFA/kg", periode = MOIS_APROMAC,
+                                       date_source = AP_DATE_SOURCE, date_source_type = AP_DATE_TYPE,
+                                       publiable = rs_serie_publiable("APROMAC"))),
+                                "O", "apromac")
 
 
 # ── 7. RSCI : RUBBERSIGNAL CHAIN INDEX (v2, mecanisme 2026) ──
@@ -297,13 +317,14 @@ synthese_rsci <- list(
   ecart_pts              = rsci_ecart_pts,
   statut_donnee          = ap$statut,
   mois_apromac_utilise   = ap$mois,
-  prix_apromac           = rs_valeur(PRIX_APROMAC_FCFA, "FCFA/kg", ap$source, ap$date_publication %||% NA,
+  prix_apromac           = rs_iosco(rs_valeur(PRIX_APROMAC_FCFA, "FCFA/kg", ap$source, AP_DATE_SOURCE,
                                      paste0("Prix officiel APROMAC du mois ", ap$mois, " (", ap$type, ")"),
-                                     url = ap$url, origine = ap$origine),
-  reference_tsr20        = rs_valeur(ref_rsci_usd, "USD/kg",
+                                     url = ap$url, origine = ap$origine, periode = ap$mois), "O", "apromac"),
+  reference_tsr20        = rs_iosco(rs_valeur(ref_rsci_usd, "USD/kg",
                                      "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
                                      paste0(mois_ref_rsci, "-01"),
-                                     "Moyenne mensuelle du mois precedant le prix APROMAC (regle du mecanisme 2026 : cotations SGX-SICOM TSR20 du mois precedent)"),
+                                     "Moyenne mensuelle du mois precedant le prix APROMAC (regle du mecanisme 2026 : cotations SGX-SICOM TSR20 du mois precedent)",
+                                     periode = mois_ref_rsci), "T", "reference_mensuelle"),
   taux_change            = rs_valeur(FCFA_PAR_USD, "FCFA/USD", fx$source, fx$date,
                                      "655.957 FCFA/EUR (parite fixe) / EUR-USD BCE du jour de collecte"),
   cadre_legal            = "Loi N.2017-540 du 03/08/2017 - CHPH",
@@ -311,6 +332,12 @@ synthese_rsci <- list(
   methode                = "RSCI = (prix APROMAC du mois / taux FCFA-USD / DRC) / TSR20 Banque mondiale du mois precedent x 100 ; compare au taux officiel en vigueur au mois du prix APROMAC.",
   note                   = "RSCI = part du prix planteur (corrige DRC) dans le prix de reference TSR20 du mois precedent."
 )
+synthese_rsci <- rs_iosco(c(synthese_rsci,
+                            list(valeur = rsci_pct, unite = "%", periode = MOIS_APROMAC,
+                                 source = "Calcul RubberSignal (APROMAC, Banque mondiale, BCE)",
+                                 date_source = as.character(DATE_COLLECTE),
+                                 publiable = rs_serie_publiable("RSCI"))),
+                          "E", "rsci")
 
 
 # ── 8. CALCULS DE SYNTHESE ───────────────────────────────────
@@ -344,9 +371,14 @@ synthese_prix <- list(
   date_source   = tsr$date_source,
   statut_fraicheur = fr_hebdo$statut,
   age_jours     = fr_hebdo$age_jours,
-  prix_hebdo    = rs_valeur(prix_actuel_usd, "USD/kg", source_prix, tsr$date_source,
+  prix_hebdo    = rs_iosco(rs_valeur(prix_actuel_usd, "USD/kg", source_prix, tsr$date_source,
                             "Cotation quotidienne lue le jour de collecte (priorite LGM > MRB via rtas.sg > SGX > IndexMundi) ; perimee au-dela de 14 jours",
-                            indice = tsr$indice, statut = fr_hebdo$statut, age_jours = fr_hebdo$age_jours),
+                            indice = tsr$indice, statut = fr_hebdo$statut, age_jours = fr_hebdo$age_jours,
+                            periode = tsr$date_source %||% NA_character_,
+                            publiable = rs_serie_publiable(tsr$indice), licence = rs_serie_info(tsr$indice)$licence),
+                            rs_serie_info(tsr$indice)$nature %||% "O", "prix_hebdo"),
+  taux_usd_chf  = rs_valeur(TAUX_USD_CHF, "CHF/USD", fx$source, fx$date,
+                            "EUR/CHF BCE / EUR/USD BCE du jour de collecte"),
   source        = source_prix,
   indice        = tsr$indice,
   variation_pct = variation_pct,
@@ -461,7 +493,7 @@ json_sortie <- list(
     semaine       = SEMAINE,
     annee         = ANNEE,
     source        = "rubbersignal.com",
-    version       = "4.1"
+    version       = "4.2"
   ),
 
   prix = list(

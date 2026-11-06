@@ -13,8 +13,11 @@ Objectif : devenir la référence d'information prix pour les marchés africains
 
 Le pipeline est composé de 5 scripts R exécutés dans cet ordre :
 
-**`01_collect_prices.R`** (v3.1) — Collecte des prix  
-Récupère le prix TSR20 depuis LGM Malaysia (scraping), avec repli sur IndexMundi puis World Bank Pink Sheet. Intègre le prix bord-champ APROMAC (FCFA) et calcule le **RSCI** (RubberSignal Chain Index) : part de la valeur internationale captée par le planteur ivoirien. Produit un JSON enrichi dans `data/processed/`.
+**`00_sources.R`** (v1.0) — Sources automatiques  
+Fournit au script 01 le taux de change (BCE), le prix TSR20/SMR20 (LGM/MRB, rtas.sg, SGX, IndexMundi) et le prix APROMAC (extrait de la presse, historisé dans `data/reference/`). Aucune valeur n'est figée dans le code.
+
+**`01_collect_prices.R`** (v4.0) — Collecte des prix  
+Utilise `00_sources.R`, intègre le prix bord-champ APROMAC (FCFA) et calcule le **RSCI** (RubberSignal Chain Index) : part de la valeur internationale captée par le planteur ivoirien. Produit un JSON enrichi dans `data/processed/`, avec un bloc `controle_qualite`. **Saisies manuelles restantes, datées et sourcées dans `data/reference/`** : prix APROMAC du mois (`prix_apromac.csv`), relevé terrain (`terrain_ci.csv`) et fret (`fret.csv`) ; voir `docs/architecture/RSCI_automatisation_v4.md`.
 
 **`02_collect_news.R`** (v3.0) — Actualités  
 Interroge NewsAPI pour collecter les nouvelles caoutchouc de la semaine. Enrichit le JSON produit par le script 01. Requiert la variable d'environnement `NEWSAPI_KEY`.
@@ -58,13 +61,19 @@ source("scripts/05_simulate.R")
 source("scripts/03_build_report.R")
 ```
 
-Variables d'environnement requises dans `.Renviron` :
+Variables d'environnement requises (`.Renviron` en local, *Secrets* dans GitHub) :
 
 ```
 NEWSAPI_KEY=...
 EXCHANGERATE_KEY=...
 FRED_KEY=...
 ```
+
+---
+
+## Vérifier que les sources répondent
+
+GitHub → Actions → **Verifier les sources** → Run workflow : exécute les tests hors-ligne puis interroge chaque source réelle et affiche celle qui répond.
 
 ---
 

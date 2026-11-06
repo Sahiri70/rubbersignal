@@ -7,6 +7,10 @@ on:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  # Décision D1 (03/11/2026) : pas de cotation sous licence (MRB/SGX via rtas.sg)
+  # dans les rapports publiés tant qu'aucune autorisation écrite n'est obtenue.
+  # Passer à "TRUE" seulement avec l'accord écrit de la source.
+  RS_PUBLIER_SOURCES_SOUS_LICENCE: "FALSE"
 
 jobs:
   generate-report:

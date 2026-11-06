@@ -924,7 +924,7 @@ server <- function(input, output, session) {
     if (is.null(h)||nrow(h)==0) return(valueBox("N/A","Ecart RSCI",icon("balance-scale"),color="purple"))
     d <- tail(h,1); e <- d$rsci_ecart_pts
     valueBox(if(!is.na(e))paste0(if(e>0)"+" else "",e," pts") else "N/A",
-             "vs mecanisme officiel CHPH (63%)",
+             "vs part officielle 66 % (depuis le 01/05/2026 ; 63 % de mai 2022 a avril 2026)",
              icon(if(!is.na(e)&&e>=0)"arrow-up" else "arrow-down"),
              color=if(is.na(e))"purple" else if(e>=0)"green" else if(e>=-5)"yellow" else "red")
   })

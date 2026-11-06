@@ -1,6 +1,11 @@
 # =============================================================
 # RUBBERSIGNAL.COM — Script 03 : Assemblage du rapport bilingue
 # Auteur  : Martial Sahiri
+# Version : 4.3 — mission 2 (nov. 2026) : colonne Nature (T/O/D/E/J) et version
+#           de méthode ; réglage RS_PUBLIER_SOURCES_SOUS_LICENCE ; Pré-RSI v2
+#           (sens, poids effectifs, non publié sous 3 composantes) ; fourchette
+#           de volatilité ; grades dérivés, CHF x 0.90, tableau géographique et
+#           « Focus CI » statiques retirés ; scénarios météo retirés
 # Version : 4.2 — corrections S45 : prix daté (fraîcheur 14 j), références
 #           mensuelles FMI/Banque mondiale, RSCI v2 (taux en vigueur),
 #           terrain/stocks/actualités affichés « indisponibles » si absents
@@ -68,14 +73,20 @@ fichier_signaux <- paste0("data/processed/signaux_S",
 
 if (file.exists(fichier_signaux)) {
   signaux        <- read_json(fichier_signaux)
-  pre_rsi        <- signaux$pre_rsi$score                          %||% NA
-  signal_rsi     <- signaux$pre_rsi$signal                         %||% "Indisponible"
-  score_offre    <- signaux$module1_meteo$score_offre_mondiale      %||% NA
-  signal_offre   <- signaux$module1_meteo$signal_offre             %||% ""
-  signal_cny_r   <- signaux$module2_devises$signal_cny             %||% ""
-  signal_myr_r   <- signaux$module2_devises$signal_myr             %||% ""
-  score_demande  <- signaux$module3_demande_aval$score_demande      %||% NA
-  signal_demande <- signaux$module3_demande_aval$signal_demande     %||% ""
+  pr             <- signaux$pre_rsi %||% list()
+  # v2 : score NA si moins de 3 composantes (non publié) — jamais de valeur par défaut
+  pre_rsi        <- if (isTRUE(pr$publie)) num(pr$score) else NA_real_
+  pre_rsi_raison <- txt(pr$raison_non_publie, "Pré-RSI absent du fichier signaux")
+  signal_rsi     <- txt(pr$signal, "Non publié")
+  signal_rsi_en  <- txt(pr$signal_en, "Not published")
+  score_offre    <- num(signaux$module1_meteo$score_offre_mondiale)
+  signal_offre   <- txt(signaux$module1_meteo$signal_offre, "")
+  signal_cny_r   <- txt(signaux$module2_devises$signal_cny, "")
+  signal_myr_r   <- txt(signaux$module2_devises$signal_myr, "")
+  dev            <- signaux$module2_devises %||% list()
+  score_demande  <- num(signaux$module3_demande_aval$score_demande)
+  signal_demande <- txt(signaux$module3_demande_aval$signal_demande, "")
+  confiance      <- signaux$module3_demande_aval$confiance_industrie %||% list()
   # Terrain : publié uniquement s'il existe un relevé daté (statut "ok")
   terrain_ok     <- identical(txt(signaux$module6_terrain_ci$statut), "ok")
   note_terrain   <- if (terrain_ok)
@@ -83,9 +94,11 @@ if (file.exists(fichier_signaux)) {
            txt(signaux$module6_terrain_ci$note_terrain))
   else ""
   stocks_statut  <- txt(signaux$module4_stocks$statut, "indisponible")
-  rsi_absentes   <- unlist(signaux$pre_rsi$composantes_absentes %||% character())
-  signal_geo     <- signaux$module7_geopolitique$signal             %||% ""
-  cat(">> Signaux faibles chargés — Pré-RSI :", pre_rsi, "/100\n")
+  rsi_absentes   <- unlist(pr$composantes_absentes %||% character())
+  signal_geo     <- txt(signaux$module7_geopolitique$signal, "")
+  geo_nb         <- num(signaux$module7_geopolitique$nb_articles)
+  shipping       <- signaux$module5_shipping %||% list()
+  cat(">> Signaux faibles chargés — Pré-RSI :", if (is.na(pre_rsi)) paste("non publié :", pre_rsi_raison) else paste(pre_rsi, "/100"), "\n")
   if (SEMAINE >= SEMAINE_ACTIVATION_RSI) {
     cat("   Pré-RSI activé dans le rapport (semaine", SEMAINE,
         "≥", SEMAINE_ACTIVATION_RSI, ")\n\n")
@@ -94,19 +107,27 @@ if (file.exists(fichier_signaux)) {
         SEMAINE_ACTIVATION_RSI, ")\n\n")
   }
 } else {
-  pre_rsi        <- NA
-  signal_rsi     <- ""
+  signaux        <- list()
+  pr             <- list()
+  pre_rsi        <- NA_real_
+  pre_rsi_raison <- "script 04 non exécuté"
+  signal_rsi     <- "Non publié"
+  signal_rsi_en  <- "Not published"
   score_offre    <- NA
   signal_offre   <- ""
   signal_cny_r   <- ""
   signal_myr_r   <- ""
+  dev            <- list()
   score_demande  <- NA
   signal_demande <- ""
+  confiance      <- list()
   terrain_ok     <- FALSE
   note_terrain   <- ""
   stocks_statut  <- "indisponible"
   rsi_absentes   <- character()
   signal_geo     <- ""
+  geo_nb         <- NA_real_
+  shipping       <- list()
   cat(">> Signaux faibles indisponibles — script 04 non exécuté\n\n")
 }
 
@@ -121,9 +142,12 @@ if (file.exists(fichier_mc)) {
   texte_mc_en   <- mc$texte_en                  %||% ""
   texte_boot_fr <- mc$bootstrap_rsi$texte_fr    %||% ""
   texte_boot_en <- mc$bootstrap_rsi$texte_en    %||% ""
-  texte_sc_fr   <- mc$scenarios_meteo$texte_fr  %||% ""
-  texte_sc_en   <- mc$scenarios_meteo$texte_en  %||% ""
-  cat(">> Monte Carlo chargé — 3 modules disponibles\n\n")
+  # v4.3 : scénarios météo retirés (élasticité et chocs d'offre sans source)
+  texte_sc_fr   <- ""
+  texte_sc_en   <- ""
+  # Bootstrap publié seulement si le Pré-RSI l'est
+  if (is.na(pre_rsi)) texte_boot_fr <- texte_boot_en <- ""
+  cat(">> Monte Carlo chargé\n\n")
 } else {
   texte_mc_fr <- texte_mc_en <- ""
   texte_boot_fr <- texte_boot_en <- ""
@@ -161,6 +185,16 @@ aprom_type     <- txt(bord_champ$type_prix, "")
 aprom_source   <- txt(bord_champ$source, "")
 aprom_manquant <- isTRUE(bord_champ$mois_courant_manquant)
 aprom_mois_cur <- txt(bord_champ$mois_courant, "")
+# IOSCO : nature et version de méthode lues dans le JSON (script 01 v4.2)
+aprom_nat      <- txt(rsci_data$prix_apromac$nature, txt(bord_champ$nature, "—"))
+aprom_version  <- txt(bord_champ$version_methode, rs_version_methode("apromac"))
+aprom_date     <- txt(rsci_data$prix_apromac$date_source, NA_character_)
+aprom_releve   <- grepl("releve", txt(bord_champ$date_source_type, ""))
+aprom_date_fr  <- if (is.na(aprom_date)) ", date de source inconnue" else paste0(if (aprom_releve) ", relevé presse du " else ", publié le ", rs_date_fr(aprom_date))
+aprom_date_en  <- if (is.na(aprom_date)) ", source date unknown" else paste0(if (aprom_releve) ", press reading of " else ", published ", rs_date_fr(aprom_date))
+rsci_ref_nat   <- txt(rsci_data$reference_tsr20$nature, "—")
+rsci_nat       <- txt(rsci_data$nature, "—")
+rsci_version   <- txt(rsci_data$version_methode, "version inconnue")
 
 cat("   RSCI        :",
     if (!is.na(rsci_pct))
@@ -186,6 +220,21 @@ max_12m       <- num(synthese$max_12m)
 source_prix   <- txt(synthese$source, "source inconnue")
 if (!prix_frais) { variation_pct <- NA_real_; tendance <- "indéterminée"; prix_chf <- NA_real_ }
 
+# ── Licence (décision D1 en attente) : réglage unique, défaut TRUE = affichage actuel ──
+PUBLIER_LICENCE <- rs_publier_sous_licence()
+serie_hebdo     <- txt(synthese$indice, "INCONNUE")
+hebdo_publiable <- PUBLIER_LICENCE || rs_serie_publiable(serie_hebdo)
+nature_hebdo    <- txt(synthese$prix_hebdo$nature, txt(rs_serie_info(serie_hebdo)$nature, "—"))
+cat("   Licence     : sources sous licence publiées =", PUBLIER_LICENCE,
+    "| série hebdo", serie_hebdo, if (rs_serie_publiable(serie_hebdo)) "(publiable)" else "(sous licence)", "\n")
+# Le prix hebdo et tout ce qui en dérive (variation, moyennes, CHF) suivent le réglage
+if (!hebdo_publiable) { variation_pct <- NA_real_; tendance <- "indéterminée"; prix_chf <- NA_real_ }
+
+# Taux USD/CHF réellement collecté (BCE via script 01), daté — plus de x 0.90
+taux_chf      <- num(synthese$taux_usd_chf$valeur)
+taux_chf_date <- txt(synthese$taux_usd_chf$date_source, NA_character_)
+taux_chf_src  <- txt(synthese$taux_usd_chf$source, "BCE")
+
 # ── Références mensuelles (sources libres) ──
 ref_m     <- donnees$prix$reference_mensuelle %||% list()
 fmi_val   <- num(ref_m$fmi_prubbusdm$valeur)
@@ -193,6 +242,10 @@ fmi_orig  <- num(ref_m$fmi_prubbusdm$valeur_orig)
 fmi_per   <- txt(ref_m$fmi_prubbusdm$periode, "")
 bm_val    <- num(ref_m$bm_tsr20$valeur)
 bm_per    <- txt(ref_m$bm_tsr20$periode, "")
+fmi_nat   <- txt(ref_m$fmi_prubbusdm$nature, "—")
+bm_nat    <- txt(ref_m$bm_tsr20$nature, "—")
+fmi_stat  <- txt(ref_m$fmi_prubbusdm$statut, "indisponible")
+bm_stat   <- txt(ref_m$bm_tsr20$statut, "indisponible")
 
 # ── Actualités (script 02) ──
 actu        <- donnees$actualites %||% list()
@@ -332,7 +385,9 @@ ref_mens_en <- paste0(
                              bm_val, " USD/kg**") else "World Bank: unavailable",
   ".")
 
-texte_analyse_fr <- if (prix_frais) paste(generer_analyse_fr(
+texte_analyse_fr <- if (!hebdo_publiable) paste0(
+  "**Cotation hebdomadaire réservée (licence)** : elle n'est pas reproduite dans cette publication. ",
+  ref_mens_fr) else if (prix_frais) paste(generer_analyse_fr(
   prix=prix_actuel, variation=variation_pct, tendance=tendance,
   moy3m=moyenne_3m, moy6m=moyenne_6m, min12=min_12m, max12=max_12m
 ), ref_mens_fr) else paste0(
@@ -340,7 +395,9 @@ texte_analyse_fr <- if (prix_frais) paste(generer_analyse_fr(
   "(dernière cotation lue : ", if (!is.na(prix_lu)) paste0(prix_lu, " USD/kg") else "aucune",
   ", ", source_prix, ", date ", rs_date_fr(date_prix), ", statut ", statut_prix_fr,
   ") : aucun prix « actuel » n'est publié. ", ref_mens_fr)
-texte_analyse_en <- if (prix_frais) paste(generer_analyse_en(
+texte_analyse_en <- if (!hebdo_publiable) paste0(
+  "**Weekly quote reserved (licence)**: it is not reproduced in this publication. ",
+  ref_mens_en) else if (prix_frais) paste(generer_analyse_en(
   prix=prix_actuel, variation=variation_pct, tendance=tendance,
   moy3m=moyenne_3m, moy6m=moyenne_6m, min12=min_12m, max12=max_12m
 ), ref_mens_en) else paste0(
@@ -360,95 +417,104 @@ cat(">> Construction section Pré-RSI...\n")
 # Icône selon le score
 icone_rsi <- function(score) {
   if (is.na(score)) return("➡️")
+  # mêmes seuils que rs_pre_rsi_libelle (00_regles.R) : > 55 haussier, < 45 baissier
   if (score >= 70) "⬆️"
-  else if (score >= 55) "↗️"
+  else if (score > 55) "↗️"
   else if (score >= 45) "➡️"
-  else "↘️"
+  else if (score > 30) "↘️"
+  else "⬇️"
 }
 
-rapport_rsi_fr <- if (!is.na(pre_rsi) &&
-                      SEMAINE >= SEMAINE_ACTIVATION_RSI) {
-  paste0(
-    "## 📡 Signaux faibles — Pré-RSI\n\n",
-    "### ", icone_rsi(pre_rsi),
-    " RubberSignal Index : **", pre_rsi, " / 100**\n\n",
-    "*", signal_rsi, "*\n\n",
-    "| Signal | Valeur |\n",
-    "|---|---|\n",
-    if (!is.na(score_offre))
-      paste0("| 🌧️ Offre mondiale (météo 4 zones) | Score ",
-             score_offre, "/100 — ", signal_offre, " |\n")
-    else "",
-    if (nchar(signal_cny_r) > 0)
-      paste0("| 💱 Yuan chinois (CNY) | ", signal_cny_r, " |\n")
-    else "",
-    if (nchar(signal_myr_r) > 0)
-      paste0("| 💱 Ringgit malaisien (MYR) | ", signal_myr_r, " |\n")
-    else "",
-    if (!is.na(score_demande))
-      paste0("| 🏭 Demande industrielle | Score ", score_demande,
-             "/100 — ", signal_demande, " |\n")
-    else "",
-    if (terrain_ok && nchar(note_terrain) > 0)
-      paste0("| 🌿 Terrain CI | ", note_terrain, " |\n")
-    else "| 🌿 Terrain CI | Pas de relevé terrain cette semaine |\n",
-    if (nchar(signal_geo) > 0)
-      paste0("| 🌍 Géopolitique | ", signal_geo, " |\n")
-    else "",
-    "| 📦 Stocks mondiaux | Donnée indisponible |\n",
-    if (length(rsi_absentes) > 0)
-      paste0("\n> *Composante(s) absente(s) cette semaine : ", paste(rsi_absentes, collapse = ", "),
-             ". Le score est calculé sur les composantes disponibles (poids renormalisés).*\n")
-    else "",
-    "\n> *Le Pré-RSI (RubberSignal Index) est un score composite 0–100 ",
-    "intégrant météo, devises, demande industrielle, géopolitique et, lorsqu'un relevé daté existe, terrain CI. ",
-    "Score > 55 = marché haussier. Score < 45 = marché baissier. ",
-    "Indicateur RubberSignal en cours de validation (pondérations non encore backtestées).*\n\n",
-    "---\n\n"
+# v4.3 (mission 2) : Pré-RSI v2. Chaque composante affiche sa mesure, son SENS
+# pour le prix et son poids effectif ; le score n'est publié qu'avec au moins
+# 3 composantes disponibles (règle et poids : scripts/00_regles.R, section 9).
+section_pre_rsi <- function(langue = "fr") {
+  fr <- langue == "fr"
+  if (SEMAINE < SEMAINE_ACTIVATION_RSI || length(pr) == 0) return("")
+  sens_lib <- function(k) {
+    s <- txt(pr$sens[[k]], NA_character_)
+    if (is.na(s)) return(if (fr) "— absente" else "— missing")
+    if (fr) c(hausse = "↑ hausse", baisse = "↓ baisse", neutre = "→ neutre")[[s]]
+    else c(hausse = "↑ up", baisse = "↓ down", neutre = "→ neutral")[[s]]
+  }
+  poids_lib <- function(k) {
+    pe <- num(pr$poids_effectifs[[k]]); pn <- RS_PRE_RSI_POIDS[[k]]
+    if (!is.finite(pe) || pe == 0) return(if (fr) paste0("0 % (nominal ", pn * 100, " %)") else paste0("0% (nominal ", pn * 100, "%)"))
+    if (fr) paste0(round(pe * 100, 1), " % (nominal ", pn * 100, " %)") else paste0(round(pe * 100, 1), "% (nominal ", pn * 100, "%)")
+  }
+  cny  <- num(dev$USD_CNY); ref_cny <- num(dev$reference_cny$valeur)
+  mesure <- list(
+    meteo = if (is.finite(score_offre)) paste0(if (fr) "Score d'offre " else "Supply score ", score_offre, "/100 — ", signal_offre)
+            else if (fr) "Données météo indisponibles" else "Weather data unavailable",
+    devises = if (is.finite(cny)) paste0(signal_cny_r, " — USD/CNY ", cny, " (", rs_date_fr(txt(dev$date, NA)), ", ",
+                                       txt(dev$source, ""), ") ; ", if (fr) "réf. moyenne 12 mois " else "ref. 12-month average ",
+                                       if (is.finite(ref_cny)) paste0(ref_cny, " (FRED DEXCHUS)") else if (fr) "indisponible" else "unavailable")
+              else if (fr) "Taux de change indisponible (aucune valeur de secours)" else "Exchange rate unavailable (no fallback value)",
+    demande = if (is.finite(score_demande)) paste0("Score ", score_demande, "/100 — ", signal_demande,
+                                                  if (is.finite(num(confiance$z_moyen))) paste0(
+                                                    if (fr) " (confiance industrielle OCDE : z moyen " else " (OECD industrial confidence: mean z ",
+                                                    num(confiance$z_moyen), ", ", num(confiance$n_utilisees), if (fr) " pays)" else " countries)") else "")
+              else if (fr) "Données de demande indisponibles" else "Demand data unavailable",
+    terrain = if (terrain_ok && nchar(note_terrain) > 0) paste0(note_terrain, " (nature D)")
+              else if (fr) "Pas de relevé terrain cette semaine" else "No field report this week",
+    geo = if (is.finite(geo_nb)) signal_geo else paste0(signal_geo, if (fr) " — composante retirée" else " — component removed")
   )
-} else ""
+  noms <- if (fr) RS_PRE_RSI_NOMS_FR else RS_PRE_RSI_NOMS_EN
+  lignes <- vapply(names(RS_PRE_RSI_POIDS), function(k)
+    paste0("| ", noms[[k]], " | ", mesure[[k]], " | ", sens_lib(k), " | ", poids_lib(k), " |\n"), character(1))
 
-rapport_rsi_en <- if (!is.na(pre_rsi) &&
-                      SEMAINE >= SEMAINE_ACTIVATION_RSI) {
-  paste0(
-    "## 📡 Weak Signals — Pre-RSI\n\n",
-    "### ", icone_rsi(pre_rsi),
-    " RubberSignal Index: **", pre_rsi, " / 100**\n\n",
-    "*", signal_rsi, "*\n\n",
-    "| Signal | Value |\n",
-    "|---|---|\n",
-    if (!is.na(score_offre))
-      paste0("| 🌧️ Global supply (weather — 4 zones) | Score ",
-             score_offre, "/100 — ", signal_offre, " |\n")
-    else "",
-    if (nchar(signal_cny_r) > 0)
-      paste0("| 💱 Chinese Yuan (CNY) | ", signal_cny_r, " |\n")
-    else "",
-    if (nchar(signal_myr_r) > 0)
-      paste0("| 💱 Malaysian Ringgit (MYR) | ", signal_myr_r, " |\n")
-    else "",
-    if (!is.na(score_demande))
-      paste0("| 🏭 Industrial demand | Score ", score_demande,
-             "/100 — ", signal_demande, " |\n")
-    else "",
-    if (terrain_ok && nchar(note_terrain) > 0)
-      paste0("| 🌿 CI Field data | ", note_terrain, " |\n")
-    else "| 🌿 CI Field data | No field report this week |\n",
-    if (nchar(signal_geo) > 0)
-      paste0("| 🌍 Geopolitics | ", signal_geo, " |\n")
-    else "",
-    "| 📦 Global stocks | Data unavailable |\n",
-    if (length(rsi_absentes) > 0)
-      paste0("\n> *Component(s) missing this week: ", paste(rsi_absentes, collapse = ", "),
-             ". The score uses the available components (weights renormalised).*\n")
-    else "",
-    "\n> *The Pre-RSI (RubberSignal Index) is a composite score 0–100 ",
-    "combining weather, currencies, industrial demand, geopolitics and, when a dated report exists, CI field data. ",
-    "Score > 55 = bullish market. Score < 45 = bearish market. ",
-    "RubberSignal indicator under validation (weights not yet backtested).*\n\n",
-    "---\n\n"
-  )
-} else ""
+  fret_bdi <- shipping$fret$BDI %||% list()
+  ligne_fret <- if (identical(txt(fret_bdi$statut), "ok"))
+    paste0("BDI ", num(fret_bdi$valeur), " pts (", rs_date_fr(txt(fret_bdi$date_valeur, NA)), ", ", txt(fret_bdi$source), ")")
+  else if (fr) "Indisponible : aucune source datée (BDI, tarif CI-UE, délai Abidjan-Rotterdam)"
+  else "Unavailable: no dated source (BDI, CI-EU rate, Abidjan-Rotterdam transit time)"
+  myr <- num(dev$USD_MYR)
+  ligne_myr <- if (is.finite(myr)) paste0(signal_myr_r, " — USD/MYR ", myr) else if (fr) "Taux indisponible" else "Rate unavailable"
+
+  entete <- if (fr) "| Composante | Mesure | Sens pour le prix | Poids effectif |\n|---|---|---|---|\n"
+            else "| Component | Measure | Price direction | Effective weight |\n|---|---|---|---|\n"
+  hors <- if (fr) paste0(
+    "\n*Hors score :* \n\n| Signal | Valeur |\n|---|---|\n",
+    "| 💱 Ringgit malaisien (MYR) | ", ligne_myr, " |\n",
+    "| 🚢 Fret maritime | ", ligne_fret, " |\n",
+    "| 📦 Stocks mondiaux | Donnée indisponible |\n")
+  else paste0(
+    "\n*Outside the score:* \n\n| Signal | Value |\n|---|---|\n",
+    "| 💱 Malaysian ringgit (MYR) | ", ligne_myr, " |\n",
+    "| 🚢 Ocean freight | ", ligne_fret, " |\n",
+    "| 📦 Global stocks | Data unavailable |\n")
+
+  tete <- if (!is.na(pre_rsi)) {
+    paste0("### ", icone_rsi(pre_rsi), if (fr) " RubberSignal Index : **" else " RubberSignal Index: **",
+           pre_rsi, " / 100**\n\n*", if (fr) signal_rsi else signal_rsi_en, "*\n\n")
+  } else {
+    paste0(if (fr) "**Pré-RSI non publié cette semaine** : " else "**Pre-RSI not published this week**: ",
+           if (fr) pre_rsi_raison else sub("composante\\(s\\) disponible\\(s\\) sur", "component(s) available out of",
+                                           sub("minimum", "minimum", pre_rsi_raison)), ".\n\n")
+  }
+  absentes <- if (length(rsi_absentes) > 0 && !is.na(pre_rsi)) paste0(
+    if (fr) "\n> *Composante(s) absente(s) : " else "\n> *Missing component(s): ",
+    paste(unname(noms[rsi_absentes]), collapse = ", "),
+    if (fr) ". Les poids des composantes disponibles sont renormalisés à 100 %.*\n"
+    else ". Weights of the available components are renormalised to 100%.*\n") else ""
+  note <- if (fr) paste0(
+    "\n> *Pré-RSI : score composite 0–100 orienté prix (> 55 haussier, < 45 baissier, entre les deux neutre). ",
+    "Poids nominaux : météo 25 %, devises 20 %, demande 25 %, terrain 15 %, géopolitique 15 %, renormalisés sur ",
+    "les composantes disponibles ; non publié avec moins de ", RS_PRE_RSI_MIN_COMPOSANTES, " composantes. ",
+    "Pondérations non backtestées. Nature : E (estimation calculée) — ", rs_version_methode("pre_rsi"),
+    ". Analyse, pas un indice de prix.*\n\n---\n\n")
+  else paste0(
+    "\n> *Pre-RSI: composite 0–100 score oriented to price (> 55 bullish, < 45 bearish, neutral in between). ",
+    "Nominal weights: weather 25%, currencies 20%, demand 25%, field 15%, geopolitics 15%, renormalised over ",
+    "the available components; not published with fewer than ", RS_PRE_RSI_MIN_COMPOSANTES, " components. ",
+    "Weights not backtested. Nature: E (calculated estimate) — ", rs_version_methode("pre_rsi"),
+    ". Analysis, not a price index.*\n\n---\n\n")
+  paste0(if (fr) "## 📡 Signaux faibles — Pré-RSI\n\n" else "## 📡 Weak Signals — Pre-RSI\n\n",
+         tete, entete, paste(lignes, collapse = ""), absentes, hors, note)
+}
+
+rapport_rsi_fr <- section_pre_rsi("fr")
+rapport_rsi_en <- section_pre_rsi("en")
 
 # ── RSCI : section rapport (FR/EN) ───────────────────────────
 
@@ -494,16 +560,17 @@ rapport_rsci_fr <- if (!is.na(rsci_pct)) {
     "effectivement captée par le planteur ivoirien, après correction ",
     "du taux de caoutchouc sec (DRC) de référence.*\n\n",
     alerte_apromac_fr,
-    "| Indicateur | Valeur |\n",
-    "|---|---|\n",
+    "| Indicateur | Valeur | Nature |\n",
+    "|---|---|---|\n",
     "| Prix APROMAC (", rs_mois_libelle(aprom_mois, "fr"),
-      if (nzchar(aprom_type)) paste0(", ", aprom_type) else "", ") | ", aprom_fcfa, " FCFA/kg |\n",
+      if (nzchar(aprom_type)) paste0(", ", aprom_type) else "", aprom_date_fr, ") | ", aprom_fcfa, " FCFA/kg | ", aprom_nat, " |\n",
     "| Référence TSR20 (", rs_mois_libelle(rsci_ref_mois, "fr"), ", Banque mondiale) | ",
-      rsci_ref_usd, " USD/kg |\n",
-    "| Prix planteur, équivalent sec (DRC ", drc_txt_fr, ") | ", rsci_prix_sec, " USD/kg |\n",
-    "| **RSCI** (part planteur) | **", rsci_pct, "%** |\n",
-    "| Part officielle en vigueur | ", rsci_mecanisme, "% |\n",
-    "| Différence RSCI − part officielle (indicative) | ", signe(rsci_ecart_pts), rsci_ecart_pts, " points |\n\n",
+      rsci_ref_usd, " USD/kg | ", rsci_ref_nat, " |\n",
+    "| Prix planteur, équivalent sec (DRC ", drc_txt_fr, ") | ", rsci_prix_sec, " USD/kg | E |\n",
+    "| **RSCI** (part planteur) | **", rsci_pct, "%** | ", rsci_nat, " |\n",
+    "| Part officielle en vigueur | ", rsci_mecanisme, "% | O |\n",
+    "| Différence RSCI − part officielle (indicative) | ", signe(rsci_ecart_pts), rsci_ecart_pts, " points | E |\n\n",
+    "*", RS_LEGENDE_NATURE_FR, ". Version de méthode : ", rsci_version, " ; ", aprom_version, ".*\n\n",
     "Pour le prix de ", rs_mois_libelle(aprom_mois, "fr"), ", la part officielle du planteur est de ",
     rsci_mecanisme, " % — ", regime_fr(rsci_mecanisme), " — cadre : Loi N°2017-540.\n\n",
     "> ⚠️ *Avertissement de lecture : la part officielle s'applique au prix de référence **net** ",
@@ -536,17 +603,18 @@ rapport_rsci_en <- if (!is.na(rsci_pct)) {
     "actually captured by the Ivorian farmer, after adjustment for ",
     "the reference Dry Rubber Content (DRC).*\n\n",
     alerte_apromac_en,
-    "| Indicator | Value |\n",
-    "|---|---|\n",
+    "| Indicator | Value | Nature |\n",
+    "|---|---|---|\n",
     "| APROMAC price (", rs_mois_libelle(aprom_mois, "en"),
-      if (nzchar(aprom_type)) paste0(", ", if (aprom_type == "carreau usine") "factory-gate" else aprom_type) else "",
-      ") | ", aprom_fcfa, " FCFA/kg |\n",
+      if (nzchar(aprom_type)) paste0(", ", if (aprom_type == "carreau usine") "factory-gate" else aprom_type) else "", aprom_date_en,
+      ") | ", aprom_fcfa, " FCFA/kg | ", aprom_nat, " |\n",
     "| TSR20 reference (", rs_mois_libelle(rsci_ref_mois, "en"), ", World Bank) | ",
-      rsci_ref_usd, " USD/kg |\n",
-    "| Dry-equivalent farmer price (DRC ", drc_txt_en, ") | ", rsci_prix_sec, " USD/kg |\n",
-    "| **RSCI** (farmer share) | **", rsci_pct, "%** |\n",
-    "| Official share in force | ", rsci_mecanisme, "% |\n",
-    "| Difference RSCI − official share (indicative) | ", signe(rsci_ecart_pts), rsci_ecart_pts, " points |\n\n",
+      rsci_ref_usd, " USD/kg | ", rsci_ref_nat, " |\n",
+    "| Dry-equivalent farmer price (DRC ", drc_txt_en, ") | ", rsci_prix_sec, " USD/kg | E |\n",
+    "| **RSCI** (farmer share) | **", rsci_pct, "%** | ", rsci_nat, " |\n",
+    "| Official share in force | ", rsci_mecanisme, "% | O |\n",
+    "| Difference RSCI − official share (indicative) | ", signe(rsci_ecart_pts), rsci_ecart_pts, " points | E |\n\n",
+    "*", RS_LEGENDE_NATURE_EN, ". Method version: ", rsci_version, "; ", aprom_version, ".*\n\n",
     "For the ", rs_mois_libelle(aprom_mois, "en"), " price, the official farmer share is ",
     rsci_mecanisme, "% — ", regime_en(rsci_mecanisme), " — framework: Law N°2017-540.\n\n",
     "> ⚠️ *Reading note: the official share applies to the **net** reference price ",
@@ -586,88 +654,85 @@ if (SEMAINE >= SEMAINE_ACTIVATION_RSI) {
 
 cat(">> Construction des tableaux...\n")
 
-# Tableau des références datées (FR / EN) : chaque ligne porte sa date et sa source
-ligne_hebdo_fr <- paste0(
-  "| Cotation hebdomadaire (", txt(synthese$indice, "TSR20"), ") | ",
-  if (!is.na(prix_lu)) paste0(prix_lu, " USD/kg") else "—", " | ", rs_date_fr(date_prix), " | ",
-  source_prix, " | ",
-  if (prix_frais) "à jour" else paste0("**", statut_prix_fr, "** — non publiée comme prix actuel"), " |\n")
-ligne_hebdo_en <- paste0(
-  "| Weekly quote (", txt(synthese$indice, "TSR20"), ") | ",
-  if (!is.na(prix_lu)) paste0(prix_lu, " USD/kg") else "—", " | ", rs_date_fr(date_prix), " | ",
-  source_prix, " | ",
-  if (prix_frais) "current" else paste0("**", statut_prix_en, "** — not published as current price"), " |\n")
-
-tableau_refs_fr <- paste0(
-  "| Série | Valeur | Date de la valeur | Source | Statut |\n",
-  "|---|---|---|---|---|\n",
-  ligne_hebdo_fr,
-  "| Prix mondial FMI (mensuel) | ",
-  if (!is.na(fmi_val)) paste0(fmi_val, " USD/kg (", fmi_orig, " cents/lb)") else "indisponible", " | ",
-  rs_mois_libelle(fmi_per, "fr"), " | FMI via FRED (PRUBBUSDM) | dernière valeur disponible |\n",
-  "| TSR20 Banque mondiale (mensuel) | ",
-  if (!is.na(bm_val)) paste0(bm_val, " USD/kg") else "indisponible", " | ",
-  rs_mois_libelle(bm_per, "fr"), " | Banque mondiale, Pink Sheet | dernière valeur disponible |\n\n"
-)
-tableau_refs_en <- paste0(
-  "| Series | Value | Value date | Source | Status |\n",
-  "|---|---|---|---|---|\n",
-  ligne_hebdo_en,
-  "| IMF world price (monthly) | ",
-  if (!is.na(fmi_val)) paste0(fmi_val, " USD/kg (", fmi_orig, " cents/lb)") else "unavailable", " | ",
-  rs_mois_libelle(fmi_per, "en"), " | IMF via FRED (PRUBBUSDM) | latest available value |\n",
-  "| World Bank TSR20 (monthly) | ",
-  if (!is.na(bm_val)) paste0(bm_val, " USD/kg") else "unavailable", " | ",
-  rs_mois_libelle(bm_per, "en"), " | World Bank, Pink Sheet | latest available value |\n\n"
-)
-
-# Grades dérivés : uniquement si la cotation hebdomadaire est fraîche
-# (coefficients 1.04 / 0.97 / 0.82 et CHF x 0.90 codés en dur : à remplacer, voir rapport batisseur)
-tableau_grades <- if (!prix_frais) {
-  "*Grades dérivés non affichés : pas de cotation hebdomadaire fraîche. / Derived grades not shown: no fresh weekly quote.*\n\n"
-} else paste0(
-  "| Grade | Prix USD/kg | Prix CHF/kg | Note |\n",
-  "|---|---|---|---|\n",
-  "| **TSR20** | **", prix_actuel, "** | **",
-  round(prix_actuel * 0.90, 3), "** | ",
-  "Référence mondiale / World reference |\n",
-  "| RSS3 | ", round(prix_actuel * 1.04, 3),
-  " | ", round(prix_actuel * 1.04 * 0.90, 3),
-  " | Premium quality |\n",
-  "| TSR10 | ", round(prix_actuel * 0.97, 3),
-  " | ", round(prix_actuel * 0.97 * 0.90, 3),
-  " | Technical grade |\n",
-  "| Latex concentré | ", round(prix_actuel * 0.82, 3),
-  " | ", round(prix_actuel * 0.82 * 0.90, 3),
-  " | Liquid material |\n\n"
-)
-
-tableau_geo <- paste0(
-  "| Zone | Statut / Status | Rôle / Role |\n",
-  "|---|---|---|\n",
-  "| 🇨🇮 Côte d'Ivoire | 1er producteur africain | Export TSR20 |\n",
-  "| 🇬🇭 Ghana | Producteur régional | Export latex |\n",
-  "| 🇳🇬 Nigeria | Producteur émergent | Marché local |\n",
-  "| 🇨🇲 Cameroun | Producteur régional | Export RSS |\n",
-  "| 🇹🇭 Thaïlande / Thailand | 1er producteur mondial | Référence prix |\n",
-  "| 🇲🇾 Malaisie / Malaysia | 2ème producteur mondial | SGX Futures |\n",
-  "| 🇸🇬 Singapour / Singapore | Hub négoce mondial | Bourse SGX |\n",
-  "| 🇪🇺 Europe | Principal importateur | Demande aval |\n\n"
-)
+# v4.3 (mission 2) : tableau unique (rs_tableau_prix, 00_regles.R) avec une
+# colonne Nature (IOSCO) ; les séries sous licence en sont retirées quand
+# RS_PUBLIER_SOURCES_SOUS_LICENCE = FALSE. Grades dérivés (x 1.04 / 0.97 /
+# 0.82, sans source) et tableau géographique statique : RETIRÉS. Le CHF
+# utilise le taux USD/CHF BCE réellement collecté (plus de x 0.90).
+lignes_prix <- function(langue = "fr") {
+  fr <- langue == "fr"
+  stat_m <- function(s) if (identical(s, "derniere_valeur_disponible")) (if (fr) "dernière valeur disponible" else "latest available value")
+                        else if (identical(s, "perime")) (if (fr) "**PÉRIMÉE**" else "**STALE**")
+                        else (if (fr) "indisponible" else "unavailable")
+  l <- list(
+    list(serie = serie_hebdo,
+         libelle = paste0(if (fr) "Cotation hebdomadaire (" else "Weekly quote (", serie_hebdo, ")"),
+         valeur = if (!is.na(prix_lu)) paste0(prix_lu, " USD/kg") else "—", date = rs_date_fr(date_prix),
+         source = source_prix, nature = nature_hebdo,
+         statut = if (prix_frais) (if (fr) "à jour" else "current")
+                  else paste0("**", if (fr) statut_prix_fr else statut_prix_en, "** — ",
+                              if (fr) "non publiée comme prix actuel" else "not published as current price")))
+  if (prix_frais && is.finite(prix_chf) && is.finite(taux_chf))
+    l[[length(l) + 1]] <- list(serie = serie_hebdo,
+      libelle = if (fr) "Équivalent en francs suisses" else "Swiss franc equivalent",
+      valeur = paste0(prix_chf, " CHF/kg"), date = rs_date_fr(taux_chf_date),
+      source = paste0(if (fr) "cotation ci-dessus × USD/CHF " else "quote above × USD/CHF ", taux_chf, " (", taux_chf_src, ")"),
+      nature = "E", statut = if (fr) "conversion" else "conversion")
+  c(l, list(
+    list(serie = "FMI_PRUBBUSDM", libelle = if (fr) "Prix mondial FMI (mensuel)" else "IMF world price (monthly)",
+         valeur = if (!is.na(fmi_val)) paste0(fmi_val, " USD/kg (", fmi_orig, " cents/lb)") else (if (fr) "indisponible" else "unavailable"),
+         date = rs_mois_libelle(fmi_per, langue), source = "FMI via FRED (PRUBBUSDM)", nature = fmi_nat, statut = stat_m(fmi_stat)),
+    list(serie = "BM_TSR20", libelle = if (fr) "TSR20 Banque mondiale (mensuel)" else "World Bank TSR20 (monthly)",
+         valeur = if (!is.na(bm_val)) paste0(bm_val, " USD/kg") else (if (fr) "indisponible" else "unavailable"),
+         date = rs_mois_libelle(bm_per, langue), source = if (fr) "Banque mondiale, Pink Sheet" else "World Bank, Pink Sheet",
+         nature = bm_nat, statut = stat_m(bm_stat))))
+}
+legende_prix <- function(langue = "fr") {
+  fr <- langue == "fr"
+  paste0("*", if (fr) RS_LEGENDE_NATURE_FR else RS_LEGENDE_NATURE_EN, ". ",
+         if (fr) "Version de méthode : " else "Method version: ",
+         if (hebdo_publiable) paste0(txt(synthese$prix_hebdo$version_methode, rs_version_methode("prix_hebdo")), " ; ") else "",
+         txt(ref_m$bm_tsr20$version_methode, rs_version_methode("reference_mensuelle")), ".*\n\n")
+}
+tableau_refs_fr <- paste0(rs_tableau_prix(lignes_prix("fr"), "fr", PUBLIER_LICENCE), legende_prix("fr"))
+tableau_refs_en <- paste0(rs_tableau_prix(lignes_prix("en"), "en", PUBLIER_LICENCE), legende_prix("en"))
 
 
 # ── 8. ASSEMBLER LE RAPPORT FRANÇAIS ─────────────────────────
 
 cat(">> Assemblage rapport FR...\n")
 
-# Le titre ne porte un prix que s'il est frais (<= 14 jours), avec sa date
-titre_fr <- if (prix_frais) paste0(
-  "RubberSignal #", SEMAINE, " | TSR20 : ", prix_actuel, " USD/kg (", rs_date_fr(date_prix), ") ",
-  if (symbole_tendance != "~") paste0(symbole_tendance, " ") else "", "| Semaine ", SEMAINE, " - ", ANNEE
-) else paste0(
-  "RubberSignal #", SEMAINE, " | Semaine ", SEMAINE, " - ", ANNEE,
-  " | Cotation hebdomadaire TSR20 indisponible"
-)
+# Le titre ne porte un prix que s'il est frais (<= 14 jours), daté, et publiable
+# selon le réglage licence (sinon : TSR20 Banque mondiale du dernier mois)
+hebdo_titre <- list(valeur = prix_actuel, date = date_prix, frais = prix_frais, serie = serie_hebdo)
+bm_titre    <- list(valeur = bm_val, periode = bm_per)
+titre_fr <- rs_titre_rapport("fr", SEMAINE, ANNEE, hebdo_titre, bm_titre, symbole_tendance, PUBLIER_LICENCE)
+
+# Variation & tendance : dérivées de la cotation hebdomadaire (même règle de licence)
+section_variation <- function(langue = "fr") {
+  fr <- langue == "fr"
+  if (!hebdo_publiable)
+    return(paste0(if (fr) "### Variation & tendance\n\n*Calculées sur la cotation hebdomadaire : "
+                  else "### Variation & Trend\n\n*Computed on the weekly quote: ",
+                  if (fr) RS_MENTION_LICENCE_FR else RS_MENTION_LICENCE_EN, ".*\n\n"))
+  paste0(
+    if (fr) "### Variation & tendance\n\n| Indicateur | Valeur |\n|---|---|\n| Variation vs période préc. | "
+    else "### Variation & Trend\n\n| Indicator | Value |\n|---|---|\n| Change vs previous period | ",
+    if (fr) texte_variation_fr else texte_variation_en, " ", symbole_tendance, " |\n",
+    if (fr) "| Moyenne 3 mois | " else "| 3-month average | ",
+    if (!is.na(moyenne_3m)) paste0(moyenne_3m, " USD/kg") else "—", " |\n",
+    if (fr) "| Moyenne 6 mois | " else "| 6-month average | ",
+    if (!is.na(moyenne_6m)) paste0(moyenne_6m, " USD/kg") else "—", " |\n",
+    if (fr) "| Fourchette 12 mois | " else "| 12-month range | ",
+    if (!is.na(min_12m) && !is.na(max_12m)) paste0(min_12m, " – ", max_12m, " USD/kg") else "—", " |\n\n")
+}
+
+source_hebdo_pied <- function(langue = "fr") {
+  fr <- langue == "fr"
+  if (!hebdo_publiable) return(if (fr) RS_MENTION_LICENCE_FR else RS_MENTION_LICENCE_EN)
+  if (fr) paste0("Source prix hebdomadaire : ", source_prix, " (cotation du ", rs_date_fr(date_prix), ", ", statut_prix_fr, ")")
+  else paste0("Weekly price source: ", source_prix, " (quote dated ", rs_date_fr(date_prix), ", ", statut_prix_en, ")")
+}
 
 # Actualités : liste datée ou mention explicite d'indisponibilité
 section_actu <- function(langue = "fr") {
@@ -696,26 +761,8 @@ rapport_fr <- paste0(
   "## 📊 Prix de la semaine\n\n",
   "### Références datées\n\n",
   tableau_refs_fr,
-  "### Grades de caoutchouc naturel\n\n",
-  tableau_grades,
-  
-  "### Variation & tendance\n\n",
-  "| Indicateur | Valeur |\n",
-  "|---|---|\n",
-  "| Variation vs période préc. | ",
-  texte_variation_fr, " ", symbole_tendance, " |\n",
-  "| Moyenne 3 mois | ",
-  if (!is.na(moyenne_3m)) paste0(moyenne_3m, " USD/kg") else "—", " |\n",
-  "| Moyenne 6 mois | ",
-  if (!is.na(moyenne_6m)) paste0(moyenne_6m, " USD/kg") else "—", " |\n",
-  "| Fourchette 12 mois | ",
-  if (!is.na(min_12m) && !is.na(max_12m))
-    paste0(min_12m, " – ", max_12m, " USD/kg")
-  else "—", " |\n\n",
-  
-  "### Contexte géographique\n\n",
-  tableau_geo,
-  
+  section_variation("fr"),
+
   "## 🔍 Analyse de la semaine\n\n",
   texte_analyse_fr, "\n\n",
   "> *Cette analyse est générée automatiquement à partir de données publiques. ",
@@ -737,22 +784,15 @@ rapport_fr <- paste0(
   "prix local CI, activité plantation, retour d'un négociant...]*\n\n",
   "---\n\n",
   
-  "## 🌿 Focus Côte d'Ivoire\n\n",
-  "*La Côte d'Ivoire est le 1er producteur africain de caoutchouc naturel ",
-  "et figure dans le top 5 mondial. RubberSignal suit chaque semaine ",
-  "la filière ivoirienne.*\n\n",
-  "**Données de référence CI :**\n\n",
-  "- Production annuelle : environ 1,8 million de tonnes ",
-  "(904 000 t au 1er semestre 2026 selon SunSirs)\n",
-  "- Principal port d'export : Abidjan\n",
-  "- Organisme de référence : APROCAG\n\n",
-  "---\n\n",
-  
+  # v4.3 : « Focus Côte d'Ivoire » statique retiré (« top 5 mondial », production
+  # SunSirs, « APROCAG » : aucune source dans le JSON). Le suivi CI = section RSCI.
+
   "**RubberSignal** — Intelligence marché caoutchouc naturel | ",
   "Afrique de l'Ouest & marchés mondiaux\n\n",
-  "*Source prix hebdomadaire : ", source_prix, " (cotation du ", rs_date_fr(date_prix), ", ",
-  statut_prix_fr, ") | Références mensuelles : FMI (FRED PRUBBUSDM), Banque mondiale (Pink Sheet) | ",
+  "*", source_hebdo_pied("fr"), " | Références mensuelles : FMI (FRED PRUBBUSDM), Banque mondiale (Pink Sheet) | ",
   "Rapport du ", format(DATE_COLLECTE, "%d/%m/%Y"), "*\n\n",
+  "*Calculs préparés et contrôlés par des outils automatisés, dont des modèles d'IA, puis validés par ",
+  "l'évaluateur responsable (Martial Sahiri).*\n\n",
   "*Pour vous abonner : rubbersignal.substack.com*\n"
 )
 
@@ -763,13 +803,7 @@ cat("   Rapport FR :", nchar(rapport_fr), "caractères\n")
 
 cat(">> Assemblage rapport EN...\n")
 
-titre_en <- if (prix_frais) paste0(
-  "RubberSignal #", SEMAINE, " | TSR20: ", prix_actuel, " USD/kg (", rs_date_fr(date_prix), ") ",
-  if (symbole_tendance != "~") paste0(symbole_tendance, " ") else "", "| Week ", SEMAINE, " - ", ANNEE
-) else paste0(
-  "RubberSignal #", SEMAINE, " | Week ", SEMAINE, " - ", ANNEE,
-  " | Weekly TSR20 quote unavailable"
-)
+titre_en <- rs_titre_rapport("en", SEMAINE, ANNEE, hebdo_titre, bm_titre, symbole_tendance, PUBLIER_LICENCE)
 
 rapport_en <- paste0(
   
@@ -781,26 +815,8 @@ rapport_en <- paste0(
   "## 📊 Weekly Prices\n\n",
   "### Dated references\n\n",
   tableau_refs_en,
-  "### Natural Rubber Grades\n\n",
-  tableau_grades,
-  
-  "### Variation & Trend\n\n",
-  "| Indicator | Value |\n",
-  "|---|---|\n",
-  "| Change vs previous period | ",
-  texte_variation_en, " ", symbole_tendance, " |\n",
-  "| 3-month average | ",
-  if (!is.na(moyenne_3m)) paste0(moyenne_3m, " USD/kg") else "—", " |\n",
-  "| 6-month average | ",
-  if (!is.na(moyenne_6m)) paste0(moyenne_6m, " USD/kg") else "—", " |\n",
-  "| 12-month range | ",
-  if (!is.na(min_12m) && !is.na(max_12m))
-    paste0(min_12m, " – ", max_12m, " USD/kg")
-  else "—", " |\n\n",
-  
-  "### Geographic Context\n\n",
-  tableau_geo,
-  
+  section_variation("en"),
+
   "## 🔍 Weekly Analysis\n\n",
   texte_analyse_en, "\n\n",
   "> *This analysis is automatically generated from public data. ",
@@ -822,22 +838,12 @@ rapport_en <- paste0(
   "local CI prices, plantation activity, trader feedback...]*\n\n",
   "---\n\n",
   
-  "## 🌿 Ivory Coast Focus\n\n",
-  "*Côte d'Ivoire is Africa's leading natural rubber producer ",
-  "and ranks in the global top 5. RubberSignal tracks ",
-  "the Ivorian rubber industry every week.*\n\n",
-  "**Key CI Reference Data:**\n\n",
-  "- Annual production: about 1.8 million tonnes ",
-  "(904,000 t in H1 2026 according to SunSirs)\n",
-  "- Main export port: Abidjan\n",
-  "- Reference body: APROCAG\n\n",
-  "---\n\n",
-  
   "**RubberSignal** — Natural Rubber Market Intelligence | ",
   "West Africa & Global Markets\n\n",
-  "*Weekly price source: ", source_prix, " (quote dated ", rs_date_fr(date_prix), ", ",
-  statut_prix_en, ") | Monthly references: IMF (FRED PRUBBUSDM), World Bank (Pink Sheet) | ",
+  "*", source_hebdo_pied("en"), " | Monthly references: IMF (FRED PRUBBUSDM), World Bank (Pink Sheet) | ",
   "Report of ", format(DATE_COLLECTE, "%B %d, %Y"), "*\n\n",
+  "*Calculations prepared and checked by automated tools, including AI models, then validated by ",
+  "the responsible assessor (Martial Sahiri).*\n\n",
   "*Subscribe: rubbersignal.substack.com*\n"
 )
 
@@ -878,7 +884,11 @@ donnees$rapport <- list(
   fichier_fr   = fichier_fr,
   fichier_en   = fichier_en,
   pre_rsi      = pre_rsi,
-  pre_rsi_actif = SEMAINE >= SEMAINE_ACTIVATION_RSI
+  pre_rsi_actif = SEMAINE >= SEMAINE_ACTIVATION_RSI,
+  pre_rsi_publie = !is.na(pre_rsi),
+  publier_sources_sous_licence = PUBLIER_LICENCE,
+  serie_hebdo_publiee = hebdo_publiable,
+  versions_methode = setNames(as.list(RS_METHODES$version), RS_METHODES$cle)
 )
 write_json(donnees, fichier_json, pretty = TRUE, auto_unbox = TRUE, na = "null", null = "null")
 cat("   JSON final mis à jour\n")

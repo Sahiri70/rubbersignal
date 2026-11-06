@@ -1,17 +1,21 @@
 # =============================================================
 # RUBBERSIGNAL.COM — Script 04 : Signaux faibles complets V2
 # Auteur  : Martial Sahiri
-# Version : 2.2 — terrain CI et stocks sans valeurs figées (nov. 2026)
-#           (2.1 : FRED fonctionnel + PMI manuel + Pré-RSI corrigé)
+# Version : 2.3 — mission 2 (nov. 2026) : plus aucune valeur figée
+#           PMI manuel -> confiance des industriels OCDE (FRED) ; BDI/fret
+#           estimés -> data/reference/fret.csv daté ; plus de taux de change
+#           de secours ; géopolitique sans article = NA ; Pré-RSI v2 (sens,
+#           poids et seuil de 3 composantes dans scripts/00_regles.R)
+#           (2.2 : terrain CI et stocks sans valeurs figées)
 # Modules :
 #   1. Météo 4 zones productrices (Open-Meteo — automatique)
-#   2. Devises (ExchangeRate API — automatique)
-#   3. Demande aval (FRED automatique + PMI manuel mensuel)
+#   2. Devises (ExchangeRate API + référence 12 mois FRED — automatique)
+#   3. Demande aval (FRED automatique, dont confiance industrielle OCDE)
 #   4. Stocks mondiaux (indisponible : aucune source alimentée)
-#   5. Shipping / Fret maritime (BDI + WTI FRED)
+#   5. Shipping / Fret maritime (WTI FRED + saisie datée data/reference/fret.csv)
 #   6. Terrain CI (relevé daté, data/reference/terrain_ci.csv)
-#   7. Géopolitique / Tensions (NewsAPI — automatique)
-#   + Pré-RSI composite 0-100
+#   7. Géopolitique / Tensions (NewsAPI — automatique, clé en en-tête)
+#   + Pré-RSI composite 0-100 (non publié sous 3 composantes)
 # Usage   : source("scripts/04_collect_signals.R")
 # =============================================================
 
@@ -33,16 +37,38 @@ EXCHANGERATE_KEY <- Sys.getenv("EXCHANGERATE_KEY")
 FRED_KEY         <- Sys.getenv("FRED_KEY")
 NEWSAPI_KEY      <- Sys.getenv("NEWSAPI_KEY")
 
+# Regles partagees : Pre-RSI (sens, poids, seuil), devises, IOSCO, %||% tolerant aux NA
+source(if (file.exists("scripts/00_regles.R")) "scripts/00_regles.R" else "00_regles.R")
+
+# Serie FRED (observations recentes, valeurs manquantes "." retirees).
+# FRED n'accepte la cle qu'en parametre de requete : aucune erreur n'est
+# affichee (l'URL contient la cle). Retourne NULL si indisponible.
+get_fred_serie <- function(series_id, n = 60, fred_key = FRED_KEY) {
+  if (!nzchar(fred_key)) return(NULL)
+  rep <- tryCatch(GET("https://api.stlouisfed.org/fred/series/observations",
+                      query = list(series_id = series_id, api_key = fred_key, file_type = "json",
+                                   sort_order = "desc", limit = n),
+                      timeout(20)), error = function(e) NULL)
+  if (is.null(rep) || status_code(rep) != 200) return(NULL)
+  o <- tryCatch(fromJSON(content(rep, as = "text", encoding = "UTF-8"))$observations,
+                error = function(e) NULL)
+  if (is.null(o) || NROW(o) == 0) return(NULL)
+  o <- o[o$value != ".", c("date", "value"), drop = FALSE]
+  o <- data.frame(date = as.Date(o$date), value = suppressWarnings(as.numeric(o$value)))
+  o <- o[is.finite(o$value), , drop = FALSE]
+  if (nrow(o) == 0) NULL else o[order(o$date, decreasing = TRUE), , drop = FALSE]
+}
+
 cat("=== RUBBERSIGNAL — Signaux faibles du",
     format(DATE_COLLECTE, "%d/%m/%Y"), "===\n\n")
 cat("Modules actifs :\n")
 cat("  M1 Météo         : automatique (Open-Meteo)\n")
 cat("  M2 Devises       : automatique (ExchangeRate API)\n")
 cat("  M3 Demande aval  :",
-    if (nchar(FRED_KEY) > 0) "FRED auto + PMI manuel"
-    else "PMI manuel uniquement", "\n")
+    if (nchar(FRED_KEY) > 0) "FRED auto (dont confiance industrielle OCDE)"
+    else "INDISPONIBLE (clé FRED absente)", "\n")
 cat("  M4 Stocks        : indisponible (aucune source alimentée)\n")
-cat("  M5 Shipping      : automatique (WTI FRED)\n")
+cat("  M5 Shipping      : WTI FRED + saisie datée (data/reference/fret.csv)\n")
 cat("  M6 Terrain CI    : relevé daté (data/reference/terrain_ci.csv)\n")
 cat("  M7 Géopolitique  : automatique (NewsAPI)\n\n")
 
@@ -124,10 +150,13 @@ pays_ok  <- names(meteo_resultats)
 poids_ok <- zones_meteo$poids_prod[zones_meteo$pays %in% pays_ok]
 poids_n  <- poids_ok / sum(poids_ok)
 scores_ok <- map_dbl(pays_ok, ~ meteo_resultats[[.x]]$score_production)
+# v2.3 : sans aucune zone collectee, score NA (plus de 50 par defaut)
 score_offre_mondiale <- if (length(scores_ok) > 0)
-  round(sum(scores_ok * poids_n)) else 50
+  round(sum(scores_ok * poids_n)) else NA_real_
+if (is.na(score_offre_mondiale)) cat("::warning::Meteo : aucune zone collectee (Open-Meteo indisponible)\n")
 
 signal_offre <- case_when(
+  is.na(score_offre_mondiale) ~ "Données météo indisponibles",
   score_offre_mondiale >= 75 ~ "Offre abondante — pression baissière",
   score_offre_mondiale >= 50 ~ "Offre normale — marché équilibré",
   score_offre_mondiale >= 25 ~ "Offre sous pression — signal haussier",
@@ -145,6 +174,8 @@ cat(strrep("─", 50), "\n")
 cat("MODULE 2 — DEVISES\n")
 cat(strrep("─", 50), "\n\n")
 
+# v2.3 : plus AUCUN taux de secours (anciens 7.24 / 4.47 / 614 / 16250 / 0.90).
+# Si l'API echoue ou qu'une devise manque : NA + statut + ::warning::.
 collecter_devises <- function() {
   cat(">> Taux de change USD/...\n")
   url <- if (nchar(EXCHANGERATE_KEY) > 0)
@@ -152,43 +183,49 @@ collecter_devises <- function() {
            EXCHANGERATE_KEY, "/latest/USD")
   else
     "https://open.er-api.com/v6/latest/USD"
-  rep <- tryCatch(GET(url, timeout(15)), error = function(e) NULL)
-  if (is.null(rep) || status_code(rep) != 200) {
-    cat("   Secours\n")
-    return(list(USD_CNY=7.24, USD_MYR=4.47, USD_XOF=614,
-                USD_IDR=16250, USD_CHF=0.90, source="Secours"))
-  }
-  d <- fromJSON(content(rep, as="text", encoding="UTF-8"))
-  r <- d$conversion_rates %||% d$rates
-  if (is.null(r)) return(list(USD_CNY=7.24, USD_MYR=4.47,
-                              USD_XOF=614, USD_IDR=16250,
-                              USD_CHF=0.90, source="Secours"))
-  res <- list(
-    USD_CNY = round(r$CNY %||% 7.24, 4),
-    USD_MYR = round(r$MYR %||% 4.47, 4),
-    USD_XOF = round(r$XOF %||% 614,  2),
-    USD_IDR = round(r$IDR %||% 16250, 0),
-    USD_CHF = round(r$CHF %||% 0.90, 4),
-    source  = "ExchangeRate API",
-    date    = as.character(DATE_COLLECTE)
-  )
+  src <- if (nchar(EXCHANGERATE_KEY) > 0) "ExchangeRate API (v6)" else "ExchangeRate API (open.er-api)"
+  rep <- tryCatch(GET(url, timeout(15)), error = function(e) NULL)   # erreur jamais affichee (URL avec cle)
+  d <- if (is.null(rep) || status_code(rep) != 200) NULL else
+    tryCatch(fromJSON(content(rep, as = "text", encoding = "UTF-8")), error = function(e) NULL)
+  res <- rs_devises_lire(d, src)          # scripts/00_regles.R : NA + alertes, jamais de secours
+  for (a in res$alertes) cat("::warning::", a, "\n", sep = "")
   cat("   CNY:", res$USD_CNY, "| MYR:", res$USD_MYR,
-      "| XOF:", res$USD_XOF, "| CHF:", res$USD_CHF, "\n")
+      "| XOF:", res$USD_XOF, "| CHF:", res$USD_CHF, "| maj", res$date %||% "inconnue",
+      "| statut", res$statut, "\n")
   res
 }
 devises <- collecter_devises()
 
-REF_CNY <- 7.10 ; REF_MYR <- 4.40
-ecart_cny <- round((devises$USD_CNY - REF_CNY) / REF_CNY * 100, 2)
-ecart_myr <- round((devises$USD_MYR - REF_MYR) / REF_MYR * 100, 2)
+# Reference des signaux : moyenne des 12 derniers mois du taux FRED (H.10, Reserve
+# federale) — remplace les references figees 7.10 / 4.40 (date et source inconnues).
+ref_devise_12m <- function(series_id) {
+  s <- get_fred_serie(series_id, n = 400)
+  vide <- list(valeur = NA_real_, serie = series_id, source = paste0("FRED ", series_id),
+               debut = NA_character_, fin = NA_character_, n_obs = 0L,
+               methode = "Moyenne des cotations quotidiennes des 365 derniers jours")
+  if (is.null(s)) return(vide)
+  s <- s[s$date > DATE_COLLECTE - 365 & s$date <= DATE_COLLECTE, , drop = FALSE]
+  if (nrow(s) < 150) return(vide)
+  modifyList(vide, list(valeur = round(mean(s$value), 4), debut = as.character(min(s$date)),
+                        fin = as.character(max(s$date)), n_obs = nrow(s)))
+}
+ref_cny <- ref_devise_12m("DEXCHUS")
+ref_myr <- ref_devise_12m("DEXMAUS")
+ecart_pct <- function(spot, ref) if (is.finite(spot) && is.finite(ref$valeur))
+  round((spot - ref$valeur) / ref$valeur * 100, 2) else NA_real_
+ecart_cny <- ecart_pct(devises$USD_CNY, ref_cny)
+ecart_myr <- ecart_pct(devises$USD_MYR, ref_myr)
+if (is.na(ecart_cny)) cat("::warning::Devises : ecart CNY non calculable (taux ou reference FRED DEXCHUS absent)\n")
 signal_cny <- case_when(
-  ecart_cny >  2 ~ paste0("Yuan faible (+", ecart_cny, "%) — demande réduite"),
-  ecart_cny < -2 ~ paste0("Yuan fort (", ecart_cny, "%) — demande soutenue"),
-  TRUE           ~ paste0("Yuan stable (", ecart_cny, "%) — neutre"))
+  is.na(ecart_cny) ~ "Yuan : donnée indisponible",
+  ecart_cny >  2 ~ paste0("Yuan faible (+", ecart_cny, "% vs moyenne 12 mois) — demande réduite"),
+  ecart_cny < -2 ~ paste0("Yuan fort (", ecart_cny, "% vs moyenne 12 mois) — demande soutenue"),
+  TRUE           ~ paste0("Yuan stable (", ecart_cny, "% vs moyenne 12 mois) — neutre"))
 signal_myr <- case_when(
-  ecart_myr >  2 ~ paste0("Ringgit faible (+", ecart_myr, "%) — export agressif"),
-  ecart_myr < -2 ~ paste0("Ringgit fort (", ecart_myr, "%) — export ralenti"),
-  TRUE           ~ paste0("Ringgit stable (", ecart_myr, "%) — neutre"))
+  is.na(ecart_myr) ~ "Ringgit : donnée indisponible",
+  ecart_myr >  2 ~ paste0("Ringgit faible (+", ecart_myr, "% vs moyenne 12 mois) — export agressif"),
+  ecart_myr < -2 ~ paste0("Ringgit fort (", ecart_myr, "% vs moyenne 12 mois) — export ralenti"),
+  TRUE           ~ paste0("Ringgit stable (", ecart_myr, "% vs moyenne 12 mois) — neutre"))
 cat("   Signal CNY :", signal_cny, "\n")
 cat("   Signal MYR :", signal_myr, "\n\n")
 
@@ -220,8 +257,9 @@ get_fred <- function(series_id, nom,
   val_prec <- if (nrow(obs) >= 2) as.numeric(obs$value[2]) else NA
   variation <- if (!is.na(val_prec) && val_prec != 0)
     round((val - val_prec) / abs(val_prec) * 100, 2) else NA
-  cat(sprintf("   %-40s : %14.2f (%+.2f%%)\n",
-              nom, val, variation %||% 0))
+  cat(sprintf("   %-40s : %14.2f (%s) [%s]\n",
+              nom, val, if (is.finite(variation)) sprintf("%+.2f%%", variation) else "variation NA",
+              obs$date[1]))
   list(serie=series_id, nom=nom, valeur=val,
        valeur_prec=val_prec, variation_pct=variation,
        date=obs$date[1])
@@ -250,75 +288,93 @@ collecter_demande_aval <- function() {
                              "Permis construction US")
   Sys.sleep(0.3)
   
-  # ── PMI Manufacturing — saisie manuelle mensuelle ──────────
-  # ⚠ À mettre à jour chaque 1er du mois
-  # Sources : https://www.spglobal.com/marketintelligence/en/mi/research-analysis/pmi.html
-  #           https://tradingeconomics.com/calendar (filtre PMI Manufacturing)
-  
-  cat("\n>> PMI Manufacturing (saisie manuelle — avril 2026)...\n")
-  
-  pmi_resultats <- list(
-    USA    = list(pays="USA",    valeur=50.2,
-                  signal="Légère expansion"),
-    Europe = list(pays="Europe", valeur=49.0,
-                  signal="Légère contraction"),
-    Chine  = list(pays="Chine",  valeur=51.1,
-                  signal="Légère expansion"),
-    Inde   = list(pays="Inde",   valeur=58.8,
-                  signal="Forte expansion"),
-    Japon  = list(pays="Japon",  valeur=48.7,
-                  signal="Légère contraction")
-    # ← METTRE À JOUR MENSUELLEMENT
+  # ── Confiance des industriels — OCDE, enquêtes de conjoncture (via FRED) ──
+  # v2.3 : remplace le PMI saisi à la main (valeurs d'avril 2026 : 50.2 / 49.0 /
+  # 51.1 / 58.8 / 48.7, sans date de mise à jour). Séries gratuites et
+  # automatiques, identifiants vérifiés par l'API FRED le 03/11/2026 :
+  #   BSCICP02USM460S  : BTS manufacturing, composite confidence, national indicator, USA (mensuel, % solde, CVS)
+  #   BSCICP02DEM460S  : idem Allemagne (mensuel) — la série zone euro (BSCICP02EZM460S)
+  #                      s'arrête en janvier 2026 : non retenue
+  #   CHNBSCICP02STSAM : idem Chine (mensuel)
+  #   JPNBSCICP02STSAQ : idem Japon (trimestriel, Tankan)
+  #   Inde : aucune série à jour sur FRED -> non couverte.
+  #   Les séries « BCI » amplitude-ajustées (BSCICP03*M665S) s'arrêtent en 2023-2024 : non retenues.
+  # Méthode : les échelles diffèrent selon les pays ; chaque série est comparée à
+  # SA PROPRE moyenne sur 5 ans : z = (dernière valeur - moyenne) / écart-type
+  # (60 mois ou 20 trimestres). Une valeur n'est utilisée que si elle a moins de
+  # 45 jours après la fin de sa période (règle mensuelle) ; sinon elle est
+  # affichée « périmée » et exclue du score.
+
+  cat("\n>> Confiance des industriels OCDE (FRED)...\n")
+
+  CONFIANCE_SERIES <- tibble(
+    pays      = c("USA", "Allemagne", "Chine", "Japon"),
+    serie     = c("BSCICP02USM460S", "BSCICP02DEM460S", "CHNBSCICP02STSAM", "JPNBSCICP02STSAQ"),
+    frequence = c("mensuelle", "mensuelle", "mensuelle", "trimestrielle")
   )
-  
-  for (p in names(pmi_resultats)) {
-    cat(sprintf("   PMI %-8s : %4.1f — %s\n",
-                p,
-                pmi_resultats[[p]]$valeur,
-                pmi_resultats[[p]]$signal))
-  }
-  
+
+  confiance <- lapply(seq_len(nrow(CONFIANCE_SERIES)), function(i) {
+    cs  <- CONFIANCE_SERIES[i, ]
+    nb  <- if (cs$frequence == "mensuelle") 60 else 20
+    s   <- get_fred_serie(cs$serie, n = nb)
+    Sys.sleep(0.3)
+    vide <- list(pays = cs$pays, serie = cs$serie, frequence = cs$frequence, valeur = NA_real_,
+                 unite = "% (solde, CVS)", periode = NA_character_, date_source = NA_character_,
+                 z_5ans = NA_real_, statut = "indisponible", utilise = FALSE,
+                 source = paste0("OCDE, enquêtes de conjoncture, via FRED (", cs$serie, ")"),
+                 signal = "Donnée indisponible")
+    if (is.null(s) || nrow(s) < 8) {
+      cat(sprintf("   %-10s : indisponible\n", cs$pays)); return(vide)
+    }
+    der  <- s$date[1]
+    fin  <- if (cs$frequence == "mensuelle") seq(der, by = "1 month", length.out = 2)[2] - 1
+            else seq(der, by = "3 months", length.out = 2)[2] - 1
+    fr   <- rs_fraicheur(fin, DATE_COLLECTE, RS_MAX_JOURS_MENSUEL)
+    z    <- if (sd(s$value) > 0) round((s$value[1] - mean(s$value)) / sd(s$value), 2) else 0
+    sig  <- if (z > 0.5) "au-dessus de sa moyenne 5 ans" else if (z < -0.5) "en dessous de sa moyenne 5 ans"
+            else "proche de sa moyenne 5 ans"
+    res  <- modifyList(vide, list(valeur = s$value[1], periode = format(der, "%Y-%m"),
+                                  date_source = as.character(der), z_5ans = z,
+                                  statut = if (identical(fr$statut, "frais")) "derniere_valeur_disponible" else "perime",
+                                  utilise = identical(fr$statut, "frais"),
+                                  n_observations = nrow(s),
+                                  signal = if (identical(fr$statut, "frais")) sig
+                                           else paste0("périmée (dernière valeur ", format(der, "%m/%Y"), ")")))
+    cat(sprintf("   %-10s : %6.1f (%s, z = %+.2f) %s\n", cs$pays, res$valeur, res$periode, z,
+                if (res$utilise) "" else "[PÉRIMÉE, exclue]"))
+    res
+  })
+  names(confiance) <- CONFIANCE_SERIES$pays
+  z_utiles <- unlist(lapply(confiance, function(x) if (isTRUE(x$utilise)) x$z_5ans else NULL))
+  z_moyen  <- if (length(z_utiles) > 0) round(mean(z_utiles), 2) else NA_real_
+
   # ── Score demande aval composite ───────────────────────────
+  # Base 50 (neutre) + pas fixes par indicateur DISPONIBLE (seuils non backtestés) :
+  #   ventes auto US (TOTALSA) var. mensuelle > +2 % : +10 ; < -2 % : -10
+  #   commandes biens durables (DGORDER) > +3 % : +8 ; < -3 % : -8
+  #   importations Chine (XTIMVA01CNM667S) > +5 % : +7 ; < -5 % : -7
+  #   confiance industrielle OCDE, z moyen > +0.5 : +10 ; < -0.5 : -10
+  # Aucun indicateur disponible -> score NA (plus de 50 par défaut).
   cat("\n>> Calcul score demande aval...\n")
-  
+
   score_demande <- 50
-  
-  if (!is.null(ventes_auto_us) &&
-      !is.na(ventes_auto_us$variation_pct)) {
-    if (ventes_auto_us$variation_pct > 2)
-      score_demande <- score_demande + 10
-    else if (ventes_auto_us$variation_pct < -2)
-      score_demande <- score_demande - 10
+  n_indicateurs <- 0
+  pas <- function(x, seuil, points) {
+    if (is.null(x) || !is.finite(x$variation_pct %||% NA)) return(0)
+    n_indicateurs <<- n_indicateurs + 1
+    if (x$variation_pct > seuil) points else if (x$variation_pct < -seuil) -points else 0
   }
-  
-  if (!is.null(commandes_dur) &&
-      !is.na(commandes_dur$variation_pct)) {
-    if (commandes_dur$variation_pct > 3)
-      score_demande <- score_demande + 8
-    else if (commandes_dur$variation_pct < -3)
-      score_demande <- score_demande - 8
+  score_demande <- score_demande + pas(ventes_auto_us, 2, 10) + pas(commandes_dur, 3, 8) +
+    pas(imports_chine, 5, 7)
+  if (is.finite(z_moyen)) {
+    n_indicateurs <- n_indicateurs + 1
+    score_demande <- score_demande + (if (z_moyen > 0.5) 10 else if (z_moyen < -0.5) -10 else 0)
   }
-  
-  if (!is.null(imports_chine) &&
-      !is.na(imports_chine$variation_pct)) {
-    if (imports_chine$variation_pct > 5)
-      score_demande <- score_demande + 7
-    else if (imports_chine$variation_pct < -5)
-      score_demande <- score_demande - 7
-  }
-  
-  # PMI moyen
-  pmi_vals <- map_dbl(pmi_resultats, ~ .x$valeur %||% NA_real_)
-  pmi_vals <- pmi_vals[!is.na(pmi_vals)]
-  if (length(pmi_vals) > 0) {
-    pmi_moy <- mean(pmi_vals)
-    if (pmi_moy > 52)      score_demande <- score_demande + 10
-    else if (pmi_moy < 49) score_demande <- score_demande - 10
-  }
-  
-  score_demande <- min(100, max(0, score_demande))
-  
+  score_demande <- if (n_indicateurs == 0) NA_real_ else min(100, max(0, score_demande))
+  if (is.na(score_demande)) cat("::warning::Demande aval : aucun indicateur disponible - score NA\n")
+
   signal_demande <- case_when(
+    is.na(score_demande) ~ "Données de demande indisponibles",
     score_demande >= 70 ~ "Demande forte — signal haussier",
     score_demande >= 55 ~ "Demande modérée — bien orienté",
     score_demande >= 45 ~ "Demande neutre — équilibré",
@@ -338,9 +394,19 @@ collecter_demande_aval <- function() {
       imports_chine  = imports_chine,
       permis_constr  = permis_constr
     ),
-    pmi            = pmi_resultats,
+    confiance_industrie = list(
+      series  = confiance,
+      z_moyen = z_moyen,
+      n_utilisees = length(z_utiles),
+      methode = paste("z = (dernière valeur - moyenne 5 ans) / écart-type 5 ans, par pays ;",
+                      "moyenne des z des séries fraîches (< 45 jours après la fin de période)"),
+      source  = "OCDE, Business Tendency Surveys (manufacturing), via FRED"
+    ),
+    pmi = list(statut = "retire",
+               note = "PMI saisi à la main (avril 2026) retiré en v2.3 : remplacé par confiance_industrie (OCDE via FRED)"),
     score_demande  = score_demande,
-    signal_demande = signal_demande
+    signal_demande = signal_demande,
+    n_indicateurs  = n_indicateurs
   )
 }
 
@@ -394,36 +460,78 @@ cat(strrep("─", 50), "\n")
 cat("MODULE 5 — SHIPPING / FRET MARITIME\n")
 cat(strrep("─", 50), "\n\n")
 
+# v2.3 : plus de BDI « estimé » (1450), de tarif CI-UE (85 USD/t) ni de délai
+# (14 j) codés en dur. Aucune source automatique gratuite du BDI : les valeurs
+# sont SAISIES, DATÉES et SOURCÉES dans data/reference/fret.csv
+#   date_valeur, indicateur, valeur, unite, source, url
+#   indicateur : BDI | tarif_ci_ue_usd_t | delai_abidjan_rotterdam_j
+# Seule une valeur récente est retenue (BDI : 14 jours ; tarif et délai : 45 jours),
+# sinon statut « indisponible ». Le fret n'entre pas dans le Pré-RSI.
+
+RS_FRET_MAX_JOURS <- c(BDI = 14, tarif_ci_ue_usd_t = 45, delai_abidjan_rotterdam_j = 45)
+
+lire_fret <- function(f = "data/reference/fret.csv", date_ref = DATE_COLLECTE) {
+  vide <- function(ind) list(indicateur = ind, valeur = NA_real_, unite = NA_character_,
+                             date_valeur = NA_character_, source = NA_character_, url = NA_character_,
+                             statut = "indisponible", max_jours = unname(RS_FRET_MAX_JOURS[ind]))
+  out <- setNames(lapply(names(RS_FRET_MAX_JOURS), vide), names(RS_FRET_MAX_JOURS))
+  if (!file.exists(f)) return(out)
+  t <- utils::read.csv(f, stringsAsFactors = FALSE, colClasses = "character", encoding = "UTF-8")
+  manque <- setdiff(c("date_valeur", "indicateur", "valeur", "unite", "source", "url"), names(t))
+  if (length(manque) > 0) stop("Fret : colonnes manquantes dans ", f, " : ", paste(manque, collapse = ", "))
+  if (nrow(t) == 0) return(out)
+  t$d <- suppressWarnings(as.Date(t$date_valeur))
+  t$v <- suppressWarnings(as.numeric(t$valeur))
+  for (ind in names(RS_FRET_MAX_JOURS)) {
+    age <- as.numeric(date_ref - t$d)
+    ok  <- t$indicateur == ind & is.finite(t$v) & !is.na(age) & age >= 0 &
+           age <= RS_FRET_MAX_JOURS[[ind]] & nzchar(trimws(t$source))
+    if (!any(ok)) next
+    r <- t[ok, , drop = FALSE]; r <- r[order(r$d, decreasing = TRUE)[1], ]
+    out[[ind]] <- modifyList(out[[ind]], list(valeur = r$v, unite = r$unite, date_valeur = as.character(r$d),
+                                              source = r$source, url = r$url, statut = "ok"))
+  }
+  out
+}
+
 collecter_shipping <- function() {
   cat(">> Prix pétrole WTI (FRED — proxy fret)...\n")
-  
-  wti_val <- NA
+
+  wti_val <- NA_real_; wti_date <- NA_character_
   if (nchar(FRED_KEY) > 0) {
     wti_data <- get_fred("DCOILWTICO", "Pétrole WTI (USD/baril)")
-    if (!is.null(wti_data)) wti_val <- wti_data$valeur
+    if (!is.null(wti_data)) { wti_val <- wti_data$valeur; wti_date <- wti_data$date }
   }
-  
-  # BDI estimé (données de secours — à enrichir avec abonnement)
-  bdi_val <- 1450
-  
+
+  fret <- lire_fret()
+  bdi_val <- fret$BDI$valeur
+  for (ind in names(fret))
+    if (!identical(fret[[ind]]$statut, "ok"))
+      cat("::warning::Fret : ", ind, " indisponible (aucune saisie datee recente dans data/reference/fret.csv)\n", sep = "")
+
   signal_fret <- case_when(
-    is.na(bdi_val) ~ "Données indisponibles",
+    is.na(bdi_val) ~ "Données indisponibles (aucune source datée)",
     bdi_val > 1800 ~ "Fret élevé — pression sur les marges export",
     bdi_val < 1200 ~ "Fret bas — export facilité",
     TRUE           ~ "Fret normal — pas de signal particulier"
   )
-  
-  cat("   BDI estimé :", bdi_val, "points —", signal_fret, "\n")
+
+  cat("   BDI :", if (is.na(bdi_val)) "indisponible" else paste(bdi_val, "points"), "—", signal_fret, "\n")
   if (!is.na(wti_val))
-    cat("   WTI :", wti_val, "USD/baril\n")
-  
+    cat("   WTI :", wti_val, "USD/baril (", wti_date, ")\n")
+
   list(
-    bdi_valeur            = bdi_val,
-    wti_valeur            = wti_val,
-    signal_fret           = signal_fret,
-    tarif_ci_eu_usd_tonne = 85,    # ← À mettre à jour mensuellement
-    delai_abidjan_rotterdam = 14,
-    source = "BDI estimé + WTI FRED"
+    bdi_valeur              = bdi_val,
+    wti_valeur              = wti_val,
+    wti_date                = wti_date,
+    signal_fret             = signal_fret,
+    tarif_ci_eu_usd_tonne   = fret$tarif_ci_ue_usd_t$valeur,
+    delai_abidjan_rotterdam = fret$delai_abidjan_rotterdam_j$valeur,
+    statut_fret             = if (all(vapply(fret, function(x) identical(x$statut, "ok"), logical(1)))) "ok"
+                              else "indisponible",
+    fret                    = fret,
+    fichier_saisie          = "data/reference/fret.csv",
+    source = "WTI : FRED DCOILWTICO ; BDI, tarif et délai : saisie datée data/reference/fret.csv"
   )
 }
 
@@ -472,6 +580,10 @@ lire_terrain_ci <- function(f = "data/reference/terrain_ci.csv", date_ref = DATE
 }
 
 terrain_ci <- lire_terrain_ci()
+# IOSCO : nature D (déclaration recueillie sur le terrain) + version de méthode
+terrain_ci <- rs_iosco(c(terrain_ci, list(periode = terrain_ci$date_releve, date_source = terrain_ci$date_releve,
+                                          unite = "sentiment 1-5", valeur = terrain_ci$sentiment_planteurs)),
+                       "D", "terrain")
 
 cat(">> Données terrain CI :", terrain_ci$libelle, "\n")
 if (terrain_ci$statut == "ok") {
@@ -490,67 +602,55 @@ cat(strrep("─", 50), "\n")
 cat("MODULE 7 — GÉOPOLITIQUE / TENSIONS\n")
 cat(strrep("─", 50), "\n\n")
 
+# v2.3 : clé NewsAPI en en-tête X-Api-Key (plus dans l'URL). Sans donnée
+# (clé absente, API en erreur, 0 article pertinent) : nb_articles = NA et
+# composante retirée du Pré-RSI (plus de « 0 article = aucune tension = 65/100 »).
 collecter_geopolitique <- function() {
   cat(">> Actualités géopolitiques (NewsAPI)...\n")
-  
-  if (nchar(NEWSAPI_KEY) == 0) {
-    cat("   Clé NewsAPI manquante\n")
-    return(list(nb_articles=0,
-                signal="Données indisponibles",
-                articles=list()))
+  sans_donnee <- function(statut, signal) {
+    cat("   ", signal, "\n", sep = "")
+    cat("::warning::Geopolitique : ", statut, " - composante retiree du Pre-RSI\n", sep = "")
+    list(nb_articles = NA_integer_, statut = statut, signal = signal, articles = list(),
+         source = "NewsAPI (everything)", date_debut = format(DATE_COLLECTE - days(7), "%Y-%m-%d"),
+         date_fin = as.character(DATE_COLLECTE))
   }
-  
+
+  if (nchar(NEWSAPI_KEY) == 0)
+    return(sans_donnee("cle_absente", "Données indisponibles (clé NewsAPI absente)"))
+
   date_debut <- format(DATE_COLLECTE - days(7), "%Y-%m-%d")
   mots_geo   <- paste0(
     "rubber trade sanctions drought flood ",
     "Malaysia Thailand Indonesia strike ",
     "Ivory Coast political tension climate"
   )
-  
-  url_geo <- paste0(
-    "https://newsapi.org/v2/everything?",
-    "q=", URLencode(mots_geo, reserved=TRUE),
-    "&language=en&from=", date_debut,
-    "&sortBy=relevancy&pageSize=5",
-    "&apiKey=", NEWSAPI_KEY
-  )
-  
-  rep <- tryCatch(GET(url_geo, timeout(15)),
+
+  rep <- tryCatch(GET("https://newsapi.org/v2/everything",
+                      query = list(q = mots_geo, language = "en", from = date_debut,
+                                   sortBy = "relevancy", pageSize = 5),
+                      add_headers(`X-Api-Key` = NEWSAPI_KEY),
+                      timeout(15)),
                   error = function(e) NULL)
-  
-  if (is.null(rep) || status_code(rep) != 200) {
-    return(list(nb_articles=0,
-                signal="Données indisponibles",
-                articles=list()))
-  }
-  
+
+  if (is.null(rep) || status_code(rep) != 200)
+    return(sans_donnee("api_indisponible",
+                       paste0("Données indisponibles (NewsAPI, code ",
+                              if (is.null(rep)) "aucune réponse" else status_code(rep), ")")))
+
   d <- tryCatch(
     fromJSON(content(rep, as="text", encoding="UTF-8"), flatten=TRUE),
     error = function(e) NULL
   )
-  if (is.null(d)) {
-    return(list(nb_articles=0, signal="Erreur parsing",
-                articles=list()))
-  }
-  
+  if (is.null(d)) return(sans_donnee("reponse_illisible", "Données indisponibles (réponse illisible)"))
+
   articles_bruts <- d$articles
-  if (is.null(articles_bruts)) {
-    cat("   Aucune actualité\n")
-    return(list(nb_articles=0,
-                signal="Aucune tension détectée",
-                articles=list()))
-  }
-  
-  articles_df <- tryCatch(
+  articles_df <- if (is.null(articles_bruts)) data.frame() else tryCatch(
     as.data.frame(articles_bruts, stringsAsFactors=FALSE),
     error = function(e) data.frame()
   )
-  
-  if (nrow(articles_df) == 0) {
-    return(list(nb_articles=0,
-                signal="Aucune tension détectée",
-                articles=list()))
-  }
+
+  if (nrow(articles_df) == 0)
+    return(sans_donnee("aucun_article", "Aucun article reçu cette semaine — donnée indisponible"))
   
   articles_df$titre  <- if ("title" %in% names(articles_df))
     articles_df$title else "Sans titre"
@@ -567,11 +667,13 @@ collecter_geopolitique <- function() {
     grepl(pattern, tolower(articles_df$resume))
   articles_filtres <- articles_df[idx, ]
   nb <- nrow(articles_filtres)
-  
+
   cat("   OK —", nb, "actualités pertinentes\n")
-  
+  if (nb == 0)
+    return(sans_donnee("aucun_article_pertinent",
+                       "Aucun article pertinent cette semaine — donnée indisponible"))
+
   signal_geo <- case_when(
-    nb == 0 ~ "Aucune tension détectée — marché stable",
     nb <= 2 ~ "Tensions mineures à surveiller",
     nb <= 4 ~ "Tensions modérées — risque sur l'offre",
     TRUE    ~ "Tensions significatives — impact potentiel"
@@ -594,7 +696,8 @@ collecter_geopolitique <- function() {
     ))
   } else list()
   
-  list(nb_articles=nb, signal=signal_geo, articles=articles_liste)
+  list(nb_articles = nb, statut = "ok", signal = signal_geo, articles = articles_liste,
+       source = "NewsAPI (everything)", date_debut = date_debut, date_fin = as.character(DATE_COLLECTE))
 }
 
 geopolitique <- collecter_geopolitique()
@@ -609,54 +712,44 @@ cat(strrep("─", 50), "\n")
 cat("PRÉ-RSI — Score composite préliminaire\n")
 cat(strrep("─", 50), "\n\n")
 
-# Composante 1 — Météo/Offre (poids 25%)
-score_meteo_w <- score_offre_mondiale * 0.25
+# v2 (mission 2) : sens, poids, renormalisation et seuil définis et documentés
+# dans scripts/00_regles.R (section 9). Chaque composante est un score 0-100
+# ORIENTÉ PRIX (> 55 haussier, < 45 baissier).
+#   Composante      Poids  Sens / transformation
+#   Météo / offre    25 %  inversé : offre abondante = baissier (classes 30/50/70/85)
+#   Devises (yuan)   20 %  yuan fort vs moyenne 12 mois = haussier (70/50/30)
+#   Demande aval     25 %  score demande tel quel (élevé = haussier)
+#   Terrain CI       15 %  sentiment 1-5 -> (s - 1) / 4 x 100 (3/5 = 50)
+#   Géopolitique     15 %  tensions sur l'offre = haussier ; 0 article = NA
+# Composante absente (NA) : retirée, poids des autres renormalisés à 100 %.
+# Moins de 3 composantes disponibles : Pré-RSI NON PUBLIÉ (score NA).
 
-# Composante 2 — Devises (poids 20%)
-score_devise_w <- (if (!is.na(ecart_cny) && ecart_cny < -2) 70
-                   else if (!is.na(ecart_cny) && ecart_cny > 2) 30
-                   else 50) * 0.20
-
-# Composante 3 — Demande aval (poids 25%)
-# Utilise le score calculé dans le module 3
-score_pmi_w <- demande_aval$score_demande * 0.25
-
-# Composante 4 — Terrain CI (poids 15%)
-# v2.2 : sans relevé daté, la composante est ABSENTE (pas de 3/5 par défaut) :
-# les poids des autres composantes sont renormalisés pour sommer à 100 %.
-terrain_dispo   <- identical(terrain_ci$statut, "ok") && is.finite(terrain_ci$sentiment_planteurs)
-score_terrain_w <- if (terrain_dispo) (terrain_ci$sentiment_planteurs / 5 * 100) * 0.15 else 0
-
-# Composante 5 — Géopolitique (poids 15%)
-score_geo_w <- (if (geopolitique$nb_articles == 0) 65
-                else if (geopolitique$nb_articles <= 2) 50
-                else if (geopolitique$nb_articles <= 4) 35
-                else 20) * 0.15
-
-poids_total <- 0.25 + 0.20 + 0.25 + (if (terrain_dispo) 0.15 else 0) + 0.15
-pre_rsi <- round((score_meteo_w + score_devise_w + score_pmi_w +
-                    score_terrain_w + score_geo_w) / poids_total)
-pre_rsi <- min(100, max(0, pre_rsi))
-composantes_absentes <- if (terrain_dispo) character() else "Terrain CI"
-if (!terrain_dispo)
-  cat("   Composante Terrain CI absente : poids renormalisés (total", poids_total, ")\n")
-
-signal_rsi <- case_when(
-  pre_rsi >= 70 ~ "Haussier — conditions favorables",
-  pre_rsi >= 55 ~ "Légèrement haussier — marché bien orienté",
-  pre_rsi >= 45 ~ "Neutre — marché équilibré",
-  pre_rsi >= 30 ~ "Légèrement baissier — pression sur les prix",
-  TRUE          ~ "Baissier — conditions défavorables"
+terrain_dispo <- identical(terrain_ci$statut, "ok") && is.finite(terrain_ci$sentiment_planteurs)
+composantes_rsi <- c(
+  meteo   = rs_pre_rsi_meteo(score_offre_mondiale),
+  devises = rs_pre_rsi_devise(ecart_cny),
+  demande = rs_pre_rsi_demande(demande_aval$score_demande),
+  terrain = if (terrain_dispo) rs_pre_rsi_terrain(terrain_ci$sentiment_planteurs) else NA_real_,
+  geo     = rs_pre_rsi_geo(geopolitique$nb_articles)
 )
+res_rsi    <- rs_pre_rsi(composantes_rsi)
+pre_rsi    <- res_rsi$score
+signal_rsi <- res_rsi$signal
+if (!rs_pre_rsi_coherent(res_rsi)) stop("Pre-RSI incoherent (libelle / score / composantes) : arret volontaire")
+if (!res_rsi$publie)
+  cat("::warning::Pre-RSI non publie : ", res_rsi$raison_non_publie, "\n", sep = "")
+if (length(res_rsi$composantes_absentes) > 0)
+  cat("   Composante(s) absente(s) :", paste(res_rsi$composantes_absentes, collapse = ", "),
+      "-> poids renormalisés\n")
 
-cat("PRÉ-RSI Semaine", SEMAINE, ":", pre_rsi, "/100\n")
+cat("PRÉ-RSI Semaine", SEMAINE, ":", if (is.na(pre_rsi)) "NON PUBLIÉ" else paste(pre_rsi, "/100"), "\n")
 cat("Signal :", signal_rsi, "\n\n")
-cat("Composantes :\n")
-cat(sprintf("  Météo/Offre  (25%%) : %4.1f pts\n", score_meteo_w))
-cat(sprintf("  Devises      (20%%) : %4.1f pts\n", score_devise_w))
-cat(sprintf("  Demande aval (25%%) : %4.1f pts\n", score_pmi_w))
-cat(sprintf("  Terrain CI   (15%%) : %4.1f pts\n", score_terrain_w))
-cat(sprintf("  Géopolitique (15%%) : %4.1f pts\n", score_geo_w))
+cat("Composantes (score orienté prix x poids effectif) :\n")
+for (k in names(RS_PRE_RSI_POIDS))
+  cat(sprintf("  %-14s nominal %2.0f%% | effectif %5.1f%% | score %s | sens %s\n", k,
+              RS_PRE_RSI_POIDS[[k]] * 100, res_rsi$poids_effectifs[[k]] * 100,
+              if (is.finite(composantes_rsi[[k]])) sprintf("%3.0f", composantes_rsi[[k]]) else " NA",
+              res_rsi$sens[[k]] %||% "absente"))
 
 
 # ══════════════════════════════════════════════════════════════
@@ -670,32 +763,34 @@ json_signaux <- list(
     date_collecte = as.character(DATE_COLLECTE),
     semaine       = SEMAINE,
     annee         = ANNEE,
-    version       = "2.2"
+    version       = "2.3"
   ),
   module1_meteo        = list(zones=meteo_resultats,
                               score_offre_mondiale=score_offre_mondiale,
-                              signal_offre=signal_offre),
+                              signal_offre=signal_offre,
+                              source = "Open-Meteo (archive), cumul de pluie du mois",
+                              date_source = as.character(DATE_COLLECTE - 1)),
   module2_devises      = c(devises, list(signal_cny=signal_cny,
-                                         signal_myr=signal_myr)),
+                                         signal_myr=signal_myr,
+                                         ecart_cny_pct = ecart_cny, ecart_myr_pct = ecart_myr,
+                                         reference_cny = ref_cny, reference_myr = ref_myr)),
   module3_demande_aval = demande_aval,
   module4_stocks       = stocks_manuels,
   module5_shipping     = shipping,
   module6_terrain_ci   = terrain_ci,
   module7_geopolitique = geopolitique,
-  pre_rsi = list(
-    score  = pre_rsi,
-    signal = signal_rsi,
-    detail = list(
-      meteo_w   = score_meteo_w,
-      devise_w  = score_devise_w,
-      pmi_w     = score_pmi_w,
-      terrain_w = if (terrain_dispo) score_terrain_w else NA,
-      geo_w     = score_geo_w
-    ),
-    poids_total_disponible = poids_total,
-    composantes_absentes   = composantes_absentes,
-    methode = "Somme pondérée des composantes disponibles, divisée par la somme de leurs poids"
-  )
+  pre_rsi = rs_iosco(c(res_rsi, list(
+    valeur      = pre_rsi,
+    unite       = "score 0-100 (> 55 haussier, < 45 baissier)",
+    periode     = format(DATE_COLLECTE, "%G-W%V"),
+    source      = "Calcul RubberSignal (modules 1, 2, 3, 6, 7 de ce fichier)",
+    date_source = as.character(DATE_COLLECTE),
+    publiable   = rs_serie_publiable("PRE_RSI"),
+    methode = paste("Somme pondérée des composantes disponibles (scores orientés prix), divisée par la",
+                    "somme de leurs poids ; poids nominaux météo 25 %, devises 20 %, demande 25 %,",
+                    "terrain 15 %, géopolitique 15 % (non backtestés) ; non publié sous 3 composantes.",
+                    "Analyse, pas un indice de prix.")
+  )), "E", "pre_rsi")
 )
 
 fichier_signaux <- paste0(
@@ -739,11 +834,11 @@ cat("   CHF:", devises$USD_CHF, "\n")
 
 cat("\nM3 DEMANDE AVAL : Score", demande_aval$score_demande,
     "/100 —", demande_aval$signal_demande, "\n")
-cat("   PMI Manufacturing :\n")
-for (p in names(demande_aval$pmi)) {
-  cat(sprintf("   %-8s : %4.1f — %s\n",
-              p, demande_aval$pmi[[p]]$valeur,
-              demande_aval$pmi[[p]]$signal))
+cat("   Confiance industrielle OCDE (z vs moyenne 5 ans) :\n")
+for (p in names(demande_aval$confiance_industrie$series)) {
+  x <- demande_aval$confiance_industrie$series[[p]]
+  cat(sprintf("   %-10s : %s — %s\n", p,
+              if (is.finite(x$valeur)) paste0(x$valeur, " (", x$periode, ")") else "NA", x$signal))
 }
 
 cat("\nM4 STOCKS : donnée indisponible (aucune source)\n")
@@ -761,13 +856,13 @@ if (terrain_dispo) {
 cat("\nM7 GÉOPOLITIQUE :", geopolitique$signal, "\n")
 
 cat("\n", strrep("★", 30), "\n")
-cat("PRÉ-RSI SEMAINE", SEMAINE, ":", pre_rsi, "/100\n")
+cat("PRÉ-RSI SEMAINE", SEMAINE, ":", if (is.na(pre_rsi)) "NON PUBLIÉ" else paste(pre_rsi, "/100"), "\n")
 cat("SIGNAL :", signal_rsi, "\n")
 cat(strrep("★", 30), "\n\n")
 
 cat("Fichier signaux :", fichier_signaux, "\n")
 cat("\nProchaine étape : intégrer les signaux dans script 03\n\n")
-cat(">> RAPPELS MENSUELS :\n")
-cat("   · Mettre à jour PMI dans Module 3\n")
-cat("   · Mettre à jour stocks dans Module 4\n")
-cat("   · Vérifier prix APROMAC dans Module 6\n\n")
+cat(">> SAISIES DATÉES (data/reference/) :\n")
+cat("   · fret.csv        : BDI, tarif CI-UE, délai Abidjan-Rotterdam (avec source)\n")
+cat("   · terrain_ci.csv  : relevé terrain de la semaine\n")
+cat("   · prix_apromac.csv: prix APROMAC du mois\n\n")

@@ -1,5 +1,9 @@
 mois,prix_fcfa_kg,type,source,url,date_publication
-2026-02,368,a confirmer (avant reforme du 01/05/2026),gouv.ci,,
-2026-05,439,carreau usine,a completer (source a renseigner),,
+2025-10,349,bord champ (avant reforme du 01/05/2026),"gouv.ci, communique APROMAC (novembre 2025 = octobre - 2 FCFA)",https://www.gouv.ci/uploads/publications/176216524282.pdf,2025-11-02
+2025-11,347,bord champ (avant reforme du 01/05/2026),"gouv.ci, communique APROMAC du 02/11/2025",https://www.gouv.ci/uploads/publications/176216524282.pdf,2025-11-02
+2026-01,352,bord champ (avant reforme du 01/05/2026),"gouv.ci, communique APROMAC (fevrier 2026 = janvier + 16 FCFA)",https://www.gouv.ci/uploads/publications/177010801737.pdf,2026-02-03
+2026-02,368,bord champ (avant reforme du 01/05/2026),"gouv.ci, communique APROMAC (a verifier : une source cite 336)",https://www.gouv.ci/uploads/publications/177010801737.pdf,2026-02-03
+2026-04,401,a confirmer,"erooamba.com (blog, source faible, non officielle)",https://erooamba.com/posts/prix-hevea-caoutchouc-cote-ivoire-2026,
+2026-05,439,carreau usine,"erooamba.com (blog, source faible, non officielle) - a confirmer APROMAC",https://erooamba.com/posts/prix-hevea-caoutchouc-cote-ivoire-2026,
 2026-06,474,carreau usine,"FratMat, ""Caoutchouc/ Prix Apromac juin 2026: 474 F CFA/ Kg""",https://www.fratmat.info/article/2642261/flash-info/caoutchouc-prix-apromac-juin-2026-474-f-cfa-kg,2026-06-01
 2026-07,493,carreau usine,AIP,https://www.aip.ci/?p=386489,2026-07-03
