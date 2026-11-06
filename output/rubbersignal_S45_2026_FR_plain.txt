@@ -1,4 +1,4 @@
-RubberSignal #45 | TSR20 : 2.3685 USD/kg ▲ | Semaine 45 - 2026
+RubberSignal #45 | TSR20 Banque mondiale : 2.55 USD/kg (octobre 2026) | Semaine 45 - 2026
 
 Votre veille hebdomadaire sur le marché du caoutchouc naturel — Afrique de l'Ouest & marchés mondiaux
 
@@ -6,124 +6,108 @@ Votre veille hebdomadaire sur le marché du caoutchouc naturel — Afrique de l'
 
 📊 Prix de la semaine
 
-Grades de caoutchouc naturel
+Références datées
 
-| Grade | Prix USD/kg | Prix CHF/kg | Note |
-|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
-| TSR20 | 2.3685 | 2.132 | Référence mondiale / World reference |
-| RSS3 | 2.463 | 2.217 | Premium quality |
-| TSR10 | 2.297 | 2.068 | Technical grade |
-| Latex concentré | 1.942 | 1.748 | Liquid material |
+| Série | Valeur | Date de la valeur | Source | Nature | Statut |
+|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
+| Prix mondial FMI (mensuel) | 2.7574 USD/kg (125.075 cents/lb) | septembre 2026 | FMI via FRED (PRUBBUSDM) | T | dernière valeur disponible |
+| TSR20 Banque mondiale (mensuel) | 2.55 USD/kg | octobre 2026 | Banque mondiale, Pink Sheet | T | dernière valeur disponible |
+
+Cotation hebdomadaire réservée (licence) : non reproduite dans cette publication.
+
+Nature : T = transaction, O = officiel, D = déclaration, E = estimation calculée, J = jugement. Version de méthode : Références mensuelles v1.
 
 Variation & tendance
 
-| Indicateur | Valeur |
-|──────────────────────────────|──────────────────────────────|
-| Variation vs période préc. | +5.27% ▲ |
-| Moyenne 3 mois | 2.273 USD/kg |
-| Moyenne 6 mois | 2.186 USD/kg |
-| Fourchette 12 mois | 1.95 – 2.368 USD/kg |
-
-Contexte géographique
-
-| Zone | Statut / Status | Rôle / Role |
-|──────────────────────────────|──────────────────────────────|──────────────────────────────|
-| 🇨🇮 Côte d'Ivoire | 1er producteur africain | Export TSR20 |
-| 🇬🇭 Ghana | Producteur régional | Export latex |
-| 🇳🇬 Nigeria | Producteur émergent | Marché local |
-| 🇨🇲 Cameroun | Producteur régional | Export RSS |
-| 🇹🇭 Thaïlande / Thailand | 1er producteur mondial | Référence prix |
-| 🇲🇾 Malaisie / Malaysia | 2ème producteur mondial | SGX Futures |
-| 🇸🇬 Singapour / Singapore | Hub négoce mondial | Bourse SGX |
-| 🇪🇺 Europe | Principal importateur | Demande aval |
+Calculées sur la cotation hebdomadaire : cotation hebdomadaire réservée (licence).
 
 🔍 Analyse de la semaine
 
-Le marché du TSR20 affiche une progression notable cette semaine, avec un prix atteignant 2.3685 USD/kg (+5.27% sur la période précédente). Le prix actuel se situe au-dessus de sa moyenne sur 3 mois (2.273 USD/kg) et de sa moyenne sur 6 mois (2.186 USD/kg). Sur les 12 derniers mois, le TSR20 a évolué entre 1.95 et 2.368 USD/kg — le niveau actuel représente 100% de cette fourchette.
+Cotation hebdomadaire réservée (licence) : elle n'est pas reproduite dans cette publication. Dernières références mensuelles disponibles : FMI (FRED PRUBBUSDM) septembre 2026 : 2.7574 USD/kg ; Banque mondiale TSR20 octobre 2026 : 2.55 USD/kg.
 
 > Cette analyse est générée automatiquement à partir de données publiques. Elle ne constitue pas un conseil en investissement.
 
 📡 Signaux faibles — Pré-RSI
 
-↗️ RubberSignal Index : 55 / 100
+➡️ RubberSignal Index : 49 / 100
 
-Légèrement haussier — marché bien orienté
+Neutre — marché équilibré
+
+| Composante | Mesure | Sens pour le prix | Poids effectif |
+|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
+| Météo / offre (4 zones) | Score d'offre 80/100 — Offre abondante — pression baissière | ↓ baisse | 35.7 % (nominal 25 %) |
+| Devises (yuan) | Yuan fort (-2.38% vs moyenne 12 mois) — demande soutenue — USD/CNY 6.6825 (06/11/2026, ExchangeRate API (v6)) ; réf. moyenne 12 mois 6.8452 (FRED DEXCHUS) | ↑ hausse | 28.6 % (nominal 20 %) |
+| Demande industrielle | Score 50/100 — Demande neutre — équilibré (confiance industrielle OCDE : z moyen 1.14, 3 pays) | → neutre | 35.7 % (nominal 25 %) |
+| Terrain CI | Pas de relevé terrain cette semaine | — absente | 0 % (nominal 15 %) |
+| Géopolitique | Données indisponibles (NewsAPI, code 401) — composante retirée | — absente | 0 % (nominal 15 %) |
+
+> Composante(s) absente(s) : Terrain CI, Géopolitique. Les poids des composantes disponibles sont renormalisés à 100 %.
+
+Hors score : 
 
 | Signal | Valeur |
 |──────────────────────────────|──────────────────────────────|
-| 🌧️ Offre mondiale (météo 4 zones) | Score 50/100 — Offre normale — marché équilibré |
-| 💱 Yuan chinois (CNY) | Yuan fort (-6.18%) — demande soutenue |
-| 💱 Ringgit malaisien (MYR) | Ringgit fort (-7.8%) — export ralenti |
-| 🏭 Demande industrielle | Score 40/100 — Demande faible — signal baissier |
-| 🌿 Terrain CI | Campagne de récolte en cours. Conditions normales. |
-| 🌍 Géopolitique | Données indisponibles |
+| 💱 Ringgit malaisien (MYR) | Ringgit stable (0.37% vs moyenne 12 mois) — neutre — USD/MYR 4.0458 |
+| 🚢 Fret maritime | Indisponible : aucune source datée (BDI, tarif CI-UE, délai Abidjan-Rotterdam) |
+| 📦 Stocks mondiaux | Donnée indisponible |
 
-> Le Pré-RSI (RubberSignal Index) est un score composite 0–100 intégrant météo, devises, demande industrielle et données terrain CI. Score > 55 = marché haussier. Score < 45 = marché baissier. Indicateur exclusif RubberSignal.
+> Pré-RSI : score composite 0–100 orienté prix (> 55 haussier, < 45 baissier, entre les deux neutre). Poids nominaux : météo 25 %, devises 20 %, demande 25 %, terrain 15 %, géopolitique 15 %, renormalisés sur les composantes disponibles ; non publié avec moins de 3 composantes. Pondérations non backtestées. Nature : E (estimation calculée) — Pré-RSI v2. Analyse, pas un indice de prix.
 
 ──────────────────────────────
 
-📈 Prévisions Monte Carlo — 10000 simulations
+📏 Fourchette de volatilité TSR20 — 10 000 simulations
 
-Basé sur le Mouvement Brownien Géométrique (Thompson, 2000)
+Ce n'est pas une prévision de hausse ou de baisse : la simulation est centrée sur le prix de départ (sans tendance) et montre l'amplitude des variations compatible avec la volatilité historique.
 
-| Horizon | Scénario pessimiste | Scénario central | Scénario optimiste | Prob. hausse |
-|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
-| 4 semaines | 2.149 USD/kg | 2.374 USD/kg | 2.608 USD/kg | 50.1% |
-| 8 semaines | 2.064 USD/kg | 2.378 USD/kg | 2.708 USD/kg | 49.1% |
-| 12 semaines | 2.002 USD/kg | 2.383 USD/kg | 2.794 USD/kg | 49.2% |
+| Horizon | Borne basse (10 %) | Médiane | Borne haute (90 %) |
+|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
+| 4 semaines | 2.409 USD/kg (-5.5 %) | 2.551 USD/kg | 2.699 USD/kg (+5.8 %) |
+| 12 semaines | 2.312 USD/kg (-9.3 %) | 2.547 USD/kg | 2.812 USD/kg (+10.3 %) |
+| 26 semaines | 2.205 USD/kg (-13.5 %) | 2.547 USD/kg | 2.940 USD/kg (+15.3 %) |
 
-Lecture : Le modèle indique un biais neutre à 4 semaines, avec 50.1% de probabilité de hausse et une fourchette 80% entre 2.1493 et 2.6079 USD/kg. À 12 semaines, l'incertitude s'élargit : fourchette 80% entre 2.0024 et 2.7941 USD/kg.
+> Volatilité annuelle 15.9 %, estimée sur 60 rendements mensuels (logarithmiques) du TSR20 Banque mondiale, de octobre 2021 à octobre 2026. Point de départ : 2.55 USD/kg (moyenne mensuelle Banque mondiale, Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20), octobre 2026). Modèle : mouvement brownien géométrique sans dérive (Thompson, 2000). Nature : E (estimation calculée) — Volatilité v1. Ne constitue pas un conseil en investissement.
 
-> Ces projections sont issues d'une simulation stochastique. Elles ne constituent pas un conseil en investissement. La volatilité réelle peut différer des paramètres historiques.
-
-🎯 Fiabilité du Pré-RSI — Analyse Bootstrap
-
-5000 rééchantillonnages (Thompson, 2000)
+🎯 Sensibilité du Pré-RSI (hypothèse de travail non calibrée)
 
 | Indicateur | Valeur |
 |──────────────────────────────|──────────────────────────────|
-| Pré-RSI central | 55 / 100 |
-| Intervalle confiance 80% | 49.9 – 60.4] |
-| Intervalle confiance 90% | 48.3 – 61.8] |
-| Stabilité du signal | Très stable (±4 pts) |
-| Signal robuste | ⚠️ Zone d'incertitude |
+| Pré-RSI central | 49 / 100 |
+| Intervalle 80 % | 42.4 – 54.7] |
+| Intervalle 90 % | 40.6 – 56.4] |
+| Tirages gardant le même classement (neutre) | 68.5 % |
 
-Interprétation : Le Pré-RSI de 55/100 est dans une zone d'incertitude — le signal pourrait basculer en fonction des données terrain CI de la semaine prochaine.
+> 5000 tirages : chaque composante disponible est perturbée d'un bruit gaussien dont l'amplitude (météo ±8, devises ±5, demande ±10, terrain ±12, géopolitique ±8 points) est une hypothèse de travail non calibrée. Ce n'est pas une mesure de fiabilité statistique.
 
-> Le Bootstrap estime la robustesse du score face à l'incertitude de mesure de chaque composante. Un IC90 étroit indique un signal fiable.
+🇨🇮 RSCI — RubberSignal Chain Index (septembre 2026)
 
-🌦️ Scénarios météo — Monte Carlo conditionnel
+📊 Part planteur (DRC-corrigée) : 61.3%
 
-Impact sur le prix TSR20 à 12 semaines
+Le RSCI mesure la part du prix de référence TSR20 du mois précédent effectivement captée par le planteur ivoirien, après correction du taux de caoutchouc sec (DRC) de référence.
 
-| Scénario | Choc offre | Bear | Base | Bull | Δ vs référence |
-|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
-| 🌵 Sécheresse Côte d'Ivoire | -3.0% | 1.999 | 2.388 | 2.795 | +0.005 |
-| 🌧️ Inondations Asie du Sud-Est | -21.0% | 2.038 | 2.433 | 2.851 | +0.051 |
-| ☀️ Stress hydrique mondial | -17.2% | 2.042 | 2.427 | 2.840 | +0.045 |
-| 🌿 Conditions météo optimales | +10.0% | 1.988 | 2.363 | 2.768 | -0.019 |
+> ⚠️ Prix APROMAC de novembre 2026 non encore saisi : dernier mois disponible septembre 2026.
 
-Scénario le plus haussier : 🌧️ Inondations Asie du Sud-Est (+0.051 USD/kg)
+| Indicateur | Valeur | Nature |
+|──────────────────────────────|──────────────────────────────|──────────────────────────────|
+| Prix APROMAC (septembre 2026, type non precise, releve presse, relevé presse du 06/10/2026) | 484 FCFA/kg | O |
+| Référence TSR20 (août 2026, Banque mondiale) | 2.24 USD/kg | T |
+| Prix planteur, équivalent sec (DRC 60 %, à confirmer après la réforme 2026) | 1.373 USD/kg | E |
+| RSCI (part planteur) | 61.3% | E |
+| Part officielle en vigueur | 66% | O |
+| Différence RSCI − part officielle (indicative) | -4.7 points | E |
 
-> Élasticité prix/offre calibrée sur ANRPC 2015-2025.
+Nature : T = transaction, O = officiel, D = déclaration, E = estimation calculée, J = jugement. Version de méthode : RSCI v2 ; APROMAC v1.
 
-🇨🇮 RSCI — RubberSignal Chain Index
+Pour le prix de septembre 2026, la part officielle du planteur est de 66 % — accord interprofessionnel du 16 février 2026, entériné par le CHPC le 29 avril 2026 (en vigueur depuis le 1er mai 2026) — cadre : Loi N°2017-540.
 
-🟡 Part planteur (DRC-corrigée) : 58.8%
+> ⚠️ Avertissement de lecture : la part officielle s'applique au prix de référence net (prix de Singapour diminué des coûts de transformation, de logistique, d'export et de la fiscalité, non publiés en détail), alors que le RSCI se rapporte au prix international brut. La différence n'indique donc pas un non-respect du mécanisme : elle mesure la part du prix mondial qui reste au planteur après l'ensemble des coûts de la filière.
 
-Première publication de cet indicateur exclusif RubberSignal. Le RSCI mesure la part du prix international TSR20 (LGM) effectivement captée par le planteur ivoirien, après correction du taux de caoutchouc sec (DRC) officiel.
+> Méthodologie v2 : référence TSR20 = moyenne mensuelle Banque mondiale du mois précédant le prix APROMAC (le mécanisme 2026 se fonde sur les cotations SGX-SICOM TSR20 du mois précédent) ; DRC de référence 60 %, à confirmer après la réforme 2026. La prime TSR10 n'est pas encore intégrée.
 
-| Indicateur | Valeur |
-|──────────────────────────────|──────────────────────────────|
-| Prix APROMAC (2026-06) | 474 FCFA/kg |
-| Prix planteur, équivalent sec (DRC 60%) | 1.3935 USD/kg |
-| RSCI (part planteur) | 58.8% |
-| Mécanisme officiel CHPH | 63% |
-| Écart | -4.2 points |
+──────────────────────────────
 
-Le mécanisme de répartition CHPH (décision n°0037, mai 2022 — cadre fixé par la Loi N°2017-540) prévoit 63% du prix international pour les planteurs. L'écart actuel entre le RSCI et ce seuil est de -4.2 points.
+📰 Actualités de la semaine
 
-> Méthodologie v1 : DRC retenu = taux officiel 60%. La prime TSR10 (grade majoritairement produit en CI, supérieur au TSR20 de référence) n'est pas encore intégrée — voir RSCI v2. Indicateur exclusif RubberSignal, suivi hebdomadaire.
+Actualités indisponibles cette semaine (NewsAPI en erreur sur toutes les requetes (HTTP 401)).
 
 ──────────────────────────────
 
@@ -133,21 +117,11 @@ Le mécanisme de répartition CHPH (décision n°0037, mai 2022 — cadre fixé 
 
 ──────────────────────────────
 
-🌿 Focus Côte d'Ivoire
-
-La Côte d'Ivoire est le 1er producteur africain de caoutchouc naturel et figure dans le top 5 mondial. RubberSignal vous apporte chaque semaine une perspective terrain sur la filière ivoirienne.
-
-Données de référence CI :
-
-- Production annuelle : ~1,2 million de tonnes
-- Principal port d'export : Abidjan
-- Organisme de référence : APROCAG
-
-──────────────────────────────
-
 RubberSignal — Intelligence marché caoutchouc naturel | Afrique de l'Ouest & marchés mondiaux
 
-Source prix : LGM Malaysia (03/06/2026) — mise a jour manuelle | 02/11/2026
+cotation hebdomadaire réservée (licence) | Références mensuelles : FMI (FRED PRUBBUSDM), Banque mondiale (Pink Sheet) | Rapport du 06/11/2026
+
+Calculs préparés et contrôlés par des outils automatisés, dont des modèles d'IA, puis validés par l'évaluateur responsable (Martial Sahiri).
 
 Pour vous abonner : rubbersignal.substack.com
 

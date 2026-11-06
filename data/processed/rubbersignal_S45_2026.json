@@ -1,162 +1,984 @@
 {
   "meta": {
-    "date_collecte": "2026-11-02",
+    "date_collecte": "2026-11-06",
     "semaine": 45,
     "annee": 2026,
     "source": "rubbersignal.com",
-    "version": "3.1"
+    "version": "4.2"
   },
   "prix": {
     "synthese": {
-      "prix_actuel": 2.3685,
+      "prix_actuel": 2.399,
       "periode": "2026-11",
-      "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
-      "variation_pct": 5.27,
-      "tendance": "hausse",
-      "moyenne_3m": 2.273,
-      "moyenne_6m": 2.186,
-      "min_12m": 1.95,
-      "max_12m": 2.368,
-      "prix_chf": 2.132
+      "date_source": "2026-11-06",
+      "statut_fraicheur": "frais",
+      "age_jours": 0,
+      "prix_hebdo": {
+        "valeur": 2.399,
+        "unite": "USD/kg",
+        "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
+        "date_source": "2026-11-06",
+        "methode": "Cotation quotidienne lue le jour de collecte (priorite LGM > MRB via rtas.sg > SGX > IndexMundi) ; perimee au-dela de 14 jours",
+        "indice": "MRB_SMR20",
+        "statut": "frais",
+        "age_jours": 0,
+        "periode": "2026-11-06",
+        "publiable": false,
+        "licence": "sous licence",
+        "nature": "O",
+        "version_methode": "Prix hebdo v1",
+        "date_effet_methode": "2026-11-03"
+      },
+      "taux_usd_chf": {
+        "valeur": 0.8189,
+        "unite": "CHF/USD",
+        "source": "Frankfurter (taux de reference BCE)",
+        "date_source": "2026-11-06",
+        "methode": "EUR/CHF BCE / EUR/USD BCE du jour de collecte"
+      },
+      "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
+      "indice": "MRB_SMR20",
+      "variation_pct": null,
+      "tendance": "indeterminee",
+      "moyenne_3m": null,
+      "moyenne_6m": null,
+      "min_12m": null,
+      "max_12m": null,
+      "semaines_historique": 1,
+      "note_historique": "Variation = vs semaine precedente ; moyennes/min/max sur historique reel (NA tant que l'historique est trop court)",
+      "prix_chf": 1.965
+    },
+    "reference_mensuelle": {
+      "fmi_prubbusdm": {
+        "valeur": 2.7574,
+        "unite": "USD/kg",
+        "source": "FMI, Global price of Rubber (FRED, serie PRUBBUSDM)",
+        "date_source": "2026-09-01",
+        "methode": "Moyenne mensuelle FMI ; conversion USD/kg = cents/lb x 2.20462 / 100",
+        "periode": "2026-09",
+        "valeur_orig": 125.075,
+        "unite_orig": "US cents/lb",
+        "url": "https://fred.stlouisfed.org/series/PRUBBUSDM",
+        "statut": "derniere_valeur_disponible",
+        "age_jours_fin_periode": 37,
+        "serie": "FMI_PRUBBUSDM",
+        "publiable": true,
+        "licence": "donnees publiques",
+        "nature": "T",
+        "version_methode": "Références mensuelles v1",
+        "date_effet_methode": "2026-11-03"
+      },
+      "bm_tsr20": {
+        "valeur": 2.55,
+        "unite": "USD/kg",
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "date_source": "2026-10-01",
+        "methode": "Moyenne mensuelle Banque mondiale (SGX TSR20) ; fichier CMO-Historical-Data-Monthly.xlsx - Updated on November 03, 2026",
+        "periode": "2026-10",
+        "valeur_orig": null,
+        "unite_orig": null,
+        "url": "https://thedocs.worldbank.org/en/doc/74e8be41ceb20fa0da750cda2f6b9e4e-0050012026/related/CMO-Historical-Data-Monthly.xlsx",
+        "statut": "derniere_valeur_disponible",
+        "age_jours_fin_periode": 6,
+        "serie": "BM_TSR20",
+        "publiable": true,
+        "licence": "CC BY 4.0",
+        "nature": "T",
+        "version_methode": "Références mensuelles v1",
+        "date_effet_methode": "2026-11-03"
+      },
+      "note": "Dernieres moyennes mensuelles publiees (sources libres). Fraicheur mesuree depuis la fin du mois (seuil 45 jours)."
     },
     "bord_champ_ci": {
-      "prix_fcfa": 474,
-      "prix_usd": 0.8361,
-      "mois": "2026-06",
-      "source": "APROMAC (via FratMat)",
-      "fcfa_par_usd": 566.95,
-      "taux_eur_usd": 1.157,
-      "spread_export_usd": 1.532,
-      "spread_export_pct": 64.7,
-      "note": "Spread confidentiel — publication prevue RubberSignal V2"
+      "prix_fcfa": 484,
+      "prix_usd": 0.8238,
+      "mois": "2026-09",
+      "type_prix": "type non precise, releve presse",
+      "statut": "perime",
+      "age_mois": 2,
+      "mois_courant": "2026-11",
+      "mois_courant_manquant": true,
+      "alerte": "APROMAC : prix de 2026-11 absent du fichier de saisie ; dernier mois disponible 2026-09 (484 FCFA/kg, 2 mois de retard)",
+      "origine": "presse_auto",
+      "source": "Business & Actuality TV + 7info.ci",
+      "source_url": "https://businessactuality.com/cote-divoire-prix-du-caoutchouc-484-fcfa-kg-en-septembre-2026/",
+      "date_publication": null,
+      "fichier_saisie": "data/reference/prix_apromac.csv",
+      "historique": [
+        {
+          "mois": "2025-10",
+          "prix_fcfa": 349,
+          "type": "bord champ (avant reforme du 01/05/2026)",
+          "source": "gouv.ci, communique APROMAC (novembre 2025 = octobre - 2 FCFA)",
+          "url": "https://www.gouv.ci/uploads/publications/176216524282.pdf",
+          "date_publication": "2025-11-02",
+          "origine": "saisie"
+        },
+        {
+          "mois": "2025-11",
+          "prix_fcfa": 347,
+          "type": "bord champ (avant reforme du 01/05/2026)",
+          "source": "gouv.ci, communique APROMAC du 02/11/2025",
+          "url": "https://www.gouv.ci/uploads/publications/176216524282.pdf",
+          "date_publication": "2025-11-02",
+          "origine": "saisie"
+        },
+        {
+          "mois": "2026-01",
+          "prix_fcfa": 352,
+          "type": "bord champ (avant reforme du 01/05/2026)",
+          "source": "gouv.ci, communique APROMAC (fevrier 2026 = janvier + 16 FCFA)",
+          "url": "https://www.gouv.ci/uploads/publications/177010801737.pdf",
+          "date_publication": "2026-02-03",
+          "origine": "saisie"
+        },
+        {
+          "mois": "2026-02",
+          "prix_fcfa": 368,
+          "type": "bord champ (avant reforme du 01/05/2026)",
+          "source": "gouv.ci, communique APROMAC (a verifier : une source cite 336)",
+          "url": "https://www.gouv.ci/uploads/publications/177010801737.pdf",
+          "date_publication": "2026-02-03",
+          "origine": "saisie"
+        },
+        {
+          "mois": "2026-04",
+          "prix_fcfa": 401,
+          "type": "a confirmer",
+          "source": "erooamba.com (blog, source faible, non officielle)",
+          "url": "https://erooamba.com/posts/prix-hevea-caoutchouc-cote-ivoire-2026",
+          "date_publication": "",
+          "origine": "saisie"
+        },
+        {
+          "mois": "2026-05",
+          "prix_fcfa": 439,
+          "type": "carreau usine",
+          "source": "erooamba.com (blog, source faible, non officielle) - a confirmer APROMAC",
+          "url": "https://erooamba.com/posts/prix-hevea-caoutchouc-cote-ivoire-2026",
+          "date_publication": "",
+          "origine": "saisie"
+        },
+        {
+          "mois": "2026-06",
+          "prix_fcfa": 474,
+          "type": "carreau usine",
+          "source": "FratMat, \"Caoutchouc/ Prix Apromac juin 2026: 474 F CFA/ Kg\"",
+          "url": "https://www.fratmat.info/article/2642261/flash-info/caoutchouc-prix-apromac-juin-2026-474-f-cfa-kg",
+          "date_publication": "2026-06-01",
+          "origine": "saisie"
+        },
+        {
+          "mois": "2026-07",
+          "prix_fcfa": 493,
+          "type": "carreau usine",
+          "source": "AIP",
+          "url": "https://www.aip.ci/?p=386489",
+          "date_publication": "2026-07-03",
+          "origine": "saisie"
+        },
+        {
+          "mois": "2026-09",
+          "prix_fcfa": 484,
+          "type": "type non precise, releve presse",
+          "source": "Business & Actuality TV + 7info.ci",
+          "url": "https://businessactuality.com/cote-divoire-prix-du-caoutchouc-484-fcfa-kg-en-septembre-2026/",
+          "date_publication": null,
+          "origine": "presse_auto"
+        }
+      ],
+      "fcfa_par_usd": 587.51,
+      "taux_eur_usd": 1.1165,
+      "taux_date": "2026-11-06",
+      "spread_export_usd": 1.575,
+      "spread_export_pct": 65.7,
+      "note": "Spread confidentiel — publication prevue RubberSignal V2",
+      "valeur": 484,
+      "unite": "FCFA/kg",
+      "periode": "2026-09",
+      "date_source": "2026-10-06",
+      "date_source_type": "date du releve presse automatique (publication non datee)",
+      "publiable": true,
+      "nature": "O",
+      "version_methode": "APROMAC v1",
+      "date_effet_methode": "2026-11-03"
     },
     "rsci": {
+      "mois_rsci": "2026-09",
       "drc_officiel": 0.6,
-      "mecanisme_officiel_pct": 63,
-      "prix_planteur_sec_usd": 1.3935,
-      "rsci_pct": 58.8,
-      "ecart_pts": -4.2,
+      "drc_statut": "a confirmer apres reforme 2026",
+      "mecanisme_officiel_pct": 66,
+      "mecanisme_date_effet": "2026-05-01",
+      "mecanisme_source": "Accord interprofessionnel du 16/02/2026, enterine par le CHPC le 29/04/2026 : 66 % du prix de reference net, decote de 2 FCFA/kg supprimee, reference SGX-SICOM TSR20 du mois precedent, prix APROMAC = prix carreau usine, marge intermediaire plafonnee a 20 FCFA/kg",
+      "mecanisme_url": "https://www.ecofinagency.com/news-agriculture/2606-56831-ivory-coast-raises-natural-rubber-growers-share-of-reference-price-for-2026 https://www.sikafinance.com/marches/cote-d-ivoire-fin-de-la-decote-et-meilleure-remuneration-des-planteurs-la-campagne-heveicole-2026-demarre-sous-de-bons-auspices_62460",
+      "historique_mecanisme": [
+        {
+          "date_effet": null,
+          "part_planteur_pct": 61,
+          "reference": "Regime anterieur a mai 2022 : 61 % (date de debut non documentee)",
+          "url": null
+        },
+        {
+          "date_effet": "2022-05-01",
+          "part_planteur_pct": 63,
+          "reference": "Decision provisoire CHPH n.0037 (mai 2022) : 63 % planteurs / 37 % transformateurs",
+          "url": null
+        },
+        {
+          "date_effet": "2026-05-01",
+          "part_planteur_pct": 66,
+          "reference": "Accord interprofessionnel du 16/02/2026, enterine par le CHPC le 29/04/2026 : 66 % du prix de reference net, decote de 2 FCFA/kg supprimee, reference SGX-SICOM TSR20 du mois precedent, prix APROMAC = prix carreau usine, marge intermediaire plafonnee a 20 FCFA/kg",
+          "url": "https://www.ecofinagency.com/news-agriculture/2606-56831-ivory-coast-raises-natural-rubber-growers-share-of-reference-price-for-2026 https://www.sikafinance.com/marches/cote-d-ivoire-fin-de-la-decote-et-meilleure-remuneration-des-planteurs-la-campagne-heveicole-2026-demarre-sous-de-bons-auspices_62460"
+        }
+      ],
+      "prix_planteur_sec_usd": 1.373,
+      "rsci_pct": 61.3,
+      "ecart_pts": -4.7,
+      "statut_donnee": "perime",
+      "mois_apromac_utilise": "2026-09",
+      "prix_apromac": {
+        "valeur": 484,
+        "unite": "FCFA/kg",
+        "source": "Business & Actuality TV + 7info.ci",
+        "date_source": "2026-10-06",
+        "methode": "Prix officiel APROMAC du mois 2026-09 (type non precise, releve presse)",
+        "url": "https://businessactuality.com/cote-divoire-prix-du-caoutchouc-484-fcfa-kg-en-septembre-2026/",
+        "origine": "presse_auto",
+        "periode": "2026-09",
+        "nature": "O",
+        "version_methode": "APROMAC v1",
+        "date_effet_methode": "2026-11-03"
+      },
+      "reference_tsr20": {
+        "valeur": 2.24,
+        "unite": "USD/kg",
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "date_source": "2026-08-01",
+        "methode": "Moyenne mensuelle du mois precedant le prix APROMAC (regle du mecanisme 2026 : cotations SGX-SICOM TSR20 du mois precedent)",
+        "periode": "2026-08",
+        "nature": "T",
+        "version_methode": "Références mensuelles v1",
+        "date_effet_methode": "2026-11-03"
+      },
+      "taux_change": {
+        "valeur": 587.51,
+        "unite": "FCFA/USD",
+        "source": "Frankfurter (taux de reference BCE)",
+        "date_source": "2026-11-06",
+        "methode": "655.957 FCFA/EUR (parite fixe) / EUR-USD BCE du jour de collecte"
+      },
       "cadre_legal": "Loi N.2017-540 du 03/08/2017 - CHPH",
-      "mecanisme_source": "Decision CHPH n.0037 (mai 2022) : 63% planteurs / 37% transformateurs, contre 61% avant",
-      "drc_source": "DRC reference officiel 60% (fonds de tasse) - debat en cours sur DRC reel et grade TSR10 vs TSR20",
-      "note": "RSCI = part du prix planteur (corrige DRC 60%) dans le prix international TSR20 (LGM)."
+      "drc_source": "DRC reference 60% (fonds de tasse), a confirmer apres reforme 2026 - debat en cours sur DRC reel et grade TSR10 vs TSR20",
+      "methode": "RSCI = (prix APROMAC du mois / taux FCFA-USD / DRC) / TSR20 Banque mondiale du mois precedent x 100 ; compare au taux officiel en vigueur au mois du prix APROMAC.",
+      "note": "RSCI = part du prix planteur (corrige DRC) dans le prix de reference TSR20 du mois precedent.",
+      "valeur": 61.3,
+      "unite": "%",
+      "periode": "2026-09",
+      "source": "Calcul RubberSignal (APROMAC, Banque mondiale, BCE)",
+      "date_source": "2026-11-06",
+      "publiable": true,
+      "nature": "E",
+      "version_methode": "RSCI v2",
+      "date_effet_methode": "2026-11-03"
     },
     "marches_mondiaux": {
-      "date_cours": "2026-11-01",
-      "spread_sicom_lgm": -0.2005,
+      "date_cours": "2026-11-05",
+      "spread_sicom_lgm": 0.331,
       "lgm": {
-        "grade": "TSR20",
-        "bourse": "LGM (Malaisie)",
-        "prix_usd": 2.3685,
-        "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle"
+        "grade": "TSR20/SMR20",
+        "bourse": "MRB/LGM (Malaisie)",
+        "prix_usd": 2.399,
+        "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
+        "date_source": "2026-11-06",
+        "statut_fraicheur": "frais"
       },
       "sicom": {
         "grade": "TSR20",
         "bourse": "SGX/SICOM (Singapour)",
         "ticker": "TF",
-        "prix_orig": 216.8,
+        "contrat": "Dec 2026",
+        "prix_orig": 273,
         "unite_orig": "USD cts/kg",
-        "prix_usd": 2.168
+        "prix_usd": 2.73,
+        "statut": "auto"
       },
       "tocom": {
         "grade": "RSS3",
         "bourse": "JPX/TOCOM (Tokyo)",
         "ticker": "TRB",
-        "prix_orig": 418,
+        "prix_orig": null,
         "unite_orig": "JPY/kg",
-        "taux_jpy_usd": 0.0062,
-        "prix_usd": 2.5874
+        "taux_jpy_usd": 0.0063,
+        "prix_usd": null,
+        "statut": "non_collecte_auto"
       },
       "shfe": {
         "grade": "SCR WF / RSS3",
         "bourse": "SHFE (Shanghai)",
         "ticker": "RU",
-        "prix_orig": 15900,
+        "prix_orig": null,
         "unite_orig": "CNY/tonne",
-        "taux_cny_usd": 0.1473,
-        "prix_usd": 2.3421
+        "taux_cny_usd": 0.1499,
+        "prix_usd": null,
+        "statut": "non_collecte_auto"
       }
     },
     "historique_bm": [
       {
-        "periode": "2026-11",
-        "prix_usd": 2.3685,
-        "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
-        "unite": "USD/kg"
-      },
-      {
         "periode": "2026-10",
-        "prix_usd": 2.25,
-        "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
-        "unite": "USD/kg"
+        "prix_usd": 2.55,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-10-01"
       },
       {
         "periode": "2026-09",
-        "prix_usd": 2.2,
-        "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
-        "unite": "USD/kg"
+        "prix_usd": 2.41,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-09-01"
       },
       {
         "periode": "2026-08",
-        "prix_usd": 2.15,
-        "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
-        "unite": "USD/kg"
+        "prix_usd": 2.24,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-08-01"
       },
       {
         "periode": "2026-07",
-        "prix_usd": 2.1,
-        "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
-        "unite": "USD/kg"
+        "prix_usd": 2.14,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-07-01"
       },
       {
         "periode": "2026-06",
-        "prix_usd": 2.05,
-        "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
-        "unite": "USD/kg"
+        "prix_usd": 2.25,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-06-01"
       },
       {
         "periode": "2026-05",
-        "prix_usd": 2,
-        "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
-        "unite": "USD/kg"
+        "prix_usd": 2.21,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-05-01"
       },
       {
         "periode": "2026-04",
+        "prix_usd": 2.06,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-04-01"
+      },
+      {
+        "periode": "2026-03",
         "prix_usd": 1.95,
-        "source": "LGM Malaysia (03/06/2026) — mise a jour manuelle",
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-03-01"
+      },
+      {
+        "periode": "2026-02",
+        "prix_usd": 1.93,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-02-01"
+      },
+      {
+        "periode": "2026-01",
+        "prix_usd": 1.84,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-01-01"
+      },
+      {
+        "periode": "2025-12",
+        "prix_usd": 1.74,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-12-01"
+      },
+      {
+        "periode": "2025-11",
+        "prix_usd": 1.71,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-11-01"
+      },
+      {
+        "periode": "2025-10",
+        "prix_usd": 1.71,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-10-01"
+      },
+      {
+        "periode": "2025-09",
+        "prix_usd": 1.74,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-09-01"
+      },
+      {
+        "periode": "2025-08",
+        "prix_usd": 1.71,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-08-01"
+      },
+      {
+        "periode": "2025-07",
+        "prix_usd": 1.68,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-07-01"
+      },
+      {
+        "periode": "2025-06",
+        "prix_usd": 1.61,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-06-01"
+      },
+      {
+        "periode": "2025-05",
+        "prix_usd": 1.7,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-05-01"
+      },
+      {
+        "periode": "2025-04",
+        "prix_usd": 1.71,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-04-01"
+      },
+      {
+        "periode": "2025-03",
+        "prix_usd": 1.98,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-03-01"
+      },
+      {
+        "periode": "2025-02",
+        "prix_usd": 2.01,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-02-01"
+      },
+      {
+        "periode": "2025-01",
+        "prix_usd": 1.93,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-01-01"
+      },
+      {
+        "periode": "2024-12",
+        "prix_usd": 1.99,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-12-01"
+      },
+      {
+        "periode": "2024-11",
+        "prix_usd": 1.93,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-11-01"
+      },
+      {
+        "periode": "2024-10",
+        "prix_usd": 2.01,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-10-01"
+      },
+      {
+        "periode": "2024-09",
+        "prix_usd": 1.91,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-09-01"
+      },
+      {
+        "periode": "2024-08",
+        "prix_usd": 1.74,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-08-01"
+      },
+      {
+        "periode": "2024-07",
+        "prix_usd": 1.65,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-07-01"
+      },
+      {
+        "periode": "2024-06",
+        "prix_usd": 1.75,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-06-01"
+      },
+      {
+        "periode": "2024-05",
+        "prix_usd": 1.69,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-05-01"
+      },
+      {
+        "periode": "2024-04",
+        "prix_usd": 1.63,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-04-01"
+      },
+      {
+        "periode": "2024-03",
+        "prix_usd": 1.65,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-03-01"
+      },
+      {
+        "periode": "2024-02",
+        "prix_usd": 1.56,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-02-01"
+      },
+      {
+        "periode": "2024-01",
+        "prix_usd": 1.53,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-01-01"
+      },
+      {
+        "periode": "2023-12",
+        "prix_usd": 1.46,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-12-01"
+      },
+      {
+        "periode": "2023-11",
+        "prix_usd": 1.48,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-11-01"
+      },
+      {
+        "periode": "2023-10",
+        "prix_usd": 1.45,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-10-01"
+      },
+      {
+        "periode": "2023-09",
+        "prix_usd": 1.42,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-09-01"
+      },
+      {
+        "periode": "2023-08",
+        "prix_usd": 1.29,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-08-01"
+      },
+      {
+        "periode": "2023-07",
+        "prix_usd": 1.3,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-07-01"
+      },
+      {
+        "periode": "2023-06",
+        "prix_usd": 1.32,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-06-01"
+      },
+      {
+        "periode": "2023-05",
+        "prix_usd": 1.35,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-05-01"
+      },
+      {
+        "periode": "2023-04",
+        "prix_usd": 1.36,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-04-01"
+      },
+      {
+        "periode": "2023-03",
+        "prix_usd": 1.36,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-03-01"
+      },
+      {
+        "periode": "2023-02",
+        "prix_usd": 1.4,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-02-01"
+      },
+      {
+        "periode": "2023-01",
+        "prix_usd": 1.41,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-01-01"
+      },
+      {
+        "periode": "2022-12",
+        "prix_usd": 1.35,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-12-01"
+      },
+      {
+        "periode": "2022-11",
+        "prix_usd": 1.27,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-11-01"
+      },
+      {
+        "periode": "2022-10",
+        "prix_usd": 1.29,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-10-01"
+      },
+      {
+        "periode": "2022-09",
+        "prix_usd": 1.32,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-09-01"
+      },
+      {
+        "periode": "2022-08",
+        "prix_usd": 1.46,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-08-01"
+      },
+      {
+        "periode": "2022-07",
+        "prix_usd": 1.56,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-07-01"
+      },
+      {
+        "periode": "2022-06",
+        "prix_usd": 1.64,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-06-01"
+      },
+      {
+        "periode": "2022-05",
+        "prix_usd": 1.62,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-05-01"
+      },
+      {
+        "periode": "2022-04",
+        "prix_usd": 1.7,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-04-01"
+      },
+      {
+        "periode": "2022-03",
+        "prix_usd": 1.75,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-03-01"
+      },
+      {
+        "periode": "2022-02",
+        "prix_usd": 1.79,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-02-01"
+      },
+      {
+        "periode": "2022-01",
+        "prix_usd": 1.78,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-01-01"
+      },
+      {
+        "periode": "2021-12",
+        "prix_usd": 1.72,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2021-12-01"
+      },
+      {
+        "periode": "2021-11",
+        "prix_usd": 1.74,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2021-11-01"
+      },
+      {
+        "periode": "2021-10",
+        "prix_usd": 1.73,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2021-10-01"
+      }
+    ],
+    "historique_hebdo_mensuel": [
+      {
+        "periode": "2026-11",
+        "prix_usd": 2.399,
+        "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
         "unite": "USD/kg"
       }
     ],
     "historique_indexmundi": []
   },
+  "controle_qualite": {
+    "statut_global": "degrade",
+    "alertes": [
+      "TSR20 : ecart de 13.8 % entre sources (seuil 10 %)",
+      "APROMAC : prix de 2026-11 absent du fichier de saisie ; dernier mois disponible 2026-09 (484 FCFA/kg, 2 mois de retard)"
+    ],
+    "tsr20": {
+      "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
+      "indice": "MRB_SMR20",
+      "nb_sources": 2,
+      "divergence_max_pct": 13.8,
+      "candidats": {
+        "mrb": {
+          "usd": 2.399,
+          "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
+          "indice": "MRB_SMR20",
+          "date_source": "2026-11-06"
+        },
+        "sgx": {
+          "usd": 2.73,
+          "source": "SGX TSR20 FOB Dec 2026 (reglement de la veille, via rtas.sg)",
+          "indice": "SGX_TSR20",
+          "date_source": "2026-11-06"
+        }
+      }
+    },
+    "taux_change": {
+      "source": "Frankfurter (taux de reference BCE)",
+      "date": "2026-11-06"
+    },
+    "apromac": {
+      "statut": "perime",
+      "mois": "2026-09",
+      "age_mois": 2,
+      "mois_courant_manquant": true,
+      "origine": "presse_auto",
+      "articles_examines": 177,
+      "prix_trouves": 0
+    },
+    "fraicheur": {
+      "tsr20_hebdo": "frais",
+      "tsr20_date_source": "2026-11-06",
+      "seuil_hebdo_jours": 14,
+      "seuil_mensuel_jours": 45
+    }
+  },
   "actualites": {
-    "date_collecte": "2026-11-02",
+    "date_collecte": "2026-11-06",
+    "statut": "indisponible",
+    "raison": "NewsAPI en erreur sur toutes les requetes (HTTP 401)",
+    "source": "NewsAPI /v2/everything (7 derniers jours)",
+    "diagnostic": [
+      {
+        "requete": "natural rubber TSR20 price market",
+        "langue": "en",
+        "http": 401,
+        "code_api": "apiKeyInvalid",
+        "message_api": "Your API key is invalid or incorrect. Check your key, or go to https://newsapi.org to create a free API key.",
+        "total_resultats": null,
+        "articles_recus": 0
+      },
+      {
+        "requete": "caoutchouc hévéa Côte Ivoire",
+        "langue": "fr",
+        "http": 401,
+        "code_api": "apiKeyInvalid",
+        "message_api": "Your API key is invalid or incorrect. Check your key, or go to https://newsapi.org to create a free API key.",
+        "total_resultats": null,
+        "articles_recus": 0
+      },
+      {
+        "requete": "natural rubber Ivory Coast Cote Ivoire",
+        "langue": "en",
+        "http": 401,
+        "code_api": "apiKeyInvalid",
+        "message_api": "Your API key is invalid or incorrect. Check your key, or go to https://newsapi.org to create a free API key.",
+        "total_resultats": null,
+        "articles_recus": 0
+      },
+      {
+        "requete": "natural rubber Africa production export",
+        "langue": "en",
+        "http": 401,
+        "code_api": "apiKeyInvalid",
+        "message_api": "Your API key is invalid or incorrect. Check your key, or go to https://newsapi.org to create a free API key.",
+        "total_resultats": null,
+        "articles_recus": 0
+      },
+      {
+        "requete": "natural rubber Ghana Nigeria Cameroon",
+        "langue": "en",
+        "http": 401,
+        "code_api": "apiKeyInvalid",
+        "message_api": "Your API key is invalid or incorrect. Check your key, or go to https://newsapi.org to create a free API key.",
+        "total_resultats": null,
+        "articles_recus": 0
+      },
+      {
+        "requete": "natural rubber Malaysia Thailand production",
+        "langue": "en",
+        "http": 401,
+        "code_api": "apiKeyInvalid",
+        "message_api": "Your API key is invalid or incorrect. Check your key, or go to https://newsapi.org to create a free API key.",
+        "total_resultats": null,
+        "articles_recus": 0
+      },
+      {
+        "requete": "caoutchouc naturel Europe importation",
+        "langue": "fr",
+        "http": 401,
+        "code_api": "apiKeyInvalid",
+        "message_api": "Your API key is invalid or incorrect. Check your key, or go to https://newsapi.org to create a free API key.",
+        "total_resultats": null,
+        "articles_recus": 0
+      },
+      {
+        "requete": "natural rubber Europe import demand",
+        "langue": "en",
+        "http": 401,
+        "code_api": "apiKeyInvalid",
+        "message_api": "Your API key is invalid or incorrect. Check your key, or go to https://newsapi.org to create a free API key.",
+        "total_resultats": null,
+        "articles_recus": 0
+      },
+      {
+        "requete": "natural rubber tire tyre Michelin Bridgestone",
+        "langue": "en",
+        "http": 401,
+        "code_api": "apiKeyInvalid",
+        "message_api": "Your API key is invalid or incorrect. Check your key, or go to https://newsapi.org to create a free API key.",
+        "total_resultats": null,
+        "articles_recus": 0
+      }
+    ],
     "total_articles": 0,
     "top_newsletter": [],
     "tous_articles": []
   },
   "signaux_faibles": {
     "meta": {
-      "date_collecte": "2026-11-02",
+      "date_collecte": "2026-11-06",
       "semaine": 45,
       "annee": 2026,
-      "version": "2.1"
+      "version": "2.3"
     },
     "module1_meteo": {
-      "zones": [],
-      "score_offre_mondiale": 50,
-      "signal_offre": "Offre normale — marché équilibré"
+      "zones": {
+        "Côte d'Ivoire": {
+          "pays": "Côte d'Ivoire",
+          "ville": "Abidjan",
+          "pluie_30j_mm": 95.6,
+          "temp_moyenne_c": 27,
+          "score_production": 65,
+          "signal_production": "Neutre"
+        },
+        "Thaïlande": {
+          "pays": "Thaïlande",
+          "ville": "Bangkok",
+          "pluie_30j_mm": 193.2,
+          "temp_moyenne_c": 28.7,
+          "score_production": 85,
+          "signal_production": "Favorable"
+        },
+        "Malaisie": {
+          "pays": "Malaisie",
+          "ville": "Kuala Lumpur",
+          "pluie_30j_mm": 310,
+          "temp_moyenne_c": 27.5,
+          "score_production": 96,
+          "signal_production": "Favorable"
+        },
+        "Indonésie": {
+          "pays": "Indonésie",
+          "ville": "Jakarta",
+          "pluie_30j_mm": 123.5,
+          "temp_moyenne_c": 29.5,
+          "score_production": 66,
+          "signal_production": "Neutre"
+        }
+      },
+      "score_offre_mondiale": 80,
+      "signal_offre": "Offre abondante — pression baissière",
+      "source": "Open-Meteo (archive), cumul de pluie du mois",
+      "date_source": "2026-11-05"
     },
     "module2_devises": {
-      "USD_CNY": 6.6609,
-      "USD_MYR": 4.057,
-      "USD_XOF": 587.67,
-      "USD_IDR": 18138,
-      "USD_CHF": 0.8245,
-      "source": "ExchangeRate API",
-      "date": "2026-11-02",
-      "signal_cny": "Yuan fort (-6.18%) — demande soutenue",
-      "signal_myr": "Ringgit fort (-7.8%) — export ralenti"
+      "USD_CNY": 6.6825,
+      "USD_MYR": 4.0458,
+      "USD_XOF": 584.13,
+      "USD_IDR": 18080,
+      "USD_CHF": 0.8162,
+      "source": "ExchangeRate API (v6)",
+      "date": "2026-11-06",
+      "statut": "ok",
+      "alertes": [],
+      "signal_cny": "Yuan fort (-2.38% vs moyenne 12 mois) — demande soutenue",
+      "signal_myr": "Ringgit stable (0.37% vs moyenne 12 mois) — neutre",
+      "ecart_cny_pct": -2.38,
+      "ecart_myr_pct": 0.37,
+      "reference_cny": {
+        "valeur": 6.8452,
+        "serie": "DEXCHUS",
+        "source": "FRED DEXCHUS",
+        "debut": "2025-11-07",
+        "fin": "2026-10-30",
+        "n_obs": 245,
+        "methode": "Moyenne des cotations quotidiennes des 365 derniers jours"
+      },
+      "reference_myr": {
+        "valeur": 4.031,
+        "serie": "DEXMAUS",
+        "source": "FRED DEXMAUS",
+        "debut": "2025-11-07",
+        "fin": "2026-10-30",
+        "n_obs": 245,
+        "methode": "Moyenne des cotations quotidiennes des 365 derniers jours"
+      }
     },
     "module3_demande_aval": {
       "fred": {
@@ -176,7 +998,14 @@
           "variation_pct": -3.55,
           "date": "2026-09-01"
         },
-        "commandes_dur": {},
+        "commandes_dur": {
+          "serie": "DGORDER",
+          "nom": "Commandes biens durables US (M USD)",
+          "valeur": 345672,
+          "valeur_prec": 339185,
+          "variation_pct": 1.91,
+          "date": "2026-09-01"
+        },
         "prod_indus_us": {
           "serie": "INDPRO",
           "nom": "Production industrielle US globale",
@@ -202,311 +1031,403 @@
           "date": "2026-09-01"
         }
       },
-      "pmi": {
-        "USA": {
-          "pays": "USA",
-          "valeur": 50.2,
-          "signal": "Légère expansion"
+      "confiance_industrie": {
+        "series": {
+          "USA": {
+            "pays": "USA",
+            "serie": "BSCICP02USM460S",
+            "frequence": "mensuelle",
+            "valeur": 9,
+            "unite": "% (solde, CVS)",
+            "periode": "2026-09",
+            "date_source": "2026-09-01",
+            "z_5ans": 1.02,
+            "statut": "derniere_valeur_disponible",
+            "utilise": true,
+            "source": "OCDE, enquêtes de conjoncture, via FRED (BSCICP02USM460S)",
+            "signal": "au-dessus de sa moyenne 5 ans",
+            "n_observations": 60
+          },
+          "Allemagne": {
+            "pays": "Allemagne",
+            "serie": "BSCICP02DEM460S",
+            "frequence": "mensuelle",
+            "valeur": -8.2,
+            "unite": "% (solde, CVS)",
+            "periode": "2026-09",
+            "date_source": "2026-09-01",
+            "z_5ans": 0.01,
+            "statut": "derniere_valeur_disponible",
+            "utilise": true,
+            "source": "OCDE, enquêtes de conjoncture, via FRED (BSCICP02DEM460S)",
+            "signal": "proche de sa moyenne 5 ans",
+            "n_observations": 60
+          },
+          "Chine": {
+            "pays": "Chine",
+            "serie": "CHNBSCICP02STSAM",
+            "frequence": "mensuelle",
+            "valeur": -0.4,
+            "unite": "% (solde, CVS)",
+            "periode": "2026-08",
+            "date_source": "2026-08-01",
+            "z_5ans": 0.2,
+            "statut": "perime",
+            "utilise": false,
+            "source": "OCDE, enquêtes de conjoncture, via FRED (CHNBSCICP02STSAM)",
+            "signal": "périmée (dernière valeur 08/2026)",
+            "n_observations": 60
+          },
+          "Japon": {
+            "pays": "Japon",
+            "serie": "JPNBSCICP02STSAQ",
+            "frequence": "trimestrielle",
+            "valeur": 19,
+            "unite": "% (solde, CVS)",
+            "periode": "2026-07",
+            "date_source": "2026-07-01",
+            "z_5ans": 2.4,
+            "statut": "derniere_valeur_disponible",
+            "utilise": true,
+            "source": "OCDE, enquêtes de conjoncture, via FRED (JPNBSCICP02STSAQ)",
+            "signal": "au-dessus de sa moyenne 5 ans",
+            "n_observations": 20
+          }
         },
-        "Europe": {
-          "pays": "Europe",
-          "valeur": 49,
-          "signal": "Légère contraction"
-        },
-        "Chine": {
-          "pays": "Chine",
-          "valeur": 51.1,
-          "signal": "Légère expansion"
-        },
-        "Inde": {
-          "pays": "Inde",
-          "valeur": 58.8,
-          "signal": "Forte expansion"
-        },
-        "Japon": {
-          "pays": "Japon",
-          "valeur": 48.7,
-          "signal": "Légère contraction"
-        }
+        "z_moyen": 1.14,
+        "n_utilisees": 3,
+        "methode": "z = (dernière valeur - moyenne 5 ans) / écart-type 5 ans, par pays ; moyenne des z des séries fraîches (< 45 jours après la fin de période)",
+        "source": "OCDE, Business Tendency Surveys (manufacturing), via FRED"
       },
-      "score_demande": 40,
-      "signal_demande": "Demande faible — signal baissier"
+      "pmi": {
+        "statut": "retire",
+        "note": "PMI saisi à la main (avril 2026) retiré en v2.3 : remplacé par confiance_industrie (OCDE via FRED)"
+      },
+      "score_demande": 50,
+      "signal_demande": "Demande neutre — équilibré",
+      "n_indicateurs": 4
     },
     "module4_stocks": {
-      "malaisie_tonnes": {},
-      "malaisie_mois": "2026-04",
-      "malaisie_tendance": "stable",
-      "thailande_tonnes": {},
-      "thailande_mois": "2026-04",
-      "thailande_tendance": "stable",
-      "indonesie_tonnes": {},
-      "indonesie_mois": "2026-04",
-      "indonesie_tendance": "stable",
-      "ci_tonnes": {},
-      "ci_mois": "2026-04",
-      "ci_tendance": "stable",
-      "abidjan_delai_jours": 7,
-      "abidjan_statut": "Normal",
-      "note": "Données à compléter via lgm.gov.my et rubberthai.or.th"
+      "statut": "indisponible",
+      "libelle": "Donnée indisponible",
+      "malaisie_tonnes": null,
+      "thailande_tonnes": null,
+      "indonesie_tonnes": null,
+      "ci_tonnes": null,
+      "tendance": null,
+      "derniere_mise_a_jour_connue": null,
+      "sources_a_explorer": [
+        "https://www.lgm.gov.my",
+        "https://www.rubberthai.or.th",
+        "https://apromac.ci"
+      ],
+      "note": "Aucune donnée de stocks mesurée : module retiré du rapport (pas de tendance publiée)."
     },
     "module5_shipping": {
-      "bdi_valeur": 1450,
-      "wti_valeur": 103.37,
-      "signal_fret": "Fret normal — pas de signal particulier",
-      "tarif_ci_eu_usd_tonne": 85,
-      "delai_abidjan_rotterdam": 14,
-      "source": "BDI estimé + WTI FRED"
+      "bdi_valeur": null,
+      "wti_valeur": 99.64,
+      "wti_date": "2026-11-03",
+      "signal_fret": "Données indisponibles (aucune source datée)",
+      "tarif_ci_eu_usd_tonne": null,
+      "delai_abidjan_rotterdam": null,
+      "statut_fret": "indisponible",
+      "fret": {
+        "BDI": {
+          "indicateur": "BDI",
+          "valeur": null,
+          "unite": null,
+          "date_valeur": null,
+          "source": null,
+          "url": null,
+          "statut": "indisponible",
+          "max_jours": 14
+        },
+        "tarif_ci_ue_usd_t": {
+          "indicateur": "tarif_ci_ue_usd_t",
+          "valeur": null,
+          "unite": null,
+          "date_valeur": null,
+          "source": null,
+          "url": null,
+          "statut": "indisponible",
+          "max_jours": 45
+        },
+        "delai_abidjan_rotterdam_j": {
+          "indicateur": "delai_abidjan_rotterdam_j",
+          "valeur": null,
+          "unite": null,
+          "date_valeur": null,
+          "source": null,
+          "url": null,
+          "statut": "indisponible",
+          "max_jours": 45
+        }
+      },
+      "fichier_saisie": "data/reference/fret.csv",
+      "source": "WTI : FRED DCOILWTICO ; BDI, tarif et délai : saisie datée data/reference/fret.csv"
     },
     "module6_terrain_ci": {
-      "prix_bord_champ_fcfa": 359,
-      "prix_marche_reel_fcfa": {},
-      "disponibilite_latex": 3,
-      "statut_disponibilite": "Normal",
-      "activite_cooperatives": "Normale",
-      "sentiment_planteurs": 3,
-      "note_terrain": "Campagne de récolte en cours. Conditions normales.",
-      "tension_marche_local": "Aucune",
-      "saison_saignee": "Grande saison",
+      "statut": "absent",
+      "libelle": "Pas de relevé terrain cette semaine",
+      "note_terrain": "",
+      "sentiment_planteurs": null,
+      "disponibilite_latex": null,
+      "prix_marche_reel_fcfa": null,
+      "date_releve": null,
+      "lieu": null,
+      "source": null,
       "semaine": 45,
-      "date_saisie": "2026-11-02",
-      "source": "Terrain CI — RubberSignal exclusif"
+      "fichier_saisie": "data/reference/terrain_ci.csv",
+      "periode": null,
+      "date_source": null,
+      "unite": "sentiment 1-5",
+      "valeur": null,
+      "nature": "D",
+      "version_methode": "Terrain v1",
+      "date_effet_methode": "2026-11-03"
     },
     "module7_geopolitique": {
-      "nb_articles": 0,
-      "signal": "Données indisponibles",
-      "articles": []
+      "nb_articles": null,
+      "statut": "api_indisponible",
+      "signal": "Données indisponibles (NewsAPI, code 401)",
+      "articles": [],
+      "source": "NewsAPI (everything)",
+      "date_debut": "2026-10-30",
+      "date_fin": "2026-11-06"
     },
     "pre_rsi": {
-      "score": 55,
-      "signal": "Légèrement haussier — marché bien orienté",
-      "detail": {
-        "meteo_w": 12.5,
-        "devise_w": 14,
-        "pmi_w": 10,
-        "terrain_w": 9,
-        "geo_w": 9.75
-      }
+      "score": 49,
+      "publie": true,
+      "n_disponibles": 3,
+      "min_composantes": 3,
+      "scores": {
+        "meteo": 30,
+        "devises": 70,
+        "demande": 50,
+        "terrain": null,
+        "geo": null
+      },
+      "poids_nominaux": {
+        "meteo": 0.25,
+        "devises": 0.2,
+        "demande": 0.25,
+        "terrain": 0.15,
+        "geo": 0.15
+      },
+      "poids_effectifs": {
+        "meteo": 0.3571,
+        "devises": 0.2857,
+        "demande": 0.3571,
+        "terrain": 0,
+        "geo": 0
+      },
+      "contributions": {
+        "meteo": 10.71,
+        "devises": 20,
+        "demande": 17.86,
+        "terrain": null,
+        "geo": null
+      },
+      "sens": {
+        "meteo": "baisse",
+        "devises": "hausse",
+        "demande": "neutre",
+        "terrain": null,
+        "geo": null
+      },
+      "composantes_absentes": [
+        "terrain",
+        "geo"
+      ],
+      "signal": "Neutre — marché équilibré",
+      "signal_en": "Neutral — balanced market",
+      "raison_non_publie": null,
+      "valeur": 49,
+      "unite": "score 0-100 (> 55 haussier, < 45 baissier)",
+      "periode": "2026-W45",
+      "source": "Calcul RubberSignal (modules 1, 2, 3, 6, 7 de ce fichier)",
+      "date_source": "2026-11-06",
+      "publiable": true,
+      "methode": "Somme pondérée des composantes disponibles (scores orientés prix), divisée par la somme de leurs poids ; poids nominaux météo 25 %, devises 20 %, demande 25 %, terrain 15 %, géopolitique 15 % (non backtestés) ; non publié sous 3 composantes. Analyse, pas un indice de prix.",
+      "nature": "E",
+      "version_methode": "Pré-RSI v2",
+      "date_effet_methode": "2026-11-03"
     }
   },
   "monte_carlo": {
+    "disponible": true,
     "meta": {
-      "date_simulation": "2026-11-02",
+      "date_simulation": "2026-11-06",
       "semaine": 45,
       "annee": 2026,
       "n_simulations": 10000,
-      "modele": "GBM — Thompson (2000)",
-      "prix_actuel": 2.3685,
-      "drift_annuel": 0.032,
-      "volatilite_an": 0.27,
-      "pre_rsi_utilise": 55
+      "modele": "GBM sans derive (fourchette de volatilite) — Thompson (2000)",
+      "prix_depart": 2.55,
+      "depart": {
+        "valeur": 2.55,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "date": "2026-10",
+        "serie": "BM_TSR20",
+        "type": "moyenne mensuelle Banque mondiale"
+      },
+      "volatilite_an": 0.1588,
+      "volatilite_an_pct": 15.9,
+      "volatilite_estimation": {
+        "volatilite_annuelle": 0.1588,
+        "derive_annuelle_estimee": 0.0776,
+        "erreur_type_derive": 0.071,
+        "n_rendements": 60,
+        "periode_debut": "2021-10",
+        "periode_fin": "2026-10",
+        "methode": "Ecart-type des rendements logarithmiques mensuels x sqrt(12), 60 rendements de 2021-10 a 2026-10 (mois consecutifs uniquement)",
+        "serie": "Banque mondiale, Pink Sheet TSR20 (prix$historique_bm)",
+        "fenetre_mois": 60
+      },
+      "derive_utilisee": 0,
+      "derive_note": "Derive estimee conservee pour information, non utilisee : resultat presente comme fourchette de volatilite, pas comme prevision directionnelle",
+      "publier_sources_sous_licence": false
     },
+    "valeur": 0.1588,
+    "unite": "volatilite annuelle (fraction)",
+    "periode": "2021-10/2026-10",
+    "source": "Calcul RubberSignal sur Banque mondiale Pink Sheet TSR20",
+    "date_source": "2026-11-06",
     "resultats": {
       "S4": {
         "horizon_sem": 4,
-        "date_horizon": "2026-11-30",
-        "prix_actuel": 2.3685,
-        "moyenne": 2.3741,
-        "mediane": 2.369,
-        "ecart_type": 0.1797,
-        "p05": 2.0898,
-        "p10": 2.1493,
-        "p25": 2.2487,
-        "p75": 2.4891,
-        "p90": 2.6079,
-        "p95": 2.6782,
-        "scenario_bear": 2.1493,
-        "scenario_base": 2.3741,
-        "scenario_bull": 2.6079,
-        "prob_hausse_pct": 50.1,
-        "prob_baisse_pct": 49.9,
-        "prob_plus5_pct": 25.4,
-        "prob_moins5_pct": 25.3,
-        "prob_plus10_pct": 10.2,
-        "prob_moins10_pct": 8.3
+        "date_horizon": "2026-12-04",
+        "prix_depart": 2.55,
+        "p05": 2.369,
+        "p10": 2.409,
+        "p25": 2.474,
+        "p50": 2.551,
+        "p75": 2.626,
+        "p90": 2.699,
+        "p95": 2.742,
+        "bas80_pct": -5.5,
+        "haut80_pct": 5.8,
+        "scenario_bear": 2.409,
+        "scenario_base": 2.551,
+        "scenario_bull": 2.699
       },
       "S8": {
         "horizon_sem": 8,
-        "date_horizon": "2026-12-28",
-        "prix_actuel": 2.3685,
-        "moyenne": 2.3779,
-        "mediane": 2.3637,
-        "ecart_type": 0.2525,
-        "p05": 1.986,
-        "p10": 2.0644,
-        "p25": 2.2026,
-        "p75": 2.5411,
-        "p90": 2.7076,
-        "p95": 2.8155,
-        "scenario_bear": 2.0644,
-        "scenario_base": 2.3779,
-        "scenario_bull": 2.7076,
-        "prob_hausse_pct": 49.1,
-        "prob_baisse_pct": 50.9,
-        "prob_plus5_pct": 31.4,
-        "prob_moins5_pct": 31.9,
-        "prob_plus10_pct": 18.4,
-        "prob_moins10_pct": 16.1
+        "date_horizon": "2027-01-01",
+        "prix_depart": 2.55,
+        "p05": 2.3,
+        "p10": 2.353,
+        "p25": 2.444,
+        "p50": 2.548,
+        "p75": 2.659,
+        "p90": 2.76,
+        "p95": 2.824,
+        "bas80_pct": -7.7,
+        "haut80_pct": 8.2,
+        "scenario_bear": 2.353,
+        "scenario_base": 2.548,
+        "scenario_bull": 2.76
       },
       "S12": {
         "horizon_sem": 12,
-        "date_horizon": "2027-01-25",
-        "prix_actuel": 2.3685,
-        "moyenne": 2.3827,
-        "mediane": 2.362,
-        "ecart_type": 0.3109,
-        "p05": 1.9102,
-        "p10": 2.0024,
-        "p25": 2.1636,
-        "p75": 2.58,
-        "p90": 2.7941,
-        "p95": 2.9196,
-        "scenario_bear": 2.0024,
-        "scenario_base": 2.3827,
-        "scenario_bull": 2.7941,
-        "prob_hausse_pct": 49.2,
-        "prob_baisse_pct": 50.7,
-        "prob_plus5_pct": 34.7,
-        "prob_moins5_pct": 35.4,
-        "prob_plus10_pct": 22.6,
-        "prob_moins10_pct": 21.5
+        "date_horizon": "2027-01-29",
+        "prix_depart": 2.55,
+        "p05": 2.248,
+        "p10": 2.312,
+        "p25": 2.419,
+        "p50": 2.547,
+        "p75": 2.683,
+        "p90": 2.812,
+        "p95": 2.886,
+        "bas80_pct": -9.3,
+        "haut80_pct": 10.3,
+        "scenario_bear": 2.312,
+        "scenario_base": 2.547,
+        "scenario_bull": 2.812
       },
       "S26": {
         "horizon_sem": 26,
-        "date_horizon": "2027-05-03",
-        "prix_actuel": 2.3685,
-        "moyenne": 2.4029,
-        "mediane": 2.3578,
-        "ecart_type": 0.4686,
-        "p05": 1.7221,
-        "p10": 1.8459,
-        "p25": 2.0739,
-        "p75": 2.6779,
-        "p90": 3.0097,
-        "p95": 3.2383,
-        "scenario_bear": 1.8459,
-        "scenario_base": 2.4029,
-        "scenario_bull": 3.0097,
-        "prob_hausse_pct": 49.1,
-        "prob_baisse_pct": 50.9,
-        "prob_plus5_pct": 39.2,
-        "prob_moins5_pct": 40.3,
-        "prob_plus10_pct": 30.1,
-        "prob_moins10_pct": 30
+        "date_horizon": "2027-05-07",
+        "prix_depart": 2.55,
+        "p05": 2.117,
+        "p10": 2.205,
+        "p25": 2.361,
+        "p50": 2.547,
+        "p75": 2.745,
+        "p90": 2.94,
+        "p95": 3.069,
+        "bas80_pct": -13.5,
+        "haut80_pct": 15.3,
+        "scenario_bear": 2.205,
+        "scenario_base": 2.547,
+        "scenario_bull": 2.94
       }
     },
-    "texte_fr": "### 📈 Prévisions Monte Carlo — 10000 simulations\n\n*Basé sur le Mouvement Brownien Géométrique (Thompson, 2000)*\n\n| Horizon | Scénario pessimiste | Scénario central | Scénario optimiste | Prob. hausse |\n|---|---|---|---|---|\n| **4 semaines** | 2.149 USD/kg | **2.374 USD/kg** | 2.608 USD/kg | 50.1% |\n| **8 semaines** | 2.064 USD/kg | **2.378 USD/kg** | 2.708 USD/kg | 49.1% |\n| **12 semaines** | 2.002 USD/kg | **2.383 USD/kg** | 2.794 USD/kg | 49.2% |\n\n**Lecture :** Le modèle indique un biais **neutre** à 4 semaines, avec 50.1% de probabilité de hausse et une fourchette 80% entre 2.1493 et 2.6079 USD/kg. À 12 semaines, l'incertitude s'élargit : fourchette 80% entre 2.0024 et 2.7941 USD/kg.\n\n> *Ces projections sont issues d'une simulation stochastique. Elles ne constituent pas un conseil en investissement. La volatilité réelle peut différer des paramètres historiques.*\n\n",
-    "texte_en": "### 📈 Monte Carlo Forecasts — 10000 simulations\n\n*Based on Geometric Brownian Motion (Thompson, 2000)*\n\n| Horizon | Bear scenario | Base scenario | Bull scenario | Upside prob. |\n|---|---|---|---|---|\n| **4 weeks** | 2.149 USD/kg | **2.374 USD/kg** | 2.608 USD/kg | 50.1% |\n| **8 weeks** | 2.064 USD/kg | **2.378 USD/kg** | 2.708 USD/kg | 49.1% |\n| **12 weeks** | 2.002 USD/kg | **2.383 USD/kg** | 2.794 USD/kg | 49.2% |\n\n**Reading:** The model shows a **neutral** bias at 4 weeks, with 50.1% probability of upside and an 80% confidence range of 2.1493 to 2.6079 USD/kg. At 12 weeks, uncertainty widens: 80% range from 2.0024 to 2.7941 USD/kg.\n\n> *These projections are generated by stochastic simulation. They do not constitute investment advice. Actual volatility may differ from historical parameters.*\n\n",
+    "texte_fr": "### 📏 Fourchette de volatilité TSR20 — 10 000 simulations\n\n*Ce n'est pas une prévision de hausse ou de baisse : la simulation est centrée sur le prix de départ (sans tendance) et montre l'amplitude des variations compatible avec la volatilité historique.*\n\n| Horizon | Borne basse (10 %) | Médiane | Borne haute (90 %) |\n|---|---|---|---|\n| 4 semaines | 2.409 USD/kg (-5.5 %) | 2.551 USD/kg | 2.699 USD/kg (+5.8 %) |\n| 12 semaines | 2.312 USD/kg (-9.3 %) | 2.547 USD/kg | 2.812 USD/kg (+10.3 %) |\n| 26 semaines | 2.205 USD/kg (-13.5 %) | 2.547 USD/kg | 2.940 USD/kg (+15.3 %) |\n\n> *Volatilité annuelle 15.9 %, estimée sur 60 rendements mensuels (logarithmiques) du TSR20 Banque mondiale, de octobre 2021 à octobre 2026. Point de départ : 2.55 USD/kg (moyenne mensuelle Banque mondiale, Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20), octobre 2026). Modèle : mouvement brownien géométrique sans dérive (Thompson, 2000). Nature : E (estimation calculée) — Volatilité v1. Ne constitue pas un conseil en investissement.*\n\n",
+    "texte_en": "### 📏 TSR20 volatility range — 10,000 simulations\n\n*This is not a forecast of a rise or a fall: the simulation is centred on the starting price (no trend) and shows the range of moves consistent with historical volatility.*\n\n| Horizon | Lower bound (10%) | Median | Upper bound (90%) |\n|---|---|---|---|\n| 4 weeks | 2.409 USD/kg (-5.5%) | 2.551 USD/kg | 2.699 USD/kg (+5.8%) |\n| 12 weeks | 2.312 USD/kg (-9.3%) | 2.547 USD/kg | 2.812 USD/kg (+10.3%) |\n| 26 weeks | 2.205 USD/kg (-13.5%) | 2.547 USD/kg | 2.940 USD/kg (+15.3%) |\n\n> *Annual volatility 15.9%, estimated on 60 monthly log returns of the World Bank TSR20, from October 2021 to October 2026. Starting point: 2.55 USD/kg (World Bank monthly average, Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20), October 2026). Model: geometric Brownian motion without drift (Thompson, 2000). Nature: E (calculated estimate) — Volatilité v1. Not investment advice.*\n\n",
+    "scenarios_meteo": {
+      "publie": false,
+      "statut": "retire",
+      "note": "Elasticite -0.40 et chocs d'offre sans source : scenarios retires du rapport (v2.0)"
+    },
+    "nature": "E",
+    "version_methode": "Volatilité v1",
+    "date_effet_methode": "2026-11-03",
     "bootstrap_rsi": {
       "disponible": true,
       "n_bootstrap": 5000,
-      "pre_rsi_central": 55,
-      "moyenne_boot": 55.2,
-      "ecart_type": 4,
-      "ic80_bas": 49.9,
-      "ic80_haut": 60.4,
-      "ic90_bas": 48.3,
-      "ic90_haut": 61.8,
-      "stabilite": "Très stable",
-      "signal_robuste": false,
+      "pre_rsi_central": 49,
+      "ic80_bas": 42.4,
+      "ic80_haut": 54.7,
+      "ic90_bas": 40.6,
+      "ic90_haut": 56.4,
+      "classe_centrale": "neutre",
+      "pct_meme_classe": 68.5,
       "composantes": {
-        "Météo/Offre": 50,
-        "Devises": 70,
-        "Demande aval": 40,
-        "Terrain CI": 60,
-        "Géopolitique": 65
+        "meteo": 30,
+        "devises": 70,
+        "demande": 50,
+        "terrain": null,
+        "geo": null
+      },
+      "poids_effectifs": {
+        "meteo": 0.3571,
+        "devises": 0.2857,
+        "demande": 0.3571,
+        "terrain": 0,
+        "geo": 0
       },
       "incertitudes": {
         "meteo": 8,
-        "devise": 5,
+        "devises": 5,
         "demande": 10,
         "terrain": 12,
         "geo": 8
       },
-      "texte_fr": "### 🎯 Fiabilité du Pré-RSI — Analyse Bootstrap\n\n*5000 rééchantillonnages (Thompson, 2000)*\n\n| Indicateur | Valeur |\n|---|---|\n| **Pré-RSI central** | **55 / 100** |\n| Intervalle confiance 80% | [49.9 – 60.4] |\n| Intervalle confiance 90% | [48.3 – 61.8] |\n| Stabilité du signal | Très stable (±4 pts) |\n| Signal robuste | ⚠️ Zone d'incertitude |\n\n**Interprétation :** Le Pré-RSI de **55/100** est dans une zone d'incertitude — le signal pourrait basculer en fonction des données terrain CI de la semaine prochaine.\n\n> *Le Bootstrap estime la robustesse du score face à l'incertitude de mesure de chaque composante. Un IC90 étroit indique un signal fiable.*\n\n",
-      "texte_en": "### 🎯 Pre-RSI Reliability — Bootstrap Analysis\n\n*5000 resamples (Thompson, 2000)*\n\n| Indicator | Value |\n|---|---|\n| **Pre-RSI score** | **55 / 100** |\n| 80% confidence interval | [49.9 – 60.4] |\n| 90% confidence interval | [48.3 – 61.8] |\n| Signal stability | Très stable (±4 pts) |\n| Robust signal | ⚠️ Uncertainty zone |\n\n**Interpretation:** The Pre-RSI of **55/100** is in an uncertainty zone — the signal could shift depending on next week's CI field data.\n\n> *Bootstrap estimates score robustness against measurement uncertainty in each component. A narrow IC90 indicates a reliable signal.*\n\n"
-    },
-    "scenarios_meteo": {
-      "horizon_semaines": 12,
-      "n_simulations": 10000,
-      "elasticite_prix": -0.4,
-      "resultats": {
-        "secheresse_ci": {
-          "scenario": "secheresse_ci",
-          "nom": "Sécheresse Côte d'Ivoire",
-          "nom_en": "Ivory Coast Drought",
-          "emoji": "🌵",
-          "description": "Pluies < 50mm/mois pendant 8 semaines en CI",
-          "description_en": "Rainfall < 50mm/month for 8 weeks in CI",
-          "choc_offre_pct": -3,
-          "choc_prix_pct": 1.2,
-          "drift_cond": 4.4,
-          "p10": 1.999,
-          "base": 2.388,
-          "p90": 2.795,
-          "prob_hausse": 50,
-          "delta_vs_base": 0.005
-        },
-        "inondations_asie": {
-          "scenario": "inondations_asie",
-          "nom": "Inondations Asie du Sud-Est",
-          "nom_en": "Southeast Asia Floods",
-          "emoji": "🌧️",
-          "description": "Excès pluie Thaïlande + Malaisie (> 400mm/mois)",
-          "description_en": "Excess rainfall Thailand + Malaysia (>400mm/month)",
-          "choc_offre_pct": -21,
-          "choc_prix_pct": 8.4,
-          "drift_cond": 11.6,
-          "p10": 2.038,
-          "base": 2.433,
-          "p90": 2.851,
-          "prob_hausse": 55.4,
-          "delta_vs_base": 0.051
-        },
-        "secheresse_globale": {
-          "scenario": "secheresse_globale",
-          "nom": "Stress hydrique mondial",
-          "nom_en": "Global Drought Stress",
-          "emoji": "☀️",
-          "description": "Sécheresse simultanée CI + Thaïlande + Malaisie",
-          "description_en": "Simultaneous drought CI + Thailand + Malaysia",
-          "choc_offre_pct": -17.2,
-          "choc_prix_pct": 6.9,
-          "drift_cond": 10.1,
-          "p10": 2.042,
-          "base": 2.427,
-          "p90": 2.84,
-          "prob_hausse": 55,
-          "delta_vs_base": 0.045
-        },
-        "optimal": {
-          "scenario": "optimal",
-          "nom": "Conditions météo optimales",
-          "nom_en": "Optimal Weather Conditions",
-          "emoji": "🌿",
-          "description": "Pluviométrie optimale dans les 4 zones productrices",
-          "description_en": "Optimal rainfall across all 4 producing zones",
-          "choc_offre_pct": 10,
-          "choc_prix_pct": -4,
-          "drift_cond": -0.8,
-          "p10": 1.988,
-          "base": 2.363,
-          "p90": 2.768,
-          "prob_hausse": 46.7,
-          "delta_vs_base": -0.019
-        }
-      },
-      "texte_fr": "### 🌦️ Scénarios météo — Monte Carlo conditionnel\n\n*Impact sur le prix TSR20 à 12 semaines*\n\n| Scénario | Choc offre | Bear | Base | Bull | Δ vs référence |\n|---|---|---|---|---|---|\n| 🌵 Sécheresse Côte d'Ivoire | -3.0% | 1.999 | **2.388** | 2.795 | +0.005 |\n| 🌧️ Inondations Asie du Sud-Est | -21.0% | 2.038 | **2.433** | 2.851 | +0.051 |\n| ☀️ Stress hydrique mondial | -17.2% | 2.042 | **2.427** | 2.840 | +0.045 |\n| 🌿 Conditions météo optimales | +10.0% | 1.988 | **2.363** | 2.768 | -0.019 |\n\n**Scénario le plus haussier :** 🌧️ Inondations Asie du Sud-Est (+0.051 USD/kg)\n\n> *Élasticité prix/offre calibrée sur ANRPC 2015-2025.*\n\n",
-      "texte_en": "### 🌦️ Weather Scenarios — Conditional Monte Carlo\n\n*Impact on TSR20 price at 12 weeks*\n\n| Scenario | Supply shock | Bear | Base | Bull | Δ vs reference |\n|---|---|---|---|---|---|\n| 🌵 Ivory Coast Drought | -3.0% | 1.999 | **2.388** | 2.795 | +0.005 |\n| 🌧️ Southeast Asia Floods | -21.0% | 2.038 | **2.433** | 2.851 | +0.051 |\n| ☀️ Global Drought Stress | -17.2% | 2.042 | **2.427** | 2.840 | +0.045 |\n| 🌿 Optimal Weather Conditions | +10.0% | 1.988 | **2.363** | 2.768 | -0.019 |\n\n**Most bullish scenario:** 🌧️ Southeast Asia Floods (+0.051 USD/kg)\n\n> *Price/supply elasticity calibrated on ANRPC 2015-2025.*\n\n"
+      "statut_incertitudes": "hypothese_de_travail_non_calibree",
+      "texte_fr": "### 🎯 Sensibilité du Pré-RSI (hypothèse de travail non calibrée)\n\n| Indicateur | Valeur |\n|---|---|\n| Pré-RSI central | 49 / 100 |\n| Intervalle 80 % | [42.4 – 54.7] |\n| Intervalle 90 % | [40.6 – 56.4] |\n| Tirages gardant le même classement (neutre) | 68.5 % |\n\n> *5000 tirages : chaque composante disponible est perturbée d'un bruit gaussien dont l'amplitude (météo ±8, devises ±5, demande ±10, terrain ±12, géopolitique ±8 points) est une hypothèse de travail non calibrée. Ce n'est pas une mesure de fiabilité statistique.*\n\n",
+      "texte_en": "### 🎯 Pre-RSI sensitivity (uncalibrated working assumption)\n\n| Indicator | Value |\n|---|---|\n| Central Pre-RSI | 49 / 100 |\n| 80% interval | [42.4 – 54.7] |\n| 90% interval | [40.6 – 56.4] |\n| Draws keeping the same class (neutral) | 68.5% |\n\n> *5000 draws: each available component is perturbed by Gaussian noise whose size (weather ±8, currencies ±5, demand ±10, field ±12, geopolitics ±8 points) is an uncalibrated working assumption. This is not a measure of statistical reliability.*\n\n"
     }
   },
   "rapport": {
-    "titre_fr": "RubberSignal #45 | TSR20 : 2.3685 USD/kg ▲ | Semaine 45 - 2026",
-    "titre_en": "RubberSignal #45 | TSR20: 2.3685 USD/kg ▲ | Week 45 - 2026",
-    "date_rapport": "2026-11-02",
+    "titre_fr": "RubberSignal #45 | TSR20 Banque mondiale : 2.55 USD/kg (octobre 2026) | Semaine 45 - 2026",
+    "titre_en": "RubberSignal #45 | TSR20 World Bank: 2.55 USD/kg (October 2026) | Week 45 - 2026",
+    "date_rapport": "2026-11-06",
     "semaine": 45,
     "fichier_fr": "output/rubbersignal_S45_2026_FR.md",
     "fichier_en": "output/rubbersignal_S45_2026_EN.md",
-    "pre_rsi": 55,
-    "pre_rsi_actif": true
+    "pre_rsi": 49,
+    "pre_rsi_actif": true,
+    "pre_rsi_publie": true,
+    "publier_sources_sous_licence": false,
+    "serie_hebdo_publiee": false,
+    "versions_methode": {
+      "prix_hebdo": "Prix hebdo v1",
+      "reference_mensuelle": "Références mensuelles v1",
+      "apromac": "APROMAC v1",
+      "rsci": "RSCI v2",
+      "terrain": "Terrain v1",
+      "pre_rsi": "Pré-RSI v2",
+      "volatilite": "Volatilité v1"
+    }
   }
 }

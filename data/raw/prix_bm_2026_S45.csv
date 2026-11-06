@@ -1,9 +1,62 @@
-periode,prix_usd,source,unite
-2026-11,2.3685,LGM Malaysia (03/06/2026) — mise a jour manuelle,USD/kg
-2026-10,2.25,LGM Malaysia (03/06/2026) — mise a jour manuelle,USD/kg
-2026-09,2.2,LGM Malaysia (03/06/2026) — mise a jour manuelle,USD/kg
-2026-08,2.15,LGM Malaysia (03/06/2026) — mise a jour manuelle,USD/kg
-2026-07,2.1,LGM Malaysia (03/06/2026) — mise a jour manuelle,USD/kg
-2026-06,2.05,LGM Malaysia (03/06/2026) — mise a jour manuelle,USD/kg
-2026-05,2,LGM Malaysia (03/06/2026) — mise a jour manuelle,USD/kg
-2026-04,1.95,LGM Malaysia (03/06/2026) — mise a jour manuelle,USD/kg
+periode,prix_usd,source,unite,date_source
+2026-10,2.55,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2026-10-01
+2026-09,2.41,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2026-09-01
+2026-08,2.24,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2026-08-01
+2026-07,2.14,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2026-07-01
+2026-06,2.25,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2026-06-01
+2026-05,2.21,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2026-05-01
+2026-04,2.06,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2026-04-01
+2026-03,1.95,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2026-03-01
+2026-02,1.93,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2026-02-01
+2026-01,1.84,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2026-01-01
+2025-12,1.74,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2025-12-01
+2025-11,1.71,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2025-11-01
+2025-10,1.71,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2025-10-01
+2025-09,1.74,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2025-09-01
+2025-08,1.71,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2025-08-01
+2025-07,1.68,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2025-07-01
+2025-06,1.61,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2025-06-01
+2025-05,1.7,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2025-05-01
+2025-04,1.71,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2025-04-01
+2025-03,1.98,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2025-03-01
+2025-02,2.01,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2025-02-01
+2025-01,1.93,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2025-01-01
+2024-12,1.99,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2024-12-01
+2024-11,1.93,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2024-11-01
+2024-10,2.01,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2024-10-01
+2024-09,1.91,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2024-09-01
+2024-08,1.74,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2024-08-01
+2024-07,1.65,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2024-07-01
+2024-06,1.75,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2024-06-01
+2024-05,1.69,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2024-05-01
+2024-04,1.63,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2024-04-01
+2024-03,1.65,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2024-03-01
+2024-02,1.56,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2024-02-01
+2024-01,1.53,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2024-01-01
+2023-12,1.46,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2023-12-01
+2023-11,1.48,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2023-11-01
+2023-10,1.45,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2023-10-01
+2023-09,1.42,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2023-09-01
+2023-08,1.29,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2023-08-01
+2023-07,1.3,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2023-07-01
+2023-06,1.32,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2023-06-01
+2023-05,1.35,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2023-05-01
+2023-04,1.36,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2023-04-01
+2023-03,1.36,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2023-03-01
+2023-02,1.4,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2023-02-01
+2023-01,1.41,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2023-01-01
+2022-12,1.35,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2022-12-01
+2022-11,1.27,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2022-11-01
+2022-10,1.29,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2022-10-01
+2022-09,1.32,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2022-09-01
+2022-08,1.46,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2022-08-01
+2022-07,1.56,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2022-07-01
+2022-06,1.64,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2022-06-01
+2022-05,1.62,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2022-05-01
+2022-04,1.7,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2022-04-01
+2022-03,1.75,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2022-03-01
+2022-02,1.79,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2022-02-01
+2022-01,1.78,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2022-01-01
+2021-12,1.72,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2021-12-01
+2021-11,1.74,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2021-11-01
+2021-10,1.73,"Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",USD/kg,2021-10-01

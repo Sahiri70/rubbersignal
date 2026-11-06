@@ -1,25 +1,82 @@
 {
   "meta": {
-    "date_collecte": "2026-11-02",
+    "date_collecte": "2026-11-06",
     "semaine": 45,
     "annee": 2026,
-    "version": "2.1"
+    "version": "2.3"
   },
   "module1_meteo": {
-    "zones": [],
-    "score_offre_mondiale": 50,
-    "signal_offre": "Offre normale — marché équilibré"
+    "zones": {
+      "Côte d'Ivoire": {
+        "pays": "Côte d'Ivoire",
+        "ville": "Abidjan",
+        "pluie_30j_mm": 95.6,
+        "temp_moyenne_c": 27,
+        "score_production": 65,
+        "signal_production": "Neutre"
+      },
+      "Thaïlande": {
+        "pays": "Thaïlande",
+        "ville": "Bangkok",
+        "pluie_30j_mm": 193.2,
+        "temp_moyenne_c": 28.7,
+        "score_production": 85,
+        "signal_production": "Favorable"
+      },
+      "Malaisie": {
+        "pays": "Malaisie",
+        "ville": "Kuala Lumpur",
+        "pluie_30j_mm": 310,
+        "temp_moyenne_c": 27.5,
+        "score_production": 96,
+        "signal_production": "Favorable"
+      },
+      "Indonésie": {
+        "pays": "Indonésie",
+        "ville": "Jakarta",
+        "pluie_30j_mm": 123.5,
+        "temp_moyenne_c": 29.5,
+        "score_production": 66,
+        "signal_production": "Neutre"
+      }
+    },
+    "score_offre_mondiale": 80,
+    "signal_offre": "Offre abondante — pression baissière",
+    "source": "Open-Meteo (archive), cumul de pluie du mois",
+    "date_source": "2026-11-05"
   },
   "module2_devises": {
-    "USD_CNY": 6.6609,
-    "USD_MYR": 4.057,
-    "USD_XOF": 587.67,
-    "USD_IDR": 18138,
-    "USD_CHF": 0.8245,
-    "source": "ExchangeRate API",
-    "date": "2026-11-02",
-    "signal_cny": "Yuan fort (-6.18%) — demande soutenue",
-    "signal_myr": "Ringgit fort (-7.8%) — export ralenti"
+    "USD_CNY": 6.6825,
+    "USD_MYR": 4.0458,
+    "USD_XOF": 584.13,
+    "USD_IDR": 18080,
+    "USD_CHF": 0.8162,
+    "source": "ExchangeRate API (v6)",
+    "date": "2026-11-06",
+    "statut": "ok",
+    "alertes": [],
+    "signal_cny": "Yuan fort (-2.38% vs moyenne 12 mois) — demande soutenue",
+    "signal_myr": "Ringgit stable (0.37% vs moyenne 12 mois) — neutre",
+    "ecart_cny_pct": -2.38,
+    "ecart_myr_pct": 0.37,
+    "reference_cny": {
+      "valeur": 6.8452,
+      "serie": "DEXCHUS",
+      "source": "FRED DEXCHUS",
+      "debut": "2025-11-07",
+      "fin": "2026-10-30",
+      "n_obs": 245,
+      "methode": "Moyenne des cotations quotidiennes des 365 derniers jours"
+    },
+    "reference_myr": {
+      "valeur": 4.031,
+      "serie": "DEXMAUS",
+      "source": "FRED DEXMAUS",
+      "debut": "2025-11-07",
+      "fin": "2026-10-30",
+      "n_obs": 245,
+      "methode": "Moyenne des cotations quotidiennes des 365 derniers jours"
+    }
   },
   "module3_demande_aval": {
     "fred": {
@@ -39,7 +96,14 @@
         "variation_pct": -3.55,
         "date": "2026-09-01"
       },
-      "commandes_dur": {},
+      "commandes_dur": {
+        "serie": "DGORDER",
+        "nom": "Commandes biens durables US (M USD)",
+        "valeur": 345672,
+        "valeur_prec": 339185,
+        "variation_pct": 1.91,
+        "date": "2026-09-01"
+      },
       "prod_indus_us": {
         "serie": "INDPRO",
         "nom": "Production industrielle US globale",
@@ -65,89 +129,219 @@
         "date": "2026-09-01"
       }
     },
-    "pmi": {
-      "USA": {
-        "pays": "USA",
-        "valeur": 50.2,
-        "signal": "Légère expansion"
+    "confiance_industrie": {
+      "series": {
+        "USA": {
+          "pays": "USA",
+          "serie": "BSCICP02USM460S",
+          "frequence": "mensuelle",
+          "valeur": 9,
+          "unite": "% (solde, CVS)",
+          "periode": "2026-09",
+          "date_source": "2026-09-01",
+          "z_5ans": 1.02,
+          "statut": "derniere_valeur_disponible",
+          "utilise": true,
+          "source": "OCDE, enquêtes de conjoncture, via FRED (BSCICP02USM460S)",
+          "signal": "au-dessus de sa moyenne 5 ans",
+          "n_observations": 60
+        },
+        "Allemagne": {
+          "pays": "Allemagne",
+          "serie": "BSCICP02DEM460S",
+          "frequence": "mensuelle",
+          "valeur": -8.2,
+          "unite": "% (solde, CVS)",
+          "periode": "2026-09",
+          "date_source": "2026-09-01",
+          "z_5ans": 0.01,
+          "statut": "derniere_valeur_disponible",
+          "utilise": true,
+          "source": "OCDE, enquêtes de conjoncture, via FRED (BSCICP02DEM460S)",
+          "signal": "proche de sa moyenne 5 ans",
+          "n_observations": 60
+        },
+        "Chine": {
+          "pays": "Chine",
+          "serie": "CHNBSCICP02STSAM",
+          "frequence": "mensuelle",
+          "valeur": -0.4,
+          "unite": "% (solde, CVS)",
+          "periode": "2026-08",
+          "date_source": "2026-08-01",
+          "z_5ans": 0.2,
+          "statut": "perime",
+          "utilise": false,
+          "source": "OCDE, enquêtes de conjoncture, via FRED (CHNBSCICP02STSAM)",
+          "signal": "périmée (dernière valeur 08/2026)",
+          "n_observations": 60
+        },
+        "Japon": {
+          "pays": "Japon",
+          "serie": "JPNBSCICP02STSAQ",
+          "frequence": "trimestrielle",
+          "valeur": 19,
+          "unite": "% (solde, CVS)",
+          "periode": "2026-07",
+          "date_source": "2026-07-01",
+          "z_5ans": 2.4,
+          "statut": "derniere_valeur_disponible",
+          "utilise": true,
+          "source": "OCDE, enquêtes de conjoncture, via FRED (JPNBSCICP02STSAQ)",
+          "signal": "au-dessus de sa moyenne 5 ans",
+          "n_observations": 20
+        }
       },
-      "Europe": {
-        "pays": "Europe",
-        "valeur": 49,
-        "signal": "Légère contraction"
-      },
-      "Chine": {
-        "pays": "Chine",
-        "valeur": 51.1,
-        "signal": "Légère expansion"
-      },
-      "Inde": {
-        "pays": "Inde",
-        "valeur": 58.8,
-        "signal": "Forte expansion"
-      },
-      "Japon": {
-        "pays": "Japon",
-        "valeur": 48.7,
-        "signal": "Légère contraction"
-      }
+      "z_moyen": 1.14,
+      "n_utilisees": 3,
+      "methode": "z = (dernière valeur - moyenne 5 ans) / écart-type 5 ans, par pays ; moyenne des z des séries fraîches (< 45 jours après la fin de période)",
+      "source": "OCDE, Business Tendency Surveys (manufacturing), via FRED"
     },
-    "score_demande": 40,
-    "signal_demande": "Demande faible — signal baissier"
+    "pmi": {
+      "statut": "retire",
+      "note": "PMI saisi à la main (avril 2026) retiré en v2.3 : remplacé par confiance_industrie (OCDE via FRED)"
+    },
+    "score_demande": 50,
+    "signal_demande": "Demande neutre — équilibré",
+    "n_indicateurs": 4
   },
   "module4_stocks": {
+    "statut": "indisponible",
+    "libelle": "Donnée indisponible",
     "malaisie_tonnes": null,
-    "malaisie_mois": "2026-04",
-    "malaisie_tendance": "stable",
     "thailande_tonnes": null,
-    "thailande_mois": "2026-04",
-    "thailande_tendance": "stable",
     "indonesie_tonnes": null,
-    "indonesie_mois": "2026-04",
-    "indonesie_tendance": "stable",
     "ci_tonnes": null,
-    "ci_mois": "2026-04",
-    "ci_tendance": "stable",
-    "abidjan_delai_jours": 7,
-    "abidjan_statut": "Normal",
-    "note": "Données à compléter via lgm.gov.my et rubberthai.or.th"
+    "tendance": null,
+    "derniere_mise_a_jour_connue": null,
+    "sources_a_explorer": ["https://www.lgm.gov.my", "https://www.rubberthai.or.th", "https://apromac.ci"],
+    "note": "Aucune donnée de stocks mesurée : module retiré du rapport (pas de tendance publiée)."
   },
   "module5_shipping": {
-    "bdi_valeur": 1450,
-    "wti_valeur": 103.37,
-    "signal_fret": "Fret normal — pas de signal particulier",
-    "tarif_ci_eu_usd_tonne": 85,
-    "delai_abidjan_rotterdam": 14,
-    "source": "BDI estimé + WTI FRED"
+    "bdi_valeur": null,
+    "wti_valeur": 99.64,
+    "wti_date": "2026-11-03",
+    "signal_fret": "Données indisponibles (aucune source datée)",
+    "tarif_ci_eu_usd_tonne": null,
+    "delai_abidjan_rotterdam": null,
+    "statut_fret": "indisponible",
+    "fret": {
+      "BDI": {
+        "indicateur": "BDI",
+        "valeur": null,
+        "unite": null,
+        "date_valeur": null,
+        "source": null,
+        "url": null,
+        "statut": "indisponible",
+        "max_jours": 14
+      },
+      "tarif_ci_ue_usd_t": {
+        "indicateur": "tarif_ci_ue_usd_t",
+        "valeur": null,
+        "unite": null,
+        "date_valeur": null,
+        "source": null,
+        "url": null,
+        "statut": "indisponible",
+        "max_jours": 45
+      },
+      "delai_abidjan_rotterdam_j": {
+        "indicateur": "delai_abidjan_rotterdam_j",
+        "valeur": null,
+        "unite": null,
+        "date_valeur": null,
+        "source": null,
+        "url": null,
+        "statut": "indisponible",
+        "max_jours": 45
+      }
+    },
+    "fichier_saisie": "data/reference/fret.csv",
+    "source": "WTI : FRED DCOILWTICO ; BDI, tarif et délai : saisie datée data/reference/fret.csv"
   },
   "module6_terrain_ci": {
-    "prix_bord_champ_fcfa": 359,
+    "statut": "absent",
+    "libelle": "Pas de relevé terrain cette semaine",
+    "note_terrain": "",
+    "sentiment_planteurs": null,
+    "disponibilite_latex": null,
     "prix_marche_reel_fcfa": null,
-    "disponibilite_latex": 3,
-    "statut_disponibilite": "Normal",
-    "activite_cooperatives": "Normale",
-    "sentiment_planteurs": 3,
-    "note_terrain": "Campagne de récolte en cours. Conditions normales.",
-    "tension_marche_local": "Aucune",
-    "saison_saignee": "Grande saison",
+    "date_releve": null,
+    "lieu": null,
+    "source": null,
     "semaine": 45,
-    "date_saisie": "2026-11-02",
-    "source": "Terrain CI — RubberSignal exclusif"
+    "fichier_saisie": "data/reference/terrain_ci.csv",
+    "periode": null,
+    "date_source": null,
+    "unite": "sentiment 1-5",
+    "valeur": null,
+    "nature": "D",
+    "version_methode": "Terrain v1",
+    "date_effet_methode": "2026-11-03"
   },
   "module7_geopolitique": {
-    "nb_articles": 0,
-    "signal": "Données indisponibles",
-    "articles": []
+    "nb_articles": null,
+    "statut": "api_indisponible",
+    "signal": "Données indisponibles (NewsAPI, code 401)",
+    "articles": [],
+    "source": "NewsAPI (everything)",
+    "date_debut": "2026-10-30",
+    "date_fin": "2026-11-06"
   },
   "pre_rsi": {
-    "score": 55,
-    "signal": "Légèrement haussier — marché bien orienté",
-    "detail": {
-      "meteo_w": 12.5,
-      "devise_w": 14,
-      "pmi_w": 10,
-      "terrain_w": 9,
-      "geo_w": 9.75
-    }
+    "score": 49,
+    "publie": true,
+    "n_disponibles": 3,
+    "min_composantes": 3,
+    "scores": {
+      "meteo": 30,
+      "devises": 70,
+      "demande": 50,
+      "terrain": null,
+      "geo": null
+    },
+    "poids_nominaux": {
+      "meteo": 0.25,
+      "devises": 0.2,
+      "demande": 0.25,
+      "terrain": 0.15,
+      "geo": 0.15
+    },
+    "poids_effectifs": {
+      "meteo": 0.3571,
+      "devises": 0.2857,
+      "demande": 0.3571,
+      "terrain": 0,
+      "geo": 0
+    },
+    "contributions": {
+      "meteo": 10.71,
+      "devises": 20,
+      "demande": 17.86,
+      "terrain": null,
+      "geo": null
+    },
+    "sens": {
+      "meteo": "baisse",
+      "devises": "hausse",
+      "demande": "neutre",
+      "terrain": null,
+      "geo": null
+    },
+    "composantes_absentes": ["terrain", "geo"],
+    "signal": "Neutre — marché équilibré",
+    "signal_en": "Neutral — balanced market",
+    "raison_non_publie": null,
+    "valeur": 49,
+    "unite": "score 0-100 (> 55 haussier, < 45 baissier)",
+    "periode": "2026-W45",
+    "source": "Calcul RubberSignal (modules 1, 2, 3, 6, 7 de ce fichier)",
+    "date_source": "2026-11-06",
+    "publiable": true,
+    "methode": "Somme pondérée des composantes disponibles (scores orientés prix), divisée par la somme de leurs poids ; poids nominaux météo 25 %, devises 20 %, demande 25 %, terrain 15 %, géopolitique 15 % (non backtestés) ; non publié sous 3 composantes. Analyse, pas un indice de prix.",
+    "nature": "E",
+    "version_methode": "Pré-RSI v2",
+    "date_effet_methode": "2026-11-03"
   }
 }

@@ -1,4 +1,4 @@
-RubberSignal #45 | TSR20: 2.3685 USD/kg ▲ | Week 45 - 2026
+RubberSignal #45 | TSR20 World Bank: 2.55 USD/kg (October 2026) | Week 45 - 2026
 
 Your weekly natural rubber market intelligence — West Africa & global markets
 
@@ -6,124 +6,108 @@ Your weekly natural rubber market intelligence — West Africa & global markets
 
 📊 Weekly Prices
 
-Natural Rubber Grades
+Dated references
 
-| Grade | Prix USD/kg | Prix CHF/kg | Note |
-|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
-| TSR20 | 2.3685 | 2.132 | Référence mondiale / World reference |
-| RSS3 | 2.463 | 2.217 | Premium quality |
-| TSR10 | 2.297 | 2.068 | Technical grade |
-| Latex concentré | 1.942 | 1.748 | Liquid material |
+| Series | Value | Value date | Source | Nature | Status |
+|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
+| IMF world price (monthly) | 2.7574 USD/kg (125.075 cents/lb) | September 2026 | FMI via FRED (PRUBBUSDM) | T | latest available value |
+| World Bank TSR20 (monthly) | 2.55 USD/kg | October 2026 | World Bank, Pink Sheet | T | latest available value |
+
+Weekly quote reserved (licence): not reproduced in this publication.
+
+Nature: T = transaction, O = official, D = declaration, E = calculated estimate, J = judgement. Method version: Références mensuelles v1.
 
 Variation & Trend
 
-| Indicator | Value |
-|──────────────────────────────|──────────────────────────────|
-| Change vs previous period | +5.27% ▲ |
-| 3-month average | 2.273 USD/kg |
-| 6-month average | 2.186 USD/kg |
-| 12-month range | 1.95 – 2.368 USD/kg |
-
-Geographic Context
-
-| Zone | Statut / Status | Rôle / Role |
-|──────────────────────────────|──────────────────────────────|──────────────────────────────|
-| 🇨🇮 Côte d'Ivoire | 1er producteur africain | Export TSR20 |
-| 🇬🇭 Ghana | Producteur régional | Export latex |
-| 🇳🇬 Nigeria | Producteur émergent | Marché local |
-| 🇨🇲 Cameroun | Producteur régional | Export RSS |
-| 🇹🇭 Thaïlande / Thailand | 1er producteur mondial | Référence prix |
-| 🇲🇾 Malaisie / Malaysia | 2ème producteur mondial | SGX Futures |
-| 🇸🇬 Singapour / Singapore | Hub négoce mondial | Bourse SGX |
-| 🇪🇺 Europe | Principal importateur | Demande aval |
+Computed on the weekly quote: weekly quote reserved (licence).
 
 🔍 Weekly Analysis
 
-The TSR20 market posted a significant gain this week, with prices reaching 2.3685 USD/kg (+5.27% vs previous period). The current price stands above its 3-month average (2.273 USD/kg) and 6-month average (2.186 USD/kg). Over the past 12 months, TSR20 traded between 1.95 and 2.368 USD/kg — the current level represents 100% of this range.
+Weekly quote reserved (licence): it is not reproduced in this publication. Latest available monthly references: IMF (FRED PRUBBUSDM) September 2026: 2.7574 USD/kg; World Bank TSR20 October 2026: 2.55 USD/kg.
 
 > This analysis is automatically generated from public data. It does not constitute investment advice.
 
 📡 Weak Signals — Pre-RSI
 
-↗️ RubberSignal Index: 55 / 100
+➡️ RubberSignal Index: 49 / 100
 
-Légèrement haussier — marché bien orienté
+Neutral — balanced market
+
+| Component | Measure | Price direction | Effective weight |
+|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
+| Weather / supply (4 zones) | Supply score 80/100 — Offre abondante — pression baissière | ↓ down | 35.7% (nominal 25%) |
+| Currencies (yuan) | Yuan fort (-2.38% vs moyenne 12 mois) — demande soutenue — USD/CNY 6.6825 (06/11/2026, ExchangeRate API (v6)) ; ref. 12-month average 6.8452 (FRED DEXCHUS) | ↑ up | 28.6% (nominal 20%) |
+| Industrial demand | Score 50/100 — Demande neutre — équilibré (OECD industrial confidence: mean z 1.14, 3 countries) | → neutral | 35.7% (nominal 25%) |
+| CI field data | No field report this week | — missing | 0% (nominal 15%) |
+| Geopolitics | Données indisponibles (NewsAPI, code 401) — component removed | — missing | 0% (nominal 15%) |
+
+> Missing component(s): CI field data, Geopolitics. Weights of the available components are renormalised to 100%.
+
+Outside the score: 
 
 | Signal | Value |
 |──────────────────────────────|──────────────────────────────|
-| 🌧️ Global supply (weather — 4 zones) | Score 50/100 — Offre normale — marché équilibré |
-| 💱 Chinese Yuan (CNY) | Yuan fort (-6.18%) — demande soutenue |
-| 💱 Malaysian Ringgit (MYR) | Ringgit fort (-7.8%) — export ralenti |
-| 🏭 Industrial demand | Score 40/100 — Demande faible — signal baissier |
-| 🌿 CI Field data | Campagne de récolte en cours. Conditions normales. |
-| 🌍 Geopolitics | Données indisponibles |
+| 💱 Malaysian ringgit (MYR) | Ringgit stable (0.37% vs moyenne 12 mois) — neutre — USD/MYR 4.0458 |
+| 🚢 Ocean freight | Unavailable: no dated source (BDI, CI-EU rate, Abidjan-Rotterdam transit time) |
+| 📦 Global stocks | Data unavailable |
 
-> The Pre-RSI (RubberSignal Index) is a composite score 0–100 combining weather, currencies, industrial demand and CI field data. Score > 55 = bullish market. Score < 45 = bearish market. Exclusive RubberSignal indicator.
+> Pre-RSI: composite 0–100 score oriented to price (> 55 bullish, < 45 bearish, neutral in between). Nominal weights: weather 25%, currencies 20%, demand 25%, field 15%, geopolitics 15%, renormalised over the available components; not published with fewer than 3 components. Weights not backtested. Nature: E (calculated estimate) — Pré-RSI v2. Analysis, not a price index.
 
 ──────────────────────────────
 
-📈 Monte Carlo Forecasts — 10000 simulations
+📏 TSR20 volatility range — 10,000 simulations
 
-Based on Geometric Brownian Motion (Thompson, 2000)
+This is not a forecast of a rise or a fall: the simulation is centred on the starting price (no trend) and shows the range of moves consistent with historical volatility.
 
-| Horizon | Bear scenario | Base scenario | Bull scenario | Upside prob. |
-|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
-| 4 weeks | 2.149 USD/kg | 2.374 USD/kg | 2.608 USD/kg | 50.1% |
-| 8 weeks | 2.064 USD/kg | 2.378 USD/kg | 2.708 USD/kg | 49.1% |
-| 12 weeks | 2.002 USD/kg | 2.383 USD/kg | 2.794 USD/kg | 49.2% |
+| Horizon | Lower bound (10%) | Median | Upper bound (90%) |
+|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
+| 4 weeks | 2.409 USD/kg (-5.5%) | 2.551 USD/kg | 2.699 USD/kg (+5.8%) |
+| 12 weeks | 2.312 USD/kg (-9.3%) | 2.547 USD/kg | 2.812 USD/kg (+10.3%) |
+| 26 weeks | 2.205 USD/kg (-13.5%) | 2.547 USD/kg | 2.940 USD/kg (+15.3%) |
 
-Reading: The model shows a neutral bias at 4 weeks, with 50.1% probability of upside and an 80% confidence range of 2.1493 to 2.6079 USD/kg. At 12 weeks, uncertainty widens: 80% range from 2.0024 to 2.7941 USD/kg.
+> Annual volatility 15.9%, estimated on 60 monthly log returns of the World Bank TSR20, from October 2021 to October 2026. Starting point: 2.55 USD/kg (World Bank monthly average, Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20), October 2026). Model: geometric Brownian motion without drift (Thompson, 2000). Nature: E (calculated estimate) — Volatilité v1. Not investment advice.
 
-> These projections are generated by stochastic simulation. They do not constitute investment advice. Actual volatility may differ from historical parameters.
-
-🎯 Pre-RSI Reliability — Bootstrap Analysis
-
-5000 resamples (Thompson, 2000)
+🎯 Pre-RSI sensitivity (uncalibrated working assumption)
 
 | Indicator | Value |
 |──────────────────────────────|──────────────────────────────|
-| Pre-RSI score | 55 / 100 |
-| 80% confidence interval | 49.9 – 60.4] |
-| 90% confidence interval | 48.3 – 61.8] |
-| Signal stability | Très stable (±4 pts) |
-| Robust signal | ⚠️ Uncertainty zone |
+| Central Pre-RSI | 49 / 100 |
+| 80% interval | 42.4 – 54.7] |
+| 90% interval | 40.6 – 56.4] |
+| Draws keeping the same class (neutral) | 68.5% |
 
-Interpretation: The Pre-RSI of 55/100 is in an uncertainty zone — the signal could shift depending on next week's CI field data.
+> 5000 draws: each available component is perturbed by Gaussian noise whose size (weather ±8, currencies ±5, demand ±10, field ±12, geopolitics ±8 points) is an uncalibrated working assumption. This is not a measure of statistical reliability.
 
-> Bootstrap estimates score robustness against measurement uncertainty in each component. A narrow IC90 indicates a reliable signal.
+🇨🇮 RSCI — RubberSignal Chain Index (September 2026)
 
-🌦️ Weather Scenarios — Conditional Monte Carlo
+📊 Farmer share (DRC-adjusted): 61.3%
 
-Impact on TSR20 price at 12 weeks
+RSCI measures the share of the previous month's TSR20 reference price actually captured by the Ivorian farmer, after adjustment for the reference Dry Rubber Content (DRC).
 
-| Scenario | Supply shock | Bear | Base | Bull | Δ vs reference |
-|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
-| 🌵 Ivory Coast Drought | -3.0% | 1.999 | 2.388 | 2.795 | +0.005 |
-| 🌧️ Southeast Asia Floods | -21.0% | 2.038 | 2.433 | 2.851 | +0.051 |
-| ☀️ Global Drought Stress | -17.2% | 2.042 | 2.427 | 2.840 | +0.045 |
-| 🌿 Optimal Weather Conditions | +10.0% | 1.988 | 2.363 | 2.768 | -0.019 |
+> ⚠️ APROMAC price for November 2026 not yet entered: latest available month September 2026.
 
-Most bullish scenario: 🌧️ Southeast Asia Floods (+0.051 USD/kg)
+| Indicator | Value | Nature |
+|──────────────────────────────|──────────────────────────────|──────────────────────────────|
+| APROMAC price (September 2026, type non precise, releve presse, press reading of 06/10/2026) | 484 FCFA/kg | O |
+| TSR20 reference (August 2026, World Bank) | 2.24 USD/kg | T |
+| Dry-equivalent farmer price (DRC 60%, to be confirmed after the 2026 reform) | 1.373 USD/kg | E |
+| RSCI (farmer share) | 61.3% | E |
+| Official share in force | 66% | O |
+| Difference RSCI − official share (indicative) | -4.7 points | E |
 
-> Price/supply elasticity calibrated on ANRPC 2015-2025.
+Nature: T = transaction, O = official, D = declaration, E = calculated estimate, J = judgement. Method version: RSCI v2; APROMAC v1.
 
-🇨🇮 RSCI — RubberSignal Chain Index
+For the September 2026 price, the official farmer share is 66% — inter-professional agreement of 16 February 2026, endorsed by the CHPC on 29 April 2026 (in force since 1 May 2026) — framework: Law N°2017-540.
 
-🟡 Farmer share (DRC-adjusted): 58.8%
+> ⚠️ Reading note: the official share applies to the net reference price (Singapore price minus processing, logistics, export costs and levies, not published in detail), whereas RSCI is measured against the gross international price. The difference therefore does not indicate non-compliance with the mechanism: it measures the share of the world price left to the farmer after all supply-chain costs.
 
-First publication of this exclusive RubberSignal indicator. RSCI measures the share of the international TSR20 (LGM) price actually captured by the Ivorian farmer, after adjustment for the official Dry Rubber Content (DRC).
+> V2 methodology: TSR20 reference = World Bank monthly average for the month preceding the APROMAC price (the 2026 mechanism is based on the previous month's SGX-SICOM TSR20 quotes); reference DRC 60%, to be confirmed after the 2026 reform. The TSR10 premium is not yet included.
 
-| Indicator | Value |
-|──────────────────────────────|──────────────────────────────|
-| APROMAC price (2026-06) | 474 FCFA/kg |
-| Dry-equivalent farmer price (DRC 60%) | 1.3935 USD/kg |
-| RSCI (farmer share) | 58.8% |
-| Official CHPH mechanism | 63% |
-| Gap | -4.2 points |
+──────────────────────────────
 
-The CHPH allocation mechanism (decision n°0037, May 2022 — framework set by Law N°2017-540) provides for 63% of the international price to go to farmers. The current gap between RSCI and this threshold is -4.2 points.
+📰 News of the week
 
-> V1 methodology: DRC used = official rate 60%. The TSR10 premium (CI mills mostly produce TSR10, a higher grade than the TSR20 benchmark) is not yet included — see RSCI v2. Exclusive RubberSignal indicator, tracked weekly.
+News unavailable this week (NewsAPI error).
 
 ──────────────────────────────
 
@@ -133,21 +117,11 @@ To be completed manually — your field observation this week: local CI prices, 
 
 ──────────────────────────────
 
-🌿 Ivory Coast Focus
-
-Côte d'Ivoire is Africa's leading natural rubber producer and ranks in the global top 5. RubberSignal delivers weekly field-level insights on the Ivorian rubber industry.
-
-Key CI Reference Data:
-
-- Annual production: ~1.2 million tonnes
-- Main export port: Abidjan
-- Reference body: APROCAG
-
-──────────────────────────────
-
 RubberSignal — Natural Rubber Market Intelligence | West Africa & Global Markets
 
-Price source: LGM Malaysia (03/06/2026) — mise a jour manuelle | November 02, 2026
+weekly quote reserved (licence) | Monthly references: IMF (FRED PRUBBUSDM), World Bank (Pink Sheet) | Report of November 06, 2026
+
+Calculations prepared and checked by automated tools, including AI models, then validated by the responsible assessor (Martial Sahiri).
 
 Subscribe: rubbersignal.substack.com
 
