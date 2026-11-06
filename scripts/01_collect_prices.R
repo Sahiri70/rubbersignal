@@ -32,6 +32,8 @@
 #   - `publiable` (registre des licences, 00_regles.R section 8)
 #   - historique Banque mondiale TSR20 sur 61 mois (estimation de volatilite, script 05)
 #   - taux USD/CHF (BCE) date dans la synthese
+# Changements v4.3 (mission 3, novembre 2026) :
+#   - alimentation de la base data/db/ (scripts/00_base.R, section 11 bis)
 # Usage   : source("scripts/01_collect_prices.R")   (depuis la racine)
 # =============================================================
 
@@ -493,7 +495,7 @@ json_sortie <- list(
     semaine       = SEMAINE,
     annee         = ANNEE,
     source        = "rubbersignal.com",
-    version       = "4.2"
+    version       = "4.3"
   ),
 
   prix = list(
@@ -515,6 +517,25 @@ fichier_json <- paste0("data/processed/rubbersignal_S", SEMAINE, "_", ANNEE, ".j
 write_json(json_sortie, fichier_json, pretty = TRUE, auto_unbox = TRUE,
            na = "null", null = "null")
 cat("   JSON sauvegarde :", fichier_json, "\n")
+
+
+# ── 11 bis. BASE DE DONNEES data/db/ (mission 3) ─────────────
+# Ajout idempotent (00_base.R) : references mensuelles BM / FMI, APROMAC,
+# RSCI, taux USD/EUR du jour, cotations hebdomadaires datees (sous licence :
+# stockees pour usage interne, publiable = non dans series.csv).
+
+cat("\n>> Base de donnees data/db/...\n")
+source(if (file.exists("scripts/00_base.R")) "scripts/00_base.R" else "00_base.R")
+rs_db_init()
+res_db <- rs_db_ajouter(rs_db_obs_collecte(DATE_COLLECTE, bm = bm, fmi = fmi, apromac = fus$historique,
+                                           rsci = synthese_rsci, fx = fx, tsr = tsr))
+cat("   ", res_db$n_ajoutees, " ligne(s) ajoutee(s), ", res_db$n_identiques, " deja connue(s), ",
+    res_db$n_revisions, " revision(s)\n", sep = "")
+for (i in seq_len(nrow(res_db$revisions))) {
+  r <- res_db$revisions[i, ]
+  cat("::warning::Base : revision ", r$serie_id, " ", r$date_valeur, " : ", r$ancienne, " -> ", r$nouvelle,
+      " (extraction precedente du ", r$date_extraction_ancienne, "), historique conserve\n", sep = "")
+}
 
 
 # ── 12. RESUME FINAL ─────────────────────────────────────────

@@ -65,6 +65,12 @@ jobs:
           FRED_KEY: ${{ secrets.FRED_KEY }}
         run: Rscript scripts/05_simulate.R
 
+      - name: Run Script 06 - EU customs (Eurostat Comext, RAPI-CI)
+        # API publiques sans cle (Eurostat, BCE) ; FRED seulement si la BCE echoue
+        env:
+          FRED_KEY: ${{ secrets.FRED_KEY }}
+        run: Rscript scripts/06_collect_trade.R
+
       - name: Run Script 03 - Build report
         run: Rscript scripts/03_build_report.R
 

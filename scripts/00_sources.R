@@ -488,4 +488,66 @@ rs_hist_tsr20_maj <- function(date, prix_usd, source, indice,
   h
 }
 
+
+# ── 5. DOUANES UE (Eurostat Comext) ET TAUX MENSUELS (mission 3) ──
+# Sources publiques sans cle (sauf FRED, source secondaire). Jamais de valeur
+# de secours : NULL + message si la source ne repond pas.
+
+# Eurostat Comext DS-045409 : importations UE (declarant "EU" ; "EU27_2020"
+# n'est pas accepte par l'API) de NC 40012200, valeur (EUR) et quantite
+# (100 kg), un seul appel pour tous les partenaires. Renvoie le TEXTE brut
+# (sauvegarde dans data/raw/ par le script 06).
+rs_comext_requete <- function(partenaires = c(RS_RAPI_PARTENAIRE_CI, RS_RAPI_PARTENAIRES_ASIE), n_mois = 24) {
+  c(list(format = "JSON", freq = "M", reporter = "EU"),
+    stats::setNames(as.list(partenaires), rep("partner", length(partenaires))),
+    list(product = RS_RAPI_PRODUIT, flow = "1", indicators = "VALUE_IN_EUROS",
+         indicators = "QUANTITY_IN_100KG", lastTimePeriod = n_mois))
+}
+rs_comext_url <- function(q = rs_comext_requete()) httr::modify_url(RS_RAPI_URL_BASE, query = q)
+
+rs_comext_telecharger <- function(q = rs_comext_requete()) {
+  tryCatch({
+    txt <- rs_get(RS_RAPI_URL_BASE, query = q, timeout_s = 90)
+    if (!grepl("\"dimension\"", txt, fixed = TRUE)) stop("reponse sans donnees JSON-stat")
+    txt
+  }, error = function(e) { rs_msg("Eurostat Comext KO : ", conditionMessage(e)); NULL })
+}
+
+# BCE, moyenne mensuelle du taux de reference USD/EUR (serie EXR.M.USD.EUR.SP00.A)
+# URL verifiee le 06/11/2026 : format csvdata, colonnes TIME_PERIOD et OBS_VALUE.
+RS_URL_BCE_EXR_M <- "https://data-api.ecb.europa.eu/service/data/EXR/M.USD.EUR.SP00.A"
+rs_bce_usd_eur_mensuel <- function(debut = "2024-01") {
+  tryCatch({
+    txt <- rs_get(RS_URL_BCE_EXR_M, query = list(format = "csvdata", startPeriod = debut))
+    d <- utils::read.csv(text = txt, stringsAsFactors = FALSE)
+    if (!all(c("TIME_PERIOD", "OBS_VALUE") %in% names(d))) stop("colonnes TIME_PERIOD / OBS_VALUE absentes")
+    v <- suppressWarnings(as.numeric(d$OBS_VALUE))
+    ok <- grepl("^[0-9]{4}-[0-9]{2}$", d$TIME_PERIOD) & is.finite(v)
+    if (!any(ok)) stop("aucune moyenne mensuelle")
+    stopifnot(all(v[ok] > 0.8 & v[ok] < 1.6))
+    data.frame(periode = d$TIME_PERIOD[ok], taux_usd_eur = v[ok],
+               source = "BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+               serie_id = "BCE_USD_EUR_M", stringsAsFactors = FALSE)
+  }, error = function(e) { rs_msg("BCE taux mensuel KO : ", conditionMessage(e)); NULL })
+}
+
+# Source secondaire declaree (methodologie) : FRED EXUSEU, USD pour 1 EUR, mensuel.
+# Appelee seulement si la BCE echoue ; son usage est indique sur chaque valeur.
+rs_fred_exuseu <- function(debut = "2024-01", key = Sys.getenv("FRED_KEY")) {
+  if (!nzchar(key)) { rs_msg("FRED EXUSEU : cle FRED_KEY absente"); return(NULL) }
+  tryCatch({
+    txt <- rs_get("https://api.stlouisfed.org/fred/series/observations",
+                  query = list(series_id = "EXUSEU", api_key = key, file_type = "json",
+                               observation_start = paste0(debut, "-01")))
+    o <- jsonlite::fromJSON(txt)$observations
+    o <- o[o$value != ".", , drop = FALSE]
+    if (nrow(o) == 0) stop("aucune observation")
+    v <- as.numeric(o$value)
+    stopifnot(all(is.finite(v)), all(v > 0.8 & v < 1.6))
+    data.frame(periode = substr(o$date, 1, 7), taux_usd_eur = v,
+               source = "FRED EXUSEU (Federal Reserve), source secondaire : BCE indisponible",
+               serie_id = "FRED_EXUSEU", stringsAsFactors = FALSE)
+  }, error = function(e) { rs_msg("FRED EXUSEU KO : ", sub("api_key=[^&]+", "api_key=****", conditionMessage(e))); NULL })
+}
+
 `%||%` <- function(a, b) if (is.null(a) || length(a) == 0 || (length(a) == 1 && is.na(a))) b else a

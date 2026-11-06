@@ -14,6 +14,8 @@
 #   9. Pre-RSI : sens, poids, renormalisation, seuil de 3 composantes
 #      (9 bis : lecture des taux de change sans valeur de secours)
 #  10. Volatilite historique (Monte Carlo, fourchette sans derive)
+#  11. RAPI-CI v1 : douanes UE (Eurostat Comext), prix CIF, composite Asie,
+#      decote CI, drapeaux, phrase de lecture                (mission 3)
 # Usage   : source("scripts/00_regles.R")
 # =============================================================
 
@@ -217,9 +219,9 @@ rs_date_fr <- function(d) if (is.null(d) || is.na(d)) "date inconnue" else forma
 
 RS_METHODES <- data.frame(
   cle        = c("prix_hebdo", "reference_mensuelle", "apromac", "rsci", "terrain",
-                 "pre_rsi", "volatilite"),
+                 "pre_rsi", "volatilite", "rapi_ci"),
   version    = c("Prix hebdo v1", "Références mensuelles v1", "APROMAC v1", "RSCI v2",
-                 "Terrain v1", "Pré-RSI v2", "Volatilité v1"),
+                 "Terrain v1", "Pré-RSI v2", "Volatilité v1", "RAPI-CI v1"),
   date_effet = "2026-11-03",
   stringsAsFactors = FALSE
 )
@@ -248,19 +250,28 @@ RS_LEGENDE_NATURE_EN <- "Nature: T = transaction, O = official, D = declaration,
 
 RS_REGISTRE_SERIES <- data.frame(
   serie = c("MRB_SMR20", "SGX_TSR20", "LGM", "RTAS_SG", "JPX_TOCOM", "SHFE_RU", "INDEXMUNDI",
-            "BM_TSR20", "FMI_PRUBBUSDM", "APROMAC", "RSCI", "TERRAIN_CI", "PRE_RSI", "VOLATILITE"),
+            "BM_TSR20", "FMI_PRUBBUSDM", "APROMAC", "RSCI", "TERRAIN_CI", "PRE_RSI", "VOLATILITE",
+            "EUROSTAT_COMEXT", "RAPI_CI", "BCE_USD_EUR", "FRED_EXUSEU"),
   libelle = c("MRB SMR20 (ex-LGM)", "SGX-SICOM TSR20", "LGM / MRB (site officiel)", "rtas.sg (republication MRB / SGX)",
               "JPX / TOCOM RSS3", "SHFE RU", "IndexMundi",
               "Banque mondiale, Pink Sheet TSR20", "FMI, Global price of Rubber (FRED PRUBBUSDM)",
               "APROMAC, prix bord-champ", "RSCI (calcul RubberSignal)", "Releve terrain CI",
-              "Pre-RSI (calcul RubberSignal)", "Fourchette de volatilite (calcul RubberSignal)"),
+              "Pre-RSI (calcul RubberSignal)", "Fourchette de volatilite (calcul RubberSignal)",
+              "Eurostat Comext DS-045409 (importations UE, NC 4001 22 00)",
+              "RAPI-CI (calcul RubberSignal : prix CIF UE, composite Asie, decote CI)",
+              "BCE, taux de reference USD/EUR", "FRED EXUSEU (Federal Reserve, USD/EUR mensuel)"),
   publiable = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-                TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
+                TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE,
+                TRUE, TRUE, TRUE, TRUE),
   licence = c("sous licence", "sous licence", "sous licence", "sous licence", "sous licence",
               "sous licence", "sous licence", "CC BY 4.0", "donnees publiques",
               "publication officielle", "calcul RubberSignal (entrees publiables)",
-              "saisie RubberSignal", "calcul RubberSignal", "calcul RubberSignal (entree BM)"),
-  nature = c("O", "T", "O", "O", "T", "T", "O", "T", "T", "O", "E", "D", "E", "E"),
+              "saisie RubberSignal", "calcul RubberSignal", "calcul RubberSignal (entree BM)",
+              "Eurostat : reutilisation libre avec mention de la source (decision 2011/833/UE)",
+              "calcul RubberSignal (entrees Eurostat et BCE)",
+              "BCE : reutilisation libre avec mention de la source", "donnees publiques (Federal Reserve, via FRED)"),
+  nature = c("O", "T", "O", "O", "T", "T", "O", "T", "T", "O", "E", "D", "E", "E",
+             "T", "T", "O", "O"),
   stringsAsFactors = FALSE
 )
 
@@ -485,3 +496,210 @@ rs_volatilite_historique <- function(periodes, prix, n_mois = 60, min_obs = 24) 
 # Quantiles analytiques d'un GBM sans derive (mediane = prix de depart)
 rs_quantile_gbm <- function(prix0, vol_annuelle, horizon_sem, p)
   prix0 * exp(stats::qnorm(p) * vol_annuelle * sqrt(horizon_sem / 52))
+
+
+# ── 11. RAPI-CI v1 : DOUANES UE (Eurostat Comext DS-045409) ──
+# Methodologie, section 1 :
+#   prix CIF UE (EUR/kg) = valeur declaree (EUR) / (quantite en 100 kg x 100)
+#   USD/kg               = EUR/kg x taux USD/EUR moyen du mois (BCE ; FRED EXUSEU
+#                          en source secondaire, signalee sur la valeur)
+#   composite Asie       = somme des valeurs / somme des quantites (TH, ID, MY, VN)
+#                          -> NA si un des 4 partenaires manque (panier incomplet)
+#   decote CI            = prix CI / composite Asie - 1 (en %, calcule en EUR)
+# Controles : < 5 000 t CI dans le mois -> faible_liquidite ;
+#             |variation mensuelle du prix CI EUR/kg| > 15 % -> alerte_variation
+#             (mois consecutifs uniquement, jamais de suppression) ;
+#             revision Eurostat : detectee par la base (scripts/00_base.R).
+# Nature : T pour les prix CIF, E pour la decote. Version : RAPI-CI v1.
+
+RS_RAPI_PRODUIT            <- "40012200"
+RS_RAPI_PRODUIT_LIBELLE    <- "NC 4001 22 00"
+RS_RAPI_PARTENAIRE_CI      <- "CI"
+RS_RAPI_PARTENAIRES_ASIE   <- c("TH", "ID", "MY", "VN")
+RS_RAPI_SEUIL_LIQUIDITE_T  <- 5000
+RS_RAPI_SEUIL_VARIATION    <- 0.15
+RS_RAPI_SOURCE             <- "Eurostat Comext (DS-045409)"
+RS_RAPI_URL_BASE           <- "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409"
+
+# Lecture d'une reponse JSON-stat 2.0 de l'API Comext (texte ou liste deja lue).
+# Les valeurs sont indexees par position (cles "0", "1"...) dans l'ordre
+# ligne par ligne des dimensions (`id`, `size`) ; une cle absente = trou -> NA.
+# Retour : data.frame long (une ligne par combinaison de dimensions), attribut
+# "updated" = date de mise a jour Eurostat (AAAA-MM-JJ).
+rs_comext_lire <- function(x) {
+  j <- if (is.character(x)) jsonlite::fromJSON(paste(x, collapse = "\n"), simplifyVector = FALSE) else x
+  if (is.null(j$id) || is.null(j$size) || is.null(j$dimension))
+    stop("Comext : reponse sans structure JSON-stat (id/size/dimension absents)")
+  ids  <- unlist(j$id); size <- as.integer(unlist(j$size))
+  if (length(ids) != length(size)) stop("Comext : id et size incoherents")
+  cats <- lapply(ids, function(d) {
+    ix <- unlist(j$dimension[[d]]$category$index)
+    if (is.null(ix)) stop("Comext : dimension sans index : ", d)
+    names(sort(ix))
+  })
+  names(cats) <- ids
+  if (!identical(unname(lengths(cats)), size)) stop("Comext : taille des dimensions incoherente")
+  # ordre ligne par ligne : la derniere dimension varie le plus vite
+  stride <- rev(cumprod(rev(c(size[-1], 1L))))
+  grille <- expand.grid(rev(cats), KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE)[, ids, drop = FALSE]
+  pos <- Reduce(`+`, lapply(seq_along(ids), function(k) (match(grille[[ids[k]]], cats[[ids[k]]]) - 1L) * stride[k]))
+  vals <- j$value %||% list()
+  if (is.list(vals) && is.null(names(vals)) && length(vals) > 0) names(vals) <- as.character(seq_along(vals) - 1L)
+  grille$valeur <- vapply(as.character(pos), function(k) {
+    v <- vals[[k]]
+    if (is.null(v)) NA_real_ else suppressWarnings(as.numeric(v))
+  }, numeric(1), USE.NAMES = FALSE)
+  maj <- as.character(j$updated %||% NA_character_)
+  attr(grille, "updated") <- if (is.na(maj)) NA_character_ else substr(maj, 1, 10)
+  grille
+}
+
+# Tableau large : periode, partenaire, valeur_eur, quantite_100kg
+rs_comext_large <- function(long) {
+  need <- c("time", "partner", "indicators", "valeur")
+  if (!all(need %in% names(long))) stop("Comext : colonnes manquantes (time/partner/indicators)")
+  cle <- unique(long[, c("time", "partner")])
+  get <- function(ind) {
+    s <- long[long$indicators == ind, , drop = FALSE]
+    s$valeur[match(paste(cle$time, cle$partner), paste(s$time, s$partner))]
+  }
+  out <- data.frame(periode = cle$time, partenaire = cle$partner,
+                    valeur_eur = get("VALUE_IN_EUROS"), quantite_100kg = get("QUANTITY_IN_100KG"),
+                    stringsAsFactors = FALSE)
+  out <- out[order(out$periode, out$partenaire), , drop = FALSE]
+  rownames(out) <- NULL
+  attr(out, "updated") <- attr(long, "updated")
+  out
+}
+
+# Prix unitaire EUR/kg ; NA si valeur ou quantite absente ou nulle
+rs_prix_cif_eur_kg <- function(valeur_eur, quantite_100kg) {
+  ok <- is.finite(valeur_eur) & is.finite(quantite_100kg) & quantite_100kg > 0
+  ifelse(ok, valeur_eur / (quantite_100kg * 100), NA_real_)
+}
+
+# Composite pondere par les volumes : somme des valeurs / somme des quantites.
+# Panier incomplet (un partenaire attendu sans valeur ou quantite) -> NA.
+rs_composite_pondere <- function(valeurs_eur, quantites_100kg, partenaires,
+                                 attendus = RS_RAPI_PARTENAIRES_ASIE) {
+  ok <- is.finite(valeurs_eur) & is.finite(quantites_100kg) & quantites_100kg > 0
+  manquants <- setdiff(attendus, partenaires[ok])
+  if (length(manquants) > 0)
+    return(list(eur_kg = NA_real_, valeur_eur = NA_real_, quantite_100kg = NA_real_,
+                complet = FALSE, manquants = manquants))
+  ok <- ok & partenaires %in% attendus
+  list(eur_kg = sum(valeurs_eur[ok]) / (sum(quantites_100kg[ok]) * 100),
+       valeur_eur = sum(valeurs_eur[ok]), quantite_100kg = sum(quantites_100kg[ok]),
+       complet = TRUE, manquants = character())
+}
+
+rs_decote_pct <- function(prix_ci, prix_ref) {
+  ifelse(is.finite(prix_ci) & is.finite(prix_ref) & prix_ref > 0, (prix_ci / prix_ref - 1) * 100, NA_real_)
+}
+
+# Index de mois (pour tester la consecutivite) : "2026-08" -> 2026 * 12 + 8
+rs_mois_index <- function(p) as.integer(substr(p, 1, 4)) * 12L + as.integer(substr(p, 6, 7))
+
+# Calcul RAPI-CI par mois.
+#   large : sortie de rs_comext_large (ou reconstruite depuis la base)
+#   taux  : data.frame(periode, taux_usd_eur, source) ; NULL ou mois absent -> USD NA
+# Retour : un data.frame, une ligne par mois ou la CI a une valeur ou une quantite.
+rs_rapi_calcul <- function(large, taux = NULL, seuil_t = RS_RAPI_SEUIL_LIQUIDITE_T,
+                           seuil_var = RS_RAPI_SEUIL_VARIATION, asie = RS_RAPI_PARTENAIRES_ASIE) {
+  ci <- large[large$partenaire == RS_RAPI_PARTENAIRE_CI &
+                (is.finite(large$valeur_eur) | is.finite(large$quantite_100kg)), , drop = FALSE]
+  ci <- ci[order(ci$periode), , drop = FALSE]
+  if (nrow(ci) == 0) return(data.frame())
+  rows <- lapply(seq_len(nrow(ci)), function(i) {
+    p  <- ci$periode[i]
+    a  <- large[large$periode == p & large$partenaire %in% asie, , drop = FALSE]
+    cp <- rs_composite_pondere(a$valeur_eur, a$quantite_100kg, a$partenaire, asie)
+    tx <- if (!is.null(taux) && nrow(taux) > 0) taux[taux$periode == p, , drop = FALSE] else data.frame()
+    t_val <- if (nrow(tx) > 0) as.numeric(tx$taux_usd_eur[1]) else NA_real_
+    t_src <- if (nrow(tx) > 0) as.character(tx$source[1]) else NA_character_
+    eur   <- rs_prix_cif_eur_kg(ci$valeur_eur[i], ci$quantite_100kg[i])
+    vol_t <- if (is.finite(ci$quantite_100kg[i])) ci$quantite_100kg[i] / 10 else NA_real_
+    data.frame(periode = p, ci_valeur_eur = ci$valeur_eur[i], ci_quantite_100kg = ci$quantite_100kg[i],
+               volume_ci_t = vol_t, ci_eur_kg = eur, taux_usd_eur = t_val, taux_source = t_src,
+               ci_usd_kg = eur * t_val,
+               asie_valeur_eur = cp$valeur_eur, asie_quantite_100kg = cp$quantite_100kg,
+               asie_eur_kg = cp$eur_kg, asie_usd_kg = cp$eur_kg * t_val,
+               asie_complet = cp$complet, asie_manquants = paste(cp$manquants, collapse = ","),
+               decote_pct = rs_decote_pct(eur, cp$eur_kg),
+               faible_liquidite = is.finite(vol_t) && vol_t < seuil_t,
+               stringsAsFactors = FALSE)
+  })
+  d <- do.call(rbind, rows)
+  idx <- rs_mois_index(d$periode)
+  prec <- c(NA_real_, utils::head(d$ci_eur_kg, -1))
+  consec <- c(FALSE, diff(idx) == 1)
+  d$variation_pct <- ifelse(consec & is.finite(d$ci_eur_kg) & is.finite(prec), (d$ci_eur_kg / prec - 1) * 100, NA_real_)
+  d$alerte_variation <- is.finite(d$variation_pct) & abs(d$variation_pct) > seuil_var * 100
+  d
+}
+
+# Fraicheur d'une serie douaniere : Eurostat publie le mois M environ 6 a 7
+# semaines apres sa fin. La valeur est la « derniere valeur disponible » tant
+# que la mise a jour Eurostat a 45 jours ou moins ; au-dela : « perime ».
+# L'age depuis la fin de la periode est toujours donne (information).
+rs_rapi_fraicheur <- function(date_maj, periode, date_ref = Sys.Date(), max_jours = RS_MAX_JOURS_MENSUEL) {
+  f <- rs_fraicheur(date_maj, date_ref, max_jours)
+  fin <- if (length(periode) == 1 && !is.na(periode)) seq(rs_mois_vers_date(periode), by = "1 month", length.out = 2)[2] - 1 else NA
+  list(statut = if (identical(f$statut, "frais")) "derniere_valeur_disponible" else f$statut,
+       age_jours_maj = f$age_jours,
+       age_jours_fin_periode = if (is.na(fin)) NA_real_ else as.numeric(as.Date(date_ref) - fin),
+       max_jours = max_jours)
+}
+
+# Phrase de lecture factuelle, construite UNIQUEMENT a partir des chiffres
+# d'une ligne du bloc rapi_ci du JSON (liste : periode, ci_usd_kg, ci_eur_kg,
+# asie_usd_kg, decote_pct, bm_tsr20_usd_kg, ecart_ci_bm_pct). La decote est un
+# ecart de prix observe : aucun jugement (pas de « manque a gagner »).
+rs_rapi_phrase <- function(m, langue = "fr") {
+  fr <- langue == "fr"
+  n <- function(x) { v <- suppressWarnings(as.numeric(unlist(x %||% NA))); if (length(v) == 1) v else NA_real_ }
+  ci_usd <- n(m$ci_usd_kg); ci_eur <- n(m$ci_eur_kg); asie <- n(m$asie_usd_kg)
+  dec <- n(m$decote_pct); bm <- n(m$bm_tsr20_usd_kg); ec <- n(m$ecart_ci_bm_pct)
+  mois <- rs_mois_libelle(m$periode, langue)
+  if (!is.finite(ci_eur)) return(if (fr) paste0("Prix CIF UE du caoutchouc ivoirien indisponible pour ", mois, ".")
+                                 else paste0("EU CIF price of Ivorian rubber unavailable for ", mois, "."))
+  f3 <- function(x) rs_rapi_fmt(x, 3)
+  prix <- if (is.finite(ci_usd)) paste0(f3(ci_usd), " USD/kg (", f3(ci_eur), " €/kg)") else paste0(f3(ci_eur), " €/kg")
+  p1 <- if (fr) paste0("En ", mois, ", le caoutchouc ivoirien (", RS_RAPI_PRODUIT_LIBELLE, ") est entré dans l'UE à ", prix)
+        else paste0("In ", mois, ", Ivorian rubber (", RS_RAPI_PRODUIT_LIBELLE, ") entered the EU at ", prix)
+  asie_txt <- if (is.finite(asie)) paste0(" (", f3(asie), " USD/kg)") else ""
+  p1 <- paste0(p1, if (is.finite(dec)) {
+    if (fr) paste0(", soit ", rs_rapi_fmt(abs(dec), 1), " % ",
+                   if (dec < 0) "sous le" else if (dec > 0) "au-dessus du" else "au niveau du",
+                   " composite asiatique", asie_txt, ".")
+    else paste0(", i.e. ", rs_rapi_fmt(abs(dec), 1), "% ", if (dec < 0) "below" else if (dec > 0) "above" else "level with",
+                " the Asian composite", asie_txt, ".")
+  } else if (fr) " ; composite asiatique indisponible pour ce mois." else "; Asian composite unavailable for this month.")
+  p2 <- if (is.finite(bm) && is.finite(ec)) {
+    if (fr) paste0(" Au même mois, le TSR20 Banque mondiale était de ", bm, " USD/kg ; le prix CIF UE ivoirien s'en écarte de ",
+                   rs_rapi_fmt(ec, 1, signe = TRUE), " % (prix de nature différente : rendu frontière UE contre cotation SGX).")
+    else paste0(" In the same month, the World Bank TSR20 stood at ", bm, " USD/kg; the Ivorian EU CIF price differs from it by ",
+                rs_rapi_fmt(ec, 1, signe = TRUE), "% (different price bases: delivered EU border vs SGX quote).")
+  } else if (fr) " TSR20 Banque mondiale du même mois indisponible." else " World Bank TSR20 for the same month unavailable."
+  paste0(p1, p2)
+}
+
+# Affichage : nombre fixe de decimales (convention : USD/kg et EUR/kg a 3 decimales),
+# signe explicite en option ; NA -> "—"
+rs_rapi_fmt <- function(x, d, signe = FALSE) {
+  v <- suppressWarnings(as.numeric(unlist(x %||% NA)))
+  if (length(v) != 1 || !is.finite(v)) return("—")
+  s <- formatC(v, format = "f", digits = d)
+  if (signe && v > 0) paste0("+", s) else s
+}
+
+RS_RAPI_LIMITES_FR <- c(
+  "prix **rendu frontière UE** (CIF : fret et assurance compris), pas un prix FOB ;",
+  "la valeur en douane reflète des contrats souvent signés plusieurs semaines avant l'arrivée : l'écart se lit sur une tendance, pas mois par mois ;",
+  "le code NC 4001 22 00 regroupe plusieurs grades (TSR10, TSR20…) ;"
+)
+RS_RAPI_LIMITES_EN <- c(
+  "**delivered EU-border** price (CIF: freight and insurance included), not an FOB price;",
+  "customs values reflect contracts often signed several weeks before arrival: read the gap as a trend, not month by month;",
+  "CN code 4001 22 00 pools several grades (TSR10, TSR20…);"
+)
