@@ -1,0 +1,156 @@
+# RubberSignal #46 | TSR20 Banque mondiale : 2.55 USD/kg (octobre 2026) | Semaine 46 - 2026
+
+*Votre veille hebdomadaire sur le marché du caoutchouc naturel — Afrique de l'Ouest & marchés mondiaux*
+
+---
+
+## 📊 Prix de la semaine
+
+### Références datées
+
+| Série | Valeur | Date de la valeur | Source | Nature | Statut |
+|---|---|---|---|---|---|
+| Prix mondial FMI (mensuel) | 2.7574 USD/kg (125.075 cents/lb) | septembre 2026 | FMI via FRED (PRUBBUSDM) | T | dernière valeur disponible |
+| TSR20 Banque mondiale (mensuel) | 2.55 USD/kg | octobre 2026 | Banque mondiale, Pink Sheet | T | dernière valeur disponible |
+
+*Cotation hebdomadaire réservée (licence) : non reproduite dans cette publication.*
+
+*Nature : T = transaction, O = officiel, D = déclaration, E = estimation calculée, J = jugement. Version de méthode : Références mensuelles v1.*
+
+### Variation & tendance
+
+*Calculées sur la cotation hebdomadaire : cotation hebdomadaire réservée (licence).*
+
+## 🔍 Analyse de la semaine
+
+**Cotation hebdomadaire réservée (licence)** : elle n'est pas reproduite dans cette publication. Dernières références mensuelles disponibles : FMI (FRED PRUBBUSDM) septembre 2026 : **2.7574 USD/kg** ; Banque mondiale TSR20 octobre 2026 : **2.55 USD/kg**.
+
+> *Cette analyse est générée automatiquement à partir de données publiques. Elle ne constitue pas un conseil en investissement.*
+
+## 📡 Signaux faibles — Pré-RSI
+
+### ➡️ RubberSignal Index : **49 / 100**
+
+*Neutre — marché équilibré*
+
+| Composante | Mesure | Sens pour le prix | Poids effectif |
+|---|---|---|---|
+| Météo / offre (4 zones) | Score d'offre 75/100 — Offre abondante — pression baissière | ↓ baisse | 35.7 % (nominal 25 %) |
+| Devises (yuan) | Yuan fort (-2.4% vs moyenne 12 mois) — demande soutenue — USD/CNY 6.6798 (09/11/2026, ExchangeRate API (v6)) ; réf. moyenne 12 mois 6.8441 (FRED DEXCHUS) | ↑ hausse | 28.6 % (nominal 20 %) |
+| Demande industrielle | Score 50/100 — Demande neutre — équilibré (confiance industrielle OCDE : z moyen 1.14, 3 pays) | → neutre | 35.7 % (nominal 25 %) |
+| Terrain CI | Pas de relevé terrain cette semaine | — absente | 0 % (nominal 15 %) |
+| Géopolitique | Aucun article reçu cette semaine — donnée indisponible — composante retirée | — absente | 0 % (nominal 15 %) |
+
+> *Composante(s) absente(s) : Terrain CI, Géopolitique. Les poids des composantes disponibles sont renormalisés à 100 %.*
+
+*Hors score :* 
+
+| Signal | Valeur |
+|---|---|
+| 💱 Ringgit malaisien (MYR) | Ringgit stable (0.7% vs moyenne 12 mois) — neutre — USD/MYR 4.0589 |
+| 🚢 Fret maritime | Indisponible : aucune source datée (BDI, tarif CI-UE, délai Abidjan-Rotterdam) |
+| 📦 Stocks mondiaux | Donnée indisponible |
+
+> *Pré-RSI : score composite 0–100 orienté prix (> 55 haussier, < 45 baissier, entre les deux neutre). Poids nominaux : météo 25 %, devises 20 %, demande 25 %, terrain 15 %, géopolitique 15 %, renormalisés sur les composantes disponibles ; non publié avec moins de 3 composantes. Pondérations non backtestées. Nature : E (estimation calculée) — Pré-RSI v2. Analyse, pas un indice de prix.*
+
+---
+
+### 📏 Fourchette de volatilité TSR20 — 10 000 simulations
+
+*Ce n'est pas une prévision de hausse ou de baisse : la simulation est centrée sur le prix de départ (sans tendance) et montre l'amplitude des variations compatible avec la volatilité historique.*
+
+| Horizon | Borne basse (10 %) | Médiane | Borne haute (90 %) |
+|---|---|---|---|
+| 4 semaines | 2.409 USD/kg (-5.5 %) | 2.551 USD/kg | 2.699 USD/kg (+5.8 %) |
+| 12 semaines | 2.312 USD/kg (-9.3 %) | 2.547 USD/kg | 2.812 USD/kg (+10.3 %) |
+| 26 semaines | 2.205 USD/kg (-13.5 %) | 2.547 USD/kg | 2.940 USD/kg (+15.3 %) |
+
+> *Volatilité annuelle 15.9 %, estimée sur 60 rendements mensuels (logarithmiques) du TSR20 Banque mondiale, de octobre 2021 à octobre 2026. Point de départ : 2.55 USD/kg (moyenne mensuelle Banque mondiale, Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20), octobre 2026). Modèle : mouvement brownien géométrique sans dérive (Thompson, 2000). Nature : E (estimation calculée) — Volatilité v1. Ne constitue pas un conseil en investissement.*
+
+### 🎯 Sensibilité du Pré-RSI (hypothèse de travail non calibrée)
+
+| Indicateur | Valeur |
+|---|---|
+| Pré-RSI central | 49 / 100 |
+| Intervalle 80 % | [42.4 – 54.7] |
+| Intervalle 90 % | [40.6 – 56.4] |
+| Tirages gardant le même classement (neutre) | 68.5 % |
+
+> *5000 tirages : chaque composante disponible est perturbée d'un bruit gaussien dont l'amplitude (météo ±8, devises ±5, demande ±10, terrain ±12, géopolitique ±8 points) est une hypothèse de travail non calibrée. Ce n'est pas une mesure de fiabilité statistique.*
+
+## 🇨🇮 RSCI — RubberSignal Chain Index (septembre 2026)
+
+### 📊 Part planteur (DRC-corrigée) : **61.3%**
+
+*Le RSCI mesure la part du prix de référence TSR20 du mois précédent effectivement captée par le planteur ivoirien, après correction du taux de caoutchouc sec (DRC) de référence.*
+
+> ⚠️ *Prix APROMAC de novembre 2026 non encore saisi : dernier mois disponible septembre 2026.*
+
+| Indicateur | Valeur | Nature |
+|---|---|---|
+| Prix APROMAC (septembre 2026, type non precise, releve presse, relevé presse du 06/10/2026) | 484 FCFA/kg | O |
+| Référence TSR20 (août 2026, Banque mondiale) | 2.24 USD/kg | T |
+| Prix planteur, équivalent sec (DRC 60 %, à confirmer après la réforme 2026) | 1.373 USD/kg | E |
+| **RSCI** (part planteur) | **61.3%** | E |
+| Part officielle en vigueur | 66% | O |
+| Différence RSCI − part officielle (indicative) | -4.7 points | E |
+
+*Nature : T = transaction, O = officiel, D = déclaration, E = estimation calculée, J = jugement. Version de méthode : RSCI v2 ; APROMAC v1.*
+
+Pour le prix de septembre 2026, la part officielle du planteur est de 66 % — accord interprofessionnel du 16 février 2026, entériné par le CHPC le 29 avril 2026 (en vigueur depuis le 1er mai 2026) — cadre : Loi N°2017-540.
+
+> ⚠️ *Avertissement de lecture : la part officielle s'applique au prix de référence **net** (prix de Singapour diminué des coûts de transformation, de logistique, d'export et de la fiscalité, non publiés en détail), alors que le RSCI se rapporte au prix international **brut**. La différence n'indique donc pas un non-respect du mécanisme : elle mesure la part du prix mondial qui reste au planteur après l'ensemble des coûts de la filière.*
+
+> *Méthodologie v2 : référence TSR20 = moyenne mensuelle Banque mondiale du mois précédant le prix APROMAC (le mécanisme 2026 se fonde sur les cotations SGX-SICOM TSR20 du mois précédent) ; DRC de référence 60 %, à confirmer après la réforme 2026. La prime TSR10 n'est pas encore intégrée.*
+
+---
+
+## 🌍 Matrice Afrique de l'Ouest — RAPI-CI
+
+*Dernière valeur disponible : août 2026 (mise à jour Eurostat du 16/10/2026 ; Eurostat publie un mois environ 6 à 7 semaines après sa fin).*
+
+| Mois | Volume CI (t) | CI €/kg | CI USD/kg | Composite Asie USD/kg | Décote CI/Asie | Nature | Drapeaux |
+|---|---|---|---|---|---|---|---|
+| mars 2026 | 27768 | 1.739 | 2.010 | 2.146 | -6.3 % | T / E | — |
+| avril 2026 | 33393 | 1.837 | 2.150 | 2.254 | -4.6 % | T / E | — |
+| mai 2026 | 31183 | 1.815 | 2.119 | 2.314 | -8.4 % | T / E | — |
+| juin 2026 | 30589 | 1.900 | 2.188 | 2.324 | -5.8 % | T / E | — |
+| juillet 2026 | 31012 | 1.934 | 2.208 | 2.389 | -7.6 % | T / E | — |
+| août 2026 | 28410 | 2.081 | 2.412 | 2.617 | -7.8 % | T / E | — |
+
+*Nature : T = transaction, O = officiel, D = déclaration, E = estimation calculée, J = jugement (prix CIF : T ; décote : E). Drapeaux : faible liquidité = moins de 5000 t importées de Côte d'Ivoire dans le mois ; variation = plus de 15 % d'un mois à l'autre (valeur publiée avec mention, jamais supprimée) ; révisé = mois révisé par Eurostat, historique conservé. Version de méthode : RAPI-CI v1.*
+
+En août 2026, le caoutchouc ivoirien (NC 4001 22 00) est entré dans l'UE à 2.412 USD/kg (2.081 €/kg), soit 7.8 % sous le composite asiatique (2.617 USD/kg). Au même mois, le TSR20 Banque mondiale était de 2.24 USD/kg ; le prix CIF UE ivoirien s'en écarte de +7.7 % (prix de nature différente : rendu frontière UE contre cotation SGX).
+
+*Lecture : décote = prix CIF UE ivoirien ÷ composite asiatique (Thaïlande, Indonésie, Malaisie, Vietnam, pondéré par les volumes) − 1. Une décote négative signifie que le caoutchouc ivoirien entre dans l'UE moins cher que l'asiatique : c'est un écart de prix observé.*
+
+> **Limites**
+> - prix **rendu frontière UE** (CIF : fret et assurance compris), pas un prix FOB ;
+> - la valeur en douane reflète des contrats souvent signés plusieurs semaines avant l'arrivée : l'écart se lit sur une tendance, pas mois par mois ;
+> - le code NC 4001 22 00 regroupe plusieurs grades (TSR10, TSR20…) ;
+> - FOB Abidjan : **non publié** (aucune source de fret publique, datée et réutilisable n'est retenue).
+
+*Source : Eurostat Comext (DS-045409), NC 4001 22 00, mise à jour du 16/10/2026. Taux USD/EUR : moyenne mensuelle BCE (EXR.M.USD.EUR.SP00.A). Comparaison : TSR20 Banque mondiale (Pink Sheet), hors indice. Calcul RubberSignal.*
+
+---
+
+## 📰 Actualités de la semaine
+
+*Actualités indisponibles cette semaine (2 articles bruts recus, aucun retenu par le filtre de pertinence).*
+
+---
+
+## 📝 Note éditoriale de la semaine
+
+*[À compléter manuellement — votre observation terrain : prix local CI, activité plantation, retour d'un négociant...]*
+
+---
+
+**RubberSignal** — Intelligence marché caoutchouc naturel | Afrique de l'Ouest & marchés mondiaux
+
+*cotation hebdomadaire réservée (licence) | Références mensuelles : FMI (FRED PRUBBUSDM), Banque mondiale (Pink Sheet) | Douanes UE : Eurostat Comext (DS-045409) | Rapport du 09/11/2026*
+
+*Calculs préparés et contrôlés par des outils automatisés, dont des modèles d'IA, puis validés par l'évaluateur responsable (Martial Sahiri).*
+
+*Pour vous abonner : rubbersignal.substack.com*
+

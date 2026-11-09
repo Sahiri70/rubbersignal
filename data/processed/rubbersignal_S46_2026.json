@@ -1,0 +1,2797 @@
+{
+  "meta": {
+    "date_collecte": "2026-11-09",
+    "semaine": 46,
+    "annee": 2026,
+    "source": "rubbersignal.com",
+    "version": "4.3"
+  },
+  "prix": {
+    "synthese": {
+      "prix_actuel": 2.399,
+      "periode": "2026-11",
+      "date_source": "2026-11-06",
+      "statut_fraicheur": "frais",
+      "age_jours": 3,
+      "prix_hebdo": {
+        "valeur": 2.399,
+        "unite": "USD/kg",
+        "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
+        "date_source": "2026-11-06",
+        "methode": "Cotation quotidienne lue le jour de collecte (priorite LGM > MRB via rtas.sg > SGX > IndexMundi) ; perimee au-dela de 14 jours",
+        "indice": "MRB_SMR20",
+        "statut": "frais",
+        "age_jours": 3,
+        "periode": "2026-11-06",
+        "publiable": false,
+        "licence": "sous licence",
+        "nature": "O",
+        "version_methode": "Prix hebdo v1",
+        "date_effet_methode": "2026-11-03"
+      },
+      "taux_usd_chf": {
+        "valeur": 0.8189,
+        "unite": "CHF/USD",
+        "source": "Frankfurter (taux de reference BCE)",
+        "date_source": "2026-11-06",
+        "methode": "EUR/CHF BCE / EUR/USD BCE du jour de collecte"
+      },
+      "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
+      "indice": "MRB_SMR20",
+      "variation_pct": 0,
+      "tendance": "stable",
+      "moyenne_3m": null,
+      "moyenne_6m": null,
+      "min_12m": null,
+      "max_12m": null,
+      "semaines_historique": 2,
+      "note_historique": "Variation = vs semaine precedente ; moyennes/min/max sur historique reel (NA tant que l'historique est trop court)",
+      "prix_chf": 1.965
+    },
+    "reference_mensuelle": {
+      "fmi_prubbusdm": {
+        "valeur": 2.7574,
+        "unite": "USD/kg",
+        "source": "FMI, Global price of Rubber (FRED, serie PRUBBUSDM)",
+        "date_source": "2026-09-01",
+        "methode": "Moyenne mensuelle FMI ; conversion USD/kg = cents/lb x 2.20462 / 100",
+        "periode": "2026-09",
+        "valeur_orig": 125.075,
+        "unite_orig": "US cents/lb",
+        "url": "https://fred.stlouisfed.org/series/PRUBBUSDM",
+        "statut": "derniere_valeur_disponible",
+        "age_jours_fin_periode": 40,
+        "serie": "FMI_PRUBBUSDM",
+        "publiable": true,
+        "licence": "donnees publiques",
+        "nature": "T",
+        "version_methode": "Références mensuelles v1",
+        "date_effet_methode": "2026-11-03"
+      },
+      "bm_tsr20": {
+        "valeur": 2.55,
+        "unite": "USD/kg",
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "date_source": "2026-10-01",
+        "methode": "Moyenne mensuelle Banque mondiale (SGX TSR20) ; fichier CMO-Historical-Data-Monthly.xlsx - Updated on November 03, 2026",
+        "periode": "2026-10",
+        "valeur_orig": null,
+        "unite_orig": null,
+        "url": "https://thedocs.worldbank.org/en/doc/74e8be41ceb20fa0da750cda2f6b9e4e-0050012026/related/CMO-Historical-Data-Monthly.xlsx",
+        "statut": "derniere_valeur_disponible",
+        "age_jours_fin_periode": 9,
+        "serie": "BM_TSR20",
+        "publiable": true,
+        "licence": "CC BY 4.0",
+        "nature": "T",
+        "version_methode": "Références mensuelles v1",
+        "date_effet_methode": "2026-11-03"
+      },
+      "note": "Dernieres moyennes mensuelles publiees (sources libres). Fraicheur mesuree depuis la fin du mois (seuil 45 jours)."
+    },
+    "bord_champ_ci": {
+      "prix_fcfa": 484,
+      "prix_usd": 0.8238,
+      "mois": "2026-09",
+      "type_prix": "type non precise, releve presse",
+      "statut": "perime",
+      "age_mois": 2,
+      "mois_courant": "2026-11",
+      "mois_courant_manquant": true,
+      "alerte": "APROMAC : prix de 2026-11 absent du fichier de saisie ; dernier mois disponible 2026-09 (484 FCFA/kg, 2 mois de retard)",
+      "origine": "presse_auto",
+      "source": "Business & Actuality TV + 7info.ci",
+      "source_url": "https://businessactuality.com/cote-divoire-prix-du-caoutchouc-484-fcfa-kg-en-septembre-2026/",
+      "date_publication": null,
+      "fichier_saisie": "data/reference/prix_apromac.csv",
+      "historique": [
+        {
+          "mois": "2025-10",
+          "prix_fcfa": 349,
+          "type": "bord champ (avant reforme du 01/05/2026)",
+          "source": "gouv.ci, communique APROMAC (novembre 2025 = octobre - 2 FCFA)",
+          "url": "https://www.gouv.ci/uploads/publications/176216524282.pdf",
+          "date_publication": "2025-11-02",
+          "origine": "saisie"
+        },
+        {
+          "mois": "2025-11",
+          "prix_fcfa": 347,
+          "type": "bord champ (avant reforme du 01/05/2026)",
+          "source": "gouv.ci, communique APROMAC du 02/11/2025",
+          "url": "https://www.gouv.ci/uploads/publications/176216524282.pdf",
+          "date_publication": "2025-11-02",
+          "origine": "saisie"
+        },
+        {
+          "mois": "2026-01",
+          "prix_fcfa": 352,
+          "type": "bord champ (avant reforme du 01/05/2026)",
+          "source": "gouv.ci, communique APROMAC (fevrier 2026 = janvier + 16 FCFA)",
+          "url": "https://www.gouv.ci/uploads/publications/177010801737.pdf",
+          "date_publication": "2026-02-03",
+          "origine": "saisie"
+        },
+        {
+          "mois": "2026-02",
+          "prix_fcfa": 368,
+          "type": "bord champ (avant reforme du 01/05/2026)",
+          "source": "gouv.ci, communique APROMAC (a verifier : une source cite 336)",
+          "url": "https://www.gouv.ci/uploads/publications/177010801737.pdf",
+          "date_publication": "2026-02-03",
+          "origine": "saisie"
+        },
+        {
+          "mois": "2026-04",
+          "prix_fcfa": 401,
+          "type": "a confirmer",
+          "source": "erooamba.com (blog, source faible, non officielle)",
+          "url": "https://erooamba.com/posts/prix-hevea-caoutchouc-cote-ivoire-2026",
+          "date_publication": "",
+          "origine": "saisie"
+        },
+        {
+          "mois": "2026-05",
+          "prix_fcfa": 439,
+          "type": "carreau usine",
+          "source": "erooamba.com (blog, source faible, non officielle) - a confirmer APROMAC",
+          "url": "https://erooamba.com/posts/prix-hevea-caoutchouc-cote-ivoire-2026",
+          "date_publication": "",
+          "origine": "saisie"
+        },
+        {
+          "mois": "2026-06",
+          "prix_fcfa": 474,
+          "type": "carreau usine",
+          "source": "FratMat, \"Caoutchouc/ Prix Apromac juin 2026: 474 F CFA/ Kg\"",
+          "url": "https://www.fratmat.info/article/2642261/flash-info/caoutchouc-prix-apromac-juin-2026-474-f-cfa-kg",
+          "date_publication": "2026-06-01",
+          "origine": "saisie"
+        },
+        {
+          "mois": "2026-07",
+          "prix_fcfa": 493,
+          "type": "carreau usine",
+          "source": "AIP",
+          "url": "https://www.aip.ci/?p=386489",
+          "date_publication": "2026-07-03",
+          "origine": "saisie"
+        },
+        {
+          "mois": "2026-09",
+          "prix_fcfa": 484,
+          "type": "type non precise, releve presse",
+          "source": "Business & Actuality TV + 7info.ci",
+          "url": "https://businessactuality.com/cote-divoire-prix-du-caoutchouc-484-fcfa-kg-en-septembre-2026/",
+          "date_publication": null,
+          "origine": "presse_auto"
+        }
+      ],
+      "fcfa_par_usd": 587.51,
+      "taux_eur_usd": 1.1165,
+      "taux_date": "2026-11-06",
+      "spread_export_usd": 1.575,
+      "spread_export_pct": 65.7,
+      "note": "Spread confidentiel — publication prevue RubberSignal V2",
+      "valeur": 484,
+      "unite": "FCFA/kg",
+      "periode": "2026-09",
+      "date_source": "2026-10-06",
+      "date_source_type": "date du releve presse automatique (publication non datee)",
+      "publiable": true,
+      "nature": "O",
+      "version_methode": "APROMAC v1",
+      "date_effet_methode": "2026-11-03"
+    },
+    "rsci": {
+      "mois_rsci": "2026-09",
+      "drc_officiel": 0.6,
+      "drc_statut": "a confirmer apres reforme 2026",
+      "mecanisme_officiel_pct": 66,
+      "mecanisme_date_effet": "2026-05-01",
+      "mecanisme_source": "Accord interprofessionnel du 16/02/2026, enterine par le CHPC le 29/04/2026 : 66 % du prix de reference net, decote de 2 FCFA/kg supprimee, reference SGX-SICOM TSR20 du mois precedent, prix APROMAC = prix carreau usine, marge intermediaire plafonnee a 20 FCFA/kg",
+      "mecanisme_url": "https://www.ecofinagency.com/news-agriculture/2606-56831-ivory-coast-raises-natural-rubber-growers-share-of-reference-price-for-2026 https://www.sikafinance.com/marches/cote-d-ivoire-fin-de-la-decote-et-meilleure-remuneration-des-planteurs-la-campagne-heveicole-2026-demarre-sous-de-bons-auspices_62460",
+      "historique_mecanisme": [
+        {
+          "date_effet": null,
+          "part_planteur_pct": 61,
+          "reference": "Regime anterieur a mai 2022 : 61 % (date de debut non documentee)",
+          "url": null
+        },
+        {
+          "date_effet": "2022-05-01",
+          "part_planteur_pct": 63,
+          "reference": "Decision provisoire CHPH n.0037 (mai 2022) : 63 % planteurs / 37 % transformateurs",
+          "url": null
+        },
+        {
+          "date_effet": "2026-05-01",
+          "part_planteur_pct": 66,
+          "reference": "Accord interprofessionnel du 16/02/2026, enterine par le CHPC le 29/04/2026 : 66 % du prix de reference net, decote de 2 FCFA/kg supprimee, reference SGX-SICOM TSR20 du mois precedent, prix APROMAC = prix carreau usine, marge intermediaire plafonnee a 20 FCFA/kg",
+          "url": "https://www.ecofinagency.com/news-agriculture/2606-56831-ivory-coast-raises-natural-rubber-growers-share-of-reference-price-for-2026 https://www.sikafinance.com/marches/cote-d-ivoire-fin-de-la-decote-et-meilleure-remuneration-des-planteurs-la-campagne-heveicole-2026-demarre-sous-de-bons-auspices_62460"
+        }
+      ],
+      "prix_planteur_sec_usd": 1.373,
+      "rsci_pct": 61.3,
+      "ecart_pts": -4.7,
+      "statut_donnee": "perime",
+      "mois_apromac_utilise": "2026-09",
+      "prix_apromac": {
+        "valeur": 484,
+        "unite": "FCFA/kg",
+        "source": "Business & Actuality TV + 7info.ci",
+        "date_source": "2026-10-06",
+        "methode": "Prix officiel APROMAC du mois 2026-09 (type non precise, releve presse)",
+        "url": "https://businessactuality.com/cote-divoire-prix-du-caoutchouc-484-fcfa-kg-en-septembre-2026/",
+        "origine": "presse_auto",
+        "periode": "2026-09",
+        "nature": "O",
+        "version_methode": "APROMAC v1",
+        "date_effet_methode": "2026-11-03"
+      },
+      "reference_tsr20": {
+        "valeur": 2.24,
+        "unite": "USD/kg",
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "date_source": "2026-08-01",
+        "methode": "Moyenne mensuelle du mois precedant le prix APROMAC (regle du mecanisme 2026 : cotations SGX-SICOM TSR20 du mois precedent)",
+        "periode": "2026-08",
+        "nature": "T",
+        "version_methode": "Références mensuelles v1",
+        "date_effet_methode": "2026-11-03"
+      },
+      "taux_change": {
+        "valeur": 587.51,
+        "unite": "FCFA/USD",
+        "source": "Frankfurter (taux de reference BCE)",
+        "date_source": "2026-11-06",
+        "methode": "655.957 FCFA/EUR (parite fixe) / EUR-USD BCE du jour de collecte"
+      },
+      "cadre_legal": "Loi N.2017-540 du 03/08/2017 - CHPH",
+      "drc_source": "DRC reference 60% (fonds de tasse), a confirmer apres reforme 2026 - debat en cours sur DRC reel et grade TSR10 vs TSR20",
+      "methode": "RSCI = (prix APROMAC du mois / taux FCFA-USD / DRC) / TSR20 Banque mondiale du mois precedent x 100 ; compare au taux officiel en vigueur au mois du prix APROMAC.",
+      "note": "RSCI = part du prix planteur (corrige DRC) dans le prix de reference TSR20 du mois precedent.",
+      "valeur": 61.3,
+      "unite": "%",
+      "periode": "2026-09",
+      "source": "Calcul RubberSignal (APROMAC, Banque mondiale, BCE)",
+      "date_source": "2026-11-09",
+      "publiable": true,
+      "nature": "E",
+      "version_methode": "RSCI v2",
+      "date_effet_methode": "2026-11-03"
+    },
+    "marches_mondiaux": {
+      "date_cours": "2026-11-08",
+      "spread_sicom_lgm": 0.331,
+      "lgm": {
+        "grade": "TSR20/SMR20",
+        "bourse": "MRB/LGM (Malaisie)",
+        "prix_usd": 2.399,
+        "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
+        "date_source": "2026-11-06",
+        "statut_fraicheur": "frais"
+      },
+      "sicom": {
+        "grade": "TSR20",
+        "bourse": "SGX/SICOM (Singapour)",
+        "ticker": "TF",
+        "contrat": "Dec 2026",
+        "prix_orig": 273,
+        "unite_orig": "USD cts/kg",
+        "prix_usd": 2.73,
+        "statut": "auto"
+      },
+      "tocom": {
+        "grade": "RSS3",
+        "bourse": "JPX/TOCOM (Tokyo)",
+        "ticker": "TRB",
+        "prix_orig": null,
+        "unite_orig": "JPY/kg",
+        "taux_jpy_usd": 0.0063,
+        "prix_usd": null,
+        "statut": "non_collecte_auto"
+      },
+      "shfe": {
+        "grade": "SCR WF / RSS3",
+        "bourse": "SHFE (Shanghai)",
+        "ticker": "RU",
+        "prix_orig": null,
+        "unite_orig": "CNY/tonne",
+        "taux_cny_usd": 0.1499,
+        "prix_usd": null,
+        "statut": "non_collecte_auto"
+      }
+    },
+    "historique_bm": [
+      {
+        "periode": "2026-10",
+        "prix_usd": 2.55,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-10-01"
+      },
+      {
+        "periode": "2026-09",
+        "prix_usd": 2.41,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-09-01"
+      },
+      {
+        "periode": "2026-08",
+        "prix_usd": 2.24,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-08-01"
+      },
+      {
+        "periode": "2026-07",
+        "prix_usd": 2.14,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-07-01"
+      },
+      {
+        "periode": "2026-06",
+        "prix_usd": 2.25,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-06-01"
+      },
+      {
+        "periode": "2026-05",
+        "prix_usd": 2.21,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-05-01"
+      },
+      {
+        "periode": "2026-04",
+        "prix_usd": 2.06,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-04-01"
+      },
+      {
+        "periode": "2026-03",
+        "prix_usd": 1.95,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-03-01"
+      },
+      {
+        "periode": "2026-02",
+        "prix_usd": 1.93,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-02-01"
+      },
+      {
+        "periode": "2026-01",
+        "prix_usd": 1.84,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2026-01-01"
+      },
+      {
+        "periode": "2025-12",
+        "prix_usd": 1.74,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-12-01"
+      },
+      {
+        "periode": "2025-11",
+        "prix_usd": 1.71,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-11-01"
+      },
+      {
+        "periode": "2025-10",
+        "prix_usd": 1.71,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-10-01"
+      },
+      {
+        "periode": "2025-09",
+        "prix_usd": 1.74,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-09-01"
+      },
+      {
+        "periode": "2025-08",
+        "prix_usd": 1.71,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-08-01"
+      },
+      {
+        "periode": "2025-07",
+        "prix_usd": 1.68,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-07-01"
+      },
+      {
+        "periode": "2025-06",
+        "prix_usd": 1.61,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-06-01"
+      },
+      {
+        "periode": "2025-05",
+        "prix_usd": 1.7,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-05-01"
+      },
+      {
+        "periode": "2025-04",
+        "prix_usd": 1.71,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-04-01"
+      },
+      {
+        "periode": "2025-03",
+        "prix_usd": 1.98,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-03-01"
+      },
+      {
+        "periode": "2025-02",
+        "prix_usd": 2.01,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-02-01"
+      },
+      {
+        "periode": "2025-01",
+        "prix_usd": 1.93,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2025-01-01"
+      },
+      {
+        "periode": "2024-12",
+        "prix_usd": 1.99,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-12-01"
+      },
+      {
+        "periode": "2024-11",
+        "prix_usd": 1.93,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-11-01"
+      },
+      {
+        "periode": "2024-10",
+        "prix_usd": 2.01,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-10-01"
+      },
+      {
+        "periode": "2024-09",
+        "prix_usd": 1.91,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-09-01"
+      },
+      {
+        "periode": "2024-08",
+        "prix_usd": 1.74,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-08-01"
+      },
+      {
+        "periode": "2024-07",
+        "prix_usd": 1.65,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-07-01"
+      },
+      {
+        "periode": "2024-06",
+        "prix_usd": 1.75,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-06-01"
+      },
+      {
+        "periode": "2024-05",
+        "prix_usd": 1.69,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-05-01"
+      },
+      {
+        "periode": "2024-04",
+        "prix_usd": 1.63,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-04-01"
+      },
+      {
+        "periode": "2024-03",
+        "prix_usd": 1.65,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-03-01"
+      },
+      {
+        "periode": "2024-02",
+        "prix_usd": 1.56,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-02-01"
+      },
+      {
+        "periode": "2024-01",
+        "prix_usd": 1.53,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2024-01-01"
+      },
+      {
+        "periode": "2023-12",
+        "prix_usd": 1.46,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-12-01"
+      },
+      {
+        "periode": "2023-11",
+        "prix_usd": 1.48,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-11-01"
+      },
+      {
+        "periode": "2023-10",
+        "prix_usd": 1.45,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-10-01"
+      },
+      {
+        "periode": "2023-09",
+        "prix_usd": 1.42,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-09-01"
+      },
+      {
+        "periode": "2023-08",
+        "prix_usd": 1.29,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-08-01"
+      },
+      {
+        "periode": "2023-07",
+        "prix_usd": 1.3,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-07-01"
+      },
+      {
+        "periode": "2023-06",
+        "prix_usd": 1.32,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-06-01"
+      },
+      {
+        "periode": "2023-05",
+        "prix_usd": 1.35,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-05-01"
+      },
+      {
+        "periode": "2023-04",
+        "prix_usd": 1.36,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-04-01"
+      },
+      {
+        "periode": "2023-03",
+        "prix_usd": 1.36,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-03-01"
+      },
+      {
+        "periode": "2023-02",
+        "prix_usd": 1.4,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-02-01"
+      },
+      {
+        "periode": "2023-01",
+        "prix_usd": 1.41,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2023-01-01"
+      },
+      {
+        "periode": "2022-12",
+        "prix_usd": 1.35,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-12-01"
+      },
+      {
+        "periode": "2022-11",
+        "prix_usd": 1.27,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-11-01"
+      },
+      {
+        "periode": "2022-10",
+        "prix_usd": 1.29,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-10-01"
+      },
+      {
+        "periode": "2022-09",
+        "prix_usd": 1.32,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-09-01"
+      },
+      {
+        "periode": "2022-08",
+        "prix_usd": 1.46,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-08-01"
+      },
+      {
+        "periode": "2022-07",
+        "prix_usd": 1.56,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-07-01"
+      },
+      {
+        "periode": "2022-06",
+        "prix_usd": 1.64,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-06-01"
+      },
+      {
+        "periode": "2022-05",
+        "prix_usd": 1.62,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-05-01"
+      },
+      {
+        "periode": "2022-04",
+        "prix_usd": 1.7,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-04-01"
+      },
+      {
+        "periode": "2022-03",
+        "prix_usd": 1.75,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-03-01"
+      },
+      {
+        "periode": "2022-02",
+        "prix_usd": 1.79,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-02-01"
+      },
+      {
+        "periode": "2022-01",
+        "prix_usd": 1.78,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2022-01-01"
+      },
+      {
+        "periode": "2021-12",
+        "prix_usd": 1.72,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2021-12-01"
+      },
+      {
+        "periode": "2021-11",
+        "prix_usd": 1.74,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2021-11-01"
+      },
+      {
+        "periode": "2021-10",
+        "prix_usd": 1.73,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "unite": "USD/kg",
+        "date_source": "2021-10-01"
+      }
+    ],
+    "historique_hebdo_mensuel": [
+      {
+        "periode": "2026-11",
+        "prix_usd": 2.399,
+        "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
+        "unite": "USD/kg"
+      }
+    ],
+    "historique_indexmundi": []
+  },
+  "controle_qualite": {
+    "statut_global": "degrade",
+    "alertes": [
+      "TSR20 : ecart de 13.8 % entre sources (seuil 10 %)",
+      "APROMAC : prix de 2026-11 absent du fichier de saisie ; dernier mois disponible 2026-09 (484 FCFA/kg, 2 mois de retard)"
+    ],
+    "tsr20": {
+      "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
+      "indice": "MRB_SMR20",
+      "nb_sources": 2,
+      "divergence_max_pct": 13.8,
+      "candidats": {
+        "mrb": {
+          "usd": 2.399,
+          "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
+          "indice": "MRB_SMR20",
+          "date_source": "2026-11-06"
+        },
+        "sgx": {
+          "usd": 2.73,
+          "source": "SGX TSR20 FOB Dec 2026 (reglement de la veille, via rtas.sg)",
+          "indice": "SGX_TSR20",
+          "date_source": "2026-11-06"
+        }
+      }
+    },
+    "taux_change": {
+      "source": "Frankfurter (taux de reference BCE)",
+      "date": "2026-11-06"
+    },
+    "apromac": {
+      "statut": "perime",
+      "mois": "2026-09",
+      "age_mois": 2,
+      "mois_courant_manquant": true,
+      "origine": "presse_auto",
+      "articles_examines": 177,
+      "prix_trouves": 0
+    },
+    "fraicheur": {
+      "tsr20_hebdo": "frais",
+      "tsr20_date_source": "2026-11-06",
+      "seuil_hebdo_jours": 14,
+      "seuil_mensuel_jours": 45
+    }
+  },
+  "actualites": {
+    "date_collecte": "2026-11-09",
+    "statut": "indisponible",
+    "raison": "2 articles bruts recus, aucun retenu par le filtre de pertinence",
+    "source": "NewsAPI /v2/everything (7 derniers jours)",
+    "diagnostic": [
+      {
+        "requete": "natural rubber TSR20 price market",
+        "langue": "en",
+        "http": 200,
+        "code_api": "ok",
+        "message_api": null,
+        "total_resultats": 0,
+        "articles_recus": 0
+      },
+      {
+        "requete": "caoutchouc hévéa Côte Ivoire",
+        "langue": "fr",
+        "http": 200,
+        "code_api": "ok",
+        "message_api": null,
+        "total_resultats": 0,
+        "articles_recus": 0
+      },
+      {
+        "requete": "natural rubber Ivory Coast Cote Ivoire",
+        "langue": "en",
+        "http": 200,
+        "code_api": "ok",
+        "message_api": null,
+        "total_resultats": 0,
+        "articles_recus": 0
+      },
+      {
+        "requete": "natural rubber Africa production export",
+        "langue": "en",
+        "http": 200,
+        "code_api": "ok",
+        "message_api": null,
+        "total_resultats": 1,
+        "articles_recus": 1
+      },
+      {
+        "requete": "natural rubber Ghana Nigeria Cameroon",
+        "langue": "en",
+        "http": 200,
+        "code_api": "ok",
+        "message_api": null,
+        "total_resultats": 0,
+        "articles_recus": 0
+      },
+      {
+        "requete": "natural rubber Malaysia Thailand production",
+        "langue": "en",
+        "http": 200,
+        "code_api": "ok",
+        "message_api": null,
+        "total_resultats": 0,
+        "articles_recus": 0
+      },
+      {
+        "requete": "caoutchouc naturel Europe importation",
+        "langue": "fr",
+        "http": 200,
+        "code_api": "ok",
+        "message_api": null,
+        "total_resultats": 0,
+        "articles_recus": 0
+      },
+      {
+        "requete": "natural rubber Europe import demand",
+        "langue": "en",
+        "http": 200,
+        "code_api": "ok",
+        "message_api": null,
+        "total_resultats": 1,
+        "articles_recus": 1
+      },
+      {
+        "requete": "natural rubber tire tyre Michelin Bridgestone",
+        "langue": "en",
+        "http": 200,
+        "code_api": "ok",
+        "message_api": null,
+        "total_resultats": 0,
+        "articles_recus": 0
+      }
+    ],
+    "total_articles": 0,
+    "top_newsletter": [],
+    "tous_articles": []
+  },
+  "signaux_faibles": {
+    "meta": {
+      "date_collecte": "2026-11-09",
+      "semaine": 46,
+      "annee": 2026,
+      "version": "2.3"
+    },
+    "module1_meteo": {
+      "zones": {
+        "Côte d'Ivoire": {
+          "pays": "Côte d'Ivoire",
+          "ville": "Abidjan",
+          "pluie_30j_mm": 73.9,
+          "temp_moyenne_c": 27.6,
+          "score_production": 55,
+          "signal_production": "Neutre"
+        },
+        "Thaïlande": {
+          "pays": "Thaïlande",
+          "ville": "Bangkok",
+          "pluie_30j_mm": 182.2,
+          "temp_moyenne_c": 29.3,
+          "score_production": 82,
+          "signal_production": "Favorable"
+        },
+        "Malaisie": {
+          "pays": "Malaisie",
+          "ville": "Kuala Lumpur",
+          "pluie_30j_mm": 348,
+          "temp_moyenne_c": 27.2,
+          "score_production": 90,
+          "signal_production": "Favorable"
+        },
+        "Indonésie": {
+          "pays": "Indonésie",
+          "ville": "Jakarta",
+          "pluie_30j_mm": 109.5,
+          "temp_moyenne_c": 30.1,
+          "score_production": 62,
+          "signal_production": "Neutre"
+        }
+      },
+      "score_offre_mondiale": 75,
+      "signal_offre": "Offre abondante — pression baissière",
+      "source": "Open-Meteo (archive), cumul de pluie du mois",
+      "date_source": "2026-11-08"
+    },
+    "module2_devises": {
+      "USD_CNY": 6.6798,
+      "USD_MYR": 4.0589,
+      "USD_XOF": 588.43,
+      "USD_IDR": 18104,
+      "USD_CHF": 0.8197,
+      "source": "ExchangeRate API (v6)",
+      "date": "2026-11-09",
+      "statut": "ok",
+      "alertes": [],
+      "signal_cny": "Yuan fort (-2.4% vs moyenne 12 mois) — demande soutenue",
+      "signal_myr": "Ringgit stable (0.7% vs moyenne 12 mois) — neutre",
+      "ecart_cny_pct": -2.4,
+      "ecart_myr_pct": 0.7,
+      "reference_cny": {
+        "valeur": 6.8441,
+        "serie": "DEXCHUS",
+        "source": "FRED DEXCHUS",
+        "debut": "2025-11-10",
+        "fin": "2026-10-30",
+        "n_obs": 244,
+        "methode": "Moyenne des cotations quotidiennes des 365 derniers jours"
+      },
+      "reference_myr": {
+        "valeur": 4.0305,
+        "serie": "DEXMAUS",
+        "source": "FRED DEXMAUS",
+        "debut": "2025-11-10",
+        "fin": "2026-10-30",
+        "n_obs": 244,
+        "methode": "Moyenne des cotations quotidiennes des 365 derniers jours"
+      }
+    },
+    "module3_demande_aval": {
+      "fred": {
+        "prod_manuf_us": {
+          "serie": "IPMAN",
+          "nom": "Production industrielle US manufacturing",
+          "valeur": 99.4361,
+          "valeur_prec": 99.1776,
+          "variation_pct": 0.26,
+          "date": "2026-09-01"
+        },
+        "ventes_auto_us": {
+          "serie": "TOTALSA",
+          "nom": "Ventes automobiles US (millions/an)",
+          "valeur": 16.003,
+          "valeur_prec": 16.413,
+          "variation_pct": -2.5,
+          "date": "2026-10-01"
+        },
+        "commandes_dur": {
+          "serie": "DGORDER",
+          "nom": "Commandes biens durables US (M USD)",
+          "valeur": 345672,
+          "valeur_prec": 339185,
+          "variation_pct": 1.91,
+          "date": "2026-09-01"
+        },
+        "prod_indus_us": {
+          "serie": "INDPRO",
+          "nom": "Production industrielle US globale",
+          "valeur": 103.9506,
+          "valeur_prec": 103.2664,
+          "variation_pct": 0.66,
+          "date": "2026-09-01"
+        },
+        "imports_chine": {
+          "serie": "XTIMVA01CNM667S",
+          "nom": "Importations Chine (proxy demande)",
+          "valeur": 282496200000,
+          "valeur_prec": 279650600000,
+          "variation_pct": 1.02,
+          "date": "2026-08-01"
+        },
+        "permis_constr": {
+          "serie": "PERMIT",
+          "nom": "Permis construction US",
+          "valeur": 1398,
+          "valeur_prec": 1403,
+          "variation_pct": -0.36,
+          "date": "2026-09-01"
+        }
+      },
+      "confiance_industrie": {
+        "series": {
+          "USA": {
+            "pays": "USA",
+            "serie": "BSCICP02USM460S",
+            "frequence": "mensuelle",
+            "valeur": 9,
+            "unite": "% (solde, CVS)",
+            "periode": "2026-09",
+            "date_source": "2026-09-01",
+            "z_5ans": 1.02,
+            "statut": "derniere_valeur_disponible",
+            "utilise": true,
+            "source": "OCDE, enquêtes de conjoncture, via FRED (BSCICP02USM460S)",
+            "signal": "au-dessus de sa moyenne 5 ans",
+            "n_observations": 60
+          },
+          "Allemagne": {
+            "pays": "Allemagne",
+            "serie": "BSCICP02DEM460S",
+            "frequence": "mensuelle",
+            "valeur": -8.2,
+            "unite": "% (solde, CVS)",
+            "periode": "2026-09",
+            "date_source": "2026-09-01",
+            "z_5ans": 0.01,
+            "statut": "derniere_valeur_disponible",
+            "utilise": true,
+            "source": "OCDE, enquêtes de conjoncture, via FRED (BSCICP02DEM460S)",
+            "signal": "proche de sa moyenne 5 ans",
+            "n_observations": 60
+          },
+          "Chine": {
+            "pays": "Chine",
+            "serie": "CHNBSCICP02STSAM",
+            "frequence": "mensuelle",
+            "valeur": -0.4,
+            "unite": "% (solde, CVS)",
+            "periode": "2026-08",
+            "date_source": "2026-08-01",
+            "z_5ans": 0.2,
+            "statut": "perime",
+            "utilise": false,
+            "source": "OCDE, enquêtes de conjoncture, via FRED (CHNBSCICP02STSAM)",
+            "signal": "périmée (dernière valeur 08/2026)",
+            "n_observations": 60
+          },
+          "Japon": {
+            "pays": "Japon",
+            "serie": "JPNBSCICP02STSAQ",
+            "frequence": "trimestrielle",
+            "valeur": 19,
+            "unite": "% (solde, CVS)",
+            "periode": "2026-07",
+            "date_source": "2026-07-01",
+            "z_5ans": 2.4,
+            "statut": "derniere_valeur_disponible",
+            "utilise": true,
+            "source": "OCDE, enquêtes de conjoncture, via FRED (JPNBSCICP02STSAQ)",
+            "signal": "au-dessus de sa moyenne 5 ans",
+            "n_observations": 20
+          }
+        },
+        "z_moyen": 1.14,
+        "n_utilisees": 3,
+        "methode": "z = (dernière valeur - moyenne 5 ans) / écart-type 5 ans, par pays ; moyenne des z des séries fraîches (< 45 jours après la fin de période)",
+        "source": "OCDE, Business Tendency Surveys (manufacturing), via FRED"
+      },
+      "pmi": {
+        "statut": "retire",
+        "note": "PMI saisi à la main (avril 2026) retiré en v2.3 : remplacé par confiance_industrie (OCDE via FRED)"
+      },
+      "score_demande": 50,
+      "signal_demande": "Demande neutre — équilibré",
+      "n_indicateurs": 4
+    },
+    "module4_stocks": {
+      "statut": "indisponible",
+      "libelle": "Donnée indisponible",
+      "malaisie_tonnes": null,
+      "thailande_tonnes": null,
+      "indonesie_tonnes": null,
+      "ci_tonnes": null,
+      "tendance": null,
+      "derniere_mise_a_jour_connue": null,
+      "sources_a_explorer": [
+        "https://www.lgm.gov.my",
+        "https://www.rubberthai.or.th",
+        "https://apromac.ci"
+      ],
+      "note": "Aucune donnée de stocks mesurée : module retiré du rapport (pas de tendance publiée)."
+    },
+    "module5_shipping": {
+      "bdi_valeur": null,
+      "wti_valeur": 99.64,
+      "wti_date": "2026-11-03",
+      "signal_fret": "Données indisponibles (aucune source datée)",
+      "tarif_ci_eu_usd_tonne": null,
+      "delai_abidjan_rotterdam": null,
+      "statut_fret": "indisponible",
+      "fret": {
+        "BDI": {
+          "indicateur": "BDI",
+          "valeur": null,
+          "unite": null,
+          "date_valeur": null,
+          "source": null,
+          "url": null,
+          "statut": "indisponible",
+          "max_jours": 14
+        },
+        "tarif_ci_ue_usd_t": {
+          "indicateur": "tarif_ci_ue_usd_t",
+          "valeur": null,
+          "unite": null,
+          "date_valeur": null,
+          "source": null,
+          "url": null,
+          "statut": "indisponible",
+          "max_jours": 45
+        },
+        "delai_abidjan_rotterdam_j": {
+          "indicateur": "delai_abidjan_rotterdam_j",
+          "valeur": null,
+          "unite": null,
+          "date_valeur": null,
+          "source": null,
+          "url": null,
+          "statut": "indisponible",
+          "max_jours": 45
+        }
+      },
+      "fichier_saisie": "data/reference/fret.csv",
+      "source": "WTI : FRED DCOILWTICO ; BDI, tarif et délai : saisie datée data/reference/fret.csv"
+    },
+    "module6_terrain_ci": {
+      "statut": "absent",
+      "libelle": "Pas de relevé terrain cette semaine",
+      "note_terrain": "",
+      "sentiment_planteurs": null,
+      "disponibilite_latex": null,
+      "prix_marche_reel_fcfa": null,
+      "date_releve": null,
+      "lieu": null,
+      "source": null,
+      "semaine": 46,
+      "fichier_saisie": "data/reference/terrain_ci.csv",
+      "periode": null,
+      "date_source": null,
+      "unite": "sentiment 1-5",
+      "valeur": null,
+      "nature": "D",
+      "version_methode": "Terrain v1",
+      "date_effet_methode": "2026-11-03"
+    },
+    "module7_geopolitique": {
+      "nb_articles": null,
+      "statut": "aucun_article",
+      "signal": "Aucun article reçu cette semaine — donnée indisponible",
+      "articles": [],
+      "source": "NewsAPI (everything)",
+      "date_debut": "2026-11-02",
+      "date_fin": "2026-11-09"
+    },
+    "pre_rsi": {
+      "score": 49,
+      "publie": true,
+      "n_disponibles": 3,
+      "min_composantes": 3,
+      "scores": {
+        "meteo": 30,
+        "devises": 70,
+        "demande": 50,
+        "terrain": null,
+        "geo": null
+      },
+      "poids_nominaux": {
+        "meteo": 0.25,
+        "devises": 0.2,
+        "demande": 0.25,
+        "terrain": 0.15,
+        "geo": 0.15
+      },
+      "poids_effectifs": {
+        "meteo": 0.3571,
+        "devises": 0.2857,
+        "demande": 0.3571,
+        "terrain": 0,
+        "geo": 0
+      },
+      "contributions": {
+        "meteo": 10.71,
+        "devises": 20,
+        "demande": 17.86,
+        "terrain": null,
+        "geo": null
+      },
+      "sens": {
+        "meteo": "baisse",
+        "devises": "hausse",
+        "demande": "neutre",
+        "terrain": null,
+        "geo": null
+      },
+      "composantes_absentes": [
+        "terrain",
+        "geo"
+      ],
+      "signal": "Neutre — marché équilibré",
+      "signal_en": "Neutral — balanced market",
+      "raison_non_publie": null,
+      "valeur": 49,
+      "unite": "score 0-100 (> 55 haussier, < 45 baissier)",
+      "periode": "2026-W46",
+      "source": "Calcul RubberSignal (modules 1, 2, 3, 6, 7 de ce fichier)",
+      "date_source": "2026-11-09",
+      "publiable": true,
+      "methode": "Somme pondérée des composantes disponibles (scores orientés prix), divisée par la somme de leurs poids ; poids nominaux météo 25 %, devises 20 %, demande 25 %, terrain 15 %, géopolitique 15 % (non backtestés) ; non publié sous 3 composantes. Analyse, pas un indice de prix.",
+      "nature": "E",
+      "version_methode": "Pré-RSI v2",
+      "date_effet_methode": "2026-11-03"
+    }
+  },
+  "monte_carlo": {
+    "disponible": true,
+    "meta": {
+      "date_simulation": "2026-11-09",
+      "semaine": 46,
+      "annee": 2026,
+      "n_simulations": 10000,
+      "modele": "GBM sans derive (fourchette de volatilite) — Thompson (2000)",
+      "prix_depart": 2.55,
+      "depart": {
+        "valeur": 2.55,
+        "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+        "date": "2026-10",
+        "serie": "BM_TSR20",
+        "type": "moyenne mensuelle Banque mondiale"
+      },
+      "volatilite_an": 0.1588,
+      "volatilite_an_pct": 15.9,
+      "volatilite_estimation": {
+        "volatilite_annuelle": 0.1588,
+        "derive_annuelle_estimee": 0.0776,
+        "erreur_type_derive": 0.071,
+        "n_rendements": 60,
+        "periode_debut": "2021-10",
+        "periode_fin": "2026-10",
+        "methode": "Ecart-type des rendements logarithmiques mensuels x sqrt(12), 60 rendements de 2021-10 a 2026-10 (mois consecutifs uniquement)",
+        "serie": "Banque mondiale, Pink Sheet TSR20 (prix$historique_bm)",
+        "fenetre_mois": 60
+      },
+      "derive_utilisee": 0,
+      "derive_note": "Derive estimee conservee pour information, non utilisee : resultat presente comme fourchette de volatilite, pas comme prevision directionnelle",
+      "publier_sources_sous_licence": false
+    },
+    "valeur": 0.1588,
+    "unite": "volatilite annuelle (fraction)",
+    "periode": "2021-10/2026-10",
+    "source": "Calcul RubberSignal sur Banque mondiale Pink Sheet TSR20",
+    "date_source": "2026-11-09",
+    "resultats": {
+      "S4": {
+        "horizon_sem": 4,
+        "date_horizon": "2026-12-07",
+        "prix_depart": 2.55,
+        "p05": 2.369,
+        "p10": 2.409,
+        "p25": 2.474,
+        "p50": 2.551,
+        "p75": 2.626,
+        "p90": 2.699,
+        "p95": 2.742,
+        "bas80_pct": -5.5,
+        "haut80_pct": 5.8,
+        "scenario_bear": 2.409,
+        "scenario_base": 2.551,
+        "scenario_bull": 2.699
+      },
+      "S8": {
+        "horizon_sem": 8,
+        "date_horizon": "2027-01-04",
+        "prix_depart": 2.55,
+        "p05": 2.3,
+        "p10": 2.353,
+        "p25": 2.444,
+        "p50": 2.548,
+        "p75": 2.659,
+        "p90": 2.76,
+        "p95": 2.824,
+        "bas80_pct": -7.7,
+        "haut80_pct": 8.2,
+        "scenario_bear": 2.353,
+        "scenario_base": 2.548,
+        "scenario_bull": 2.76
+      },
+      "S12": {
+        "horizon_sem": 12,
+        "date_horizon": "2027-02-01",
+        "prix_depart": 2.55,
+        "p05": 2.248,
+        "p10": 2.312,
+        "p25": 2.419,
+        "p50": 2.547,
+        "p75": 2.683,
+        "p90": 2.812,
+        "p95": 2.886,
+        "bas80_pct": -9.3,
+        "haut80_pct": 10.3,
+        "scenario_bear": 2.312,
+        "scenario_base": 2.547,
+        "scenario_bull": 2.812
+      },
+      "S26": {
+        "horizon_sem": 26,
+        "date_horizon": "2027-05-10",
+        "prix_depart": 2.55,
+        "p05": 2.117,
+        "p10": 2.205,
+        "p25": 2.361,
+        "p50": 2.547,
+        "p75": 2.745,
+        "p90": 2.94,
+        "p95": 3.069,
+        "bas80_pct": -13.5,
+        "haut80_pct": 15.3,
+        "scenario_bear": 2.205,
+        "scenario_base": 2.547,
+        "scenario_bull": 2.94
+      }
+    },
+    "texte_fr": "### 📏 Fourchette de volatilité TSR20 — 10 000 simulations\n\n*Ce n'est pas une prévision de hausse ou de baisse : la simulation est centrée sur le prix de départ (sans tendance) et montre l'amplitude des variations compatible avec la volatilité historique.*\n\n| Horizon | Borne basse (10 %) | Médiane | Borne haute (90 %) |\n|---|---|---|---|\n| 4 semaines | 2.409 USD/kg (-5.5 %) | 2.551 USD/kg | 2.699 USD/kg (+5.8 %) |\n| 12 semaines | 2.312 USD/kg (-9.3 %) | 2.547 USD/kg | 2.812 USD/kg (+10.3 %) |\n| 26 semaines | 2.205 USD/kg (-13.5 %) | 2.547 USD/kg | 2.940 USD/kg (+15.3 %) |\n\n> *Volatilité annuelle 15.9 %, estimée sur 60 rendements mensuels (logarithmiques) du TSR20 Banque mondiale, de octobre 2021 à octobre 2026. Point de départ : 2.55 USD/kg (moyenne mensuelle Banque mondiale, Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20), octobre 2026). Modèle : mouvement brownien géométrique sans dérive (Thompson, 2000). Nature : E (estimation calculée) — Volatilité v1. Ne constitue pas un conseil en investissement.*\n\n",
+    "texte_en": "### 📏 TSR20 volatility range — 10,000 simulations\n\n*This is not a forecast of a rise or a fall: the simulation is centred on the starting price (no trend) and shows the range of moves consistent with historical volatility.*\n\n| Horizon | Lower bound (10%) | Median | Upper bound (90%) |\n|---|---|---|---|\n| 4 weeks | 2.409 USD/kg (-5.5%) | 2.551 USD/kg | 2.699 USD/kg (+5.8%) |\n| 12 weeks | 2.312 USD/kg (-9.3%) | 2.547 USD/kg | 2.812 USD/kg (+10.3%) |\n| 26 weeks | 2.205 USD/kg (-13.5%) | 2.547 USD/kg | 2.940 USD/kg (+15.3%) |\n\n> *Annual volatility 15.9%, estimated on 60 monthly log returns of the World Bank TSR20, from October 2021 to October 2026. Starting point: 2.55 USD/kg (World Bank monthly average, Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20), October 2026). Model: geometric Brownian motion without drift (Thompson, 2000). Nature: E (calculated estimate) — Volatilité v1. Not investment advice.*\n\n",
+    "scenarios_meteo": {
+      "publie": false,
+      "statut": "retire",
+      "note": "Elasticite -0.40 et chocs d'offre sans source : scenarios retires du rapport (v2.0)"
+    },
+    "nature": "E",
+    "version_methode": "Volatilité v1",
+    "date_effet_methode": "2026-11-03",
+    "bootstrap_rsi": {
+      "disponible": true,
+      "n_bootstrap": 5000,
+      "pre_rsi_central": 49,
+      "ic80_bas": 42.4,
+      "ic80_haut": 54.7,
+      "ic90_bas": 40.6,
+      "ic90_haut": 56.4,
+      "classe_centrale": "neutre",
+      "pct_meme_classe": 68.5,
+      "composantes": {
+        "meteo": 30,
+        "devises": 70,
+        "demande": 50,
+        "terrain": null,
+        "geo": null
+      },
+      "poids_effectifs": {
+        "meteo": 0.3571,
+        "devises": 0.2857,
+        "demande": 0.3571,
+        "terrain": 0,
+        "geo": 0
+      },
+      "incertitudes": {
+        "meteo": 8,
+        "devises": 5,
+        "demande": 10,
+        "terrain": 12,
+        "geo": 8
+      },
+      "statut_incertitudes": "hypothese_de_travail_non_calibree",
+      "texte_fr": "### 🎯 Sensibilité du Pré-RSI (hypothèse de travail non calibrée)\n\n| Indicateur | Valeur |\n|---|---|\n| Pré-RSI central | 49 / 100 |\n| Intervalle 80 % | [42.4 – 54.7] |\n| Intervalle 90 % | [40.6 – 56.4] |\n| Tirages gardant le même classement (neutre) | 68.5 % |\n\n> *5000 tirages : chaque composante disponible est perturbée d'un bruit gaussien dont l'amplitude (météo ±8, devises ±5, demande ±10, terrain ±12, géopolitique ±8 points) est une hypothèse de travail non calibrée. Ce n'est pas une mesure de fiabilité statistique.*\n\n",
+      "texte_en": "### 🎯 Pre-RSI sensitivity (uncalibrated working assumption)\n\n| Indicator | Value |\n|---|---|\n| Central Pre-RSI | 49 / 100 |\n| 80% interval | [42.4 – 54.7] |\n| 90% interval | [40.6 – 56.4] |\n| Draws keeping the same class (neutral) | 68.5% |\n\n> *5000 draws: each available component is perturbed by Gaussian noise whose size (weather ±8, currencies ±5, demand ±10, field ±12, geopolitics ±8 points) is an uncalibrated working assumption. This is not a measure of statistical reliability.*\n\n"
+    }
+  },
+  "rapi_ci": {
+    "statut": "ok",
+    "nouvelle_extraction": true,
+    "valeurs_issues_de": "API Eurostat du jour",
+    "date_extraction_valeurs": "2026-11-09",
+    "version_methode": "RAPI-CI v1",
+    "date_effet_methode": "2026-11-03",
+    "source": "Eurostat Comext (DS-045409)",
+    "produit": "NC 4001 22 00 : caoutchouc naturel techniquement specifie (TSNR)",
+    "declarant": "UE (code API : EU)",
+    "flux": "importations",
+    "partenaire": "CI",
+    "partenaires_asie": [
+      "TH",
+      "ID",
+      "MY",
+      "VN"
+    ],
+    "url_source": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+    "date_maj_eurostat": "2026-10-16",
+    "updated_eurostat": "2026-10-16T11:00:00+0200",
+    "derniere_periode": "2026-08",
+    "statut_fraicheur": "derniere_valeur_disponible",
+    "age_jours_maj_eurostat": 24,
+    "age_jours_fin_periode": 70,
+    "fichier_brut": "data/raw/comext_20261109.json",
+    "taux_change": {
+      "source_principale": "BCE, moyenne mensuelle du taux de reference USD/EUR (EXR.M.USD.EUR.SP00.A)",
+      "url": "https://data-api.ecb.europa.eu/service/data/EXR/M.USD.EUR.SP00.A",
+      "source_secondaire": "FRED EXUSEU (Federal Reserve), utilisee seulement si la BCE echoue",
+      "secondaire_utilise": false
+    },
+    "seuils": {
+      "faible_liquidite_t": 5000,
+      "variation_pct": 15
+    },
+    "nature": {
+      "prix_cif": "T",
+      "decote": "E",
+      "volume": "T"
+    },
+    "publiable": true,
+    "licence": "Eurostat : reutilisation libre avec mention de la source (decision 2011/833/UE)",
+    "mois": [
+      {
+        "periode": "2025-09",
+        "volume_ci_t": 44262,
+        "ci_eur_kg": 1.642,
+        "ci_usd_kg": 1.926,
+        "asie_eur_kg": 1.818,
+        "asie_usd_kg": 2.133,
+        "decote_pct": -9.7,
+        "taux_usd_eur": 1.1732,
+        "taux_source": "BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+        "taux_source_secondaire": false,
+        "variation_ci_pct": -4.3,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "revise": false,
+        "asie_complet": true,
+        "asie_manquants": [],
+        "bm_tsr20_usd_kg": 1.74,
+        "ecart_ci_bm_pct": 10.7,
+        "fiches": {
+          "volume_ci": {
+            "valeur": 44262,
+            "unite": "t",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Quantite declaree (100 kg) / 10",
+            "periode": "2025-09",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_eur_kg": {
+            "valeur": 1.642,
+            "unite": "EUR/kg",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Valeur declaree (EUR) / (quantite en 100 kg x 100)",
+            "periode": "2025-09",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_usd_kg": {
+            "valeur": 1.926,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "EUR/kg x taux USD/EUR moyen du mois",
+            "periode": "2025-09",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "asie_usd_kg": {
+            "valeur": 2.133,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "Somme des valeurs / somme des quantites (TH, ID, MY, VN) x taux USD/EUR moyen du mois",
+            "periode": "2025-09",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "decote_ci_asie_pct": {
+            "valeur": -9.7,
+            "unite": "%",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "(prix CIF UE CI / composite Asie - 1) x 100, calcule en EUR/kg",
+            "periode": "2025-09",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "E",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "bm_tsr20": {
+            "valeur": 1.74,
+            "unite": "USD/kg",
+            "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+            "date_source": "2025-09-01",
+            "methode": "Moyenne mensuelle Banque mondiale du meme mois (comparaison, hors indice)",
+            "periode": "2025-09",
+            "nature": "T",
+            "version_methode": "Références mensuelles v1",
+            "date_effet_methode": "2026-11-03"
+          }
+        }
+      },
+      {
+        "periode": "2025-10",
+        "volume_ci_t": 41231,
+        "ci_eur_kg": 1.625,
+        "ci_usd_kg": 1.89,
+        "asie_eur_kg": 1.795,
+        "asie_usd_kg": 2.088,
+        "decote_pct": -9.5,
+        "taux_usd_eur": 1.163,
+        "taux_source": "BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+        "taux_source_secondaire": false,
+        "variation_ci_pct": -1,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "revise": false,
+        "asie_complet": true,
+        "asie_manquants": [],
+        "bm_tsr20_usd_kg": 1.71,
+        "ecart_ci_bm_pct": 10.5,
+        "fiches": {
+          "volume_ci": {
+            "valeur": 41231,
+            "unite": "t",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Quantite declaree (100 kg) / 10",
+            "periode": "2025-10",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_eur_kg": {
+            "valeur": 1.625,
+            "unite": "EUR/kg",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Valeur declaree (EUR) / (quantite en 100 kg x 100)",
+            "periode": "2025-10",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_usd_kg": {
+            "valeur": 1.89,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "EUR/kg x taux USD/EUR moyen du mois",
+            "periode": "2025-10",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "asie_usd_kg": {
+            "valeur": 2.088,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "Somme des valeurs / somme des quantites (TH, ID, MY, VN) x taux USD/EUR moyen du mois",
+            "periode": "2025-10",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "decote_ci_asie_pct": {
+            "valeur": -9.5,
+            "unite": "%",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "(prix CIF UE CI / composite Asie - 1) x 100, calcule en EUR/kg",
+            "periode": "2025-10",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "E",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "bm_tsr20": {
+            "valeur": 1.71,
+            "unite": "USD/kg",
+            "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+            "date_source": "2025-10-01",
+            "methode": "Moyenne mensuelle Banque mondiale du meme mois (comparaison, hors indice)",
+            "periode": "2025-10",
+            "nature": "T",
+            "version_methode": "Références mensuelles v1",
+            "date_effet_methode": "2026-11-03"
+          }
+        }
+      },
+      {
+        "periode": "2025-11",
+        "volume_ci_t": 35086,
+        "ci_eur_kg": 1.708,
+        "ci_usd_kg": 1.975,
+        "asie_eur_kg": 1.832,
+        "asie_usd_kg": 2.118,
+        "decote_pct": -6.8,
+        "taux_usd_eur": 1.156,
+        "taux_source": "BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+        "taux_source_secondaire": false,
+        "variation_ci_pct": 5.1,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "revise": false,
+        "asie_complet": true,
+        "asie_manquants": [],
+        "bm_tsr20_usd_kg": 1.71,
+        "ecart_ci_bm_pct": 15.5,
+        "fiches": {
+          "volume_ci": {
+            "valeur": 35086,
+            "unite": "t",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Quantite declaree (100 kg) / 10",
+            "periode": "2025-11",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_eur_kg": {
+            "valeur": 1.708,
+            "unite": "EUR/kg",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Valeur declaree (EUR) / (quantite en 100 kg x 100)",
+            "periode": "2025-11",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_usd_kg": {
+            "valeur": 1.975,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "EUR/kg x taux USD/EUR moyen du mois",
+            "periode": "2025-11",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "asie_usd_kg": {
+            "valeur": 2.118,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "Somme des valeurs / somme des quantites (TH, ID, MY, VN) x taux USD/EUR moyen du mois",
+            "periode": "2025-11",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "decote_ci_asie_pct": {
+            "valeur": -6.8,
+            "unite": "%",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "(prix CIF UE CI / composite Asie - 1) x 100, calcule en EUR/kg",
+            "periode": "2025-11",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "E",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "bm_tsr20": {
+            "valeur": 1.71,
+            "unite": "USD/kg",
+            "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+            "date_source": "2025-11-01",
+            "methode": "Moyenne mensuelle Banque mondiale du meme mois (comparaison, hors indice)",
+            "periode": "2025-11",
+            "nature": "T",
+            "version_methode": "Références mensuelles v1",
+            "date_effet_methode": "2026-11-03"
+          }
+        }
+      },
+      {
+        "periode": "2025-12",
+        "volume_ci_t": 23051,
+        "ci_eur_kg": 1.745,
+        "ci_usd_kg": 2.043,
+        "asie_eur_kg": 1.858,
+        "asie_usd_kg": 2.175,
+        "decote_pct": -6.1,
+        "taux_usd_eur": 1.1709,
+        "taux_source": "BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+        "taux_source_secondaire": false,
+        "variation_ci_pct": 2.1,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "revise": false,
+        "asie_complet": true,
+        "asie_manquants": [],
+        "bm_tsr20_usd_kg": 1.74,
+        "ecart_ci_bm_pct": 17.4,
+        "fiches": {
+          "volume_ci": {
+            "valeur": 23051,
+            "unite": "t",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Quantite declaree (100 kg) / 10",
+            "periode": "2025-12",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_eur_kg": {
+            "valeur": 1.745,
+            "unite": "EUR/kg",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Valeur declaree (EUR) / (quantite en 100 kg x 100)",
+            "periode": "2025-12",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_usd_kg": {
+            "valeur": 2.043,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "EUR/kg x taux USD/EUR moyen du mois",
+            "periode": "2025-12",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "asie_usd_kg": {
+            "valeur": 2.175,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "Somme des valeurs / somme des quantites (TH, ID, MY, VN) x taux USD/EUR moyen du mois",
+            "periode": "2025-12",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "decote_ci_asie_pct": {
+            "valeur": -6.1,
+            "unite": "%",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "(prix CIF UE CI / composite Asie - 1) x 100, calcule en EUR/kg",
+            "periode": "2025-12",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "E",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "bm_tsr20": {
+            "valeur": 1.74,
+            "unite": "USD/kg",
+            "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+            "date_source": "2025-12-01",
+            "methode": "Moyenne mensuelle Banque mondiale du meme mois (comparaison, hors indice)",
+            "periode": "2025-12",
+            "nature": "T",
+            "version_methode": "Références mensuelles v1",
+            "date_effet_methode": "2026-11-03"
+          }
+        }
+      },
+      {
+        "periode": "2026-01",
+        "volume_ci_t": 18521,
+        "ci_eur_kg": 1.755,
+        "ci_usd_kg": 2.06,
+        "asie_eur_kg": 1.874,
+        "asie_usd_kg": 2.2,
+        "decote_pct": -6.3,
+        "taux_usd_eur": 1.1738,
+        "taux_source": "BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+        "taux_source_secondaire": false,
+        "variation_ci_pct": 0.6,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "revise": false,
+        "asie_complet": true,
+        "asie_manquants": [],
+        "bm_tsr20_usd_kg": 1.84,
+        "ecart_ci_bm_pct": 12,
+        "fiches": {
+          "volume_ci": {
+            "valeur": 18521,
+            "unite": "t",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Quantite declaree (100 kg) / 10",
+            "periode": "2026-01",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_eur_kg": {
+            "valeur": 1.755,
+            "unite": "EUR/kg",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Valeur declaree (EUR) / (quantite en 100 kg x 100)",
+            "periode": "2026-01",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_usd_kg": {
+            "valeur": 2.06,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "EUR/kg x taux USD/EUR moyen du mois",
+            "periode": "2026-01",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "asie_usd_kg": {
+            "valeur": 2.2,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "Somme des valeurs / somme des quantites (TH, ID, MY, VN) x taux USD/EUR moyen du mois",
+            "periode": "2026-01",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "decote_ci_asie_pct": {
+            "valeur": -6.3,
+            "unite": "%",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "(prix CIF UE CI / composite Asie - 1) x 100, calcule en EUR/kg",
+            "periode": "2026-01",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "E",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "bm_tsr20": {
+            "valeur": 1.84,
+            "unite": "USD/kg",
+            "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+            "date_source": "2026-01-01",
+            "methode": "Moyenne mensuelle Banque mondiale du meme mois (comparaison, hors indice)",
+            "periode": "2026-01",
+            "nature": "T",
+            "version_methode": "Références mensuelles v1",
+            "date_effet_methode": "2026-11-03"
+          }
+        }
+      },
+      {
+        "periode": "2026-02",
+        "volume_ci_t": 19225,
+        "ci_eur_kg": 1.757,
+        "ci_usd_kg": 2.077,
+        "asie_eur_kg": 1.878,
+        "asie_usd_kg": 2.22,
+        "decote_pct": -6.4,
+        "taux_usd_eur": 1.1824,
+        "taux_source": "BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+        "taux_source_secondaire": false,
+        "variation_ci_pct": 0.1,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "revise": false,
+        "asie_complet": true,
+        "asie_manquants": [],
+        "bm_tsr20_usd_kg": 1.93,
+        "ecart_ci_bm_pct": 7.6,
+        "fiches": {
+          "volume_ci": {
+            "valeur": 19225,
+            "unite": "t",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Quantite declaree (100 kg) / 10",
+            "periode": "2026-02",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_eur_kg": {
+            "valeur": 1.757,
+            "unite": "EUR/kg",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Valeur declaree (EUR) / (quantite en 100 kg x 100)",
+            "periode": "2026-02",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_usd_kg": {
+            "valeur": 2.077,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "EUR/kg x taux USD/EUR moyen du mois",
+            "periode": "2026-02",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "asie_usd_kg": {
+            "valeur": 2.22,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "Somme des valeurs / somme des quantites (TH, ID, MY, VN) x taux USD/EUR moyen du mois",
+            "periode": "2026-02",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "decote_ci_asie_pct": {
+            "valeur": -6.4,
+            "unite": "%",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "(prix CIF UE CI / composite Asie - 1) x 100, calcule en EUR/kg",
+            "periode": "2026-02",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "E",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "bm_tsr20": {
+            "valeur": 1.93,
+            "unite": "USD/kg",
+            "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+            "date_source": "2026-02-01",
+            "methode": "Moyenne mensuelle Banque mondiale du meme mois (comparaison, hors indice)",
+            "periode": "2026-02",
+            "nature": "T",
+            "version_methode": "Références mensuelles v1",
+            "date_effet_methode": "2026-11-03"
+          }
+        }
+      },
+      {
+        "periode": "2026-03",
+        "volume_ci_t": 27768,
+        "ci_eur_kg": 1.739,
+        "ci_usd_kg": 2.01,
+        "asie_eur_kg": 1.857,
+        "asie_usd_kg": 2.146,
+        "decote_pct": -6.3,
+        "taux_usd_eur": 1.1558,
+        "taux_source": "BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+        "taux_source_secondaire": false,
+        "variation_ci_pct": -1,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "revise": false,
+        "asie_complet": true,
+        "asie_manquants": [],
+        "bm_tsr20_usd_kg": 1.95,
+        "ecart_ci_bm_pct": 3.1,
+        "fiches": {
+          "volume_ci": {
+            "valeur": 27768,
+            "unite": "t",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Quantite declaree (100 kg) / 10",
+            "periode": "2026-03",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_eur_kg": {
+            "valeur": 1.739,
+            "unite": "EUR/kg",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Valeur declaree (EUR) / (quantite en 100 kg x 100)",
+            "periode": "2026-03",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_usd_kg": {
+            "valeur": 2.01,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "EUR/kg x taux USD/EUR moyen du mois",
+            "periode": "2026-03",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "asie_usd_kg": {
+            "valeur": 2.146,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "Somme des valeurs / somme des quantites (TH, ID, MY, VN) x taux USD/EUR moyen du mois",
+            "periode": "2026-03",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "decote_ci_asie_pct": {
+            "valeur": -6.3,
+            "unite": "%",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "(prix CIF UE CI / composite Asie - 1) x 100, calcule en EUR/kg",
+            "periode": "2026-03",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "E",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "bm_tsr20": {
+            "valeur": 1.95,
+            "unite": "USD/kg",
+            "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+            "date_source": "2026-03-01",
+            "methode": "Moyenne mensuelle Banque mondiale du meme mois (comparaison, hors indice)",
+            "periode": "2026-03",
+            "nature": "T",
+            "version_methode": "Références mensuelles v1",
+            "date_effet_methode": "2026-11-03"
+          }
+        }
+      },
+      {
+        "periode": "2026-04",
+        "volume_ci_t": 33393,
+        "ci_eur_kg": 1.837,
+        "ci_usd_kg": 2.15,
+        "asie_eur_kg": 1.925,
+        "asie_usd_kg": 2.254,
+        "decote_pct": -4.6,
+        "taux_usd_eur": 1.1706,
+        "taux_source": "BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+        "taux_source_secondaire": false,
+        "variation_ci_pct": 5.6,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "revise": false,
+        "asie_complet": true,
+        "asie_manquants": [],
+        "bm_tsr20_usd_kg": 2.06,
+        "ecart_ci_bm_pct": 4.4,
+        "fiches": {
+          "volume_ci": {
+            "valeur": 33393,
+            "unite": "t",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Quantite declaree (100 kg) / 10",
+            "periode": "2026-04",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_eur_kg": {
+            "valeur": 1.837,
+            "unite": "EUR/kg",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Valeur declaree (EUR) / (quantite en 100 kg x 100)",
+            "periode": "2026-04",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_usd_kg": {
+            "valeur": 2.15,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "EUR/kg x taux USD/EUR moyen du mois",
+            "periode": "2026-04",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "asie_usd_kg": {
+            "valeur": 2.254,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "Somme des valeurs / somme des quantites (TH, ID, MY, VN) x taux USD/EUR moyen du mois",
+            "periode": "2026-04",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "decote_ci_asie_pct": {
+            "valeur": -4.6,
+            "unite": "%",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "(prix CIF UE CI / composite Asie - 1) x 100, calcule en EUR/kg",
+            "periode": "2026-04",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "E",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "bm_tsr20": {
+            "valeur": 2.06,
+            "unite": "USD/kg",
+            "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+            "date_source": "2026-04-01",
+            "methode": "Moyenne mensuelle Banque mondiale du meme mois (comparaison, hors indice)",
+            "periode": "2026-04",
+            "nature": "T",
+            "version_methode": "Références mensuelles v1",
+            "date_effet_methode": "2026-11-03"
+          }
+        }
+      },
+      {
+        "periode": "2026-05",
+        "volume_ci_t": 31183,
+        "ci_eur_kg": 1.815,
+        "ci_usd_kg": 2.119,
+        "asie_eur_kg": 1.982,
+        "asie_usd_kg": 2.314,
+        "decote_pct": -8.4,
+        "taux_usd_eur": 1.1673,
+        "taux_source": "BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+        "taux_source_secondaire": false,
+        "variation_ci_pct": -1.2,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "revise": false,
+        "asie_complet": true,
+        "asie_manquants": [],
+        "bm_tsr20_usd_kg": 2.21,
+        "ecart_ci_bm_pct": -4.1,
+        "fiches": {
+          "volume_ci": {
+            "valeur": 31183,
+            "unite": "t",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Quantite declaree (100 kg) / 10",
+            "periode": "2026-05",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_eur_kg": {
+            "valeur": 1.815,
+            "unite": "EUR/kg",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Valeur declaree (EUR) / (quantite en 100 kg x 100)",
+            "periode": "2026-05",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_usd_kg": {
+            "valeur": 2.119,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "EUR/kg x taux USD/EUR moyen du mois",
+            "periode": "2026-05",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "asie_usd_kg": {
+            "valeur": 2.314,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "Somme des valeurs / somme des quantites (TH, ID, MY, VN) x taux USD/EUR moyen du mois",
+            "periode": "2026-05",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "decote_ci_asie_pct": {
+            "valeur": -8.4,
+            "unite": "%",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "(prix CIF UE CI / composite Asie - 1) x 100, calcule en EUR/kg",
+            "periode": "2026-05",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "E",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "bm_tsr20": {
+            "valeur": 2.21,
+            "unite": "USD/kg",
+            "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+            "date_source": "2026-05-01",
+            "methode": "Moyenne mensuelle Banque mondiale du meme mois (comparaison, hors indice)",
+            "periode": "2026-05",
+            "nature": "T",
+            "version_methode": "Références mensuelles v1",
+            "date_effet_methode": "2026-11-03"
+          }
+        }
+      },
+      {
+        "periode": "2026-06",
+        "volume_ci_t": 30589,
+        "ci_eur_kg": 1.9,
+        "ci_usd_kg": 2.188,
+        "asie_eur_kg": 2.017,
+        "asie_usd_kg": 2.324,
+        "decote_pct": -5.8,
+        "taux_usd_eur": 1.1518,
+        "taux_source": "BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+        "taux_source_secondaire": false,
+        "variation_ci_pct": 4.7,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "revise": false,
+        "asie_complet": true,
+        "asie_manquants": [],
+        "bm_tsr20_usd_kg": 2.25,
+        "ecart_ci_bm_pct": -2.8,
+        "fiches": {
+          "volume_ci": {
+            "valeur": 30589,
+            "unite": "t",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Quantite declaree (100 kg) / 10",
+            "periode": "2026-06",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_eur_kg": {
+            "valeur": 1.9,
+            "unite": "EUR/kg",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Valeur declaree (EUR) / (quantite en 100 kg x 100)",
+            "periode": "2026-06",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_usd_kg": {
+            "valeur": 2.188,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "EUR/kg x taux USD/EUR moyen du mois",
+            "periode": "2026-06",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "asie_usd_kg": {
+            "valeur": 2.324,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "Somme des valeurs / somme des quantites (TH, ID, MY, VN) x taux USD/EUR moyen du mois",
+            "periode": "2026-06",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "decote_ci_asie_pct": {
+            "valeur": -5.8,
+            "unite": "%",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "(prix CIF UE CI / composite Asie - 1) x 100, calcule en EUR/kg",
+            "periode": "2026-06",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "E",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "bm_tsr20": {
+            "valeur": 2.25,
+            "unite": "USD/kg",
+            "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+            "date_source": "2026-06-01",
+            "methode": "Moyenne mensuelle Banque mondiale du meme mois (comparaison, hors indice)",
+            "periode": "2026-06",
+            "nature": "T",
+            "version_methode": "Références mensuelles v1",
+            "date_effet_methode": "2026-11-03"
+          }
+        }
+      },
+      {
+        "periode": "2026-07",
+        "volume_ci_t": 31012,
+        "ci_eur_kg": 1.934,
+        "ci_usd_kg": 2.208,
+        "asie_eur_kg": 2.092,
+        "asie_usd_kg": 2.389,
+        "decote_pct": -7.6,
+        "taux_usd_eur": 1.1417,
+        "taux_source": "BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+        "taux_source_secondaire": false,
+        "variation_ci_pct": 1.8,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "revise": false,
+        "asie_complet": true,
+        "asie_manquants": [],
+        "bm_tsr20_usd_kg": 2.14,
+        "ecart_ci_bm_pct": 3.2,
+        "fiches": {
+          "volume_ci": {
+            "valeur": 31012,
+            "unite": "t",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Quantite declaree (100 kg) / 10",
+            "periode": "2026-07",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_eur_kg": {
+            "valeur": 1.934,
+            "unite": "EUR/kg",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Valeur declaree (EUR) / (quantite en 100 kg x 100)",
+            "periode": "2026-07",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_usd_kg": {
+            "valeur": 2.208,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "EUR/kg x taux USD/EUR moyen du mois",
+            "periode": "2026-07",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "asie_usd_kg": {
+            "valeur": 2.389,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "Somme des valeurs / somme des quantites (TH, ID, MY, VN) x taux USD/EUR moyen du mois",
+            "periode": "2026-07",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "decote_ci_asie_pct": {
+            "valeur": -7.6,
+            "unite": "%",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "(prix CIF UE CI / composite Asie - 1) x 100, calcule en EUR/kg",
+            "periode": "2026-07",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "E",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "bm_tsr20": {
+            "valeur": 2.14,
+            "unite": "USD/kg",
+            "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+            "date_source": "2026-07-01",
+            "methode": "Moyenne mensuelle Banque mondiale du meme mois (comparaison, hors indice)",
+            "periode": "2026-07",
+            "nature": "T",
+            "version_methode": "Références mensuelles v1",
+            "date_effet_methode": "2026-11-03"
+          }
+        }
+      },
+      {
+        "periode": "2026-08",
+        "volume_ci_t": 28410,
+        "ci_eur_kg": 2.081,
+        "ci_usd_kg": 2.412,
+        "asie_eur_kg": 2.258,
+        "asie_usd_kg": 2.617,
+        "decote_pct": -7.8,
+        "taux_usd_eur": 1.1593,
+        "taux_source": "BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+        "taux_source_secondaire": false,
+        "variation_ci_pct": 7.6,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "revise": false,
+        "asie_complet": true,
+        "asie_manquants": [],
+        "bm_tsr20_usd_kg": 2.24,
+        "ecart_ci_bm_pct": 7.7,
+        "fiches": {
+          "volume_ci": {
+            "valeur": 28410,
+            "unite": "t",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Quantite declaree (100 kg) / 10",
+            "periode": "2026-08",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_eur_kg": {
+            "valeur": 2.081,
+            "unite": "EUR/kg",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "Valeur declaree (EUR) / (quantite en 100 kg x 100)",
+            "periode": "2026-08",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "ci_usd_kg": {
+            "valeur": 2.412,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "EUR/kg x taux USD/EUR moyen du mois",
+            "periode": "2026-08",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "asie_usd_kg": {
+            "valeur": 2.617,
+            "unite": "USD/kg",
+            "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+            "date_source": "2026-10-16",
+            "methode": "Somme des valeurs / somme des quantites (TH, ID, MY, VN) x taux USD/EUR moyen du mois",
+            "periode": "2026-08",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "taux_source_secondaire": false,
+            "nature": "T",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "decote_ci_asie_pct": {
+            "valeur": -7.8,
+            "unite": "%",
+            "source": "Eurostat Comext (DS-045409)",
+            "date_source": "2026-10-16",
+            "methode": "(prix CIF UE CI / composite Asie - 1) x 100, calcule en EUR/kg",
+            "periode": "2026-08",
+            "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+            "publiable": true,
+            "nature": "E",
+            "version_methode": "RAPI-CI v1",
+            "date_effet_methode": "2026-11-03"
+          },
+          "bm_tsr20": {
+            "valeur": 2.24,
+            "unite": "USD/kg",
+            "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+            "date_source": "2026-08-01",
+            "methode": "Moyenne mensuelle Banque mondiale du meme mois (comparaison, hors indice)",
+            "periode": "2026-08",
+            "nature": "T",
+            "version_methode": "Références mensuelles v1",
+            "date_effet_methode": "2026-11-03"
+          }
+        }
+      }
+    ],
+    "derniere": {
+      "periode": "2026-08",
+      "volume_ci_t": 28410,
+      "ci_eur_kg": 2.081,
+      "ci_usd_kg": 2.412,
+      "asie_eur_kg": 2.258,
+      "asie_usd_kg": 2.617,
+      "decote_pct": -7.8,
+      "taux_usd_eur": 1.1593,
+      "taux_source": "BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+      "taux_source_secondaire": false,
+      "variation_ci_pct": 7.6,
+      "faible_liquidite": false,
+      "alerte_variation": false,
+      "revise": false,
+      "asie_complet": true,
+      "asie_manquants": [],
+      "bm_tsr20_usd_kg": 2.24,
+      "ecart_ci_bm_pct": 7.7,
+      "fiches": {
+        "volume_ci": {
+          "valeur": 28410,
+          "unite": "t",
+          "source": "Eurostat Comext (DS-045409)",
+          "date_source": "2026-10-16",
+          "methode": "Quantite declaree (100 kg) / 10",
+          "periode": "2026-08",
+          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+          "publiable": true,
+          "nature": "T",
+          "version_methode": "RAPI-CI v1",
+          "date_effet_methode": "2026-11-03"
+        },
+        "ci_eur_kg": {
+          "valeur": 2.081,
+          "unite": "EUR/kg",
+          "source": "Eurostat Comext (DS-045409)",
+          "date_source": "2026-10-16",
+          "methode": "Valeur declaree (EUR) / (quantite en 100 kg x 100)",
+          "periode": "2026-08",
+          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+          "publiable": true,
+          "nature": "T",
+          "version_methode": "RAPI-CI v1",
+          "date_effet_methode": "2026-11-03"
+        },
+        "ci_usd_kg": {
+          "valeur": 2.412,
+          "unite": "USD/kg",
+          "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+          "date_source": "2026-10-16",
+          "methode": "EUR/kg x taux USD/EUR moyen du mois",
+          "periode": "2026-08",
+          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+          "publiable": true,
+          "taux_source_secondaire": false,
+          "nature": "T",
+          "version_methode": "RAPI-CI v1",
+          "date_effet_methode": "2026-11-03"
+        },
+        "asie_usd_kg": {
+          "valeur": 2.617,
+          "unite": "USD/kg",
+          "source": "Eurostat Comext (DS-045409) ; taux : BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+          "date_source": "2026-10-16",
+          "methode": "Somme des valeurs / somme des quantites (TH, ID, MY, VN) x taux USD/EUR moyen du mois",
+          "periode": "2026-08",
+          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+          "publiable": true,
+          "taux_source_secondaire": false,
+          "nature": "T",
+          "version_methode": "RAPI-CI v1",
+          "date_effet_methode": "2026-11-03"
+        },
+        "decote_ci_asie_pct": {
+          "valeur": -7.8,
+          "unite": "%",
+          "source": "Eurostat Comext (DS-045409)",
+          "date_source": "2026-10-16",
+          "methode": "(prix CIF UE CI / composite Asie - 1) x 100, calcule en EUR/kg",
+          "periode": "2026-08",
+          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=TH&partner=ID&partner=MY&partner=VN&product=40012200&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+          "publiable": true,
+          "nature": "E",
+          "version_methode": "RAPI-CI v1",
+          "date_effet_methode": "2026-11-03"
+        },
+        "bm_tsr20": {
+          "valeur": 2.24,
+          "unite": "USD/kg",
+          "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+          "date_source": "2026-08-01",
+          "methode": "Moyenne mensuelle Banque mondiale du meme mois (comparaison, hors indice)",
+          "periode": "2026-08",
+          "nature": "T",
+          "version_methode": "Références mensuelles v1",
+          "date_effet_methode": "2026-11-03"
+        }
+      }
+    },
+    "fob_abidjan": {
+      "statut": "non_publie",
+      "raison": "aucune source de fret publique, datee et reutilisable n'est retenue (methodologie 1.3)"
+    },
+    "limites_fr": [
+      "prix **rendu frontière UE** (CIF : fret et assurance compris), pas un prix FOB ;",
+      "la valeur en douane reflète des contrats souvent signés plusieurs semaines avant l'arrivée : l'écart se lit sur une tendance, pas mois par mois ;",
+      "le code NC 4001 22 00 regroupe plusieurs grades (TSR10, TSR20…) ;"
+    ],
+    "limites_en": [
+      "**delivered EU-border** price (CIF: freight and insurance included), not an FOB price;",
+      "customs values reflect contracts often signed several weeks before arrival: read the gap as a trend, not month by month;",
+      "CN code 4001 22 00 pools several grades (TSR10, TSR20…);"
+    ],
+    "alertes": []
+  },
+  "rapport": {
+    "titre_fr": "RubberSignal #46 | TSR20 Banque mondiale : 2.55 USD/kg (octobre 2026) | Semaine 46 - 2026",
+    "titre_en": "RubberSignal #46 | TSR20 World Bank: 2.55 USD/kg (October 2026) | Week 46 - 2026",
+    "date_rapport": "2026-11-09",
+    "semaine": 46,
+    "fichier_fr": "output/rubbersignal_S46_2026_FR.md",
+    "fichier_en": "output/rubbersignal_S46_2026_EN.md",
+    "pre_rsi": 49,
+    "pre_rsi_actif": true,
+    "pre_rsi_publie": true,
+    "publier_sources_sous_licence": false,
+    "serie_hebdo_publiee": false,
+    "rapi_ci_statut": "ok",
+    "rapi_ci_derniere_periode": "2026-08",
+    "versions_methode": {
+      "prix_hebdo": "Prix hebdo v1",
+      "reference_mensuelle": "Références mensuelles v1",
+      "apromac": "APROMAC v1",
+      "rsci": "RSCI v2",
+      "terrain": "Terrain v1",
+      "pre_rsi": "Pré-RSI v2",
+      "volatilite": "Volatilité v1",
+      "rapi_ci": "RAPI-CI v1"
+    }
+  }
+}
