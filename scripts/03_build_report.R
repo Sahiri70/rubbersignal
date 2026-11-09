@@ -276,9 +276,9 @@ libelle_statut_en <- c(frais = "current", perime = "STALE", date_inconnue = "unk
 statut_prix_fr <- unname(libelle_statut_fr[statut_prix] %||% statut_prix)
 statut_prix_en <- unname(libelle_statut_en[statut_prix] %||% statut_prix)
 
-cat("   Prix hebdo  :", prix_lu, "USD/kg (", source_prix, ", date", date_prix %||% "inconnue",
+cat("   Prix hebdo  :", rs_journal_val(prix_lu, serie_hebdo), "USD/kg (", source_prix, ", date", date_prix %||% "inconnue",
     ", statut", statut_prix, ")\n")
-cat("   Prix actuel :", if (prix_frais) prix_actuel else "NON PUBLIÉ (cotation non fraîche)", "\n")
+cat("   Prix actuel :", if (prix_frais) rs_journal_val(prix_actuel, serie_hebdo) else "NON PUBLIÉ (cotation non fraîche)", "\n")
 cat("   Réf. FMI    :", fmi_val, "USD/kg (", fmi_per, ") | BM TSR20 :", bm_val, "(", bm_per, ")\n")
 cat("   Tendance    :", symbole_tendance, tendance,
     "(", texte_variation_fr, ")\n")
@@ -1023,7 +1023,7 @@ cat("RÉSUMÉ SCRIPT 03 — Semaine", SEMAINE, "/", ANNEE, "\n")
 cat(strrep("=", 60), "\n")
 cat("Rapport FR     :", fichier_fr, "\n")
 cat("Rapport EN     :", fichier_en, "\n")
-cat("Prix TSR20     :", prix_actuel, "USD/kg", symbole_tendance,
+cat("Prix TSR20     :", rs_journal_val(prix_actuel, serie_hebdo), "USD/kg", symbole_tendance,
     "(", source_prix, ")\n")
 if (!is.na(pre_rsi)) {
   cat("Pré-RSI        :", pre_rsi, "/100 —", signal_rsi, "\n")

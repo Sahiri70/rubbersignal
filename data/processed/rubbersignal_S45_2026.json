@@ -8,13 +8,13 @@
   },
   "prix": {
     "synthese": {
-      "prix_actuel": 2.399,
+      "prix_actuel": null,
       "periode": "2026-11",
       "date_source": "2026-11-06",
       "statut_fraicheur": "frais",
       "age_jours": 0,
       "prix_hebdo": {
-        "valeur": 2.399,
+        "valeur": null,
         "unite": "USD/kg",
         "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
         "date_source": "2026-11-06",
@@ -39,14 +39,14 @@
       "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
       "indice": "MRB_SMR20",
       "variation_pct": null,
-      "tendance": "indeterminee",
+      "tendance": "non publiée (licence)",
       "moyenne_3m": null,
       "moyenne_6m": null,
       "min_12m": null,
       "max_12m": null,
       "semaines_historique": 1,
       "note_historique": "Variation = vs semaine precedente ; moyennes/min/max sur historique reel (NA tant que l'historique est trop court)",
-      "prix_chf": 1.965
+      "prix_chf": null
     },
     "reference_mensuelle": {
       "fmi_prubbusdm": {
@@ -283,11 +283,11 @@
     },
     "marches_mondiaux": {
       "date_cours": "2026-11-05",
-      "spread_sicom_lgm": 0.331,
+      "spread_sicom_lgm": null,
       "lgm": {
         "grade": "TSR20/SMR20",
         "bourse": "MRB/LGM (Malaisie)",
-        "prix_usd": 2.399,
+        "prix_usd": null,
         "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
         "date_source": "2026-11-06",
         "statut_fraicheur": "frais"
@@ -297,9 +297,9 @@
         "bourse": "SGX/SICOM (Singapour)",
         "ticker": "TF",
         "contrat": "Dec 2026",
-        "prix_orig": 273,
+        "prix_orig": null,
         "unite_orig": "USD cts/kg",
-        "prix_usd": 2.73,
+        "prix_usd": null,
         "statut": "auto"
       },
       "tocom": {
@@ -752,14 +752,7 @@
         "date_source": "2021-10-01"
       }
     ],
-    "historique_hebdo_mensuel": [
-      {
-        "periode": "2026-11",
-        "prix_usd": 2.399,
-        "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
-        "unite": "USD/kg"
-      }
-    ],
+    "historique_hebdo_mensuel": [],
     "historique_indexmundi": []
   },
   "controle_qualite": {
@@ -775,13 +768,13 @@
       "divergence_max_pct": 13.8,
       "candidats": {
         "mrb": {
-          "usd": 2.399,
+          "usd": null,
           "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
           "indice": "MRB_SMR20",
           "date_source": "2026-11-06"
         },
         "sgx": {
-          "usd": 2.73,
+          "usd": null,
           "source": "SGX TSR20 FOB Dec 2026 (reglement de la veille, via rtas.sg)",
           "indice": "SGX_TSR20",
           "date_source": "2026-11-06"

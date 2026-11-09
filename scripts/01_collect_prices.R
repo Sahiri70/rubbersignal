@@ -99,7 +99,7 @@ prix_actuel_usd <- tsr$usd
 source_prix     <- tsr$source
 ALERTES         <- c(ALERTES, tsr$alertes)
 
-cat("   Prix TSR20 retenu :", prix_actuel_usd, "USD/kg (", source_prix, ")\n")
+cat("   Prix TSR20 retenu :", rs_journal_val(prix_actuel_usd, tsr$indice), "USD/kg (", source_prix, ")\n")
 if (length(tsr$candidats) > 1)
   cat("   Sources concordantes :", length(tsr$candidats),
       "| ecart max :", tsr$divergence_max_pct, "%\n")
@@ -167,7 +167,8 @@ cat("   BM TSR20      :", reference_mensuelle$bm_tsr20$valeur, "USD/kg (",
 # ── 5. HISTORIQUE REEL DU PRIX ───────────────────────────────
 
 # Une cotation perimee n'entre pas dans l'historique (sinon fausse variation).
-f_hist_tsr <- "data/reference/tsr20_hebdo.csv"
+# Cotation sous licence et D1 = FALSE : historique dans data/prive/ (non commite).
+f_hist_tsr <- rs_fichier_hist_tsr20(tsr$indice)
 h_tsr <- if (prix_hebdo_frais) {
   rs_hist_tsr20_maj(DATE_COLLECTE, prix_actuel_usd, source_prix, tsr$indice, f = f_hist_tsr)
 } else if (file.exists(f_hist_tsr)) {
@@ -364,7 +365,7 @@ min_12m    <- if (length(v12) > 0) round(min(v12), 3)  else NA_real_
 max_12m    <- if (length(v12) > 0) round(max(v12), 3)  else NA_real_
 
 cat("   Historique reel :", n_hs, "semaine(s) pour l'indice", tsr$indice, "\n")
-cat("   Variation :", variation_pct, "% | tendance :", tendance, "\n")
+cat("   Variation :", rs_journal_val(variation_pct, tsr$indice), "% | tendance :", rs_journal_val(tendance, tsr$indice), "\n")
 
 synthese_prix <- list(
   # prix_actuel = NA si la cotation a plus de 14 jours ou n'a pas de date
@@ -393,7 +394,7 @@ synthese_prix <- list(
   note_historique = "Variation = vs semaine precedente ; moyennes/min/max sur historique reel (NA tant que l'historique est trop court)",
   prix_chf      = if (prix_hebdo_frais && is.finite(TAUX_USD_CHF)) round(prix_actuel_usd * TAUX_USD_CHF, 3) else NA_real_
 )
-cat("   Prix en CHF :", synthese_prix$prix_chf, "CHF/kg\n")
+cat("   Prix en CHF :", rs_journal_val(synthese_prix$prix_chf, tsr$indice), "CHF/kg\n")
 
 
 # ── 9. MARCHES MONDIAUX ──────────────────────────────────────
@@ -407,7 +408,7 @@ sicom_cents  <- tsr$sgx_cents
 sicom_usd    <- if (is.finite(sicom_cents)) round(sicom_cents / 100, 4) else NA_real_
 spread_sicom_lgm <- if (is.finite(sicom_usd)) round(sicom_usd - prix_actuel_usd, 4) else NA_real_
 
-cat("   SICOM TSR20 :", sicom_cents, "cts/kg =", sicom_usd, "USD/kg\n")
+cat("   SICOM TSR20 :", rs_journal_val(sicom_cents, "SGX_TSR20"), "cts/kg =", rs_journal_val(sicom_usd, "SGX_TSR20"), "USD/kg\n")
 cat("   TOCOM RSS3 / SHFE RU : non collectes automatiquement (NA)\n")
 
 synthese_marches <- list(
@@ -458,7 +459,10 @@ prix_indexmundi_val <- tibble()
 if (!is.null(tsr$indexmundi) && nrow(tsr$indexmundi) > 0) {
   prix_indexmundi_val <- as_tibble(tsr$indexmundi) %>%
     mutate(source = "IndexMundi", unite = "USD/kg")
-  fichier_csv2 <- paste0("data/raw/prix_indexmundi_", ANNEE, "_S", SEMAINE, ".csv")
+  # IndexMundi est sous licence : avec D1 = FALSE, fichier brut dans data/prive/ (non commite)
+  dossier_im <- if (rs_publier_sous_licence() || rs_serie_publiable("INDEXMUNDI")) "data/raw" else RS_DOSSIER_PRIVE
+  dir.create(dossier_im, recursive = TRUE, showWarnings = FALSE)
+  fichier_csv2 <- file.path(dossier_im, paste0("prix_indexmundi_", ANNEE, "_S", SEMAINE, ".csv"))
   write_csv(prix_indexmundi_val, fichier_csv2)
   cat("   Sauvegarde :", fichier_csv2, "\n")
 }
@@ -543,17 +547,17 @@ for (i in seq_len(nrow(res_db$revisions))) {
 cat("\n", strrep("=", 55), "\n")
 cat("RESUME COLLECTE PRIX — Semaine", SEMAINE, "/", ANNEE, "\n")
 cat(strrep("=", 55), "\n")
-cat("Prix TSR20 lu      :", prix_actuel_usd, "USD/kg (", source_prix, ", date",
+cat("Prix TSR20 lu      :", rs_journal_val(prix_actuel_usd, tsr$indice), "USD/kg (", source_prix, ", date",
     tsr$date_source %||% "inconnue", ",", fr_hebdo$statut, ")\n")
 cat("Ref. FMI mensuelle :", reference_mensuelle$fmi_prubbusdm$valeur, "USD/kg (",
     reference_mensuelle$fmi_prubbusdm$periode %||% "-", ")\n")
-cat("Prix en CHF        :", synthese_prix$prix_chf, "CHF/kg\n")
-cat("Tendance           :", tendance, "(", variation_pct, "%)\n")
+cat("Prix en CHF        :", rs_journal_val(synthese_prix$prix_chf, tsr$indice), "CHF/kg\n")
+cat("Tendance           :", rs_journal_val(tendance, tsr$indice), "(", rs_journal_val(variation_pct, tsr$indice), "%)\n")
 cat("Prix APROMAC CI    :", PRIX_APROMAC_FCFA, "FCFA/kg =", prix_apromac_usd,
     "USD/kg (", MOIS_APROMAC, ",", ap$statut, ")\n")
 cat("RSCI               :", rsci_pct, "% (", MOIS_APROMAC, "; ecart vs",
     calc$taux$part_planteur_pct, "% officiel :", rsci_ecart_pts, "pts)\n")
-cat("SICOM  TSR20       :", sicom_usd, "USD/kg\n")
+cat("SICOM  TSR20       :", rs_journal_val(sicom_usd, "SGX_TSR20"), "USD/kg\n")
 cat("Qualite            :", controle_qualite$statut_global, "\n")
 cat("Fichier JSON       :", fichier_json, "\n")
 cat(strrep("=", 55), "\n")

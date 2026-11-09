@@ -14,3 +14,6 @@ $GITHUB_ENV
 *.key
 *.pem
 secrets/
+
+# Donnees sous licence (decision D1) : jamais dans le depot public
+data/prive/

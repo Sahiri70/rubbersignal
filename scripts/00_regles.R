@@ -295,6 +295,122 @@ rs_publier_sous_licence <- function(v = Sys.getenv("RS_PUBLIER_SOURCES_SOUS_LICE
 RS_MENTION_LICENCE_FR <- "cotation hebdomadaire réservée (licence)"
 RS_MENTION_LICENCE_EN <- "weekly quote reserved (licence)"
 
+
+# ── 8 bis. FICHIERS PUBLICS : AUCUNE VALEUR SOUS LICENCE ─────
+# Le depot GitHub est public : tout fichier commite est une publication.
+# Avec RS_PUBLIER_SOURCES_SOUS_LICENCE = FALSE, aucune valeur d'une serie
+# sous licence ne doit y figurer (rapport, JSON, base, historiques, brut).
+# Les valeurs restent utilisables pendant le passage (controles internes) ;
+# l'historique hebdomadaire sous licence va dans data/prive/ (non commite).
+
+RS_DOSSIER_PRIVE <- "data/prive"
+
+# Les journaux de GitHub Actions d'un depot public sont publics aussi :
+# une valeur sous licence n'y est jamais imprimee quand D1 = FALSE.
+rs_journal_val <- function(v, serie, publier_licence = rs_publier_sous_licence())
+  if (publier_licence || rs_serie_publiable(serie %||% NA_character_)) v else "[sous licence, non affiche]"
+
+# Fichier d'historique hebdomadaire a utiliser pour un indice donne
+rs_fichier_hist_tsr20 <- function(indice, publier_licence = rs_publier_sous_licence()) {
+  if (publier_licence || rs_serie_publiable(indice %||% NA_character_)) "data/reference/tsr20_hebdo.csv"
+  else file.path(RS_DOSSIER_PRIVE, "tsr20_hebdo.csv")
+}
+
+# Retire d'un JSON de passage (liste lue avec simplifyVector = FALSE) toute
+# valeur issue d'une serie sous licence. Les cles sont gardees (valeur null),
+# les sources et dates aussi : on dit qu'une cotation existe, pas sa valeur.
+rs_expurger_json <- function(j, publier_licence = rs_publier_sous_licence()) {
+  if (publier_licence || !is.list(j)) return(j)
+  vider <- function(x, cles) { for (k in cles) if (!is.null(x[[k]]) && !identical(x[[k]], NA)) x[[k]] <- NA; x }
+  num_vides <- function(x) { for (k in names(x)) if (is.numeric(x[[k]])) x[[k]] <- NA; x }
+  p <- j$prix
+  if (is.list(p)) {
+    s <- p$synthese
+    if (is.list(s) && !rs_serie_publiable(s$indice %||% NA_character_)) {
+      s <- vider(s, c("prix_actuel", "prix_chf", "variation_pct", "moyenne_3m", "moyenne_6m", "min_12m", "max_12m"))
+      if (!is.null(s$tendance)) s$tendance <- "non publiée (licence)"
+      if (is.list(s$prix_hebdo)) s$prix_hebdo <- vider(s$prix_hebdo, "valeur")
+      p$synthese <- s
+    }
+    m <- p$marches_mondiaux
+    if (is.list(m)) {
+      m <- vider(m, "spread_sicom_lgm")
+      for (b in c("lgm", "sicom", "tocom", "shfe"))     # bourses et MRB : toujours sous licence
+        if (is.list(m[[b]])) m[[b]] <- vider(m[[b]], c("prix_usd", "prix_orig"))
+      p$marches_mondiaux <- m
+    }
+    for (k in c("historique_hebdo_mensuel", "historique_indexmundi"))
+      if (length(p[[k]]) > 0) p[[k]] <- list()
+    j$prix <- p
+  }
+  cand <- j$controle_qualite$tsr20$candidats
+  if (is.list(cand)) {
+    for (k in names(cand))
+      if (is.list(cand[[k]]) && !rs_serie_publiable(cand[[k]]$indice %||% NA_character_))
+        cand[[k]] <- num_vides(cand[[k]])
+    j$controle_qualite$tsr20$candidats <- cand
+  }
+  # Regle generale : tout bloc IOSCO marque publiable = FALSE perd sa valeur
+  rec <- function(x) {
+    if (!is.list(x)) return(x)
+    if (identical(x$publiable, FALSE)) x <- vider(x, "valeur")
+    for (k in seq_along(x)) if (is.list(x[[k]])) x[[k]] <- rec(x[[k]])
+    x
+  }
+  rec(j)
+}
+
+# Valeurs brutes sous licence lues pendant le passage (pour la recherche dans
+# les fichiers publics). Seules les valeurs a 2 decimales ou plus sont gardees,
+# pour eviter les fausses alertes sur des nombres ronds.
+rs_valeurs_licence <- function(j) {
+  cand <- j$controle_qualite$tsr20$candidats
+  if (!is.list(cand)) return(character())
+  v <- unlist(lapply(cand, function(c)
+    if (is.list(c) && !rs_serie_publiable(c$indice %||% NA_character_))
+      Filter(function(z) is.numeric(z) && length(z) == 1, c) else NULL))
+  v <- unique(v[is.finite(v)])
+  if (length(v) == 0) return(character())
+  txt <- vapply(v, function(z) format(z, trim = TRUE, drop0trailing = TRUE, scientific = FALSE), character(1))
+  unname(txt[grepl("\\.[0-9]{2,}$", txt)])
+}
+
+# Controle gardien (bloquant). Retourne les infractions (vecteur vide = conforme).
+#   json     : liste nommee des JSON de passage a publier (nom = chemin)
+#   obs      : data/db/observations.csv ; series : data/db/series.csv
+#   hist     : data/reference/tsr20_hebdo.csv (ou NULL)
+#   fichiers : chemins des fichiers publics a inspecter ; valeurs : rs_valeurs_licence()
+rs_controle_licence <- function(json = list(), obs = NULL, series = NULL, hist = NULL,
+                                fichiers = character(), valeurs = character(),
+                                publier_licence = rs_publier_sous_licence()) {
+  if (publier_licence) return(character())
+  out <- character()
+  for (f in names(json))
+    if (!identical(rs_expurger_json(json[[f]], FALSE), json[[f]]))
+      out <- c(out, paste0(f, " : contient une valeur sous licence"))
+  if (!is.null(obs) && !is.null(series)) {
+    interdites <- series$serie_id[series$publiable != "oui"]
+    n <- table(obs$serie_id[obs$serie_id %in% interdites])
+    for (s in names(n)) out <- c(out, sprintf("data/db/observations.csv : %d valeur(s) de %s (sous licence)", n[[s]], s))
+  }
+  if (!is.null(hist) && nrow(hist) > 0) {
+    bad <- unique(hist$indice[!vapply(hist$indice, rs_serie_publiable, logical(1))])
+    if (length(bad) > 0) out <- c(out, paste0("data/reference/tsr20_hebdo.csv : cotations ",
+                                              paste(bad, collapse = ", "), " (sous licence)"))
+  }
+  im <- fichiers[grepl("indexmundi", basename(fichiers), ignore.case = TRUE)]
+  if (length(im) > 0) out <- c(out, paste0(im, " : fichier IndexMundi (sous licence)"))
+  if (length(valeurs) > 0) {
+    motif <- paste0("(?<![0-9.])(", paste(gsub(".", "\\.", valeurs, fixed = TRUE), collapse = "|"), ")(?![0-9])")
+    for (f in fichiers[file.exists(fichiers)]) {
+      l <- readLines(f, warn = FALSE, encoding = "UTF-8")
+      i <- grep(motif, l, perl = TRUE)
+      if (length(i) > 0) out <- c(out, sprintf("%s ligne %d : valeur de cotation sous licence", f, i[1]))
+    }
+  }
+  out
+}
+
 # Titre du rapport. hebdo : list(valeur, date, frais, serie) ; bm : list(valeur, periode)
 rs_titre_rapport <- function(langue, semaine, annee, hebdo, bm, symbole = "~",
                              publier_licence = rs_publier_sous_licence()) {

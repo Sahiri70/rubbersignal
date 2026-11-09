@@ -74,6 +74,11 @@ jobs:
       - name: Run Script 03 - Build report
         run: Rscript scripts/03_build_report.R
 
+      - name: Run Script 07 - Licence guard (blocks publication)
+        # Retire des fichiers publics les valeurs sous licence (decision D1) ;
+        # arrete le passage si une valeur subsiste : rien n'est commite.
+        run: Rscript scripts/07_garde_licence.R
+
       - name: Commit and push reports
         run: |
           git config --local user.email "action@github.com"

@@ -322,9 +322,12 @@ rs_db_derniere <- function(obs, serie_id) {
 #   bm, fmi : sorties de rs_wb_pinksheet_tsr20 / rs_fred_prubbusdm (ou NULL)
 #   apromac : historique fusionne (rs_apromac_fusion()$historique)
 #   rsci    : synthese_rsci ; fx : rs_fx() ; tsr : rs_tsr20()
+# Les cotations sous licence ne sont stockees que si publier_licence = TRUE :
+# data/db/ est dans le depot public (decision D1, 00_regles.R section 8 bis).
 
 rs_db_obs_collecte <- function(date_extraction, bm = NULL, fmi = NULL, apromac = NULL,
-                               rsci = NULL, fx = NULL, tsr = NULL) {
+                               rsci = NULL, fx = NULL, tsr = NULL,
+                               publier_licence = rs_publier_sous_licence()) {
   out <- list()
   de <- as.character(date_extraction)
   if (!is.null(bm) && nrow(bm$serie %||% data.frame()) > 0)
@@ -353,6 +356,7 @@ rs_db_obs_collecte <- function(date_extraction, bm = NULL, fmi = NULL, apromac =
       cnd <- tsr$candidats[[k]]
       d <- cnd$date_source %||% NA_character_
       if (is.na(d) || !is.finite(cnd$usd %||% NA) || !cnd$indice %in% RS_DB_CATALOGUE$serie_id) next
+      if (!publier_licence && !rs_serie_publiable(cnd$indice)) next
       out[[paste0("hebdo_", k)]] <- rs_db_obs(cnd$indice, d, cnd$usd, d, de,
                                               methode = "Cotation lue le jour de collecte (usage interne, sous licence)",
                                               source = cnd$source)

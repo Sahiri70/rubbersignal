@@ -265,14 +265,15 @@ test_that("Base : observations de la collecte hebdomadaire (script 01)", {
   fx  <- list(eur_usd = 1.1204, date = "2026-11-05", source = "Frankfurter (taux de reference BCE)")
   tsr <- list(candidats = list(mrb = list(usd = 2.487, indice = "MRB_SMR20", source = "MRB", date_source = "2026-11-05"),
                                sgx = list(usd = 2.45, indice = "SGX_TSR20", source = "SGX", date_source = NA)))
-  o <- rs_db_obs_collecte("2026-11-06", bm, fmi, ap, rsci, fx, tsr)
+  # publier_licence = TRUE : cas « accord ecrit obtenu » (cas FALSE : tests/test_licence.R)
+  o <- rs_db_obs_collecte("2026-11-06", bm, fmi, ap, rsci, fx, tsr, publier_licence = TRUE)
   expect_setequal(unique(o$serie_id), c("BM_TSR20", "FMI_PRUBBUSDM", "APROMAC", "RSCI", "FX_USD_EUR_J", "MRB_SMR20"))
   expect_equal(o$date_source[o$serie_id == "APROMAC"], c("2026-05-02", "2026-06-10"))
   expect_equal(o$date_valeur[o$serie_id == "RSCI"], "2026-11-06")
   expect_false("SGX_TSR20" %in% o$serie_id)        # cotation sans date : non stockee
   dir <- nouvelle_base()
   expect_equal(rs_db_ajouter(o, dir)$n_ajoutees, nrow(o))
-  r2 <- rs_db_ajouter(rs_db_obs_collecte("2026-11-13", bm, fmi, ap, rsci, fx, tsr), dir)
+  r2 <- rs_db_ajouter(rs_db_obs_collecte("2026-11-13", bm, fmi, ap, rsci, fx, tsr, publier_licence = TRUE), dir)
   expect_equal(r2$n_ajoutees, 1); expect_equal(r2$n_identiques, nrow(o) - 1)   # seul le RSCI du jour de collecte est nouveau
   s <- rs_db_lire_series(dir)
   expect_equal(s$publiable[s$serie_id == "MRB_SMR20"], "non")
