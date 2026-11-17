@@ -2,8 +2,19 @@ name: RubberSignal Weekly Pipeline
 
 on:
   schedule:
-    - cron: "0 5 * * 1"
+    # Lundi 04:23 UTC. Les tâches programmées à l'heure pile sont retardées de
+    # plusieurs heures par GitHub (5 à 8 h constatées) : minute décalée.
+    - cron: "23 4 * * 1"
   workflow_dispatch:
+
+# Droits minimaux : le robot ne peut qu'écrire dans le dépôt (commit des rapports).
+permissions:
+  contents: write
+
+# Un seul passage à la fois : pas de commits concurrents du robot.
+concurrency:
+  group: rubbersignal-pipeline
+  cancel-in-progress: false
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -11,21 +22,25 @@ env:
   # dans les rapports publiés tant qu'aucune autorisation écrite n'est obtenue.
   # Passer à "TRUE" seulement avec l'accord écrit de la source.
   RS_PUBLIER_SOURCES_SOUS_LICENCE: "FALSE"
+  # Paquets R figés à une date (reproductible) : changer la date pour mettre à jour.
+  RS_CRAN_SNAPSHOT: "https://packagemanager.posit.co/cran/__linux__/jammy/2026-11-09"
 
 jobs:
   generate-report:
     runs-on: ubuntu-22.04
+    timeout-minutes: 45
 
     steps:
 
+      # Actions épinglées par empreinte de commit (pas de version flottante).
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Setup R
-        uses: r-lib/actions/setup-r@v2
+        uses: r-lib/actions/setup-r@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2.14.0
         with:
           r-version: "4.4.0"
-          use-public-rspm: true
+          use-public-rspm: false
 
       - name: Install system dependencies
         run: |
@@ -34,13 +49,20 @@ jobs:
 
       - name: Install R packages
         run: |
-          Rscript -e "install.packages(c('httr','jsonlite','tidyverse','lubridate','rvest'), repos='https://packagemanager.posit.co/cran/__linux__/jammy/latest', dependencies=TRUE)"
+          Rscript -e "install.packages(c('httr','jsonlite','tidyverse','lubridate','rvest','readxl','testthat'), repos=Sys.getenv('RS_CRAN_SNAPSHOT'), dependencies=TRUE)"
 
       - name: Create directories
         run: |
           mkdir -p data/raw
           mkdir -p data/processed
           mkdir -p output
+
+      # Tests hors ligne, sans clé. Non bloquants tant qu'un premier passage vert
+      # n'a pas été constaté sur GitHub (ils n'ont tourné que sous Windows) :
+      # passer ensuite continue-on-error à false pour qu'un code cassé ne publie rien.
+      - name: Run tests (offline)
+        continue-on-error: true
+        run: Rscript tests/run_all.R || { echo "::warning::Tests en echec : voir le journal de cette etape"; exit 1; }
 
       - name: Run Script 01 - Collect prices
         env:
@@ -74,6 +96,10 @@ jobs:
       - name: Run Script 03 - Build report
         run: Rscript scripts/03_build_report.R
 
+      - name: Run Script 08 - Export public site data
+        # Données du site vitrine et du terminal : séries publiables seulement, aucune clé.
+        run: Rscript scripts/08_export_site.R
+
       - name: Run Script 07 - Licence guard (blocks publication)
         # Retire des fichiers publics les valeurs sous licence (decision D1) ;
         # arrete le passage si une valeur subsiste : rien n'est commite.
@@ -83,9 +109,9 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "RubberSignal Bot"
-          git add output/
-          git add data/
-          git diff --staged --quiet || git commit -m "RubberSignal auto S$(date +'%V') $(date +'%Y')"
-          git pull --rebase origin master || true
+          git add output/ data/ site/data/
+          git diff --staged --quiet && { echo "Rien de nouveau à publier."; exit 0; }
+          git commit -m "RubberSignal auto S$(date +'%V') $(date +'%Y')"
+          # Si le dépôt a avancé entre-temps : rejouer le commit par-dessus, sinon échouer clairement.
+          git pull --rebase origin master
           git push
-

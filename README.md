@@ -105,3 +105,29 @@ rubbersignal/
     ├── strategy/     # Document de stratégie produit
     └── rapports/     # Rapports générés
 ```
+
+## Site vitrine et terminal public (depuis le 16/11/2026)
+
+Le dossier `site/` contient trois pages statiques, en français et en anglais, sans serveur ni clé :
+
+| Page | Rôle |
+|---|---|
+| `site/index.html` | Site vitrine : ce que RubberSignal mesure, fiabilité, offres, échéance EUDR |
+| `site/terminal.html` | Terminal public : prix rendu UE, part du planteur, références, signaux, données |
+| `site/methode.html` | Méthode, gouvernance, journal des versions et journal des corrections |
+
+Les données (`site/data/`) sont régénérées chaque lundi par `scripts/08_export_site.R` : séries sous licence libre seulement. La garde licence (`scripts/07_garde_licence.R`) inspecte `site/` comme `data/` et `output/`.
+
+Aperçu local : `Rscript scripts/servir_site.R`, puis ouvrir `http://localhost:4173`.
+
+Déploiement : workflow « Deploy site (GitHub Pages) », après activation de Pages (Settings → Pages → Source : GitHub Actions).
+
+`app.R` (Shiny) est un outil interne d'analyse : il n'est plus déployé en ligne.
+
+## Tests
+
+`Rscript tests/run_all.R` lance tous les tests hors ligne (aucune clé, aucun réseau).
+
+## Validation des publications
+
+Un rapport porte la mention « en attente de validation » tant que l'évaluateur responsable n'a pas inscrit sa décision dans `data/reference/validations.csv` (`valide`, `valide_avec_reserves` ou `refuse`).

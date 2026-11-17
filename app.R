@@ -2,6 +2,8 @@
 # Auteur  : Martial Sahiri
 # Version : 5.0 — Sprints 1-6 (Plantations + Manufacturiers)
 # Usage   : shiny::runApp("app.R")
+# STATUT (16/11/2026) : outil INTERNE (analyse locale). Ne plus deployer en ligne :
+#           le terminal public est la page statique site/terminal.html (sans serveur ni cle).
 
 library(shiny)
 library(shinydashboard)

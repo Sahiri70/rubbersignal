@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="fr" data-lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<title>RubberSignal Technologies · Terminal</title>
+<meta name="description" content="Prix du caoutchouc naturel d'Afrique de l'Ouest mesurés sur les douanes de l'UE, part du planteur ivoirien, références mondiales. Chaque chiffre porte sa source, sa date et sa nature.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/rs.css">
+<script src="assets/rs-common.js"></script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="RubberSignal Technologies">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0e5a3c"/><path d="M6 17l4-5 4 3 6-8" fill="none" stroke="#f3f1e8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="brand">RubberSignal <span class="brand-2">Technologies</span></span><small>Terminal</small>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#matrice"><span lang="fr">Prix Afrique de l'Ouest</span><span lang="en">West Africa prices</span></a>
+      <a href="#planteur"><span lang="fr">Part du planteur</span><span lang="en">Farmer share</span></a>
+      <a href="#references"><span lang="fr">Références</span><span lang="en">Benchmarks</span></a>
+      <a href="#signaux"><span lang="fr">Signaux</span><span lang="en">Signals</span></a>
+      <a href="#donnees"><span lang="fr">Données</span><span lang="en">Data</span></a>
+    </nav>
+    <div class="tools">
+      <div class="seg" role="group" aria-label="Langue / Language">
+        <button type="button" data-set-lang="fr">FR</button>
+        <button type="button" data-set-lang="en">EN</button>
+      </div>
+      <button type="button" class="icon-btn" data-toggle-theme aria-label="Clair / sombre · Light / dark" title="Clair / sombre · Light / dark">◐</button>
+    </div>
+  </div>
+</header>
+
+<div class="statusbar"><div class="wrap" id="status"></div></div>
+
+<main class="wrap">
+  <div id="erreur" class="err" hidden>
+    <h2><span lang="fr">Données indisponibles</span><span lang="en">Data unavailable</span></h2>
+    <p class="note"><span lang="fr">Le fichier de données du terminal n'a pas pu être chargé.</span><span lang="en">The terminal data file could not be loaded.</span></p>
+  </div>
+
+  <div id="app">
+    <div class="filters" role="group" aria-label="Filtres">
+      <span class="f">
+        <span lang="fr">Période</span><span lang="en">Period</span>
+        <span class="seg">
+          <button type="button" data-range="12"><span lang="fr">12 mois</span><span lang="en">12 months</span></button>
+          <button type="button" data-range="24"><span lang="fr">24 mois</span><span lang="en">24 months</span></button>
+          <button type="button" data-range="0"><span lang="fr">Tout</span><span lang="en">All</span></button>
+        </span>
+      </span>
+      <span class="f">
+        <span lang="fr">Devise des prix rendus UE</span><span lang="en">Currency of EU-delivered prices</span>
+        <span class="seg">
+          <button type="button" data-cur="usd">USD/kg</button>
+          <button type="button" data-cur="eur">€/kg</button>
+        </span>
+      </span>
+    </div>
+
+    <div class="kpis six" id="kpis"></div>
+
+    <!-- 1. Matrice Afrique de l'Ouest -->
+    <section class="t-section" id="matrice">
+      <h2><span lang="fr">Prix Afrique de l'Ouest : caoutchouc ivoirien rendu UE</span><span lang="en">West Africa prices: Ivorian rubber delivered to the EU</span></h2>
+      <p class="lead">
+        <span lang="fr">Prix moyen déclaré en douane à l'entrée de l'Union européenne (caoutchouc techniquement spécifié, NC 4001 22 00), comparé au caoutchouc asiatique. Indice RAPI-CI : il repose sur des transactions réelles.</span>
+        <span lang="en">Average customs-declared price on entry into the European Union (technically specified rubber, CN 4001 22 00), compared with Asian rubber. RAPI-CI index: built on actual transactions.</span>
+      </p>
+      <div class="t-grid wide">
+        <div class="card chart-card">
+          <h3><span lang="fr">Prix rendu UE : Côte d'Ivoire et Asie</span><span lang="en">EU-delivered price: Côte d'Ivoire and Asia</span></h3>
+          <p class="sub" id="c-prix-sub"></p>
+          <div id="c-prix"></div>
+        </div>
+        <div class="card chart-card">
+          <h3><span lang="fr">Importations de l'UE par origine</span><span lang="en">EU imports by origin</span></h3>
+          <p class="sub" id="c-orig-sub"></p>
+          <div id="c-orig"></div>
+          <p class="note" id="c-orig-note"></p>
+        </div>
+      </div>
+      <div class="t-grid two">
+        <div class="card chart-card">
+          <h3><span lang="fr">Écart de prix Côte d'Ivoire / Asie</span><span lang="en">Price gap, Côte d'Ivoire vs Asia</span></h3>
+          <p class="sub"><span lang="fr">En % du prix asiatique. Négatif : le caoutchouc ivoirien entre moins cher.</span><span lang="en">As % of the Asian price. Negative: Ivorian rubber enters cheaper.</span></p>
+          <div id="c-decote"></div>
+        </div>
+        <div class="card chart-card">
+          <h3><span lang="fr">Volume importé depuis la Côte d'Ivoire</span><span lang="en">Volume imported from Côte d'Ivoire</span></h3>
+          <p class="sub"><span lang="fr">Milliers de tonnes par mois (kt).</span><span lang="en">Thousand tonnes per month (kt).</span></p>
+          <div id="c-volume"></div>
+        </div>
+      </div>
+      <div class="card t-grid">
+        <div id="t-matrice"></div>
+        <div class="callout">
+          <span lang="fr"><strong>Limites à connaître.</strong> Prix rendu frontière UE (fret et assurance compris), pas un prix FOB. La valeur en douane reflète des contrats signés plusieurs semaines avant l'arrivée : l'écart se lit sur une tendance, pas mois par mois. Le code douanier regroupe plusieurs grades (TSR10, TSR20). Eurostat publie un mois environ 6 à 7 semaines après sa fin et révise parfois les mois précédents : les révisions sont signalées et l'historique conservé.</span>
+          <span lang="en"><strong>Limits to keep in mind.</strong> Delivered EU-border price (freight and insurance included), not an FOB price. Customs values reflect contracts signed several weeks before arrival: read the gap as a trend, not month by month. The customs code pools several grades (TSR10, TSR20). Eurostat publishes a month about 6 to 7 weeks after it ends and sometimes revises earlier months: revisions are flagged and the history is kept.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Part du planteur -->
+    <section class="t-section" id="planteur">
+      <h2><span lang="fr">Part du planteur ivoirien (RSCI)</span><span lang="en">Ivorian farmer share (RSCI)</span></h2>
+      <p class="lead">
+        <span lang="fr">Part du prix international TSR20 qui revient au planteur, une fois le prix officiel du mois converti en caoutchouc sec.</span>
+        <span lang="en">Share of the international TSR20 price that reaches the farmer, once the official monthly price is converted to dry rubber.</span>
+      </p>
+      <div class="t-grid two">
+        <div class="card chart-card">
+          <h3><span lang="fr">RSCI : part du prix TSR20 reçue par le planteur</span><span lang="en">RSCI: share of the TSR20 price received by the farmer</span></h3>
+          <p class="sub"><span lang="fr">En %. Les mois sans prix officiel connu restent vides.</span><span lang="en">In %. Months without a known official price are left empty.</span></p>
+          <div id="c-rsci"></div>
+        </div>
+        <div class="card chart-card">
+          <h3><span lang="fr">Prix officiel du mois (APROMAC)</span><span lang="en">Official monthly price (APROMAC)</span></h3>
+          <p class="sub"><span lang="fr">FCFA par kg de caoutchouc humide.</span><span lang="en">FCFA per kg of wet rubber.</span></p>
+          <div id="c-apromac"></div>
+        </div>
+      </div>
+      <div class="t-grid two">
+        <div class="card">
+          <h3 class="eyebrow" id="fiche-titre"></h3>
+          <table class="fiche" id="fiche-rsci"></table>
+        </div>
+        <div class="card t-grid">
+          <div class="callout">
+            <span lang="fr"><strong>Lecture.</strong> La part officielle (66 % depuis le 1<sup>er</sup> mai 2026) s'applique au prix de référence <strong>net</strong>, après coûts de transformation, de logistique et fiscalité, qui ne sont pas publiés. Le RSCI se rapporte au prix international <strong>brut</strong>. L'écart entre les deux n'indique donc pas un non-respect du mécanisme.</span>
+            <span lang="en"><strong>How to read.</strong> The official share (66% since 1 May 2026) applies to the <strong>net</strong> reference price, after processing, logistics and levies, which are not published. RSCI is measured against the <strong>gross</strong> international price. The gap between the two therefore does not indicate non-compliance with the mechanism.</span>
+          </div>
+          <p class="note">
+            <span lang="fr">Le taux de change est la moyenne mensuelle de la BCE du mois de référence du TSR20 : un même mois donne toujours le même RSCI, quelle que soit la date du calcul. Les prix marqués « à confirmer » viennent d'une source non officielle.</span>
+            <span lang="en">The exchange rate is the ECB monthly average for the TSR20 reference month: a given month always yields the same RSCI, whatever the calculation date. Prices marked "to be confirmed" come from a non-official source.</span>
+          </p>
+        </div>
+      </div>
+      <div class="card t-grid">
+        <div id="t-rsci"></div>
+      </div>
+    </section>
+
+    <!-- 3. Références mondiales -->
+    <section class="t-section" id="references">
+      <h2><span lang="fr">Références mondiales</span><span lang="en">Global benchmarks</span></h2>
+      <p class="lead">
+        <span lang="fr">Séries sous licence libre. Les cotations de bourse (SGX, MRB) ne sont pas reproduites.</span>
+        <span lang="en">Openly licensed series. Exchange quotes (SGX, MRB) are not reproduced.</span>
+      </p>
+      <div class="t-grid wide">
+        <div class="card chart-card">
+          <h3><span lang="fr">TSR20, moyenne mensuelle (Banque mondiale)</span><span lang="en">TSR20, monthly average (World Bank)</span></h3>
+          <p class="sub">USD/kg</p>
+          <div id="c-tsr20"></div>
+          <div id="t-tsr20"></div>
+        </div>
+        <div class="card">
+          <h3><span lang="fr">Fourchette de volatilité du TSR20</span><span lang="en">TSR20 volatility range</span></h3>
+          <p class="sub" id="vol-sub"></p>
+          <div id="vol"></div>
+          <p class="note" id="vol-note"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Signaux -->
+    <section class="t-section" id="signaux">
+      <h2><span lang="fr">Signaux de marché (analyse)</span><span lang="en">Market signals (analysis)</span></h2>
+      <p class="lead">
+        <span lang="fr">Le Pré-RSI est un indicateur d'analyse, pas un indice de prix. Ses pondérations sont une hypothèse de travail non calibrée.</span>
+        <span lang="en">Pre-RSI is an analytical indicator, not a price index. Its weights are an uncalibrated working assumption.</span>
+      </p>
+      <div class="t-grid two">
+        <div class="card">
+          <h3>Pré-RSI</h3>
+          <div id="prersi"></div>
+        </div>
+        <div class="card">
+          <h3><span lang="fr">Météo des zones de production</span><span lang="en">Weather in producing areas</span></h3>
+          <div id="meteo"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Données et méthode -->
+    <section class="t-section" id="donnees">
+      <h2><span lang="fr">Données, sources et qualité</span><span lang="en">Data, sources and quality</span></h2>
+      <p class="lead">
+        <span lang="fr">Objectif : la plus grande base de données du caoutchouc africain. Chaque série publiée porte sa source, sa licence, sa nature et sa version de méthode.</span>
+        <span lang="en">Goal: the largest database on African rubber. Every published series carries its source, licence, nature and method version.</span>
+      </p>
+      <div class="card t-grid">
+        <div class="natures">
+          <span><span class="tag">T</span><span lang="fr">transaction</span><span lang="en">transaction</span></span>
+          <span><span class="tag">O</span><span lang="fr">officiel</span><span lang="en">official</span></span>
+          <span><span class="tag">D</span><span lang="fr">déclaration</span><span lang="en">declaration</span></span>
+          <span><span class="tag">E</span><span lang="fr">estimation calculée</span><span lang="en">calculated estimate</span></span>
+          <span><span class="tag">J</span><span lang="fr">jugement</span><span lang="en">judgement</span></span>
+        </div>
+        <div id="t-catalogue"></div>
+        <div class="dl">
+          <a class="btn ghost" href="data/observations_publiques.csv" download><span lang="fr">Télécharger les observations (CSV)</span><span lang="en">Download observations (CSV)</span></a>
+          <a class="btn ghost" href="data/terminal.json" download><span lang="fr">Données du terminal (JSON)</span><span lang="en">Terminal data (JSON)</span></a>
+          <a class="btn ghost" href="methode.html"><span lang="fr">Méthode et gouvernance</span><span lang="en">Method and governance</span></a>
+        </div>
+      </div>
+      <div class="card t-grid">
+        <h3><span lang="fr">Qualité des données cette semaine</span><span lang="en">Data quality this week</span></h3>
+        <div id="alertes"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap cols">
+    <div>
+      <p id="foot-validation"></p>
+      <p class="note">
+        <span lang="fr">RubberSignal Technologies ne fait pas de négoce et ne certifie aucune conformité : il informe sur les prix et les risques. Ces données ne constituent pas un conseil en investissement.</span>
+        <span lang="en">RubberSignal Technologies does not trade and certifies no compliance: it informs on prices and risks. This data is not investment advice.</span>
+      </p>
+    </div>
+    <div>
+      <h4>RubberSignal Technologies</h4>
+      <ul>
+        <li><a href="index.html"><span lang="fr">Accueil</span><span lang="en">Home</span></a></li>
+        <li><a href="methode.html"><span lang="fr">Méthode et gouvernance</span><span lang="en">Method and governance</span></a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul><li><a href="mailto:rubbersignal.pro@gmail.com">rubbersignal.pro@gmail.com</a></li></ul>
+    </div>
+  </div>
+</footer>
+
+<script src="data/terminal.js"></script>
+<script src="assets/rs-charts.js"></script>
+<script src="assets/rs-terminal.js"></script>
+</body>
+</html>

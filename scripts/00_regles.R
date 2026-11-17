@@ -164,7 +164,7 @@ rs_apromac_fusion <- function(manuel, auto = NULL) {
                                         a$mois, v, a$prix_fcfa))
       } else {
         out <- rbind(out, data.frame(mois = a$mois, prix_fcfa = as.numeric(a$prix_fcfa),
-                                     type = "type non precise, releve presse", source = a$source, url = a$url,
+                                     type = "type non précisé par la source", source = a$source, url = a$url,
                                      date_publication = NA_character_,
                                      date_releve_presse = as.character(a$date_ajout %||% NA_character_),
                                      origine = "presse_auto",
@@ -220,9 +220,12 @@ rs_date_fr <- function(d) if (is.null(d) || is.na(d)) "date inconnue" else forma
 RS_METHODES <- data.frame(
   cle        = c("prix_hebdo", "reference_mensuelle", "apromac", "rsci", "terrain",
                  "pre_rsi", "volatilite", "rapi_ci"),
-  version    = c("Prix hebdo v1", "Références mensuelles v1", "APROMAC v1", "RSCI v2",
+  version    = c("Prix hebdo v1", "Références mensuelles v1", "APROMAC v1", "RSCI v2.1",
                  "Terrain v1", "Pré-RSI v2", "Volatilité v1", "RAPI-CI v1"),
-  date_effet = "2026-11-03",
+  # RSCI v2.1 (09/11/2026, decision de l'evaluateur) : taux USD/EUR = moyenne
+  # mensuelle BCE du mois de reference TSR20, et non plus le taux du jour.
+  date_effet = c("2026-11-03", "2026-11-03", "2026-11-03", "2026-11-09",
+                 "2026-11-03", "2026-11-03", "2026-11-03", "2026-11-03"),
   stringsAsFactors = FALSE
 )
 
@@ -255,20 +258,20 @@ RS_REGISTRE_SERIES <- data.frame(
   libelle = c("MRB SMR20 (ex-LGM)", "SGX-SICOM TSR20", "LGM / MRB (site officiel)", "rtas.sg (republication MRB / SGX)",
               "JPX / TOCOM RSS3", "SHFE RU", "IndexMundi",
               "Banque mondiale, Pink Sheet TSR20", "FMI, Global price of Rubber (FRED PRUBBUSDM)",
-              "APROMAC, prix bord-champ", "RSCI (calcul RubberSignal)", "Releve terrain CI",
-              "Pre-RSI (calcul RubberSignal)", "Fourchette de volatilite (calcul RubberSignal)",
+              "APROMAC, prix bord-champ", "RSCI (calcul RubberSignal Technologies)", "Releve terrain CI",
+              "Pre-RSI (calcul RubberSignal Technologies)", "Fourchette de volatilite (calcul RubberSignal Technologies)",
               "Eurostat Comext DS-045409 (importations UE, NC 4001 22 00)",
-              "RAPI-CI (calcul RubberSignal : prix CIF UE, composite Asie, decote CI)",
+              "RAPI-CI (calcul RubberSignal Technologies : prix CIF UE, composite Asie, decote CI)",
               "BCE, taux de reference USD/EUR", "FRED EXUSEU (Federal Reserve, USD/EUR mensuel)"),
   publiable = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
                 TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE,
                 TRUE, TRUE, TRUE, TRUE),
   licence = c("sous licence", "sous licence", "sous licence", "sous licence", "sous licence",
               "sous licence", "sous licence", "CC BY 4.0", "donnees publiques",
-              "publication officielle", "calcul RubberSignal (entrees publiables)",
-              "saisie RubberSignal", "calcul RubberSignal", "calcul RubberSignal (entree BM)",
+              "publication officielle", "calcul RubberSignal Technologies (entrees publiables)",
+              "saisie RubberSignal Technologies", "calcul RubberSignal Technologies", "calcul RubberSignal Technologies (entree BM)",
               "Eurostat : reutilisation libre avec mention de la source (decision 2011/833/UE)",
-              "calcul RubberSignal (entrees Eurostat et BCE)",
+              "calcul RubberSignal Technologies (entrees Eurostat et BCE)",
               "BCE : reutilisation libre avec mention de la source", "donnees publiques (Federal Reserve, via FRED)"),
   nature = c("O", "T", "O", "O", "T", "T", "O", "T", "T", "O", "E", "D", "E", "E",
              "T", "T", "O", "O"),
@@ -416,7 +419,7 @@ rs_titre_rapport <- function(langue, semaine, annee, hebdo, bm, symbole = "~",
                              publier_licence = rs_publier_sous_licence()) {
   fr <- langue == "fr"
   sem <- if (fr) paste0("Semaine ", semaine, " - ", annee) else paste0("Week ", semaine, " - ", annee)
-  tete <- paste0("RubberSignal #", semaine)
+  tete <- paste0("RubberSignal Technologies #", semaine)
   hebdo_ok <- isTRUE(hebdo$frais) && is.finite(hebdo$valeur %||% NA_real_) &&
     (publier_licence || rs_serie_publiable(hebdo$serie))
   if (hebdo_ok)
@@ -819,3 +822,75 @@ RS_RAPI_LIMITES_EN <- c(
   "customs values reflect contracts often signed several weeks before arrival: read the gap as a trend, not month by month;",
   "CN code 4001 22 00 pools several grades (TSR10, TSR20…);"
 )
+
+
+# ── 12. PRESENTATION ET VALIDATION DE L'EVALUATEUR (16/11/2026) ──
+# Fiche de relecture S45/S46 du 09/11/2026, points 4 a 7.
+
+# Nombre entier avec separateur de milliers : espace insecable (fr), virgule (en)
+rs_fmt_milliers <- function(x, langue = "fr") {
+  v <- suppressWarnings(as.numeric(unlist(x %||% NA)))
+  if (length(v) != 1 || !is.finite(v)) return("—")
+  formatC(round(v), format = "d", big.mark = if (langue == "fr") " " else ",")
+}
+
+# Registre de validation : data/reference/validations.csv
+#   annee, semaine, date_validation, evaluateur, decision, commentaire
+#   decision : "valide" | "valide_avec_reserves" | "refuse"
+# Charte, section 3 : aucune publication n'est dite « validee » sans ligne au registre.
+RS_VALIDATION_COLS <- c("annee", "semaine", "date_validation", "evaluateur", "decision", "commentaire")
+RS_VALIDATION_DECISIONS <- c("valide", "valide_avec_reserves", "refuse")
+
+rs_validation_lire <- function(f = "data/reference/validations.csv") {
+  vide <- as.data.frame(setNames(replicate(length(RS_VALIDATION_COLS), character(), simplify = FALSE),
+                                 RS_VALIDATION_COLS), stringsAsFactors = FALSE)
+  if (!file.exists(f)) return(vide)
+  d <- utils::read.csv(f, colClasses = "character", na.strings = "", encoding = "UTF-8", stringsAsFactors = FALSE)
+  if (!all(RS_VALIDATION_COLS %in% names(d))) stop("Validations : colonnes attendues : ", paste(RS_VALIDATION_COLS, collapse = ", "))
+  bad <- !d$decision %in% RS_VALIDATION_DECISIONS
+  if (any(bad)) stop("Validations : decision inconnue : ", paste(unique(d$decision[bad]), collapse = ", "))
+  if (any(is.na(as.Date(d$date_validation, optional = TRUE)))) stop("Validations : date_validation invalide (AAAA-MM-JJ)")
+  d[, RS_VALIDATION_COLS, drop = FALSE]
+}
+
+# Etat de validation d'une publication (derniere ligne du registre pour la semaine)
+rs_validation_etat <- function(reg, semaine, annee) {
+  l <- reg[suppressWarnings(as.integer(reg$semaine)) == as.integer(semaine) &
+             suppressWarnings(as.integer(reg$annee)) == as.integer(annee), , drop = FALSE]
+  if (nrow(l) == 0) return(list(statut = "en_attente", date = NA_character_, evaluateur = NA_character_, commentaire = NA_character_))
+  l <- l[nrow(l), ]
+  list(statut = l$decision, date = l$date_validation, evaluateur = l$evaluateur, commentaire = l$commentaire)
+}
+
+# Mention de pied de rapport : jamais « valide » sans ligne au registre
+rs_mention_validation <- function(etat, date_rapport, langue = "fr", evaluateur = "Martial Sahiri") {
+  fr <- langue == "fr"
+  auto <- if (fr) "Calculs préparés et contrôlés par des outils automatisés, dont des modèles d'IA."
+          else "Calculations prepared and checked by automated tools, including AI models."
+  d <- function(x) format(as.Date(x), "%d/%m/%Y")
+  suite <- switch(etat$statut,
+    valide = if (fr) paste0(" Validé par l'évaluateur responsable (", etat$evaluateur %||% evaluateur, ") le ", d(etat$date), ".")
+             else paste0(" Validated by the responsible assessor (", etat$evaluateur %||% evaluateur, ") on ", d(etat$date), "."),
+    valide_avec_reserves = if (fr) paste0(" Validé avec réserves par l'évaluateur responsable (", etat$evaluateur %||% evaluateur, ") le ", d(etat$date),
+                                          if (!is.na(etat$commentaire %||% NA)) paste0(" : ", etat$commentaire) else "", ".")
+             else paste0(" Validated with reservations by the responsible assessor (", etat$evaluateur %||% evaluateur, ") on ", d(etat$date), "."),
+    refuse = if (fr) paste0(" **Publication refusée par l'évaluateur responsable le ", d(etat$date), " : ne pas utiliser.**")
+             else paste0(" **Publication rejected by the responsible assessor on ", d(etat$date), ": do not use.**"),
+    if (fr) paste0(" Publication automatique du ", d(date_rapport), ", **en attente de validation** par l'évaluateur responsable (", evaluateur, ").")
+    else paste0(" Automatic publication of ", d(date_rapport), ", **pending validation** by the responsible assessor (", evaluateur, ")."))
+  paste0(auto, suite)
+}
+
+# Note editoriale de la semaine : data/reference/notes_editoriales.csv
+#   annee, semaine, date, texte_fr, texte_en. Absente = section non publiee
+#   (jamais de texte d'attente dans un rapport).
+rs_note_editoriale <- function(semaine, annee, langue = "fr", f = "data/reference/notes_editoriales.csv") {
+  if (!file.exists(f)) return(NA_character_)
+  d <- utils::read.csv(f, colClasses = "character", na.strings = "", encoding = "UTF-8", stringsAsFactors = FALSE)
+  if (!all(c("annee", "semaine", "texte_fr", "texte_en") %in% names(d))) return(NA_character_)
+  l <- d[suppressWarnings(as.integer(d$semaine)) == as.integer(semaine) &
+           suppressWarnings(as.integer(d$annee)) == as.integer(annee), , drop = FALSE]
+  if (nrow(l) == 0) return(NA_character_)
+  t <- l[[if (langue == "fr") "texte_fr" else "texte_en"]][nrow(l)]
+  if (is.na(t) || !nzchar(trimws(t))) NA_character_ else trimws(t)
+}

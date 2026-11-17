@@ -1,0 +1,1279 @@
+{
+  "meta": {
+    "genere_le": "2026-11-16",
+    "semaine": 47,
+    "annee": 2026,
+    "date_collecte": "2026-11-16",
+    "validation": {
+      "statut": "en_attente",
+      "date": null
+    },
+    "versions_methode": {
+      "prix_hebdo": "Prix hebdo v1",
+      "reference_mensuelle": "Références mensuelles v1",
+      "apromac": "APROMAC v1",
+      "rsci": "RSCI v2.1",
+      "terrain": "Terrain v1",
+      "pre_rsi": "Pré-RSI v2",
+      "volatilite": "Volatilité v1",
+      "rapi_ci": "RAPI-CI v1"
+    },
+    "alertes": [
+      "FMI, Global price of Rubber (FRED, serie PRUBBUSDM) : derniere valeur 2026-09, plus de 45 jours apres la fin du mois",
+      "APROMAC : prix de 2026-11 absent du fichier de saisie ; dernier mois disponible 2026-09 (484 FCFA/kg, 2 mois de retard)"
+    ],
+    "licence_note": "Séries sous licence libre uniquement. Cotations de bourse et MRB non reproduites.",
+    "evaluateur": "Martial Sahiri"
+  },
+  "rapi": {
+    "statut": "ok",
+    "maj_eurostat": "2026-11-13",
+    "version": "RAPI-CI v1",
+    "mois": [
+      {
+        "p": "2025-02",
+        "vol_t": 22024,
+        "ci_eur": 2.19901202771,
+        "ci_usd": 2.28972127386,
+        "asie_eur": 2.38272428305,
+        "asie_usd": 2.48101165973,
+        "decote": -7.71017681928,
+        "tsr20_bm": 2.01,
+        "revise": false,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2025-03",
+        "vol_t": 31656,
+        "ci_eur": 2.14709058563,
+        "ci_usd": 2.32031989892,
+        "asie_eur": 2.41475548073,
+        "asie_usd": 2.60958025268,
+        "decote": -11.0845548229,
+        "tsr20_bm": 1.98,
+        "revise": false,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2025-04",
+        "vol_t": 22751,
+        "ci_eur": 2.08179041907,
+        "ci_usd": 2.33450936699,
+        "asie_eur": 2.28967067804,
+        "asie_usd": 2.56762525,
+        "decote": -9.07904621242,
+        "tsr20_bm": 1.71,
+        "revise": false,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2025-05",
+        "vol_t": 29086,
+        "ci_eur": 2.00042325539,
+        "ci_usd": 2.25608687325,
+        "asie_eur": 2.20973852047,
+        "asie_usd": 2.49215362595,
+        "decote": -9.4723997045,
+        "tsr20_bm": 1.7,
+        "revise": false,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2025-06",
+        "vol_t": 24668,
+        "ci_eur": 1.94258701315,
+        "ci_usd": 2.237120206,
+        "asie_eur": 2.18555181721,
+        "asie_usd": 2.51692310225,
+        "decote": -11.1168631255,
+        "tsr20_bm": 1.61,
+        "revise": false,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2025-07",
+        "vol_t": 31862,
+        "ci_eur": 1.79336676102,
+        "ci_usd": 2.09409097511,
+        "asie_eur": 2.00374808927,
+        "asie_usd": 2.33975050799,
+        "decote": -10.4993900866,
+        "tsr20_bm": 1.68,
+        "revise": false,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2025-08",
+        "vol_t": 35230,
+        "ci_eur": 1.716163446,
+        "ci_usd": 1.9961432539,
+        "asie_eur": 1.87976562347,
+        "asie_usd": 2.18643595804,
+        "decote": -8.7033285123,
+        "tsr20_bm": 1.71,
+        "revise": false,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2025-09",
+        "vol_t": 44262,
+        "ci_eur": 1.64177947905,
+        "ci_usd": 1.92617299799,
+        "asie_eur": 1.81812906332,
+        "asie_usd": 2.1330703382,
+        "decote": -9.69950856769,
+        "tsr20_bm": 1.74,
+        "revise": false,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2025-10",
+        "vol_t": 41231,
+        "ci_eur": 1.62466474801,
+        "ci_usd": 1.88955573953,
+        "asie_eur": 1.79516163182,
+        "asie_usd": 2.08785102831,
+        "decote": -9.49757842337,
+        "tsr20_bm": 1.71,
+        "revise": false,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2025-11",
+        "vol_t": 35086,
+        "ci_eur": 1.70817408927,
+        "ci_usd": 1.97468341068,
+        "asie_eur": 1.83189654004,
+        "asie_usd": 2.11770903822,
+        "decote": -6.75379029657,
+        "tsr20_bm": 1.71,
+        "revise": false,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2025-12",
+        "vol_t": 23051,
+        "ci_eur": 1.744748341,
+        "ci_usd": 2.04287598252,
+        "asie_eur": 1.85768681978,
+        "asie_usd": 2.17511242052,
+        "decote": -6.07952199383,
+        "tsr20_bm": 1.74,
+        "revise": false,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2026-01",
+        "vol_t": 19227,
+        "ci_eur": 1.7535350898,
+        "ci_usd": 2.05834123925,
+        "asie_eur": 1.87463529254,
+        "asie_usd": 2.20049154055,
+        "decote": -6.459934005,
+        "tsr20_bm": 1.84,
+        "revise": true,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2026-02",
+        "vol_t": 19527,
+        "ci_eur": 1.75615480372,
+        "ci_usd": 2.07646865915,
+        "asie_eur": 1.87957616164,
+        "asie_usd": 2.22240145564,
+        "decote": -6.56644622514,
+        "tsr20_bm": 1.93,
+        "revise": true,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2026-03",
+        "vol_t": 27989,
+        "ci_eur": 1.73878696567,
+        "ci_usd": 2.00974529997,
+        "asie_eur": 1.85659212534,
+        "asie_usd": 2.14590825186,
+        "decote": -6.34523641784,
+        "tsr20_bm": 1.95,
+        "revise": true,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2026-04",
+        "vol_t": 33696,
+        "ci_eur": 1.83695518077,
+        "ci_usd": 2.15041321281,
+        "asie_eur": 1.92491996747,
+        "asie_usd": 2.25338831071,
+        "decote": -4.56978929954,
+        "tsr20_bm": 2.06,
+        "revise": true,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2026-05",
+        "vol_t": 31384,
+        "ci_eur": 1.8150488846,
+        "ci_usd": 2.11874286397,
+        "asie_eur": 1.98166037868,
+        "asie_usd": 2.31323179324,
+        "decote": -8.40767145939,
+        "tsr20_bm": 2.21,
+        "revise": true,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2026-06",
+        "vol_t": 30589,
+        "ci_eur": 1.89973051127,
+        "ci_usd": 2.18810960288,
+        "asie_eur": 2.01733864573,
+        "asie_usd": 2.32357065215,
+        "decote": -5.82986573487,
+        "tsr20_bm": 2.25,
+        "revise": false,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2026-07",
+        "vol_t": 31012,
+        "ci_eur": 1.93416810271,
+        "ci_usd": 2.20833222655,
+        "asie_eur": 2.09216940516,
+        "asie_usd": 2.38872987015,
+        "decote": -7.55203197529,
+        "tsr20_bm": 2.14,
+        "revise": false,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2026-08",
+        "vol_t": 29721,
+        "ci_eur": 2.08408470447,
+        "ci_usd": 2.41609924632,
+        "asie_eur": 2.25646482053,
+        "asie_usd": 2.61594115659,
+        "decote": -7.63938859115,
+        "tsr20_bm": 2.24,
+        "revise": true,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      },
+      {
+        "p": "2026-09",
+        "vol_t": 34459,
+        "ci_eur": 2.09057389514,
+        "ci_usd": 2.40692523851,
+        "asie_eur": 2.30870578037,
+        "asie_usd": 2.65806543552,
+        "decote": -9.44823229903,
+        "tsr20_bm": 2.41,
+        "revise": false,
+        "faible_liquidite": false,
+        "alerte_variation": false,
+        "asie_complet": true
+      }
+    ],
+    "origines": {
+      "debut": "2026-04",
+      "fin": "2026-09",
+      "pays": [
+        {
+          "code": "CI",
+          "nom_fr": "Côte d'Ivoire",
+          "nom_en": "Côte d'Ivoire",
+          "n_mois": 6,
+          "vol_t": 190861,
+          "prix_eur_kg": 1.943
+        },
+        {
+          "code": "TH",
+          "nom_fr": "Thaïlande",
+          "nom_en": "Thailand",
+          "n_mois": 6,
+          "vol_t": 94203,
+          "prix_eur_kg": 2.09
+        },
+        {
+          "code": "ID",
+          "nom_fr": "Indonésie",
+          "nom_en": "Indonesia",
+          "n_mois": 6,
+          "vol_t": 70645,
+          "prix_eur_kg": 2.049
+        },
+        {
+          "code": "MY",
+          "nom_fr": "Malaisie",
+          "nom_en": "Malaysia",
+          "n_mois": 6,
+          "vol_t": 41916,
+          "prix_eur_kg": 2.166
+        },
+        {
+          "code": "VN",
+          "nom_fr": "Vietnam",
+          "nom_en": "Vietnam",
+          "n_mois": 6,
+          "vol_t": 19461,
+          "prix_eur_kg": 2.072
+        }
+      ]
+    }
+  },
+  "rsci": {
+    "version": "RSCI v2.1",
+    "drc": 0.6,
+    "historique": [
+      {
+        "mois": "2025-10",
+        "apromac_fcfa": 349,
+        "type": "bord champ (avant reforme du 01/05/2026)",
+        "source": "gouv.ci, communique APROMAC (novembre 2025 = octobre - 2 FCFA)",
+        "date_publication": "2025-11-02",
+        "origine": "saisie",
+        "source_faible": false,
+        "ref_mois": "2025-09",
+        "tsr20_ref": 1.74,
+        "taux_usd_eur": 1.1732,
+        "taux_secondaire": false,
+        "prix_sec_usd": 1.0403,
+        "rsci_pct": 59.8,
+        "part_officielle_pct": 63,
+        "ecart_pts": -3.2
+      },
+      {
+        "mois": "2025-11",
+        "apromac_fcfa": 347,
+        "type": "bord champ (avant reforme du 01/05/2026)",
+        "source": "gouv.ci, communique APROMAC du 02/11/2025",
+        "date_publication": "2025-11-02",
+        "origine": "saisie",
+        "source_faible": false,
+        "ref_mois": "2025-10",
+        "tsr20_ref": 1.71,
+        "taux_usd_eur": 1.163,
+        "taux_secondaire": false,
+        "prix_sec_usd": 1.0253,
+        "rsci_pct": 60,
+        "part_officielle_pct": 63,
+        "ecart_pts": -3
+      },
+      {
+        "mois": "2026-01",
+        "apromac_fcfa": 352,
+        "type": "bord champ (avant reforme du 01/05/2026)",
+        "source": "gouv.ci, communique APROMAC (fevrier 2026 = janvier + 16 FCFA)",
+        "date_publication": "2026-02-03",
+        "origine": "saisie",
+        "source_faible": false,
+        "ref_mois": "2025-12",
+        "tsr20_ref": 1.74,
+        "taux_usd_eur": 1.1709,
+        "taux_secondaire": false,
+        "prix_sec_usd": 1.0472,
+        "rsci_pct": 60.2,
+        "part_officielle_pct": 63,
+        "ecart_pts": -2.8
+      },
+      {
+        "mois": "2026-02",
+        "apromac_fcfa": 368,
+        "type": "bord champ (avant reforme du 01/05/2026)",
+        "source": "gouv.ci, communique APROMAC (a verifier : une source cite 336)",
+        "date_publication": "2026-02-03",
+        "origine": "saisie",
+        "source_faible": false,
+        "ref_mois": "2026-01",
+        "tsr20_ref": 1.84,
+        "taux_usd_eur": 1.1738,
+        "taux_secondaire": false,
+        "prix_sec_usd": 1.0975,
+        "rsci_pct": 59.6,
+        "part_officielle_pct": 63,
+        "ecart_pts": -3.4
+      },
+      {
+        "mois": "2026-04",
+        "apromac_fcfa": 401,
+        "type": "a confirmer",
+        "source": "erooamba.com (blog, source faible, non officielle)",
+        "date_publication": "",
+        "origine": "saisie",
+        "source_faible": true,
+        "ref_mois": "2026-03",
+        "tsr20_ref": 1.95,
+        "taux_usd_eur": 1.1558,
+        "taux_secondaire": false,
+        "prix_sec_usd": 1.1777,
+        "rsci_pct": 60.4,
+        "part_officielle_pct": 63,
+        "ecart_pts": -2.6
+      },
+      {
+        "mois": "2026-05",
+        "apromac_fcfa": 439,
+        "type": "carreau usine",
+        "source": "erooamba.com (blog, source faible, non officielle) - a confirmer APROMAC",
+        "date_publication": "",
+        "origine": "saisie",
+        "source_faible": true,
+        "ref_mois": "2026-04",
+        "tsr20_ref": 2.06,
+        "taux_usd_eur": 1.1706,
+        "taux_secondaire": false,
+        "prix_sec_usd": 1.3058,
+        "rsci_pct": 63.4,
+        "part_officielle_pct": 66,
+        "ecart_pts": -2.6
+      },
+      {
+        "mois": "2026-06",
+        "apromac_fcfa": 474,
+        "type": "carreau usine",
+        "source": "FratMat, \"Caoutchouc/ Prix Apromac juin 2026: 474 F CFA/ Kg\"",
+        "date_publication": "2026-06-01",
+        "origine": "saisie",
+        "source_faible": false,
+        "ref_mois": "2026-05",
+        "tsr20_ref": 2.21,
+        "taux_usd_eur": 1.1673,
+        "taux_secondaire": false,
+        "prix_sec_usd": 1.4058,
+        "rsci_pct": 63.6,
+        "part_officielle_pct": 66,
+        "ecart_pts": -2.4
+      },
+      {
+        "mois": "2026-07",
+        "apromac_fcfa": 493,
+        "type": "carreau usine",
+        "source": "AIP",
+        "date_publication": "2026-07-03",
+        "origine": "saisie",
+        "source_faible": false,
+        "ref_mois": "2026-06",
+        "tsr20_ref": 2.25,
+        "taux_usd_eur": 1.1518,
+        "taux_secondaire": false,
+        "prix_sec_usd": 1.4428,
+        "rsci_pct": 64.1,
+        "part_officielle_pct": 66,
+        "ecart_pts": -1.9
+      },
+      {
+        "mois": "2026-09",
+        "apromac_fcfa": 484,
+        "type": "carreau usine",
+        "source": "Business & Actuality TV, article du 02/09/2026 (confirme par 7info.ci)",
+        "date_publication": "2026-09-02",
+        "origine": "saisie",
+        "source_faible": false,
+        "ref_mois": "2026-08",
+        "tsr20_ref": 2.24,
+        "taux_usd_eur": 1.1593,
+        "taux_secondaire": false,
+        "prix_sec_usd": 1.4257,
+        "rsci_pct": 63.6,
+        "part_officielle_pct": 66,
+        "ecart_pts": -2.4
+      }
+    ]
+  },
+  "references": {
+    "bm_tsr20": [
+      {
+        "p": "2021-10",
+        "v": 1.73
+      },
+      {
+        "p": "2021-11",
+        "v": 1.74
+      },
+      {
+        "p": "2021-12",
+        "v": 1.72
+      },
+      {
+        "p": "2022-01",
+        "v": 1.78
+      },
+      {
+        "p": "2022-02",
+        "v": 1.79
+      },
+      {
+        "p": "2022-03",
+        "v": 1.75
+      },
+      {
+        "p": "2022-04",
+        "v": 1.7
+      },
+      {
+        "p": "2022-05",
+        "v": 1.62
+      },
+      {
+        "p": "2022-06",
+        "v": 1.64
+      },
+      {
+        "p": "2022-07",
+        "v": 1.56
+      },
+      {
+        "p": "2022-08",
+        "v": 1.46
+      },
+      {
+        "p": "2022-09",
+        "v": 1.32
+      },
+      {
+        "p": "2022-10",
+        "v": 1.29
+      },
+      {
+        "p": "2022-11",
+        "v": 1.27
+      },
+      {
+        "p": "2022-12",
+        "v": 1.35
+      },
+      {
+        "p": "2023-01",
+        "v": 1.41
+      },
+      {
+        "p": "2023-02",
+        "v": 1.4
+      },
+      {
+        "p": "2023-03",
+        "v": 1.36
+      },
+      {
+        "p": "2023-04",
+        "v": 1.36
+      },
+      {
+        "p": "2023-05",
+        "v": 1.35
+      },
+      {
+        "p": "2023-06",
+        "v": 1.32
+      },
+      {
+        "p": "2023-07",
+        "v": 1.3
+      },
+      {
+        "p": "2023-08",
+        "v": 1.29
+      },
+      {
+        "p": "2023-09",
+        "v": 1.42
+      },
+      {
+        "p": "2023-10",
+        "v": 1.45
+      },
+      {
+        "p": "2023-11",
+        "v": 1.48
+      },
+      {
+        "p": "2023-12",
+        "v": 1.46
+      },
+      {
+        "p": "2024-01",
+        "v": 1.53
+      },
+      {
+        "p": "2024-02",
+        "v": 1.56
+      },
+      {
+        "p": "2024-03",
+        "v": 1.65
+      },
+      {
+        "p": "2024-04",
+        "v": 1.63
+      },
+      {
+        "p": "2024-05",
+        "v": 1.69
+      },
+      {
+        "p": "2024-06",
+        "v": 1.75
+      },
+      {
+        "p": "2024-07",
+        "v": 1.65
+      },
+      {
+        "p": "2024-08",
+        "v": 1.74
+      },
+      {
+        "p": "2024-09",
+        "v": 1.91
+      },
+      {
+        "p": "2024-10",
+        "v": 2.01
+      },
+      {
+        "p": "2024-11",
+        "v": 1.93
+      },
+      {
+        "p": "2024-12",
+        "v": 1.99
+      },
+      {
+        "p": "2025-01",
+        "v": 1.93
+      },
+      {
+        "p": "2025-02",
+        "v": 2.01
+      },
+      {
+        "p": "2025-03",
+        "v": 1.98
+      },
+      {
+        "p": "2025-04",
+        "v": 1.71
+      },
+      {
+        "p": "2025-05",
+        "v": 1.7
+      },
+      {
+        "p": "2025-06",
+        "v": 1.61
+      },
+      {
+        "p": "2025-07",
+        "v": 1.68
+      },
+      {
+        "p": "2025-08",
+        "v": 1.71
+      },
+      {
+        "p": "2025-09",
+        "v": 1.74
+      },
+      {
+        "p": "2025-10",
+        "v": 1.71
+      },
+      {
+        "p": "2025-11",
+        "v": 1.71
+      },
+      {
+        "p": "2025-12",
+        "v": 1.74
+      },
+      {
+        "p": "2026-01",
+        "v": 1.84
+      },
+      {
+        "p": "2026-02",
+        "v": 1.93
+      },
+      {
+        "p": "2026-03",
+        "v": 1.95
+      },
+      {
+        "p": "2026-04",
+        "v": 2.06
+      },
+      {
+        "p": "2026-05",
+        "v": 2.21
+      },
+      {
+        "p": "2026-06",
+        "v": 2.25
+      },
+      {
+        "p": "2026-07",
+        "v": 2.14
+      },
+      {
+        "p": "2026-08",
+        "v": 2.24
+      },
+      {
+        "p": "2026-09",
+        "v": 2.41
+      },
+      {
+        "p": "2026-10",
+        "v": 2.55
+      }
+    ],
+    "fmi": [
+      {
+        "p": "2025-09",
+        "v": 2.1312
+      },
+      {
+        "p": "2025-10",
+        "v": 2.026
+      },
+      {
+        "p": "2025-11",
+        "v": 2.0542
+      },
+      {
+        "p": "2025-12",
+        "v": 2.0874
+      },
+      {
+        "p": "2026-01",
+        "v": 2.1417
+      },
+      {
+        "p": "2026-02",
+        "v": 2.2761
+      },
+      {
+        "p": "2026-03",
+        "v": 2.4336
+      },
+      {
+        "p": "2026-04",
+        "v": 2.5555
+      },
+      {
+        "p": "2026-05",
+        "v": 2.8193
+      },
+      {
+        "p": "2026-06",
+        "v": 2.9494
+      },
+      {
+        "p": "2026-07",
+        "v": 2.8551
+      },
+      {
+        "p": "2026-08",
+        "v": 2.753
+      },
+      {
+        "p": "2026-09",
+        "v": 2.7574
+      }
+    ]
+  },
+  "pre_rsi": {
+    "score": 52,
+    "signal_fr": "Neutre — marché équilibré",
+    "signal_en": "Neutral — balanced market",
+    "periode": "2026-W47",
+    "version": "Pré-RSI v2",
+    "nature": "E",
+    "composantes": [
+      {
+        "cle": "meteo",
+        "score": 50,
+        "poids_nominal": 0.25,
+        "poids_effectif": 0.3571,
+        "sens": "neutre"
+      },
+      {
+        "cle": "devises",
+        "score": 70,
+        "poids_nominal": 0.2,
+        "poids_effectif": 0.2857,
+        "sens": "hausse"
+      },
+      {
+        "cle": "demande",
+        "score": 40,
+        "poids_nominal": 0.25,
+        "poids_effectif": 0.3571,
+        "sens": "baisse"
+      },
+      {
+        "cle": "terrain",
+        "score": null,
+        "poids_nominal": 0.15,
+        "poids_effectif": 0,
+        "sens": "absente"
+      },
+      {
+        "cle": "geo",
+        "score": null,
+        "poids_nominal": 0.15,
+        "poids_effectif": 0,
+        "sens": "absente"
+      }
+    ]
+  },
+  "volatilite": {
+    "depart": 2.55,
+    "depart_periode": "2026-10",
+    "volatilite_pct": 15.9,
+    "periode": "2021-10/2026-10",
+    "version": "Volatilité v1",
+    "n_simulations": 10000,
+    "horizons": [
+      {
+        "sem": 4,
+        "date": "2026-12-14",
+        "p10": 2.409,
+        "p25": 2.474,
+        "p50": 2.551,
+        "p75": 2.626,
+        "p90": 2.699
+      },
+      {
+        "sem": 8,
+        "date": "2027-01-11",
+        "p10": 2.353,
+        "p25": 2.444,
+        "p50": 2.548,
+        "p75": 2.659,
+        "p90": 2.76
+      },
+      {
+        "sem": 12,
+        "date": "2027-02-08",
+        "p10": 2.312,
+        "p25": 2.419,
+        "p50": 2.547,
+        "p75": 2.683,
+        "p90": 2.812
+      },
+      {
+        "sem": 26,
+        "date": "2027-05-17",
+        "p10": 2.205,
+        "p25": 2.361,
+        "p50": 2.547,
+        "p75": 2.745,
+        "p90": 2.94
+      }
+    ]
+  },
+  "meteo": {
+    "source": "Open-Meteo (archive), cumul de pluie du mois",
+    "date": "2026-11-15",
+    "zones": [
+      {
+        "pays": "Côte d'Ivoire",
+        "ville": "Abidjan",
+        "pluie_30j_mm": 76.2,
+        "temp_c": 27.5,
+        "score_production": 57
+      },
+      {
+        "pays": "Thaïlande",
+        "ville": "Bangkok",
+        "pluie_30j_mm": 114.6,
+        "temp_c": 29,
+        "score_production": 64
+      },
+      {
+        "pays": "Malaisie",
+        "ville": "Kuala Lumpur",
+        "pluie_30j_mm": 397.6,
+        "temp_c": 27.2,
+        "score_production": 83
+      },
+      {
+        "pays": "Indonésie",
+        "ville": "Jakarta",
+        "pluie_30j_mm": 125.6,
+        "temp_c": 29.6,
+        "score_production": 66
+      }
+    ]
+  },
+  "catalogue": [
+    {
+      "serie_id": "BM_TSR20",
+      "libelle_fr": "TSR20, Banque mondiale (Pink Sheet), moyenne mensuelle",
+      "libelle_en": "TSR20, World Bank (Pink Sheet), monthly average",
+      "frequence": "mensuelle",
+      "unite": "USD/kg",
+      "nature": "T",
+      "licence": "CC BY 4.0",
+      "source": "Banque mondiale, Pink Sheet mensuelle (Rubber, TSR20)",
+      "url": "https://www.worldbank.org/en/research/commodity-markets",
+      "version": "Références mensuelles v1",
+      "n": 61,
+      "derniere_date": "2026-10",
+      "derniere_valeur": 2.55
+    },
+    {
+      "serie_id": "FMI_PRUBBUSDM",
+      "libelle_fr": "Prix mondial du caoutchouc, FMI (FRED PRUBBUSDM), converti en USD/kg",
+      "libelle_en": "Global price of rubber, IMF (FRED PRUBBUSDM), converted to USD/kg",
+      "frequence": "mensuelle",
+      "unite": "USD/kg",
+      "nature": "T",
+      "licence": "donnees publiques",
+      "source": "FMI, Global price of Rubber (FRED, serie PRUBBUSDM)",
+      "url": "https://fred.stlouisfed.org/series/PRUBBUSDM",
+      "version": "Références mensuelles v1",
+      "n": 13,
+      "derniere_date": "2026-09",
+      "derniere_valeur": 2.7574
+    },
+    {
+      "serie_id": "APROMAC",
+      "libelle_fr": "Prix officiel APROMAC du mois (Côte d'Ivoire)",
+      "libelle_en": "APROMAC official monthly price (Côte d'Ivoire)",
+      "frequence": "mensuelle",
+      "unite": "FCFA/kg",
+      "nature": "O",
+      "licence": "publication officielle",
+      "source": "APROMAC (saisie datée data/reference/prix_apromac.csv, puis presse)",
+      "url": "data/reference/prix_apromac.csv",
+      "version": "APROMAC v1",
+      "n": 9,
+      "derniere_date": "2026-09",
+      "derniere_valeur": 484
+    },
+    {
+      "serie_id": "RSCI",
+      "libelle_fr": "RSCI : part du prix TSR20 reçue par le planteur (valeur publiée à la date de collecte)",
+      "libelle_en": "RSCI: farmer share of the TSR20 price (value published on the collection date)",
+      "frequence": "hebdomadaire (calcul)",
+      "unite": "%",
+      "nature": "E",
+      "licence": "calcul RubberSignal Technologies (entrees publiables)",
+      "source": "Calcul RubberSignal Technologies (APROMAC, Banque mondiale, BCE)",
+      "url": null,
+      "version": "RSCI v2.1",
+      "n": 2,
+      "derniere_date": "2026-11-16",
+      "derniere_valeur": 63.6
+    },
+    {
+      "serie_id": "FX_USD_EUR_J",
+      "libelle_fr": "Taux USD pour 1 EUR du jour de collecte (référence BCE)",
+      "libelle_en": "USD per 1 EUR on collection day (ECB reference)",
+      "frequence": "quotidienne",
+      "unite": "USD/EUR",
+      "nature": "O",
+      "licence": "BCE : reutilisation libre avec mention de la source",
+      "source": "BCE (via Frankfurter, repli API BCE)",
+      "url": "https://api.frankfurter.dev",
+      "version": "sans objet (donnée source)",
+      "n": 3,
+      "derniere_date": "2026-11-16",
+      "derniere_valeur": 1.1014
+    },
+    {
+      "serie_id": "BCE_USD_EUR_M",
+      "libelle_fr": "Taux USD pour 1 EUR, moyenne mensuelle BCE (EXR.M.USD.EUR.SP00.A)",
+      "libelle_en": "USD per 1 EUR, ECB monthly average (EXR.M.USD.EUR.SP00.A)",
+      "frequence": "mensuelle",
+      "unite": "USD/EUR",
+      "nature": "O",
+      "licence": "BCE : reutilisation libre avec mention de la source",
+      "source": "BCE, taux de référence (EXR.M.USD.EUR.SP00.A)",
+      "url": "https://data.ecb.europa.eu/data/datasets/EXR/EXR.M.USD.EUR.SP00.A",
+      "version": "RAPI-CI v1",
+      "n": 21,
+      "derniere_date": "2026-10",
+      "derniere_valeur": 1.12015909091
+    },
+    {
+      "serie_id": "FRED_EXUSEU",
+      "libelle_fr": "Taux USD pour 1 EUR, moyenne mensuelle (FRED EXUSEU, source secondaire)",
+      "libelle_en": "USD per 1 EUR, monthly average (FRED EXUSEU, secondary source)",
+      "frequence": "mensuelle",
+      "unite": "USD/EUR",
+      "nature": "O",
+      "licence": "donnees publiques (Federal Reserve, via FRED)",
+      "source": "Federal Reserve, via FRED (EXUSEU)",
+      "url": "https://fred.stlouisfed.org/series/EXUSEU",
+      "version": "RAPI-CI v1",
+      "n": 0,
+      "derniere_date": null,
+      "derniere_valeur": null
+    },
+    {
+      "serie_id": "COMEXT_VAL_CI",
+      "libelle_fr": "Importations UE de NC 4001 22 00 depuis la Côte d'Ivoire : valeur déclarée",
+      "libelle_en": "EU imports of CN 4001 22 00 from Côte d'Ivoire: declared value",
+      "frequence": "mensuelle",
+      "unite": "EUR",
+      "nature": "T",
+      "licence": "Eurostat : reutilisation libre avec mention de la source (decision 2011/833/UE)",
+      "source": "Eurostat Comext (DS-045409)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/DS-045409/default/table",
+      "version": "RAPI-CI v1",
+      "n": 20,
+      "derniere_date": "2026-09",
+      "derniere_valeur": 72038166
+    },
+    {
+      "serie_id": "COMEXT_QTE_CI",
+      "libelle_fr": "Importations UE de NC 4001 22 00 depuis la Côte d'Ivoire : quantité",
+      "libelle_en": "EU imports of CN 4001 22 00 from Côte d'Ivoire: quantity",
+      "frequence": "mensuelle",
+      "unite": "100 kg",
+      "nature": "T",
+      "licence": "Eurostat : reutilisation libre avec mention de la source (decision 2011/833/UE)",
+      "source": "Eurostat Comext (DS-045409)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/DS-045409/default/table",
+      "version": "RAPI-CI v1",
+      "n": 20,
+      "derniere_date": "2026-09",
+      "derniere_valeur": 344585.6
+    },
+    {
+      "serie_id": "COMEXT_VAL_TH",
+      "libelle_fr": "Importations UE de NC 4001 22 00 depuis la Thaïlande : valeur déclarée",
+      "libelle_en": "EU imports of CN 4001 22 00 from Thailand: declared value",
+      "frequence": "mensuelle",
+      "unite": "EUR",
+      "nature": "T",
+      "licence": "Eurostat : reutilisation libre avec mention de la source (decision 2011/833/UE)",
+      "source": "Eurostat Comext (DS-045409)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/DS-045409/default/table",
+      "version": "RAPI-CI v1",
+      "n": 20,
+      "derniere_date": "2026-09",
+      "derniere_valeur": 33663700
+    },
+    {
+      "serie_id": "COMEXT_QTE_TH",
+      "libelle_fr": "Importations UE de NC 4001 22 00 depuis la Thaïlande : quantité",
+      "libelle_en": "EU imports of CN 4001 22 00 from Thailand: quantity",
+      "frequence": "mensuelle",
+      "unite": "100 kg",
+      "nature": "T",
+      "licence": "Eurostat : reutilisation libre avec mention de la source (decision 2011/833/UE)",
+      "source": "Eurostat Comext (DS-045409)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/DS-045409/default/table",
+      "version": "RAPI-CI v1",
+      "n": 20,
+      "derniere_date": "2026-09",
+      "derniere_valeur": 143568.73
+    },
+    {
+      "serie_id": "COMEXT_VAL_ID",
+      "libelle_fr": "Importations UE de NC 4001 22 00 depuis l'Indonésie : valeur déclarée",
+      "libelle_en": "EU imports of CN 4001 22 00 from Indonesia: declared value",
+      "frequence": "mensuelle",
+      "unite": "EUR",
+      "nature": "T",
+      "licence": "Eurostat : reutilisation libre avec mention de la source (decision 2011/833/UE)",
+      "source": "Eurostat Comext (DS-045409)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/DS-045409/default/table",
+      "version": "RAPI-CI v1",
+      "n": 20,
+      "derniere_date": "2026-09",
+      "derniere_valeur": 27255880
+    },
+    {
+      "serie_id": "COMEXT_QTE_ID",
+      "libelle_fr": "Importations UE de NC 4001 22 00 depuis l'Indonésie : quantité",
+      "libelle_en": "EU imports of CN 4001 22 00 from Indonesia: quantity",
+      "frequence": "mensuelle",
+      "unite": "100 kg",
+      "nature": "T",
+      "licence": "Eurostat : reutilisation libre avec mention de la source (decision 2011/833/UE)",
+      "source": "Eurostat Comext (DS-045409)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/DS-045409/default/table",
+      "version": "RAPI-CI v1",
+      "n": 20,
+      "derniere_date": "2026-09",
+      "derniere_valeur": 121023
+    },
+    {
+      "serie_id": "COMEXT_VAL_MY",
+      "libelle_fr": "Importations UE de NC 4001 22 00 depuis la Malaisie : valeur déclarée",
+      "libelle_en": "EU imports of CN 4001 22 00 from Malaysia: declared value",
+      "frequence": "mensuelle",
+      "unite": "EUR",
+      "nature": "T",
+      "licence": "Eurostat : reutilisation libre avec mention de la source (decision 2011/833/UE)",
+      "source": "Eurostat Comext (DS-045409)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/DS-045409/default/table",
+      "version": "RAPI-CI v1",
+      "n": 20,
+      "derniere_date": "2026-09",
+      "derniere_valeur": 14194585
+    },
+    {
+      "serie_id": "COMEXT_QTE_MY",
+      "libelle_fr": "Importations UE de NC 4001 22 00 depuis la Malaisie : quantité",
+      "libelle_en": "EU imports of CN 4001 22 00 from Malaysia: quantity",
+      "frequence": "mensuelle",
+      "unite": "100 kg",
+      "nature": "T",
+      "licence": "Eurostat : reutilisation libre avec mention de la source (decision 2011/833/UE)",
+      "source": "Eurostat Comext (DS-045409)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/DS-045409/default/table",
+      "version": "RAPI-CI v1",
+      "n": 20,
+      "derniere_date": "2026-09",
+      "derniere_valeur": 59875.2
+    },
+    {
+      "serie_id": "COMEXT_VAL_VN",
+      "libelle_fr": "Importations UE de NC 4001 22 00 depuis le Vietnam : valeur déclarée",
+      "libelle_en": "EU imports of CN 4001 22 00 from Vietnam: declared value",
+      "frequence": "mensuelle",
+      "unite": "EUR",
+      "nature": "T",
+      "licence": "Eurostat : reutilisation libre avec mention de la source (decision 2011/833/UE)",
+      "source": "Eurostat Comext (DS-045409)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/DS-045409/default/table",
+      "version": "RAPI-CI v1",
+      "n": 20,
+      "derniere_date": "2026-09",
+      "derniere_valeur": 8340733
+    },
+    {
+      "serie_id": "COMEXT_QTE_VN",
+      "libelle_fr": "Importations UE de NC 4001 22 00 depuis le Vietnam : quantité",
+      "libelle_en": "EU imports of CN 4001 22 00 from Vietnam: quantity",
+      "frequence": "mensuelle",
+      "unite": "100 kg",
+      "nature": "T",
+      "licence": "Eurostat : reutilisation libre avec mention de la source (decision 2011/833/UE)",
+      "source": "Eurostat Comext (DS-045409)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/DS-045409/default/table",
+      "version": "RAPI-CI v1",
+      "n": 20,
+      "derniere_date": "2026-09",
+      "derniere_valeur": 37012.21
+    },
+    {
+      "serie_id": "RAPI_CI_CIF_EUR",
+      "libelle_fr": "RAPI-CI : prix CIF UE origine Côte d'Ivoire",
+      "libelle_en": "RAPI-CI: EU CIF price, Côte d'Ivoire origin",
+      "frequence": "mensuelle",
+      "unite": "EUR/kg",
+      "nature": "T",
+      "licence": "calcul RubberSignal Technologies (entrees Eurostat et BCE)",
+      "source": "Calcul RubberSignal Technologies sur Eurostat Comext (DS-045409)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/DS-045409/default/table",
+      "version": "RAPI-CI v1",
+      "n": 20,
+      "derniere_date": "2026-09",
+      "derniere_valeur": 2.09057389514
+    },
+    {
+      "serie_id": "RAPI_CI_CIF_USD",
+      "libelle_fr": "RAPI-CI : prix CIF UE origine Côte d'Ivoire, en USD",
+      "libelle_en": "RAPI-CI: EU CIF price, Côte d'Ivoire origin, in USD",
+      "frequence": "mensuelle",
+      "unite": "USD/kg",
+      "nature": "T",
+      "licence": "calcul RubberSignal Technologies (entrees Eurostat et BCE)",
+      "source": "Calcul RubberSignal Technologies sur Eurostat Comext (DS-045409) et BCE",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/DS-045409/default/table",
+      "version": "RAPI-CI v1",
+      "n": 20,
+      "derniere_date": "2026-09",
+      "derniere_valeur": 2.40692523851
+    },
+    {
+      "serie_id": "RAPI_ASIE_CIF_EUR",
+      "libelle_fr": "RAPI-CI : prix CIF UE composite Asie (TH, ID, MY, VN, pondéré par les volumes)",
+      "libelle_en": "RAPI-CI: EU CIF price, Asian composite (TH, ID, MY, VN, volume-weighted)",
+      "frequence": "mensuelle",
+      "unite": "EUR/kg",
+      "nature": "T",
+      "licence": "calcul RubberSignal Technologies (entrees Eurostat et BCE)",
+      "source": "Calcul RubberSignal Technologies sur Eurostat Comext (DS-045409)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/DS-045409/default/table",
+      "version": "RAPI-CI v1",
+      "n": 20,
+      "derniere_date": "2026-09",
+      "derniere_valeur": 2.30870578037
+    },
+    {
+      "serie_id": "RAPI_ASIE_CIF_USD",
+      "libelle_fr": "RAPI-CI : prix CIF UE composite Asie, en USD",
+      "libelle_en": "RAPI-CI: EU CIF price, Asian composite, in USD",
+      "frequence": "mensuelle",
+      "unite": "USD/kg",
+      "nature": "T",
+      "licence": "calcul RubberSignal Technologies (entrees Eurostat et BCE)",
+      "source": "Calcul RubberSignal Technologies sur Eurostat Comext (DS-045409) et BCE",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/DS-045409/default/table",
+      "version": "RAPI-CI v1",
+      "n": 20,
+      "derniere_date": "2026-09",
+      "derniere_valeur": 2.65806543552
+    },
+    {
+      "serie_id": "RAPI_CI_DECOTE_ASIE",
+      "libelle_fr": "RAPI-CI : écart de prix CIF UE Côte d'Ivoire / composite Asie",
+      "libelle_en": "RAPI-CI: EU CIF price gap, Côte d'Ivoire vs Asian composite",
+      "frequence": "mensuelle",
+      "unite": "%",
+      "nature": "E",
+      "licence": "calcul RubberSignal Technologies (entrees Eurostat et BCE)",
+      "source": "Calcul RubberSignal Technologies sur Eurostat Comext (DS-045409)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/DS-045409/default/table",
+      "version": "RAPI-CI v1",
+      "n": 20,
+      "derniere_date": "2026-09",
+      "derniere_valeur": -9.44823229903
+    }
+  ]
+}

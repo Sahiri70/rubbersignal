@@ -783,7 +783,7 @@ json_signaux <- list(
     valeur      = pre_rsi,
     unite       = "score 0-100 (> 55 haussier, < 45 baissier)",
     periode     = format(DATE_COLLECTE, "%G-W%V"),
-    source      = "Calcul RubberSignal (modules 1, 2, 3, 6, 7 de ce fichier)",
+    source      = "Calcul RubberSignal Technologies (modules 1, 2, 3, 6, 7 de ce fichier)",
     date_source = as.character(DATE_COLLECTE),
     publiable   = rs_serie_publiable("PRE_RSI"),
     methode = paste("Somme pondérée des composantes disponibles (scores orientés prix), divisée par la",

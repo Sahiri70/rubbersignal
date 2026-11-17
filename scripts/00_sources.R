@@ -550,4 +550,20 @@ rs_fred_exuseu <- function(debut = "2024-01", key = Sys.getenv("FRED_KEY")) {
   }, error = function(e) { rs_msg("FRED EXUSEU KO : ", sub("api_key=[^&]+", "api_key=****", conditionMessage(e))); NULL })
 }
 
+# Taux USD/EUR moyen d'un mois donne (RSCI v2.1) : BCE, puis FRED EXUSEU
+# (source secondaire declaree). Aucun repli sur le taux du jour.
+# Retour : list(usd_eur, periode, source, secondaire) ou NULL si indisponible.
+rs_taux_mensuel_usd_eur <- function(mois, bce = rs_bce_usd_eur_mensuel, fred = rs_fred_exuseu) {
+  if (length(mois) != 1 || is.na(mois) || !grepl("^[0-9]{4}-[0-9]{2}$", mois)) return(NULL)
+  lire <- function(t) {
+    if (is.null(t) || nrow(t) == 0) return(NULL)
+    i <- match(mois, t$periode)
+    if (is.na(i) || !is.finite(t$taux_usd_eur[i])) NULL else t[i, , drop = FALSE]
+  }
+  r <- lire(bce(mois)); sec <- FALSE
+  if (is.null(r)) { r <- lire(fred(mois)); sec <- !is.null(r) }
+  if (is.null(r)) return(NULL)
+  list(usd_eur = r$taux_usd_eur, periode = mois, source = r$source, secondaire = sec)
+}
+
 `%||%` <- function(a, b) if (is.null(a) || length(a) == 0 || (length(a) == 1 && is.na(a))) b else a

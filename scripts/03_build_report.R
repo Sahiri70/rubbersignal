@@ -197,6 +197,12 @@ aprom_date_en  <- if (is.na(aprom_date)) ", source date unknown" else paste0(if 
 rsci_ref_nat   <- txt(rsci_data$reference_tsr20$nature, "—")
 rsci_nat       <- txt(rsci_data$nature, "—")
 rsci_version   <- txt(rsci_data$version_methode, "version inconnue")
+# RSCI v2.1 : taux USD/EUR moyen BCE du mois de référence TSR20 (fiche datée et sourcée)
+rsci_fx        <- round(num(rsci_data$taux_change$valeur), 4)
+rsci_fx_mois   <- txt(rsci_data$taux_change$periode, rsci_ref_mois)
+rsci_fx_sec    <- isTRUE(rsci_data$taux_change$source_secondaire)
+rsci_fx_nat    <- txt(rsci_data$taux_change$nature, "O")
+rsci_cause     <- txt(rsci_data$cause_non_calcul, NA_character_)
 
 cat("   RSCI        :",
     if (!is.na(rsci_pct))
@@ -568,6 +574,8 @@ rapport_rsci_fr <- if (!is.na(rsci_pct)) {
       if (nzchar(aprom_type)) paste0(", ", aprom_type) else "", aprom_date_fr, ") | ", aprom_fcfa, " FCFA/kg | ", aprom_nat, " |\n",
     "| Référence TSR20 (", rs_mois_libelle(rsci_ref_mois, "fr"), ", Banque mondiale) | ",
       rsci_ref_usd, " USD/kg | ", rsci_ref_nat, " |\n",
+    if (!is.na(rsci_fx)) paste0("| Taux USD/EUR (moyenne ", rs_mois_libelle(rsci_fx_mois, "fr"),
+      if (rsci_fx_sec) ", FRED EXUSEU, source secondaire" else ", BCE", ") | ", rsci_fx, " | ", rsci_fx_nat, " |\n") else "",
     "| Prix planteur, équivalent sec (DRC ", drc_txt_fr, ") | ", rsci_prix_sec, " USD/kg | E |\n",
     "| **RSCI** (part planteur) | **", rsci_pct, "%** | ", rsci_nat, " |\n",
     "| Part officielle en vigueur | ", rsci_mecanisme, "% | O |\n",
@@ -580,8 +588,10 @@ rapport_rsci_fr <- if (!is.na(rsci_pct)) {
     "non publiés en détail), alors que le RSCI se rapporte au prix international **brut**. ",
     "La différence n'indique donc pas un non-respect du mécanisme : elle mesure la part du prix mondial ",
     "qui reste au planteur après l'ensemble des coûts de la filière.*\n\n",
-    "> *Méthodologie v2 : référence TSR20 = moyenne mensuelle Banque mondiale du mois précédant le prix ",
+    "> *Méthodologie ", rsci_version, " : référence TSR20 = moyenne mensuelle Banque mondiale du mois précédant le prix ",
     "APROMAC (le mécanisme 2026 se fonde sur les cotations SGX-SICOM TSR20 du mois précédent) ; ",
+    "prix APROMAC converti au taux USD/EUR moyen de la BCE du même mois de référence, si bien que ",
+    "l'indice d'un mois ne dépend pas de la date de calcul ; ",
     "DRC de référence ", drc_txt_fr, ". La prime TSR10 n'est pas encore intégrée.*\n\n",
     "---\n\n"
   )
@@ -589,8 +599,11 @@ rapport_rsci_fr <- if (!is.na(rsci_pct)) {
   paste0(
     "## 🇨🇮 RSCI — RubberSignal Chain Index\n\n",
     alerte_apromac_fr,
-    "**RSCI non calculé cette semaine** : référence TSR20 du mois précédant le prix APROMAC (",
-    rs_mois_libelle(rs_mois_precedent(aprom_mois), "fr"), ") indisponible. ",
+    "**RSCI non calculé cette semaine** : ",
+    if (!is.na(rsci_cause) && grepl("^taux", rsci_cause))
+      paste0("taux USD/EUR moyen de ", rs_mois_libelle(rs_mois_precedent(aprom_mois), "fr"), " indisponible (BCE et FRED). ")
+    else paste0("référence TSR20 du mois précédant le prix APROMAC (",
+                rs_mois_libelle(rs_mois_precedent(aprom_mois), "fr"), ") indisponible. "),
     "Prix APROMAC de ", rs_mois_libelle(aprom_mois, "fr"), " : ", aprom_fcfa, " FCFA/kg.\n\n",
     "---\n\n"
   )
@@ -612,6 +625,8 @@ rapport_rsci_en <- if (!is.na(rsci_pct)) {
       ") | ", aprom_fcfa, " FCFA/kg | ", aprom_nat, " |\n",
     "| TSR20 reference (", rs_mois_libelle(rsci_ref_mois, "en"), ", World Bank) | ",
       rsci_ref_usd, " USD/kg | ", rsci_ref_nat, " |\n",
+    if (!is.na(rsci_fx)) paste0("| USD/EUR rate (", rs_mois_libelle(rsci_fx_mois, "en"),
+      if (rsci_fx_sec) " average, FRED EXUSEU, secondary source" else " ECB average", ") | ", rsci_fx, " | ", rsci_fx_nat, " |\n") else "",
     "| Dry-equivalent farmer price (DRC ", drc_txt_en, ") | ", rsci_prix_sec, " USD/kg | E |\n",
     "| **RSCI** (farmer share) | **", rsci_pct, "%** | ", rsci_nat, " |\n",
     "| Official share in force | ", rsci_mecanisme, "% | O |\n",
@@ -624,8 +639,10 @@ rapport_rsci_en <- if (!is.na(rsci_pct)) {
     "whereas RSCI is measured against the **gross** international price. ",
     "The difference therefore does not indicate non-compliance with the mechanism: it measures the share ",
     "of the world price left to the farmer after all supply-chain costs.*\n\n",
-    "> *V2 methodology: TSR20 reference = World Bank monthly average for the month preceding the APROMAC ",
+    "> *Methodology ", rsci_version, ": TSR20 reference = World Bank monthly average for the month preceding the APROMAC ",
     "price (the 2026 mechanism is based on the previous month's SGX-SICOM TSR20 quotes); ",
+    "APROMAC price converted at the ECB average USD/EUR rate of the same reference month, so a month's ",
+    "index does not depend on the calculation date; ",
     "reference DRC ", drc_txt_en, ". The TSR10 premium is not yet included.*\n\n",
     "---\n\n"
   )
@@ -633,8 +650,11 @@ rapport_rsci_en <- if (!is.na(rsci_pct)) {
   paste0(
     "## 🇨🇮 RSCI — RubberSignal Chain Index\n\n",
     alerte_apromac_en,
-    "**RSCI not computed this week**: TSR20 reference for the month preceding the APROMAC price (",
-    rs_mois_libelle(rs_mois_precedent(aprom_mois), "en"), ") unavailable. ",
+    "**RSCI not computed this week**: ",
+    if (!is.na(rsci_cause) && grepl("^taux", rsci_cause))
+      paste0("average USD/EUR rate for ", rs_mois_libelle(rs_mois_precedent(aprom_mois), "en"), " unavailable (ECB and FRED). ")
+    else paste0("TSR20 reference for the month preceding the APROMAC price (",
+                rs_mois_libelle(rs_mois_precedent(aprom_mois), "en"), ") unavailable. "),
     "APROMAC price for ", rs_mois_libelle(aprom_mois, "en"), ": ", aprom_fcfa, " FCFA/kg.\n\n",
     "---\n\n"
   )
@@ -684,7 +704,7 @@ section_rapi <- function(langue = "fr") {
   }
   nat <- paste0(txt(rapi$nature$prix_cif, "T"), " / ", txt(rapi$nature$decote, "E"))
   lignes <- vapply(six, function(m) paste0(
-    "| ", rs_mois_libelle(txt(m$periode), langue), " | ", rs_rapi_fmt(m$volume_ci_t, 0), " | ", f3(m$ci_eur_kg), " | ",
+    "| ", rs_mois_libelle(txt(m$periode), langue), " | ", rs_fmt_milliers(m$volume_ci_t, langue), " | ", f3(m$ci_eur_kg), " | ",
     f3(m$ci_usd_kg), " | ", f3(m$asie_usd_kg), " | ", fpct(m$decote_pct), " | ", nat, " | ", drapeaux(m), " |\n"),
     character(1))
   entete <- if (fr) "| Mois | Volume CI (t) | CI €/kg | CI USD/kg | Composite Asie USD/kg | Décote CI/Asie | Nature | Drapeaux |\n|---|---|---|---|---|---|---|---|\n"
@@ -693,10 +713,10 @@ section_rapi <- function(langue = "fr") {
   der_mois <- rs_mois_libelle(txt(der$periode), langue)
   statut <- txt(rapi$statut, "indisponible"); fraicheur <- txt(rapi$statut_fraicheur, "indisponible")
   etat <- if (statut != "ok") {
-    if (fr) paste0("> ⚠️ *Eurostat Comext indisponible cette semaine : valeurs reprises de la base RubberSignal (extraction du ",
+    if (fr) paste0("> ⚠️ *Eurostat Comext indisponible cette semaine : valeurs reprises de la base RubberSignal Technologies (extraction du ",
                    rs_date_fr(txt(rapi$date_extraction_valeurs, NA)), ", mise à jour Eurostat du ", rs_date_fr(maj),
                    "). Elles ne sont pas nouvelles. Dernière valeur disponible : ", der_mois, ".*\n\n")
-    else paste0("> ⚠️ *Eurostat Comext unavailable this week: values taken from the RubberSignal database (extracted ",
+    else paste0("> ⚠️ *Eurostat Comext unavailable this week: values taken from the RubberSignal Technologies database (extracted ",
                 rs_date_fr(txt(rapi$date_extraction_valeurs, NA)), ", Eurostat update of ", rs_date_fr(maj),
                 "). They are not new. Latest available value: ", der_mois, ".*\n\n")
   } else if (fraicheur != "derniere_valeur_disponible") {
@@ -740,10 +760,10 @@ section_rapi <- function(langue = "fr") {
     else "> - FOB Abidjan: **not published** (no public, dated and reusable freight source has been selected).\n\n")
   source_txt <- if (fr) paste0(
     "*Source : ", txt(rapi$source, RS_RAPI_SOURCE), ", ", RS_RAPI_PRODUIT_LIBELLE, ", mise à jour du ", rs_date_fr(maj),
-    ". ", fx_note, ". Comparaison : TSR20 Banque mondiale (Pink Sheet), hors indice. Calcul RubberSignal.*\n\n---\n\n")
+    ". ", fx_note, ". Comparaison : TSR20 Banque mondiale (Pink Sheet), hors indice. Calcul RubberSignal Technologies.*\n\n---\n\n")
   else paste0(
     "*Source: ", txt(rapi$source, RS_RAPI_SOURCE), ", CN ", sub("^NC ", "", RS_RAPI_PRODUIT_LIBELLE), ", updated ", rs_date_fr(maj),
-    ". ", fx_note, ". Comparison: World Bank TSR20 (Pink Sheet), outside the index. RubberSignal calculation.*\n\n---\n\n")
+    ". ", fx_note, ". Comparison: World Bank TSR20 (Pink Sheet), outside the index. RubberSignal Technologies calculation.*\n\n---\n\n")
   paste0(titre, etat, entete, paste(lignes, collapse = ""), "\n", legende,
          rs_rapi_phrase(der, langue), "\n\n", lecture, encadre, source_txt)
 }
@@ -780,7 +800,9 @@ lignes_prix <- function(langue = "fr") {
       source = paste0(if (fr) "cotation ci-dessus × USD/CHF " else "quote above × USD/CHF ", taux_chf, " (", taux_chf_src, ")"),
       nature = "E", statut = if (fr) "conversion" else "conversion")
   c(l, list(
-    list(serie = "FMI_PRUBBUSDM", libelle = if (fr) "Prix mondial FMI (mensuel)" else "IMF world price (monthly)",
+    # La série FMI suit le RSS3 (feuilles fumées) : sept. 2026, FMI 2,757 ; Banque mondiale RSS3 2,75, TSR20 2,41
+    list(serie = "FMI_PRUBBUSDM", libelle = if (fr) "Prix mondial FMI (mensuel ; série proche du RSS3, pas un prix TSR20)"
+                                            else "IMF world price (monthly; tracks RSS3, not a TSR20 price)",
          valeur = if (!is.na(fmi_val)) paste0(fmi_val, " USD/kg (", fmi_orig, " cents/lb)") else (if (fr) "indisponible" else "unavailable"),
          date = rs_mois_libelle(fmi_per, langue), source = "FMI via FRED (PRUBBUSDM)", nature = fmi_nat, statut = stat_m(fmi_stat)),
     list(serie = "BM_TSR20", libelle = if (fr) "TSR20 Banque mondiale (mensuel)" else "World Bank TSR20 (monthly)",
@@ -809,13 +831,22 @@ hebdo_titre <- list(valeur = prix_actuel, date = date_prix, frais = prix_frais, 
 bm_titre    <- list(valeur = bm_val, periode = bm_per)
 titre_fr <- rs_titre_rapport("fr", SEMAINE, ANNEE, hebdo_titre, bm_titre, symbole_tendance, PUBLIER_LICENCE)
 
+# Validation de l'évaluateur : lue au registre (jamais « validé » sans ligne au registre)
+etat_validation <- rs_validation_etat(rs_validation_lire(), SEMAINE, ANNEE)
+cat("   Validation  :", etat_validation$statut, if (!is.na(etat_validation$date)) paste("le", etat_validation$date) else "", "\n")
+
+# Note éditoriale : publiée seulement si l'évaluateur en a saisi une pour la semaine
+section_note <- function(langue = "fr") {
+  t <- rs_note_editoriale(SEMAINE, ANNEE, langue)
+  if (is.na(t)) return("")
+  paste0(if (langue == "fr") "## 📝 Note éditoriale de la semaine\n\n" else "## 📝 Editorial Note\n\n", t, "\n\n---\n\n")
+}
+
 # Variation & tendance : dérivées de la cotation hebdomadaire (même règle de licence)
 section_variation <- function(langue = "fr") {
   fr <- langue == "fr"
-  if (!hebdo_publiable)
-    return(paste0(if (fr) "### Variation & tendance\n\n*Calculées sur la cotation hebdomadaire : "
-                  else "### Variation & Trend\n\n*Computed on the weekly quote: ",
-                  if (fr) RS_MENTION_LICENCE_FR else RS_MENTION_LICENCE_EN, ".*\n\n"))
+  # Cotation hebdomadaire réservée : section non publiée (le tableau des prix le dit déjà)
+  if (!hebdo_publiable) return("")
   paste0(
     if (fr) "### Variation & tendance\n\n| Indicateur | Valeur |\n|---|---|\n| Variation vs période préc. | "
     else "### Variation & Trend\n\n| Indicator | Value |\n|---|---|\n| Change vs previous period | ",
@@ -881,20 +912,16 @@ rapport_fr <- paste0(
   rapport_rsci_fr,
   rapport_rapi_fr,
   section_actu("fr"),
-  "## 📝 Note éditoriale de la semaine\n\n",
-  "*[À compléter manuellement — votre observation terrain : ",
-  "prix local CI, activité plantation, retour d'un négociant...]*\n\n",
-  "---\n\n",
+  section_note("fr"),
   
   # v4.3 : « Focus Côte d'Ivoire » statique retiré (« top 5 mondial », production
   # SunSirs, « APROCAG » : aucune source dans le JSON). Le suivi CI = section RSCI.
 
-  "**RubberSignal** — Intelligence marché caoutchouc naturel | ",
+  "**RubberSignal Technologies** — Intelligence marché caoutchouc naturel | ",
   "Afrique de l'Ouest & marchés mondiaux\n\n",
   "*", source_hebdo_pied("fr"), " | Références mensuelles : FMI (FRED PRUBBUSDM), Banque mondiale (Pink Sheet) | Douanes UE : Eurostat Comext (DS-045409) | ",
   "Rapport du ", format(DATE_COLLECTE, "%d/%m/%Y"), "*\n\n",
-  "*Calculs préparés et contrôlés par des outils automatisés, dont des modèles d'IA, puis validés par ",
-  "l'évaluateur responsable (Martial Sahiri).*\n\n",
+  "*", rs_mention_validation(etat_validation, DATE_COLLECTE, "fr"), "*\n\n",
   "*Pour vous abonner : rubbersignal.substack.com*\n"
 )
 
@@ -936,17 +963,13 @@ rapport_en <- paste0(
   rapport_rsci_en,
   rapport_rapi_en,
   section_actu("en"),
-  "## 📝 Editorial Note\n\n",
-  "*[To be completed manually — your field observation this week: ",
-  "local CI prices, plantation activity, trader feedback...]*\n\n",
-  "---\n\n",
+  section_note("en"),
   
-  "**RubberSignal** — Natural Rubber Market Intelligence | ",
+  "**RubberSignal Technologies** — Natural Rubber Market Intelligence | ",
   "West Africa & Global Markets\n\n",
   "*", source_hebdo_pied("en"), " | Monthly references: IMF (FRED PRUBBUSDM), World Bank (Pink Sheet) | EU customs: Eurostat Comext (DS-045409) | ",
   "Report of ", format(DATE_COLLECTE, "%B %d, %Y"), "*\n\n",
-  "*Calculations prepared and checked by automated tools, including AI models, then validated by ",
-  "the responsible assessor (Martial Sahiri).*\n\n",
+  "*", rs_mention_validation(etat_validation, DATE_COLLECTE, "en"), "*\n\n",
   "*Subscribe: rubbersignal.substack.com*\n"
 )
 
@@ -991,6 +1014,7 @@ donnees$rapport <- list(
   pre_rsi_publie = !is.na(pre_rsi),
   publier_sources_sous_licence = PUBLIER_LICENCE,
   serie_hebdo_publiee = hebdo_publiable,
+  validation = etat_validation,
   rapi_ci_statut = txt(rapi$statut, "absent"),
   rapi_ci_derniere_periode = txt(rapi$derniere_periode, NA_character_),
   versions_methode = setNames(as.list(RS_METHODES$version), RS_METHODES$cle)

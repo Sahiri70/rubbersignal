@@ -182,7 +182,7 @@ if (is.null(vol)) {
       publier_sources_sous_licence = publier_licence
     ),
     valeur = VOL, unite = "volatilite annuelle (fraction)", periode = paste(vol$periode_debut, vol$periode_fin, sep = "/"),
-    source = "Calcul RubberSignal sur Banque mondiale Pink Sheet TSR20", date_source = as.character(DATE_COLLECTE),
+    source = "Calcul RubberSignal Technologies sur Banque mondiale Pink Sheet TSR20", date_source = as.character(DATE_COLLECTE),
     resultats = resultats_mc, texte_fr = texte_mc_fr, texte_en = texte_mc_en,
     scenarios_meteo = list(publie = FALSE, statut = "retire",
                            note = "Elasticite -0.40 et chocs d'offre sans source : scenarios retires du rapport (v2.0)")

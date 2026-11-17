@@ -263,7 +263,7 @@ if (!is.null(derniere) && !identical(fr_rapi$statut, "derniere_valeur_disponible
 bloc <- list(
   statut = STATUT,
   nouvelle_extraction = STATUT == "ok",
-  valeurs_issues_de = if (STATUT == "ok") "API Eurostat du jour" else if (length(mois) > 0) "base RubberSignal (derniere extraction)" else "aucune",
+  valeurs_issues_de = if (STATUT == "ok") "API Eurostat du jour" else if (length(mois) > 0) "base RubberSignal Technologies (derniere extraction)" else "aucune",
   date_extraction_valeurs = if (length(mois) > 0) date_extraction_valeurs else NA_character_,
   version_methode = rs_version_methode("rapi_ci"),
   date_effet_methode = RS_METHODES$date_effet[RS_METHODES$cle == "rapi_ci"],

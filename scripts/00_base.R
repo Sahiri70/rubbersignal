@@ -61,9 +61,9 @@ RS_DB_CATALOGUE <- do.call(rbind, c(
           "APROMAC official monthly price (Côte d'Ivoire)", "mensuelle", "FCFA/kg", "O",
           "APROMAC (saisie datée data/reference/prix_apromac.csv, puis presse)", "data/reference/prix_apromac.csv",
           "APROMAC v1", "XOF", "CI", "carreau usine (depuis le 01/05/2026)", "caoutchouc humide (fonds de tasse)"),
-    .rs_s("RSCI", "RSCI", "RSCI : part du prix TSR20 reçue par le planteur (calcul du jour de collecte)",
-          "RSCI: farmer share of the TSR20 price (computed on collection day)", "hebdomadaire (calcul)", "%", "E",
-          "Calcul RubberSignal (APROMAC, Banque mondiale, BCE)", "", "RSCI v2",
+    .rs_s("RSCI", "RSCI", "RSCI : part du prix TSR20 reçue par le planteur (valeur publiée à la date de collecte)",
+          "RSCI: farmer share of the TSR20 price (value published on the collection date)", "hebdomadaire (calcul)", "%", "E",
+          "Calcul RubberSignal Technologies (APROMAC, Banque mondiale, BCE)", "", "RSCI v2.1",
           "", "CI", "planteur", "équivalent sec (DRC 60 %)"),
     .rs_s("FX_USD_EUR_J", "BCE_USD_EUR", "Taux USD pour 1 EUR du jour de collecte (référence BCE)",
           "USD per 1 EUR on collection day (ECB reference)", "quotidienne", "USD/EUR", "O",
@@ -95,21 +95,21 @@ RS_DB_CATALOGUE <- do.call(rbind, c(
   }),
   list(
     .rs_s("RAPI_CI_CIF_EUR", "RAPI_CI", "RAPI-CI : prix CIF UE origine Côte d'Ivoire", "RAPI-CI: EU CIF price, Côte d'Ivoire origin",
-          "mensuelle", "EUR/kg", "T", "Calcul RubberSignal sur Eurostat Comext (DS-045409)", RS_URL_COMEXT, "RAPI-CI v1",
+          "mensuelle", "EUR/kg", "T", "Calcul RubberSignal Technologies sur Eurostat Comext (DS-045409)", RS_URL_COMEXT, "RAPI-CI v1",
           "EUR", "CI", "CIF frontière UE", "TSNR (NC 4001 22 00)"),
     .rs_s("RAPI_CI_CIF_USD", "RAPI_CI", "RAPI-CI : prix CIF UE origine Côte d'Ivoire, en USD", "RAPI-CI: EU CIF price, Côte d'Ivoire origin, in USD",
-          "mensuelle", "USD/kg", "T", "Calcul RubberSignal sur Eurostat Comext (DS-045409) et BCE", RS_URL_COMEXT, "RAPI-CI v1",
+          "mensuelle", "USD/kg", "T", "Calcul RubberSignal Technologies sur Eurostat Comext (DS-045409) et BCE", RS_URL_COMEXT, "RAPI-CI v1",
           "USD", "CI", "CIF frontière UE", "TSNR (NC 4001 22 00)"),
     .rs_s("RAPI_ASIE_CIF_EUR", "RAPI_CI", "RAPI-CI : prix CIF UE composite Asie (TH, ID, MY, VN, pondéré par les volumes)",
           "RAPI-CI: EU CIF price, Asian composite (TH, ID, MY, VN, volume-weighted)",
-          "mensuelle", "EUR/kg", "T", "Calcul RubberSignal sur Eurostat Comext (DS-045409)", RS_URL_COMEXT, "RAPI-CI v1",
+          "mensuelle", "EUR/kg", "T", "Calcul RubberSignal Technologies sur Eurostat Comext (DS-045409)", RS_URL_COMEXT, "RAPI-CI v1",
           "EUR", "Asie (TH, ID, MY, VN)", "CIF frontière UE", "TSNR (NC 4001 22 00)"),
     .rs_s("RAPI_ASIE_CIF_USD", "RAPI_CI", "RAPI-CI : prix CIF UE composite Asie, en USD", "RAPI-CI: EU CIF price, Asian composite, in USD",
-          "mensuelle", "USD/kg", "T", "Calcul RubberSignal sur Eurostat Comext (DS-045409) et BCE", RS_URL_COMEXT, "RAPI-CI v1",
+          "mensuelle", "USD/kg", "T", "Calcul RubberSignal Technologies sur Eurostat Comext (DS-045409) et BCE", RS_URL_COMEXT, "RAPI-CI v1",
           "USD", "Asie (TH, ID, MY, VN)", "CIF frontière UE", "TSNR (NC 4001 22 00)"),
     .rs_s("RAPI_CI_DECOTE_ASIE", "RAPI_CI", "RAPI-CI : écart de prix CIF UE Côte d'Ivoire / composite Asie",
           "RAPI-CI: EU CIF price gap, Côte d'Ivoire vs Asian composite",
-          "mensuelle", "%", "E", "Calcul RubberSignal sur Eurostat Comext (DS-045409)", RS_URL_COMEXT, "RAPI-CI v1",
+          "mensuelle", "%", "E", "Calcul RubberSignal Technologies sur Eurostat Comext (DS-045409)", RS_URL_COMEXT, "RAPI-CI v1",
           "", "CI", "CIF frontière UE", "TSNR (NC 4001 22 00)"),
     .rs_s("MRB_SMR20", "MRB_SMR20", "Cotation SMR20 (MRB, ex-LGM) — usage interne", "SMR20 quote (MRB, ex-LGM) — internal use",
           "quotidienne (relevé hebdomadaire)", "USD/kg", "O", "MRB SMR20 (via rtas.sg ou site LGM)", "https://www.rtas.sg/rubber-prices/",
@@ -177,12 +177,19 @@ rs_db_init <- function(dir = RS_DB_DIR, cat = RS_DB_CATALOGUE) {
     .rs_csv_ajouter(f$series, s_code, RS_DB_COLS_SERIES, entete = TRUE)
   } else {
     s <- .rs_csv_lire(f$series, RS_DB_COLS_SERIES)
-    nouv <- s_code[!s_code$serie_id %in% s$serie_id, , drop = FALSE]
-    if (nrow(nouv) > 0) .rs_csv_ajouter(f$series, nouv, RS_DB_COLS_SERIES)
     # Garde-fou licence : le fichier ne peut pas rendre publiable une serie que le registre interdit
     m <- merge(s, s_code[, c("serie_id", "publiable")], by = "serie_id", suffixes = c("", "_code"))
     bad <- m$serie_id[m$publiable == "oui" & m$publiable_code == "non"]
     if (length(bad) > 0) stop("Base : series.csv marque publiable une serie sous licence : ", paste(bad, collapse = ", "))
+    # Le catalogue du code fait foi pour la description des series (libelle, version de
+    # methode, licence) : le fichier est remis a jour s'il differe. Les series inconnues
+    # du code sont conservees. Les observations, elles, ne sont jamais reecrites.
+    maj <- rbind(s_code[, RS_DB_COLS_SERIES], s[!s$serie_id %in% s_code$serie_id, RS_DB_COLS_SERIES, drop = FALSE])
+    vide <- function(d) { d[] <- lapply(d, function(x) { x <- as.character(x); x[is.na(x)] <- ""; x }); rownames(d) <- NULL; d }
+    if (!identical(vide(maj), vide(s))) {
+      unlink(f$series)
+      .rs_csv_ajouter(f$series, maj, RS_DB_COLS_SERIES, entete = TRUE)
+    }
   }
   if (!file.exists(f$obs)) .rs_csv_ajouter(f$obs, data.frame(), RS_DB_COLS_OBS, entete = TRUE)
   else invisible(.rs_csv_lire(f$obs, RS_DB_COLS_OBS))
@@ -347,7 +354,11 @@ rs_db_obs_collecte <- function(date_extraction, bm = NULL, fmi = NULL, apromac =
     out$rsci <- rs_db_obs("RSCI", de, rsci$rsci_pct, de, de,
                           methode = paste0(rsci$methode %||% "", " Mois APROMAC : ", rsci$mois_rsci %||% "?",
                                            " ; reference TSR20 : ", rsci$reference_tsr20$periode %||% "?",
-                                           " ; part officielle ", rsci$mecanisme_officiel_pct %||% "?", " %."))
+                                           " ; part officielle ", rsci$mecanisme_officiel_pct %||% "?", " %",
+                                           if (is.finite(suppressWarnings(as.numeric(rsci$taux_change$valeur %||% NA))))
+                                             paste0(" ; taux USD/EUR moyen ", rsci$taux_change$periode %||% "?", " : ",
+                                                    rsci$taux_change$valeur) else "", "."),
+                          version_methode = rsci$version_methode)
   if (!is.null(fx) && is.finite(fx$eur_usd %||% NA) && !is.na(fx$date %||% NA))
     out$fx <- rs_db_obs("FX_USD_EUR_J", fx$date, fx$eur_usd, fx$date, de,
                         methode = "Taux de reference BCE du jour (USD pour 1 EUR)", source = fx$source)

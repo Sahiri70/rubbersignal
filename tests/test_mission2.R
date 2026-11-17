@@ -204,8 +204,9 @@ test_that("Licence : registre des series et reglage TRUE / FALSE", {
 test_that("IOSCO : nature et version de methode sur les valeurs publiees", {
   x <- rs_iosco(rs_valeur(66, "%", "s", "2026-11-03", "m"), "E", "rsci")
   expect_equal(x$nature, "E")
-  expect_equal(x$version_methode, "RSCI v2")
-  expect_equal(x$date_effet_methode, "2026-11-03")
+  expect_equal(x$version_methode, "RSCI v2.1")             # v2.1 : taux BCE moyen du mois de reference
+  expect_equal(x$date_effet_methode, "2026-11-09")
+  expect_equal(rs_iosco(rs_valeur(1, "%", "s", "2026-11-03", "m"), "E", "apromac")$date_effet_methode, "2026-11-03")
   expect_error(rs_iosco(list(), "X", "rsci"))
   expect_error(rs_version_methode("inconnue"))
   expect_true(all(c("prix_hebdo", "reference_mensuelle", "apromac", "rsci", "terrain", "pre_rsi", "volatilite")

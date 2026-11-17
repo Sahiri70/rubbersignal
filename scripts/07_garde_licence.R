@@ -26,7 +26,7 @@ if (rs_publier_sous_licence()) {
 }
 
 # ── 1. Fichiers a publier (modifies ou nouveaux dans data/ et output/) ──
-git_changes <- tryCatch(system2("git", c("status", "--porcelain", "--untracked-files=all", "data", "output"),
+git_changes <- tryCatch(system2("git", c("status", "--porcelain", "--untracked-files=all", "data", "output", "site"),
                                 stdout = TRUE, stderr = FALSE), error = function(e) character())
 a_publier <- unique(sub("^.. ", "", git_changes))
 a_publier <- gsub('^"|"$', "", sub(".* -> ", "", a_publier))
@@ -62,7 +62,7 @@ infractions <- rs_controle_licence(
   obs      = lire_csv("data/db/observations.csv"),
   series   = lire_csv("data/db/series.csv"),
   hist     = lire_csv("data/reference/tsr20_hebdo.csv"),
-  fichiers = fichiers[grepl("\\.(json|csv|md|txt)$", fichiers)],
+  fichiers = fichiers[grepl("\\.(json|js|csv|md|txt|html)$", fichiers)],
   valeurs  = valeurs,
   publier_licence = FALSE)
 

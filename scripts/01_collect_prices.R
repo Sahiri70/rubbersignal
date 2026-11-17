@@ -277,6 +277,10 @@ synthese_bord_champ <- rs_iosco(c(synthese_bord_champ,
 #               MOIS PRECEDENT, ici la moyenne mensuelle Banque mondiale
 #               (Pink Sheet, serie TSR20 = SGX/SICOM, source libre).
 # DRC         : 60 % de reference, A CONFIRMER apres la reforme 2026.
+# Taux USD/EUR (RSCI v2.1, 09/11/2026) : moyenne mensuelle BCE du MOIS DE
+#               REFERENCE TSR20 (FRED EXUSEU si la BCE echoue). Numerateur et
+#               denominateur sont convertis au meme taux : l'indice d'un mois
+#               ne change plus avec le taux du jour de collecte.
 # Debat ouvert (non integre) : prime TSR10 vs TSR20 -> RSCI v3.
 
 cat("\n>> RSCI — RubberSignal Chain Index...\n")
@@ -286,7 +290,18 @@ mois_ref_rsci <- rs_mois_precedent(MOIS_APROMAC)
 ref_rsci_usd  <- if (!is.null(bm)) bm$serie$usd_kg[bm$serie$periode == mois_ref_rsci][1] else NA_real_
 ref_rsci_usd  <- ref_rsci_usd %||% NA_real_
 
-calc <- rs_calcul_rsci(PRIX_APROMAC_FCFA, FCFA_PAR_USD, ref_rsci_usd, MOIS_APROMAC, DRC_OFFICIEL)
+fx_rsci <- rs_taux_mensuel_usd_eur(mois_ref_rsci)
+FCFA_PAR_USD_RSCI <- if (!is.null(fx_rsci)) XOF_PAR_EUR / fx_rsci$usd_eur else NA_real_
+if (is.null(fx_rsci)) {
+  cause_rsci <- sprintf("taux USD/EUR moyen de %s indisponible (BCE et FRED)", mois_ref_rsci)
+} else {
+  cause_rsci <- sprintf("reference TSR20 Banque mondiale de %s indisponible", mois_ref_rsci)
+  cat("   Taux USD/EUR moyen de", mois_ref_rsci, ":", fx_rsci$usd_eur, "(", fx_rsci$source, ")\n")
+  if (isTRUE(fx_rsci$secondaire))
+    ALERTES <- c(ALERTES, "RSCI : taux BCE indisponible, source secondaire FRED EXUSEU utilisee")
+}
+
+calc <- rs_calcul_rsci(PRIX_APROMAC_FCFA, FCFA_PAR_USD_RSCI, ref_rsci_usd, MOIS_APROMAC, DRC_OFFICIEL)
 prix_planteur_sec_usd <- calc$prix_planteur_sec_usd
 rsci_pct              <- calc$rsci_pct
 rsci_ecart_pts        <- calc$ecart_pts
@@ -300,10 +315,8 @@ if (is.finite(rsci_pct)) {
   cat("   Taux officiel en vigueur    :", calc$taux$part_planteur_pct, "%\n")
   cat("   Ecart vs mecanisme officiel :", rsci_ecart_pts, "points\n")
 } else {
-  ALERTES <- c(ALERTES, sprintf(
-    "RSCI non calcule : reference TSR20 Banque mondiale de %s indisponible (prix APROMAC de %s)",
-    mois_ref_rsci, MOIS_APROMAC))
-  cat("   RSCI NON CALCULE : reference TSR20 de", mois_ref_rsci, "indisponible\n")
+  ALERTES <- c(ALERTES, sprintf("RSCI non calcule : %s (prix APROMAC de %s)", cause_rsci, MOIS_APROMAC))
+  cat("   RSCI NON CALCULE :", cause_rsci, "\n")
 }
 
 synthese_rsci <- list(
@@ -328,16 +341,22 @@ synthese_rsci <- list(
                                      paste0(mois_ref_rsci, "-01"),
                                      "Moyenne mensuelle du mois precedant le prix APROMAC (regle du mecanisme 2026 : cotations SGX-SICOM TSR20 du mois precedent)",
                                      periode = mois_ref_rsci), "T", "reference_mensuelle"),
-  taux_change            = rs_valeur(FCFA_PAR_USD, "FCFA/USD", fx$source, fx$date,
-                                     "655.957 FCFA/EUR (parite fixe) / EUR-USD BCE du jour de collecte"),
+  taux_change            = rs_iosco(rs_valeur(if (!is.null(fx_rsci)) fx_rsci$usd_eur else NA_real_, "USD/EUR",
+                                     if (!is.null(fx_rsci)) fx_rsci$source else "indisponible (BCE et FRED)",
+                                     paste0(mois_ref_rsci, "-01"),
+                                     "Moyenne mensuelle BCE du mois de reference TSR20 (RSCI v2.1) ; FCFA/USD = 655,957 FCFA/EUR (parite fixe) / USD par EUR",
+                                     periode = mois_ref_rsci,
+                                     fcfa_par_usd = round(FCFA_PAR_USD_RSCI, 2),
+                                     source_secondaire = isTRUE(fx_rsci$secondaire)), "O", "rsci"),
+  cause_non_calcul       = if (is.finite(rsci_pct)) NA_character_ else cause_rsci,
   cadre_legal            = "Loi N.2017-540 du 03/08/2017 - CHPH",
   drc_source             = "DRC reference 60% (fonds de tasse), a confirmer apres reforme 2026 - debat en cours sur DRC reel et grade TSR10 vs TSR20",
-  methode                = "RSCI = (prix APROMAC du mois / taux FCFA-USD / DRC) / TSR20 Banque mondiale du mois precedent x 100 ; compare au taux officiel en vigueur au mois du prix APROMAC.",
+  methode                = "RSCI = (prix APROMAC du mois / taux FCFA-USD / DRC) / TSR20 Banque mondiale du mois precedent x 100 ; taux FCFA-USD = moyenne mensuelle BCE du mois de reference TSR20 ; compare au taux officiel en vigueur au mois du prix APROMAC.",
   note                   = "RSCI = part du prix planteur (corrige DRC) dans le prix de reference TSR20 du mois precedent."
 )
 synthese_rsci <- rs_iosco(c(synthese_rsci,
                             list(valeur = rsci_pct, unite = "%", periode = MOIS_APROMAC,
-                                 source = "Calcul RubberSignal (APROMAC, Banque mondiale, BCE)",
+                                 source = "Calcul RubberSignal Technologies (APROMAC, Banque mondiale, BCE)",
                                  date_source = as.character(DATE_COLLECTE),
                                  publiable = rs_serie_publiable("RSCI"))),
                           "E", "rsci")
