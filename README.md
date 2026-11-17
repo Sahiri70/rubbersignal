@@ -120,7 +120,7 @@ Les données (`site/data/`) sont régénérées chaque lundi par `scripts/08_exp
 
 Aperçu local : `Rscript scripts/servir_site.R`, puis ouvrir `http://localhost:4173`.
 
-Déploiement : workflow « Deploy site (GitHub Pages) », après activation de Pages (Settings → Pages → Source : GitHub Actions).
+En ligne : https://sahiri70.github.io/rubbersignal/ . Le workflow « Deploy site (GitHub Pages) » republie le site après chaque passage hebdomadaire réussi (garde licence comprise), ou à la main depuis l'onglet Actions.
 
 `app.R` (Shiny) est un outil interne d'analyse : il n'est plus déployé en ligne.
 

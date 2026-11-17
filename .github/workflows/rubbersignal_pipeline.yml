@@ -34,7 +34,7 @@ jobs:
 
       # Actions épinglées par empreinte de commit (pas de version flottante).
       - name: Checkout repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1 (Node 24)
 
       - name: Setup R
         uses: r-lib/actions/setup-r@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2.14.0
@@ -57,13 +57,12 @@ jobs:
           mkdir -p data/processed
           mkdir -p output
 
-      # Tests hors ligne, sans clé. Non bloquants tant qu'un premier passage vert
-      # n'a pas été constaté sur GitHub (ils n'ont tourné que sous Windows) :
-      # passer ensuite continue-on-error à false pour qu'un code cassé ne publie rien.
+      # Tests hors ligne, sans clé. Bloquants depuis le premier passage vert sur
+      # GitHub (17/11/2026, passages 42 et 45) : un code cassé arrête le passage
+      # avant toute collecte, rien n'est publié.
       - name: Run tests (offline)
-        continue-on-error: true
         run: |
-          Rscript tests/run_all.R || { echo "::warning::Tests en echec, voir le journal de cette etape"; exit 1; }
+          Rscript tests/run_all.R || { echo "::error::Tests en echec, rien n'est publie. Voir le journal de cette etape"; exit 1; }
 
       - name: Run Script 01 - Collect prices
         env:
