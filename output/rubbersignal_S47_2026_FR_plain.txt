@@ -1,4 +1,4 @@
-RubberSignal #47 | TSR20 Banque mondiale : 2.55 USD/kg (octobre 2026) | Semaine 47 - 2026
+RubberSignal Technologies #47 | TSR20 Banque mondiale : 2.55 USD/kg (octobre 2026) | Semaine 47 - 2026
 
 Votre veille hebdomadaire sur le marché du caoutchouc naturel — Afrique de l'Ouest & marchés mondiaux
 
@@ -10,16 +10,12 @@ Références datées
 
 | Série | Valeur | Date de la valeur | Source | Nature | Statut |
 |──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
-| Prix mondial FMI (mensuel) | 2.7574 USD/kg (125.075 cents/lb) | septembre 2026 | FMI via FRED (PRUBBUSDM) | T | PÉRIMÉE |
+| Prix mondial FMI (mensuel ; série proche du RSS3, pas un prix TSR20) | 2.7574 USD/kg (125.075 cents/lb) | septembre 2026 | FMI via FRED (PRUBBUSDM) | T | PÉRIMÉE |
 | TSR20 Banque mondiale (mensuel) | 2.55 USD/kg | octobre 2026 | Banque mondiale, Pink Sheet | T | dernière valeur disponible |
 
 Cotation hebdomadaire réservée (licence) : non reproduite dans cette publication.
 
 Nature : T = transaction, O = officiel, D = déclaration, E = estimation calculée, J = jugement. Version de méthode : Références mensuelles v1.
-
-Variation & tendance
-
-Calculées sur la cotation hebdomadaire : cotation hebdomadaire réservée (licence).
 
 🔍 Analyse de la semaine
 
@@ -35,9 +31,9 @@ Neutre — marché équilibré
 
 | Composante | Mesure | Sens pour le prix | Poids effectif |
 |──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
-| Météo / offre (4 zones) | Score d'offre 68/100 — Offre normale — marché équilibré | → neutre | 35.7 % (nominal 25 %) |
-| Devises (yuan) | Yuan fort (-2.31% vs moyenne 12 mois) — demande soutenue — USD/CNY 6.6784 (16/11/2026, ExchangeRate API (v6)) ; réf. moyenne 12 mois 6.8362 (FRED DEXCHUS) | ↑ hausse | 28.6 % (nominal 20 %) |
-| Demande industrielle | Score 40/100 — Demande faible — signal baissier | ↓ baisse | 35.7 % (nominal 25 %) |
+| Météo / offre (4 zones) | Score d'offre 69/100 — Offre normale — marché équilibré | → neutre | 35.7 % (nominal 25 %) |
+| Devises (yuan) | Yuan fort (-2.24% vs moyenne 12 mois) — demande soutenue — USD/CNY 6.6793 (17/11/2026, ExchangeRate API (v6)) ; réf. moyenne 12 mois 6.8324 (FRED DEXCHUS) | ↑ hausse | 28.6 % (nominal 20 %) |
+| Demande industrielle | Score 40/100 — Demande faible — signal baissier (confiance industrielle OCDE : z moyen 0.36, 3 pays) | ↓ baisse | 35.7 % (nominal 25 %) |
 | Terrain CI | Pas de relevé terrain cette semaine | — absente | 0 % (nominal 15 %) |
 | Géopolitique | Aucun article reçu cette semaine — donnée indisponible — composante retirée | — absente | 0 % (nominal 15 %) |
 
@@ -47,7 +43,7 @@ Hors score :
 
 | Signal | Valeur |
 |──────────────────────────────|──────────────────────────────|
-| 💱 Ringgit malaisien (MYR) | Ringgit stable (1.44% vs moyenne 12 mois) — neutre — USD/MYR 4.0876 |
+| 💱 Ringgit malaisien (MYR) | Ringgit stable (1.61% vs moyenne 12 mois) — neutre — USD/MYR 4.0942 |
 | 🚢 Fret maritime | Indisponible : aucune source datée (BDI, tarif CI-UE, délai Abidjan-Rotterdam) |
 | 📦 Stocks mondiaux | Donnée indisponible |
 
@@ -80,7 +76,7 @@ Ce n'est pas une prévision de hausse ou de baisse : la simulation est centrée 
 
 🇨🇮 RSCI — RubberSignal Chain Index (septembre 2026)
 
-📊 Part planteur (DRC-corrigée) : 60.7%
+📊 Part planteur (DRC-corrigée) : 63.6%
 
 Le RSCI mesure la part du prix de référence TSR20 du mois précédent effectivement captée par le planteur ivoirien, après correction du taux de caoutchouc sec (DRC) de référence.
 
@@ -88,20 +84,21 @@ Le RSCI mesure la part du prix de référence TSR20 du mois précédent effectiv
 
 | Indicateur | Valeur | Nature |
 |──────────────────────────────|──────────────────────────────|──────────────────────────────|
-| Prix APROMAC (septembre 2026, type non precise, releve presse, relevé presse du 06/10/2026) | 484 FCFA/kg | O |
+| Prix APROMAC (septembre 2026, carreau usine, publié le 02/09/2026) | 484 FCFA/kg | O |
 | Référence TSR20 (août 2026, Banque mondiale) | 2.24 USD/kg | T |
-| Prix planteur, équivalent sec (DRC 60 %, à confirmer après la réforme 2026) | 1.3592 USD/kg | E |
-| RSCI (part planteur) | 60.7% | E |
+| Taux USD/EUR (moyenne août 2026, BCE) | 1.1593 | O |
+| Prix planteur, équivalent sec (DRC 60 %, à confirmer après la réforme 2026) | 1.4257 USD/kg | E |
+| RSCI (part planteur) | 63.6% | E |
 | Part officielle en vigueur | 66% | O |
-| Différence RSCI − part officielle (indicative) | -5.3 points | E |
+| Différence RSCI − part officielle (indicative) | -2.4 points | E |
 
-Nature : T = transaction, O = officiel, D = déclaration, E = estimation calculée, J = jugement. Version de méthode : RSCI v2 ; APROMAC v1.
+Nature : T = transaction, O = officiel, D = déclaration, E = estimation calculée, J = jugement. Version de méthode : RSCI v2.1 ; APROMAC v1.
 
 Pour le prix de septembre 2026, la part officielle du planteur est de 66 % — accord interprofessionnel du 16 février 2026, entériné par le CHPC le 29 avril 2026 (en vigueur depuis le 1er mai 2026) — cadre : Loi N°2017-540.
 
 > ⚠️ Avertissement de lecture : la part officielle s'applique au prix de référence net (prix de Singapour diminué des coûts de transformation, de logistique, d'export et de la fiscalité, non publiés en détail), alors que le RSCI se rapporte au prix international brut. La différence n'indique donc pas un non-respect du mécanisme : elle mesure la part du prix mondial qui reste au planteur après l'ensemble des coûts de la filière.
 
-> Méthodologie v2 : référence TSR20 = moyenne mensuelle Banque mondiale du mois précédant le prix APROMAC (le mécanisme 2026 se fonde sur les cotations SGX-SICOM TSR20 du mois précédent) ; DRC de référence 60 %, à confirmer après la réforme 2026. La prime TSR10 n'est pas encore intégrée.
+> Méthodologie RSCI v2.1 : référence TSR20 = moyenne mensuelle Banque mondiale du mois précédant le prix APROMAC (le mécanisme 2026 se fonde sur les cotations SGX-SICOM TSR20 du mois précédent) ; prix APROMAC converti au taux USD/EUR moyen de la BCE du même mois de référence, si bien que l'indice d'un mois ne dépend pas de la date de calcul ; DRC de référence 60 %, à confirmer après la réforme 2026. La prime TSR10 n'est pas encore intégrée.
 
 ──────────────────────────────
 
@@ -111,12 +108,12 @@ Dernière valeur disponible : septembre 2026 (mise à jour Eurostat du 13/11/202
 
 | Mois | Volume CI (t) | CI €/kg | CI USD/kg | Composite Asie USD/kg | Décote CI/Asie | Nature | Drapeaux |
 |──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
-| avril 2026 | 33696 | 1.837 | 2.150 | 2.253 | -4.6 % | T / E | révisé |
-| mai 2026 | 31384 | 1.815 | 2.119 | 2.313 | -8.4 % | T / E | révisé |
-| juin 2026 | 30589 | 1.900 | 2.188 | 2.324 | -5.8 % | T / E | — |
-| juillet 2026 | 31012 | 1.934 | 2.208 | 2.389 | -7.6 % | T / E | — |
-| août 2026 | 29721 | 2.084 | 2.416 | 2.616 | -7.6 % | T / E | révisé |
-| septembre 2026 | 34459 | 2.091 | 2.407 | 2.658 | -9.4 % | T / E | — |
+| avril 2026 | 33 696 | 1.837 | 2.150 | 2.253 | -4.6 % | T / E | révisé |
+| mai 2026 | 31 384 | 1.815 | 2.119 | 2.313 | -8.4 % | T / E | révisé |
+| juin 2026 | 30 589 | 1.900 | 2.188 | 2.324 | -5.8 % | T / E | — |
+| juillet 2026 | 31 012 | 1.934 | 2.208 | 2.389 | -7.6 % | T / E | — |
+| août 2026 | 29 721 | 2.084 | 2.416 | 2.616 | -7.6 % | T / E | révisé |
+| septembre 2026 | 34 459 | 2.091 | 2.407 | 2.658 | -9.4 % | T / E | — |
 
 Nature : T = transaction, O = officiel, D = déclaration, E = estimation calculée, J = jugement (prix CIF : T ; décote : E). Drapeaux : faible liquidité = moins de 5000 t importées de Côte d'Ivoire dans le mois ; variation = plus de 15 % d'un mois à l'autre (valeur publiée avec mention, jamais supprimée) ; révisé = mois révisé par Eurostat, historique conservé. Version de méthode : RAPI-CI v1.
 
@@ -130,7 +127,7 @@ Lecture : décote = prix CIF UE ivoirien ÷ composite asiatique (Thaïlande, Ind
 > - le code NC 4001 22 00 regroupe plusieurs grades (TSR10, TSR20…) ;
 > - FOB Abidjan : non publié (aucune source de fret publique, datée et réutilisable n'est retenue).
 
-Source : Eurostat Comext (DS-045409), NC 4001 22 00, mise à jour du 13/11/2026. Taux USD/EUR : moyenne mensuelle BCE (EXR.M.USD.EUR.SP00.A). Comparaison : TSR20 Banque mondiale (Pink Sheet), hors indice. Calcul RubberSignal.
+Source : Eurostat Comext (DS-045409), NC 4001 22 00, mise à jour du 13/11/2026. Taux USD/EUR : moyenne mensuelle BCE (EXR.M.USD.EUR.SP00.A). Comparaison : TSR20 Banque mondiale (Pink Sheet), hors indice. Calcul RubberSignal Technologies.
 
 ──────────────────────────────
 
@@ -140,17 +137,11 @@ Actualités indisponibles cette semaine (2 articles bruts recus, aucun retenu pa
 
 ──────────────────────────────
 
-📝 Note éditoriale de la semaine
+RubberSignal Technologies — Intelligence marché caoutchouc naturel | Afrique de l'Ouest & marchés mondiaux
 
-À compléter manuellement — votre observation terrain : prix local CI, activité plantation, retour d'un négociant...]
+cotation hebdomadaire réservée (licence) | Références mensuelles : FMI (FRED PRUBBUSDM), Banque mondiale (Pink Sheet) | Douanes UE : Eurostat Comext (DS-045409) | Rapport du 17/11/2026
 
-──────────────────────────────
-
-RubberSignal — Intelligence marché caoutchouc naturel | Afrique de l'Ouest & marchés mondiaux
-
-cotation hebdomadaire réservée (licence) | Références mensuelles : FMI (FRED PRUBBUSDM), Banque mondiale (Pink Sheet) | Douanes UE : Eurostat Comext (DS-045409) | Rapport du 16/11/2026
-
-Calculs préparés et contrôlés par des outils automatisés, dont des modèles d'IA, puis validés par l'évaluateur responsable (Martial Sahiri).
+Calculs préparés et contrôlés par des outils automatisés, dont des modèles d'IA. Publication automatique du 17/11/2026, en attente de validation par l'évaluateur responsable (Martial Sahiri).
 
 Pour vous abonner : rubbersignal.substack.com
 

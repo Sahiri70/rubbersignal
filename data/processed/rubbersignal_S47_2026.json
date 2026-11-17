@@ -1,6 +1,6 @@
 {
   "meta": {
-    "date_collecte": "2026-11-16",
+    "date_collecte": "2026-11-17",
     "semaine": 47,
     "annee": 2026,
     "source": "rubbersignal.com",
@@ -10,19 +10,19 @@
     "synthese": {
       "prix_actuel": null,
       "periode": "2026-11",
-      "date_source": "2026-11-16",
+      "date_source": "2026-11-17",
       "statut_fraicheur": "frais",
       "age_jours": 0,
       "prix_hebdo": {
         "valeur": null,
         "unite": "USD/kg",
         "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
-        "date_source": "2026-11-16",
+        "date_source": "2026-11-17",
         "methode": "Cotation quotidienne lue le jour de collecte (priorite LGM > MRB via rtas.sg > SGX > IndexMundi) ; perimee au-dela de 14 jours",
         "indice": "MRB_SMR20",
         "statut": "frais",
         "age_jours": 0,
-        "periode": "2026-11-16",
+        "periode": "2026-11-17",
         "publiable": false,
         "licence": "sous licence",
         "nature": "O",
@@ -30,10 +30,10 @@
         "date_effet_methode": "2026-11-03"
       },
       "taux_usd_chf": {
-        "valeur": 0.8384,
+        "valeur": 0.8402,
         "unite": "CHF/USD",
         "source": "Frankfurter (taux de reference BCE)",
-        "date_source": "2026-11-13",
+        "date_source": "2026-11-17",
         "methode": "EUR/CHF BCE / EUR/USD BCE du jour de collecte"
       },
       "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
@@ -60,7 +60,7 @@
         "unite_orig": "US cents/lb",
         "url": "https://fred.stlouisfed.org/series/PRUBBUSDM",
         "statut": "perime",
-        "age_jours_fin_periode": 47,
+        "age_jours_fin_periode": 48,
         "serie": "FMI_PRUBBUSDM",
         "publiable": true,
         "licence": "donnees publiques",
@@ -79,7 +79,7 @@
         "unite_orig": null,
         "url": "https://thedocs.worldbank.org/en/doc/74e8be41ceb20fa0da750cda2f6b9e4e-0050012026/related/CMO-Historical-Data-Monthly.xlsx",
         "statut": "derniere_valeur_disponible",
-        "age_jours_fin_periode": 16,
+        "age_jours_fin_periode": 17,
         "serie": "BM_TSR20",
         "publiable": true,
         "licence": "CC BY 4.0",
@@ -91,18 +91,18 @@
     },
     "bord_champ_ci": {
       "prix_fcfa": 484,
-      "prix_usd": 0.8155,
+      "prix_usd": 0.8108,
       "mois": "2026-09",
-      "type_prix": "type non precise, releve presse",
+      "type_prix": "carreau usine",
       "statut": "perime",
       "age_mois": 2,
       "mois_courant": "2026-11",
       "mois_courant_manquant": true,
       "alerte": "APROMAC : prix de 2026-11 absent du fichier de saisie ; dernier mois disponible 2026-09 (484 FCFA/kg, 2 mois de retard)",
-      "origine": "presse_auto",
-      "source": "Business & Actuality TV + 7info.ci",
+      "origine": "saisie",
+      "source": "Business & Actuality TV, article du 02/09/2026 (confirme par 7info.ci)",
       "source_url": "https://businessactuality.com/cote-divoire-prix-du-caoutchouc-484-fcfa-kg-en-septembre-2026/",
-      "date_publication": null,
+      "date_publication": "2026-09-02",
       "fichier_saisie": "data/reference/prix_apromac.csv",
       "historique": [
         {
@@ -180,24 +180,24 @@
         {
           "mois": "2026-09",
           "prix_fcfa": 484,
-          "type": "type non precise, releve presse",
-          "source": "Business & Actuality TV + 7info.ci",
+          "type": "carreau usine",
+          "source": "Business & Actuality TV, article du 02/09/2026 (confirme par 7info.ci)",
           "url": "https://businessactuality.com/cote-divoire-prix-du-caoutchouc-484-fcfa-kg-en-septembre-2026/",
-          "date_publication": null,
-          "origine": "presse_auto"
+          "date_publication": "2026-09-02",
+          "origine": "saisie"
         }
       ],
-      "fcfa_par_usd": 593.52,
-      "taux_eur_usd": 1.1052,
-      "taux_date": "2026-11-13",
-      "spread_export_usd": 1.729,
-      "spread_export_pct": 68,
+      "fcfa_par_usd": 596.92,
+      "taux_eur_usd": 1.0989,
+      "taux_date": "2026-11-17",
+      "spread_export_usd": 1.689,
+      "spread_export_pct": 67.6,
       "note": "Spread confidentiel — publication prevue RubberSignal V2",
       "valeur": 484,
       "unite": "FCFA/kg",
       "periode": "2026-09",
-      "date_source": "2026-10-06",
-      "date_source_type": "date du releve presse automatique (publication non datee)",
+      "date_source": "2026-09-02",
+      "date_source_type": "date de publication",
       "publiable": true,
       "nature": "O",
       "version_methode": "APROMAC v1",
@@ -231,19 +231,19 @@
           "url": "https://www.ecofinagency.com/news-agriculture/2606-56831-ivory-coast-raises-natural-rubber-growers-share-of-reference-price-for-2026 https://www.sikafinance.com/marches/cote-d-ivoire-fin-de-la-decote-et-meilleure-remuneration-des-planteurs-la-campagne-heveicole-2026-demarre-sous-de-bons-auspices_62460"
         }
       ],
-      "prix_planteur_sec_usd": 1.3592,
-      "rsci_pct": 60.7,
-      "ecart_pts": -5.3,
+      "prix_planteur_sec_usd": 1.4257,
+      "rsci_pct": 63.6,
+      "ecart_pts": -2.4,
       "statut_donnee": "perime",
       "mois_apromac_utilise": "2026-09",
       "prix_apromac": {
         "valeur": 484,
         "unite": "FCFA/kg",
-        "source": "Business & Actuality TV + 7info.ci",
-        "date_source": "2026-10-06",
-        "methode": "Prix officiel APROMAC du mois 2026-09 (type non precise, releve presse)",
+        "source": "Business & Actuality TV, article du 02/09/2026 (confirme par 7info.ci)",
+        "date_source": "2026-09-02",
+        "methode": "Prix officiel APROMAC du mois 2026-09 (carreau usine)",
         "url": "https://businessactuality.com/cote-divoire-prix-du-caoutchouc-484-fcfa-kg-en-septembre-2026/",
-        "origine": "presse_auto",
+        "origine": "saisie",
         "periode": "2026-09",
         "nature": "O",
         "version_methode": "APROMAC v1",
@@ -261,35 +261,42 @@
         "date_effet_methode": "2026-11-03"
       },
       "taux_change": {
-        "valeur": 593.52,
-        "unite": "FCFA/USD",
-        "source": "Frankfurter (taux de reference BCE)",
-        "date_source": "2026-11-13",
-        "methode": "655.957 FCFA/EUR (parite fixe) / EUR-USD BCE du jour de collecte"
+        "valeur": 1.1593,
+        "unite": "USD/EUR",
+        "source": "BCE, moyenne mensuelle du taux de reference (EXR.M.USD.EUR.SP00.A)",
+        "date_source": "2026-08-01",
+        "methode": "Moyenne mensuelle BCE du mois de reference TSR20 (RSCI v2.1) ; FCFA/USD = 655,957 FCFA/EUR (parite fixe) / USD par EUR",
+        "periode": "2026-08",
+        "fcfa_par_usd": 565.82,
+        "source_secondaire": false,
+        "nature": "O",
+        "version_methode": "RSCI v2.1",
+        "date_effet_methode": "2026-11-09"
       },
+      "cause_non_calcul": null,
       "cadre_legal": "Loi N.2017-540 du 03/08/2017 - CHPH",
       "drc_source": "DRC reference 60% (fonds de tasse), a confirmer apres reforme 2026 - debat en cours sur DRC reel et grade TSR10 vs TSR20",
-      "methode": "RSCI = (prix APROMAC du mois / taux FCFA-USD / DRC) / TSR20 Banque mondiale du mois precedent x 100 ; compare au taux officiel en vigueur au mois du prix APROMAC.",
+      "methode": "RSCI = (prix APROMAC du mois / taux FCFA-USD / DRC) / TSR20 Banque mondiale du mois precedent x 100 ; taux FCFA-USD = moyenne mensuelle BCE du mois de reference TSR20 ; compare au taux officiel en vigueur au mois du prix APROMAC.",
       "note": "RSCI = part du prix planteur (corrige DRC) dans le prix de reference TSR20 du mois precedent.",
-      "valeur": 60.7,
+      "valeur": 63.6,
       "unite": "%",
       "periode": "2026-09",
-      "source": "Calcul RubberSignal (APROMAC, Banque mondiale, BCE)",
-      "date_source": "2026-11-16",
+      "source": "Calcul RubberSignal Technologies (APROMAC, Banque mondiale, BCE)",
+      "date_source": "2026-11-17",
       "publiable": true,
       "nature": "E",
-      "version_methode": "RSCI v2",
-      "date_effet_methode": "2026-11-03"
+      "version_methode": "RSCI v2.1",
+      "date_effet_methode": "2026-11-09"
     },
     "marches_mondiaux": {
-      "date_cours": "2026-11-15",
+      "date_cours": "2026-11-16",
       "spread_sicom_lgm": null,
       "lgm": {
         "grade": "TSR20/SMR20",
         "bourse": "MRB/LGM (Malaisie)",
         "prix_usd": null,
         "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
-        "date_source": "2026-11-16",
+        "date_source": "2026-11-17",
         "statut_fraicheur": "frais"
       },
       "sicom": {
@@ -308,7 +315,7 @@
         "ticker": "TRB",
         "prix_orig": null,
         "unite_orig": "JPY/kg",
-        "taux_jpy_usd": 0.0062,
+        "taux_jpy_usd": 0.0063,
         "prix_usd": null,
         "statut": "non_collecte_auto"
       },
@@ -318,7 +325,7 @@
         "ticker": "RU",
         "prix_orig": null,
         "unite_orig": "CNY/tonne",
-        "taux_cny_usd": 0.1499,
+        "taux_cny_usd": 0.15,
         "prix_usd": null,
         "statut": "non_collecte_auto"
       }
@@ -765,44 +772,44 @@
       "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
       "indice": "MRB_SMR20",
       "nb_sources": 2,
-      "divergence_max_pct": 7.3,
+      "divergence_max_pct": 9,
       "candidats": {
         "mrb": {
           "usd": null,
           "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
           "indice": "MRB_SMR20",
-          "date_source": "2026-11-16"
+          "date_source": "2026-11-17"
         },
         "sgx": {
           "usd": null,
           "source": "SGX TSR20 FOB Dec 2026 (reglement de la veille, via rtas.sg)",
           "indice": "SGX_TSR20",
-          "date_source": "2026-11-16"
+          "date_source": "2026-11-17"
         }
       }
     },
     "taux_change": {
       "source": "Frankfurter (taux de reference BCE)",
-      "date": "2026-11-13"
+      "date": "2026-11-17"
     },
     "apromac": {
       "statut": "perime",
       "mois": "2026-09",
       "age_mois": 2,
       "mois_courant_manquant": true,
-      "origine": "presse_auto",
+      "origine": "saisie",
       "articles_examines": 177,
       "prix_trouves": 0
     },
     "fraicheur": {
       "tsr20_hebdo": "frais",
-      "tsr20_date_source": "2026-11-16",
+      "tsr20_date_source": "2026-11-17",
       "seuil_hebdo_jours": 14,
       "seuil_mensuel_jours": 45
     }
   },
   "actualites": {
-    "date_collecte": "2026-11-16",
+    "date_collecte": "2026-11-17",
     "statut": "indisponible",
     "raison": "2 articles bruts recus, aucun retenu par le filtre de pertinence",
     "source": "NewsAPI /v2/everything (7 derniers jours)",
@@ -895,7 +902,7 @@
   },
   "signaux_faibles": {
     "meta": {
-      "date_collecte": "2026-11-16",
+      "date_collecte": "2026-11-17",
       "semaine": 47,
       "annee": 2026,
       "version": "2.3"
@@ -905,71 +912,71 @@
         "Côte d'Ivoire": {
           "pays": "Côte d'Ivoire",
           "ville": "Abidjan",
-          "pluie_30j_mm": 76.2,
-          "temp_moyenne_c": 27.5,
-          "score_production": 57,
+          "pluie_30j_mm": 77.8,
+          "temp_moyenne_c": 27.6,
+          "score_production": 58,
           "signal_production": "Neutre"
         },
         "Thaïlande": {
           "pays": "Thaïlande",
           "ville": "Bangkok",
-          "pluie_30j_mm": 114.6,
+          "pluie_30j_mm": 107.6,
           "temp_moyenne_c": 29,
-          "score_production": 64,
+          "score_production": 62,
           "signal_production": "Neutre"
         },
         "Malaisie": {
           "pays": "Malaisie",
           "ville": "Kuala Lumpur",
-          "pluie_30j_mm": 397.6,
+          "pluie_30j_mm": 387.4,
           "temp_moyenne_c": 27.2,
-          "score_production": 83,
+          "score_production": 85,
           "signal_production": "Favorable"
         },
         "Indonésie": {
           "pays": "Indonésie",
           "ville": "Jakarta",
-          "pluie_30j_mm": 125.6,
+          "pluie_30j_mm": 133.5,
           "temp_moyenne_c": 29.6,
-          "score_production": 66,
+          "score_production": 68,
           "signal_production": "Neutre"
         }
       },
-      "score_offre_mondiale": 68,
+      "score_offre_mondiale": 69,
       "signal_offre": "Offre normale — marché équilibré",
       "source": "Open-Meteo (archive), cumul de pluie du mois",
-      "date_source": "2026-11-15"
+      "date_source": "2026-11-16"
     },
     "module2_devises": {
-      "USD_CNY": 6.6784,
-      "USD_MYR": 4.0876,
-      "USD_XOF": 594.83,
-      "USD_IDR": 18226,
-      "USD_CHF": 0.8392,
+      "USD_CNY": 6.6793,
+      "USD_MYR": 4.0942,
+      "USD_XOF": 596.01,
+      "USD_IDR": 18276,
+      "USD_CHF": 0.8398,
       "source": "ExchangeRate API (v6)",
-      "date": "2026-11-16",
+      "date": "2026-11-17",
       "statut": "ok",
       "alertes": [],
-      "signal_cny": "Yuan fort (-2.31% vs moyenne 12 mois) — demande soutenue",
-      "signal_myr": "Ringgit stable (1.44% vs moyenne 12 mois) — neutre",
-      "ecart_cny_pct": -2.31,
-      "ecart_myr_pct": 1.44,
+      "signal_cny": "Yuan fort (-2.24% vs moyenne 12 mois) — demande soutenue",
+      "signal_myr": "Ringgit stable (1.61% vs moyenne 12 mois) — neutre",
+      "ecart_cny_pct": -2.24,
+      "ecart_myr_pct": 1.61,
       "reference_cny": {
-        "valeur": 6.8362,
+        "valeur": 6.8324,
         "serie": "DEXCHUS",
         "source": "FRED DEXCHUS",
-        "debut": "2025-11-17",
-        "fin": "2026-11-06",
-        "n_obs": 245,
+        "debut": "2025-11-18",
+        "fin": "2026-11-13",
+        "n_obs": 248,
         "methode": "Moyenne des cotations quotidiennes des 365 derniers jours"
       },
       "reference_myr": {
-        "valeur": 4.0294,
+        "valeur": 4.0295,
         "serie": "DEXMAUS",
         "source": "FRED DEXMAUS",
-        "debut": "2025-11-17",
-        "fin": "2026-11-06",
-        "n_obs": 245,
+        "debut": "2025-11-18",
+        "fin": "2026-11-13",
+        "n_obs": 248,
         "methode": "Moyenne des cotations quotidiennes des 365 derniers jours"
       }
     },
@@ -978,10 +985,10 @@
         "prod_manuf_us": {
           "serie": "IPMAN",
           "nom": "Production industrielle US manufacturing",
-          "valeur": 99.4361,
-          "valeur_prec": 99.1776,
-          "variation_pct": 0.26,
-          "date": "2026-09-01"
+          "valeur": 99.7246,
+          "valeur_prec": 99.4528,
+          "variation_pct": 0.27,
+          "date": "2026-10-01"
         },
         "ventes_auto_us": {
           "serie": "TOTALSA",
@@ -1002,18 +1009,18 @@
         "prod_indus_us": {
           "serie": "INDPRO",
           "nom": "Production industrielle US globale",
-          "valeur": 103.9506,
-          "valeur_prec": 103.2664,
-          "variation_pct": 0.66,
-          "date": "2026-09-01"
+          "valeur": 103.3954,
+          "valeur_prec": 103.8458,
+          "variation_pct": -0.43,
+          "date": "2026-10-01"
         },
         "imports_chine": {
           "serie": "XTIMVA01CNM667S",
           "nom": "Importations Chine (proxy demande)",
-          "valeur": 282496200000,
-          "valeur_prec": 279650600000,
-          "variation_pct": 1.02,
-          "date": "2026-08-01"
+          "valeur": 291540400000,
+          "valeur_prec": 282492000000,
+          "variation_pct": 3.2,
+          "date": "2026-09-01"
         },
         "permis_constr": {
           "serie": "PERMIT",
@@ -1030,45 +1037,45 @@
             "pays": "USA",
             "serie": "BSCICP02USM460S",
             "frequence": "mensuelle",
-            "valeur": 9,
+            "valeur": 11,
             "unite": "% (solde, CVS)",
-            "periode": "2026-09",
-            "date_source": "2026-09-01",
-            "z_5ans": 1.02,
-            "statut": "perime",
-            "utilise": false,
+            "periode": "2026-10",
+            "date_source": "2026-10-01",
+            "z_5ans": 1.37,
+            "statut": "derniere_valeur_disponible",
+            "utilise": true,
             "source": "OCDE, enquêtes de conjoncture, via FRED (BSCICP02USM460S)",
-            "signal": "périmée (dernière valeur 09/2026)",
+            "signal": "au-dessus de sa moyenne 5 ans",
             "n_observations": 60
           },
           "Allemagne": {
             "pays": "Allemagne",
             "serie": "BSCICP02DEM460S",
             "frequence": "mensuelle",
-            "valeur": -8.2,
+            "valeur": -7.3,
             "unite": "% (solde, CVS)",
-            "periode": "2026-09",
-            "date_source": "2026-09-01",
-            "z_5ans": 0.01,
-            "statut": "perime",
-            "utilise": false,
+            "periode": "2026-10",
+            "date_source": "2026-10-01",
+            "z_5ans": 0.11,
+            "statut": "derniere_valeur_disponible",
+            "utilise": true,
             "source": "OCDE, enquêtes de conjoncture, via FRED (BSCICP02DEM460S)",
-            "signal": "périmée (dernière valeur 09/2026)",
+            "signal": "proche de sa moyenne 5 ans",
             "n_observations": 60
           },
           "Chine": {
             "pays": "Chine",
             "serie": "CHNBSCICP02STSAM",
             "frequence": "mensuelle",
-            "valeur": -0.4,
+            "valeur": -1.4,
             "unite": "% (solde, CVS)",
-            "periode": "2026-08",
-            "date_source": "2026-08-01",
-            "z_5ans": 0.2,
-            "statut": "perime",
-            "utilise": false,
+            "periode": "2026-10",
+            "date_source": "2026-10-01",
+            "z_5ans": -0.4,
+            "statut": "derniere_valeur_disponible",
+            "utilise": true,
             "source": "OCDE, enquêtes de conjoncture, via FRED (CHNBSCICP02STSAM)",
-            "signal": "périmée (dernière valeur 08/2026)",
+            "signal": "proche de sa moyenne 5 ans",
             "n_observations": 60
           },
           "Japon": {
@@ -1087,8 +1094,8 @@
             "n_observations": 20
           }
         },
-        "z_moyen": null,
-        "n_utilisees": 0,
+        "z_moyen": 0.36,
+        "n_utilisees": 3,
         "methode": "z = (dernière valeur - moyenne 5 ans) / écart-type 5 ans, par pays ; moyenne des z des séries fraîches (< 45 jours après la fin de période)",
         "source": "OCDE, Business Tendency Surveys (manufacturing), via FRED"
       },
@@ -1098,7 +1105,7 @@
       },
       "score_demande": 40,
       "signal_demande": "Demande faible — signal baissier",
-      "n_indicateurs": 3
+      "n_indicateurs": 4
     },
     "module4_stocks": {
       "statut": "indisponible",
@@ -1185,8 +1192,8 @@
       "signal": "Aucun article reçu cette semaine — donnée indisponible",
       "articles": [],
       "source": "NewsAPI (everything)",
-      "date_debut": "2026-11-09",
-      "date_fin": "2026-11-16"
+      "date_debut": "2026-11-10",
+      "date_fin": "2026-11-17"
     },
     "pre_rsi": {
       "score": 52,
@@ -1238,8 +1245,8 @@
       "valeur": 52,
       "unite": "score 0-100 (> 55 haussier, < 45 baissier)",
       "periode": "2026-W47",
-      "source": "Calcul RubberSignal (modules 1, 2, 3, 6, 7 de ce fichier)",
-      "date_source": "2026-11-16",
+      "source": "Calcul RubberSignal Technologies (modules 1, 2, 3, 6, 7 de ce fichier)",
+      "date_source": "2026-11-17",
       "publiable": true,
       "methode": "Somme pondérée des composantes disponibles (scores orientés prix), divisée par la somme de leurs poids ; poids nominaux météo 25 %, devises 20 %, demande 25 %, terrain 15 %, géopolitique 15 % (non backtestés) ; non publié sous 3 composantes. Analyse, pas un indice de prix.",
       "nature": "E",
@@ -1250,7 +1257,7 @@
   "monte_carlo": {
     "disponible": true,
     "meta": {
-      "date_simulation": "2026-11-16",
+      "date_simulation": "2026-11-17",
       "semaine": 47,
       "annee": 2026,
       "n_simulations": 10000,
@@ -1283,12 +1290,12 @@
     "valeur": 0.1588,
     "unite": "volatilite annuelle (fraction)",
     "periode": "2021-10/2026-10",
-    "source": "Calcul RubberSignal sur Banque mondiale Pink Sheet TSR20",
-    "date_source": "2026-11-16",
+    "source": "Calcul RubberSignal Technologies sur Banque mondiale Pink Sheet TSR20",
+    "date_source": "2026-11-17",
     "resultats": {
       "S4": {
         "horizon_sem": 4,
-        "date_horizon": "2026-12-14",
+        "date_horizon": "2026-12-15",
         "prix_depart": 2.55,
         "p05": 2.369,
         "p10": 2.409,
@@ -1305,7 +1312,7 @@
       },
       "S8": {
         "horizon_sem": 8,
-        "date_horizon": "2027-01-11",
+        "date_horizon": "2027-01-12",
         "prix_depart": 2.55,
         "p05": 2.3,
         "p10": 2.353,
@@ -1322,7 +1329,7 @@
       },
       "S12": {
         "horizon_sem": 12,
-        "date_horizon": "2027-02-08",
+        "date_horizon": "2027-02-09",
         "prix_depart": 2.55,
         "p05": 2.248,
         "p10": 2.312,
@@ -1339,7 +1346,7 @@
       },
       "S26": {
         "horizon_sem": 26,
-        "date_horizon": "2027-05-17",
+        "date_horizon": "2027-05-18",
         "prix_depart": 2.55,
         "p05": 2.117,
         "p10": 2.205,
@@ -1405,7 +1412,7 @@
     "statut": "ok",
     "nouvelle_extraction": true,
     "valeurs_issues_de": "API Eurostat du jour",
-    "date_extraction_valeurs": "2026-11-16",
+    "date_extraction_valeurs": "2026-11-17",
     "version_methode": "RAPI-CI v1",
     "date_effet_methode": "2026-11-03",
     "source": "Eurostat Comext (DS-045409)",
@@ -1424,9 +1431,9 @@
     "updated_eurostat": "2026-11-13T11:00:00+0100",
     "derniere_periode": "2026-09",
     "statut_fraicheur": "derniere_valeur_disponible",
-    "age_jours_maj_eurostat": 3,
-    "age_jours_fin_periode": 47,
-    "fichier_brut": "data/raw/comext_20261116.json",
+    "age_jours_maj_eurostat": 4,
+    "age_jours_fin_periode": 48,
+    "fichier_brut": "data/raw/comext_20261117.json",
     "taux_change": {
       "source_principale": "BCE, moyenne mensuelle du taux de reference USD/EUR (EXR.M.USD.EUR.SP00.A)",
       "url": "https://data-api.ecb.europa.eu/service/data/EXR/M.USD.EUR.SP00.A",
@@ -2760,66 +2767,12 @@
       "customs values reflect contracts often signed several weeks before arrival: read the gap as a trend, not month by month;",
       "CN code 4001 22 00 pools several grades (TSR10, TSR20…);"
     ],
-    "alertes": [
-      "Revision : COMEXT_VAL_CI 2026-01 : 32510977 -> 33714886 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_VAL_CI 2026-02 : 33773966 -> 34292477 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_VAL_CI 2026-03 : 48281350 -> 48667743 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_VAL_CI 2026-04 : 61337223 -> 61897228 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_VAL_CI 2026-05 : 56592430 -> 56963712 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_VAL_CI 2026-08 : 59119909 -> 61940846 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_QTE_CI 2026-01 : 185212.1 -> 192268.1 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_QTE_CI 2026-02 : 192246.24 -> 195270.24 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_QTE_CI 2026-03 : 277677.2 -> 279894.8 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_QTE_CI 2026-04 : 333931.57 -> 336955.57 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_QTE_CI 2026-05 : 311825.2 -> 313841.2 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_QTE_CI 2026-08 : 284104.87 -> 297208.87 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_VAL_TH 2026-01 : 18192888 -> 18200058 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_VAL_TH 2026-08 : 30481800 -> 30481825 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_VAL_ID 2026-02 : 13964502 -> 14199682 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_VAL_ID 2026-04 : 21911344 -> 22275799 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_VAL_ID 2026-05 : 21126001 -> 21311001 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_VAL_ID 2026-08 : 24421205 -> 24840163 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_QTE_ID 2026-02 : 74831.4 -> 75839.4 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_QTE_ID 2026-04 : 115014.8 -> 117030.8 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_QTE_ID 2026-05 : 109510.8 -> 110518.8 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_QTE_ID 2026-08 : 111560.4 -> 113576.4 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_VAL_MY 2026-08 : 12600078 -> 12600088 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_VAL_VN 2026-05 : 6083620 -> 6083644 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : COMEXT_VAL_VN 2026-08 : 9486936 -> 9486938 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_CIF_EUR 2026-01 : 1.75533763723 -> 1.7535350898 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_CIF_EUR 2026-02 : 1.75680762339 -> 1.75615480372 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_CIF_EUR 2026-03 : 1.73875816956 -> 1.73878696567 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_CIF_EUR 2026-04 : 1.83682013054 -> 1.83695518077 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_CIF_EUR 2026-05 : 1.81487673222 -> 1.8150488846 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_CIF_EUR 2026-08 : 2.08091853547 -> 2.08408470447 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_CIF_USD 2026-01 : 2.06045711233 -> 2.05834123925 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_CIF_USD 2026-02 : 2.07724054986 -> 2.07646865915 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_CIF_USD 2026-03 : 2.0097120165 -> 2.00974529997 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_CIF_USD 2026-04 : 2.15025511762 -> 2.15041321281 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_CIF_USD 2026-05 : 2.11854190706 -> 2.11874286397 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_CIF_USD 2026-08 : 2.41242867644 -> 2.41609924632 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_ASIE_CIF_EUR 2026-01 : 1.87435190565 -> 1.87463529254 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_ASIE_CIF_EUR 2026-02 : 1.87788998378 -> 1.87957616164 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_ASIE_CIF_EUR 2026-04 : 1.92549541088 -> 1.92491996747 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_ASIE_CIF_EUR 2026-05 : 1.98203368856 -> 1.98166037868 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_ASIE_CIF_EUR 2026-08 : 2.25751773158 -> 2.25646482053 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_ASIE_CIF_USD 2026-01 : 2.20015889428 -> 2.20049154055 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_ASIE_CIF_USD 2026-02 : 2.22040772737 -> 2.22240145564 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_ASIE_CIF_USD 2026-04 : 2.25406194779 -> 2.25338831071 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_ASIE_CIF_USD 2026-05 : 2.31366756533 -> 2.31323179324 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_ASIE_CIF_USD 2026-08 : 2.61716180639 -> 2.61594115659 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_DECOTE_ASIE 2026-01 : -6.34962239812 -> -6.459934005 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_DECOTE_ASIE 2026-02 : -6.44778775305 -> -6.56644622514 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_DECOTE_ASIE 2026-03 : -6.3467874379 -> -6.34523641784 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_DECOTE_ASIE 2026-04 : -4.60532286058 -> -4.56978929954 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_DECOTE_ASIE 2026-05 : -8.43360823305 -> -8.40767145939 (extraction precedente du 2026-11-09), historique conserve",
-      "Revision : RAPI_CI_DECOTE_ASIE 2026-08 : -7.82271579277 -> -7.63938859115 (extraction precedente du 2026-11-09), historique conserve"
-    ]
+    "alertes": []
   },
   "rapport": {
-    "titre_fr": "RubberSignal #47 | TSR20 Banque mondiale : 2.55 USD/kg (octobre 2026) | Semaine 47 - 2026",
-    "titre_en": "RubberSignal #47 | TSR20 World Bank: 2.55 USD/kg (October 2026) | Week 47 - 2026",
-    "date_rapport": "2026-11-16",
+    "titre_fr": "RubberSignal Technologies #47 | TSR20 Banque mondiale : 2.55 USD/kg (octobre 2026) | Semaine 47 - 2026",
+    "titre_en": "RubberSignal Technologies #47 | TSR20 World Bank: 2.55 USD/kg (October 2026) | Week 47 - 2026",
+    "date_rapport": "2026-11-17",
     "semaine": 47,
     "fichier_fr": "output/rubbersignal_S47_2026_FR.md",
     "fichier_en": "output/rubbersignal_S47_2026_EN.md",
@@ -2828,13 +2781,19 @@
     "pre_rsi_publie": true,
     "publier_sources_sous_licence": false,
     "serie_hebdo_publiee": false,
+    "validation": {
+      "statut": "en_attente",
+      "date": null,
+      "evaluateur": null,
+      "commentaire": null
+    },
     "rapi_ci_statut": "ok",
     "rapi_ci_derniere_periode": "2026-09",
     "versions_methode": {
       "prix_hebdo": "Prix hebdo v1",
       "reference_mensuelle": "Références mensuelles v1",
       "apromac": "APROMAC v1",
-      "rsci": "RSCI v2",
+      "rsci": "RSCI v2.1",
       "terrain": "Terrain v1",
       "pre_rsi": "Pré-RSI v2",
       "volatilite": "Volatilité v1",

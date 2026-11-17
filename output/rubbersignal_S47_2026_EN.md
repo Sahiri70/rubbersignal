@@ -1,4 +1,4 @@
-# RubberSignal #47 | TSR20 World Bank: 2.55 USD/kg (October 2026) | Week 47 - 2026
+# RubberSignal Technologies #47 | TSR20 World Bank: 2.55 USD/kg (October 2026) | Week 47 - 2026
 
 *Your weekly natural rubber market intelligence — West Africa & global markets*
 
@@ -10,16 +10,12 @@
 
 | Series | Value | Value date | Source | Nature | Status |
 |---|---|---|---|---|---|
-| IMF world price (monthly) | 2.7574 USD/kg (125.075 cents/lb) | September 2026 | FMI via FRED (PRUBBUSDM) | T | **STALE** |
+| IMF world price (monthly; tracks RSS3, not a TSR20 price) | 2.7574 USD/kg (125.075 cents/lb) | September 2026 | FMI via FRED (PRUBBUSDM) | T | **STALE** |
 | World Bank TSR20 (monthly) | 2.55 USD/kg | October 2026 | World Bank, Pink Sheet | T | latest available value |
 
 *Weekly quote reserved (licence): not reproduced in this publication.*
 
 *Nature: T = transaction, O = official, D = declaration, E = calculated estimate, J = judgement. Method version: Références mensuelles v1.*
-
-### Variation & Trend
-
-*Computed on the weekly quote: weekly quote reserved (licence).*
 
 ## 🔍 Weekly Analysis
 
@@ -35,9 +31,9 @@
 
 | Component | Measure | Price direction | Effective weight |
 |---|---|---|---|
-| Weather / supply (4 zones) | Supply score 68/100 — Offre normale — marché équilibré | → neutral | 35.7% (nominal 25%) |
-| Currencies (yuan) | Yuan fort (-2.31% vs moyenne 12 mois) — demande soutenue — USD/CNY 6.6784 (16/11/2026, ExchangeRate API (v6)) ; ref. 12-month average 6.8362 (FRED DEXCHUS) | ↑ up | 28.6% (nominal 20%) |
-| Industrial demand | Score 40/100 — Demande faible — signal baissier | ↓ down | 35.7% (nominal 25%) |
+| Weather / supply (4 zones) | Supply score 69/100 — Offre normale — marché équilibré | → neutral | 35.7% (nominal 25%) |
+| Currencies (yuan) | Yuan fort (-2.24% vs moyenne 12 mois) — demande soutenue — USD/CNY 6.6793 (17/11/2026, ExchangeRate API (v6)) ; ref. 12-month average 6.8324 (FRED DEXCHUS) | ↑ up | 28.6% (nominal 20%) |
+| Industrial demand | Score 40/100 — Demande faible — signal baissier (OECD industrial confidence: mean z 0.36, 3 countries) | ↓ down | 35.7% (nominal 25%) |
 | CI field data | No field report this week | — missing | 0% (nominal 15%) |
 | Geopolitics | Aucun article reçu cette semaine — donnée indisponible — component removed | — missing | 0% (nominal 15%) |
 
@@ -47,7 +43,7 @@
 
 | Signal | Value |
 |---|---|
-| 💱 Malaysian ringgit (MYR) | Ringgit stable (1.44% vs moyenne 12 mois) — neutre — USD/MYR 4.0876 |
+| 💱 Malaysian ringgit (MYR) | Ringgit stable (1.61% vs moyenne 12 mois) — neutre — USD/MYR 4.0942 |
 | 🚢 Ocean freight | Unavailable: no dated source (BDI, CI-EU rate, Abidjan-Rotterdam transit time) |
 | 📦 Global stocks | Data unavailable |
 
@@ -80,7 +76,7 @@
 
 ## 🇨🇮 RSCI — RubberSignal Chain Index (September 2026)
 
-### 📊 Farmer share (DRC-adjusted): **60.7%**
+### 📊 Farmer share (DRC-adjusted): **63.6%**
 
 *RSCI measures the share of the previous month's TSR20 reference price actually captured by the Ivorian farmer, after adjustment for the reference Dry Rubber Content (DRC).*
 
@@ -88,20 +84,21 @@
 
 | Indicator | Value | Nature |
 |---|---|---|
-| APROMAC price (September 2026, type non precise, releve presse, press reading of 06/10/2026) | 484 FCFA/kg | O |
+| APROMAC price (September 2026, factory-gate, published 02/09/2026) | 484 FCFA/kg | O |
 | TSR20 reference (August 2026, World Bank) | 2.24 USD/kg | T |
-| Dry-equivalent farmer price (DRC 60%, to be confirmed after the 2026 reform) | 1.3592 USD/kg | E |
-| **RSCI** (farmer share) | **60.7%** | E |
+| USD/EUR rate (August 2026 ECB average) | 1.1593 | O |
+| Dry-equivalent farmer price (DRC 60%, to be confirmed after the 2026 reform) | 1.4257 USD/kg | E |
+| **RSCI** (farmer share) | **63.6%** | E |
 | Official share in force | 66% | O |
-| Difference RSCI − official share (indicative) | -5.3 points | E |
+| Difference RSCI − official share (indicative) | -2.4 points | E |
 
-*Nature: T = transaction, O = official, D = declaration, E = calculated estimate, J = judgement. Method version: RSCI v2; APROMAC v1.*
+*Nature: T = transaction, O = official, D = declaration, E = calculated estimate, J = judgement. Method version: RSCI v2.1; APROMAC v1.*
 
 For the September 2026 price, the official farmer share is 66% — inter-professional agreement of 16 February 2026, endorsed by the CHPC on 29 April 2026 (in force since 1 May 2026) — framework: Law N°2017-540.
 
 > ⚠️ *Reading note: the official share applies to the **net** reference price (Singapore price minus processing, logistics, export costs and levies, not published in detail), whereas RSCI is measured against the **gross** international price. The difference therefore does not indicate non-compliance with the mechanism: it measures the share of the world price left to the farmer after all supply-chain costs.*
 
-> *V2 methodology: TSR20 reference = World Bank monthly average for the month preceding the APROMAC price (the 2026 mechanism is based on the previous month's SGX-SICOM TSR20 quotes); reference DRC 60%, to be confirmed after the 2026 reform. The TSR10 premium is not yet included.*
+> *Methodology RSCI v2.1: TSR20 reference = World Bank monthly average for the month preceding the APROMAC price (the 2026 mechanism is based on the previous month's SGX-SICOM TSR20 quotes); APROMAC price converted at the ECB average USD/EUR rate of the same reference month, so a month's index does not depend on the calculation date; reference DRC 60%, to be confirmed after the 2026 reform. The TSR10 premium is not yet included.*
 
 ---
 
@@ -111,12 +108,12 @@ For the September 2026 price, the official farmer share is 66% — inter-profess
 
 | Month | CI volume (t) | CI €/kg | CI USD/kg | Asian composite USD/kg | CI/Asia gap | Nature | Flags |
 |---|---|---|---|---|---|---|---|
-| April 2026 | 33696 | 1.837 | 2.150 | 2.253 | -4.6% | T / E | revised |
-| May 2026 | 31384 | 1.815 | 2.119 | 2.313 | -8.4% | T / E | revised |
-| June 2026 | 30589 | 1.900 | 2.188 | 2.324 | -5.8% | T / E | — |
-| July 2026 | 31012 | 1.934 | 2.208 | 2.389 | -7.6% | T / E | — |
-| August 2026 | 29721 | 2.084 | 2.416 | 2.616 | -7.6% | T / E | revised |
-| September 2026 | 34459 | 2.091 | 2.407 | 2.658 | -9.4% | T / E | — |
+| April 2026 | 33,696 | 1.837 | 2.150 | 2.253 | -4.6% | T / E | revised |
+| May 2026 | 31,384 | 1.815 | 2.119 | 2.313 | -8.4% | T / E | revised |
+| June 2026 | 30,589 | 1.900 | 2.188 | 2.324 | -5.8% | T / E | — |
+| July 2026 | 31,012 | 1.934 | 2.208 | 2.389 | -7.6% | T / E | — |
+| August 2026 | 29,721 | 2.084 | 2.416 | 2.616 | -7.6% | T / E | revised |
+| September 2026 | 34,459 | 2.091 | 2.407 | 2.658 | -9.4% | T / E | — |
 
 *Nature: T = transaction, O = official, D = declaration, E = calculated estimate, J = judgement (CIF prices: T; gap: E). Flags: low liquidity = less than 5000 t imported from Côte d'Ivoire in the month; variation = more than 15% month on month (value published with a note, never removed); revised = month revised by Eurostat, history kept. Method version: RAPI-CI v1.*
 
@@ -130,7 +127,7 @@ In September 2026, Ivorian rubber (NC 4001 22 00) entered the EU at 2.407 USD/kg
 > - CN code 4001 22 00 pools several grades (TSR10, TSR20…);
 > - FOB Abidjan: **not published** (no public, dated and reusable freight source has been selected).
 
-*Source: Eurostat Comext (DS-045409), CN 4001 22 00, updated 13/11/2026. USD/EUR rate: ECB monthly average (EXR.M.USD.EUR.SP00.A). Comparison: World Bank TSR20 (Pink Sheet), outside the index. RubberSignal calculation.*
+*Source: Eurostat Comext (DS-045409), CN 4001 22 00, updated 13/11/2026. USD/EUR rate: ECB monthly average (EXR.M.USD.EUR.SP00.A). Comparison: World Bank TSR20 (Pink Sheet), outside the index. RubberSignal Technologies calculation.*
 
 ---
 
@@ -140,17 +137,11 @@ In September 2026, Ivorian rubber (NC 4001 22 00) entered the EU at 2.407 USD/kg
 
 ---
 
-## 📝 Editorial Note
+**RubberSignal Technologies** — Natural Rubber Market Intelligence | West Africa & Global Markets
 
-*[To be completed manually — your field observation this week: local CI prices, plantation activity, trader feedback...]*
+*weekly quote reserved (licence) | Monthly references: IMF (FRED PRUBBUSDM), World Bank (Pink Sheet) | EU customs: Eurostat Comext (DS-045409) | Report of November 17, 2026*
 
----
-
-**RubberSignal** — Natural Rubber Market Intelligence | West Africa & Global Markets
-
-*weekly quote reserved (licence) | Monthly references: IMF (FRED PRUBBUSDM), World Bank (Pink Sheet) | EU customs: Eurostat Comext (DS-045409) | Report of November 16, 2026*
-
-*Calculations prepared and checked by automated tools, including AI models, then validated by the responsible assessor (Martial Sahiri).*
+*Calculations prepared and checked by automated tools, including AI models. Automatic publication of 17/11/2026, **pending validation** by the responsible assessor (Martial Sahiri).*
 
 *Subscribe: rubbersignal.substack.com*
 

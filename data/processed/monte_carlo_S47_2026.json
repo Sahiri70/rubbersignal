@@ -1,7 +1,7 @@
 {
   "disponible": true,
   "meta": {
-    "date_simulation": "2026-11-16",
+    "date_simulation": "2026-11-17",
     "semaine": 47,
     "annee": 2026,
     "n_simulations": 10000,
@@ -34,12 +34,12 @@
   "valeur": 0.1588,
   "unite": "volatilite annuelle (fraction)",
   "periode": "2021-10/2026-10",
-  "source": "Calcul RubberSignal sur Banque mondiale Pink Sheet TSR20",
-  "date_source": "2026-11-16",
+  "source": "Calcul RubberSignal Technologies sur Banque mondiale Pink Sheet TSR20",
+  "date_source": "2026-11-17",
   "resultats": {
     "S4": {
       "horizon_sem": 4,
-      "date_horizon": "2026-12-14",
+      "date_horizon": "2026-12-15",
       "prix_depart": 2.55,
       "p05": 2.369,
       "p10": 2.409,
@@ -56,7 +56,7 @@
     },
     "S8": {
       "horizon_sem": 8,
-      "date_horizon": "2027-01-11",
+      "date_horizon": "2027-01-12",
       "prix_depart": 2.55,
       "p05": 2.3,
       "p10": 2.353,
@@ -73,7 +73,7 @@
     },
     "S12": {
       "horizon_sem": 12,
-      "date_horizon": "2027-02-08",
+      "date_horizon": "2027-02-09",
       "prix_depart": 2.55,
       "p05": 2.248,
       "p10": 2.312,
@@ -90,7 +90,7 @@
     },
     "S26": {
       "horizon_sem": 26,
-      "date_horizon": "2027-05-17",
+      "date_horizon": "2027-05-18",
       "prix_depart": 2.55,
       "p05": 2.117,
       "p10": 2.205,

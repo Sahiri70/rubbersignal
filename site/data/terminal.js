@@ -1,9 +1,9 @@
 window.RS_DATA = {
   "meta": {
-    "genere_le": "2026-11-16",
+    "genere_le": "2026-11-17",
     "semaine": 47,
     "annee": 2026,
-    "date_collecte": "2026-11-16",
+    "date_collecte": "2026-11-17",
     "validation": {
       "statut": "en_attente",
       "date": null
@@ -874,7 +874,7 @@ window.RS_DATA = {
     "horizons": [
       {
         "sem": 4,
-        "date": "2026-12-14",
+        "date": "2026-12-15",
         "p10": 2.409,
         "p25": 2.474,
         "p50": 2.551,
@@ -883,7 +883,7 @@ window.RS_DATA = {
       },
       {
         "sem": 8,
-        "date": "2027-01-11",
+        "date": "2027-01-12",
         "p10": 2.353,
         "p25": 2.444,
         "p50": 2.548,
@@ -892,7 +892,7 @@ window.RS_DATA = {
       },
       {
         "sem": 12,
-        "date": "2027-02-08",
+        "date": "2027-02-09",
         "p10": 2.312,
         "p25": 2.419,
         "p50": 2.547,
@@ -901,7 +901,7 @@ window.RS_DATA = {
       },
       {
         "sem": 26,
-        "date": "2027-05-17",
+        "date": "2027-05-18",
         "p10": 2.205,
         "p25": 2.361,
         "p50": 2.547,
@@ -912,35 +912,35 @@ window.RS_DATA = {
   },
   "meteo": {
     "source": "Open-Meteo (archive), cumul de pluie du mois",
-    "date": "2026-11-15",
+    "date": "2026-11-16",
     "zones": [
       {
         "pays": "Côte d'Ivoire",
         "ville": "Abidjan",
-        "pluie_30j_mm": 76.2,
-        "temp_c": 27.5,
-        "score_production": 57
+        "pluie_30j_mm": 77.8,
+        "temp_c": 27.6,
+        "score_production": 58
       },
       {
         "pays": "Thaïlande",
         "ville": "Bangkok",
-        "pluie_30j_mm": 114.6,
+        "pluie_30j_mm": 107.6,
         "temp_c": 29,
-        "score_production": 64
+        "score_production": 62
       },
       {
         "pays": "Malaisie",
         "ville": "Kuala Lumpur",
-        "pluie_30j_mm": 397.6,
+        "pluie_30j_mm": 387.4,
         "temp_c": 27.2,
-        "score_production": 83
+        "score_production": 85
       },
       {
         "pays": "Indonésie",
         "ville": "Jakarta",
-        "pluie_30j_mm": 125.6,
+        "pluie_30j_mm": 133.5,
         "temp_c": 29.6,
-        "score_production": 66
+        "score_production": 68
       }
     ]
   },
@@ -1001,8 +1001,8 @@ window.RS_DATA = {
       "source": "Calcul RubberSignal Technologies (APROMAC, Banque mondiale, BCE)",
       "url": null,
       "version": "RSCI v2.1",
-      "n": 2,
-      "derniere_date": "2026-11-16",
+      "n": 3,
+      "derniere_date": "2026-11-17",
       "derniere_valeur": 63.6
     },
     {
@@ -1017,8 +1017,8 @@ window.RS_DATA = {
       "url": "https://api.frankfurter.dev",
       "version": "sans objet (donnée source)",
       "n": 3,
-      "derniere_date": "2026-11-16",
-      "derniere_valeur": 1.1014
+      "derniere_date": "2026-11-17",
+      "derniere_valeur": 1.0989
     },
     {
       "serie_id": "BCE_USD_EUR_M",
