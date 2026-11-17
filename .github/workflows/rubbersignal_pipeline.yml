@@ -62,7 +62,8 @@ jobs:
       # passer ensuite continue-on-error à false pour qu'un code cassé ne publie rien.
       - name: Run tests (offline)
         continue-on-error: true
-        run: Rscript tests/run_all.R || { echo "::warning::Tests en echec : voir le journal de cette etape"; exit 1; }
+        run: |
+          Rscript tests/run_all.R || { echo "::warning::Tests en echec, voir le journal de cette etape"; exit 1; }
 
       - name: Run Script 01 - Collect prices
         env:
