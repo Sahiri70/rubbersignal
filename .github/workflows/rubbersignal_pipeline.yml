@@ -93,6 +93,11 @@ jobs:
           FRED_KEY: ${{ secrets.FRED_KEY }}
         run: Rscript scripts/06_collect_trade.R
 
+      - name: Run Script 06b - EU customs, other African origins (RAPI-Afrique)
+        # Liberia, Ghana, Nigeria, Cameroun : meme API publique sans cle ;
+        # taux USD/EUR repris de la base (ecrits par le script 06)
+        run: Rscript scripts/06b_collect_afrique.R
+
       - name: Run Script 03 - Build report
         run: Rscript scripts/03_build_report.R
 

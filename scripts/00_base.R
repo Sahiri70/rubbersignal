@@ -120,7 +120,45 @@ RS_DB_CATALOGUE <- do.call(rbind, c(
     .rs_s("INDEXMUNDI", "INDEXMUNDI", "IndexMundi caoutchouc — usage interne", "IndexMundi rubber — internal use",
           "mensuelle", "USD/kg", "O", "IndexMundi", "https://www.indexmundi.com/commodities/?commodity=rubber&months=12",
           "Prix hebdo v1", "USD", "Monde", "", "non précisé")
-  )))
+  ),
+  # RAPI-Afrique v1 (18/11/2026) : douanes UE pour les autres origines africaines
+  # (00_regles.R, section 11 bis). Séries brutes : TSNR des 4 nouvelles origines,
+  # puis autres formes sèches et latex des 5 origines (CI comprise).
+  lapply(seq_len(nrow(RS_AFR_PRODUITS)), function(k) {
+    pr <- RS_AFR_PRODUITS[k, ]
+    origines <- if (pr$code == RS_RAPI_PRODUIT) setdiff(RS_AFR_PARTENAIRES, RS_RAPI_PARTENAIRE_CI) else RS_AFR_PARTENAIRES
+    do.call(rbind, lapply(origines, function(p) {
+      nm <- RS_AFR_NOMS[[p]]
+      grade <- paste0(pr$libelle_fr, " (", pr$libelle_nc, ")")
+      rbind(
+        .rs_s(rs_afr_id_brut("VAL", p, pr$code), "EUROSTAT_COMEXT",
+              paste0("Importations UE de ", pr$libelle_nc, " depuis ", nm[3], " : valeur déclarée"),
+              paste0("EU imports of ", sub("NC", "CN", pr$libelle_nc), " from ", nm[2], ": declared value"),
+              "mensuelle", "EUR", "T", "Eurostat Comext (DS-045409)", RS_URL_COMEXT, "RAPI-Afrique v1",
+              "EUR", p, "CIF frontière UE", grade),
+        .rs_s(rs_afr_id_brut("QTE", p, pr$code), "EUROSTAT_COMEXT",
+              paste0("Importations UE de ", pr$libelle_nc, " depuis ", nm[3], " : quantité"),
+              paste0("EU imports of ", sub("NC", "CN", pr$libelle_nc), " from ", nm[2], ": quantity"),
+              "mensuelle", "100 kg", "T", "Eurostat Comext (DS-045409)", RS_URL_COMEXT, "RAPI-Afrique v1",
+              "", p, "CIF frontière UE", grade))
+    }))
+  }),
+  # Séries calculées : prix CIF UE (EUR, USD) et écart à la CI, sur le TSNR
+  lapply(setdiff(RS_AFR_PARTENAIRES, RS_RAPI_PARTENAIRE_CI), function(p) {
+    nm <- RS_AFR_NOMS[[p]]
+    src <- "Calcul RubberSignal Technologies sur Eurostat Comext (DS-045409)"
+    rbind(
+      .rs_s(paste0("RAPI_", p, "_CIF_EUR"), "RAPI_AFRIQUE", paste0("RAPI-Afrique : prix CIF UE origine ", nm[1]),
+            paste0("RAPI-Africa: EU CIF price, ", nm[2], " origin"), "mensuelle", "EUR/kg", "T", src, RS_URL_COMEXT,
+            "RAPI-Afrique v1", "EUR", p, "CIF frontière UE", "TSNR (NC 4001 22 00)"),
+      .rs_s(paste0("RAPI_", p, "_CIF_USD"), "RAPI_AFRIQUE", paste0("RAPI-Afrique : prix CIF UE origine ", nm[1], ", en USD"),
+            paste0("RAPI-Africa: EU CIF price, ", nm[2], " origin, in USD"), "mensuelle", "USD/kg", "T",
+            paste0(src, " et BCE"), RS_URL_COMEXT, "RAPI-Afrique v1", "USD", p, "CIF frontière UE", "TSNR (NC 4001 22 00)"),
+      .rs_s(paste0("RAPI_", p, "_ECART_CI"), "RAPI_AFRIQUE",
+            paste0("RAPI-Afrique : écart de prix CIF UE ", nm[1], " / Côte d'Ivoire"),
+            paste0("RAPI-Africa: EU CIF price gap, ", nm[2], " vs Côte d'Ivoire"), "mensuelle", "%", "E", src, RS_URL_COMEXT,
+            "RAPI-Afrique v1", "", p, "CIF frontière UE", "TSNR (NC 4001 22 00)"))
+  })))
 rownames(RS_DB_CATALOGUE) <- NULL
 
 # Ligne de series.csv (publiable et licence lus dans le registre des licences)
@@ -314,6 +352,19 @@ rs_db_historique <- function(obs, serie_id) {
   h <- h[order(h$date_valeur), , drop = FALSE]
   rownames(h) <- NULL
   h
+}
+
+# Taux USD/EUR moyens mensuels deja en base : BCE, puis FRED EXUSEU pour les
+# mois absents (signale « source secondaire »). Retour : periode, taux_usd_eur, source.
+rs_db_taux_mensuels <- function(obs) {
+  tb <- rs_db_historique(obs, "BCE_USD_EUR_M"); tf <- rs_db_historique(obs, "FRED_EXUSEU")
+  if (nrow(tf) > 0) tf <- tf[!tf$date_valeur %in% tb$date_valeur, , drop = FALSE]
+  out <- rbind(
+    if (nrow(tb) > 0) data.frame(periode = tb$date_valeur, taux_usd_eur = as.numeric(tb$valeur),
+                                 source = tb$source, stringsAsFactors = FALSE),
+    if (nrow(tf) > 0) data.frame(periode = tf$date_valeur, taux_usd_eur = as.numeric(tf$valeur),
+                                 source = paste0(tf$source, " (source secondaire)"), stringsAsFactors = FALSE))
+  if (is.null(out)) data.frame(periode = character(), taux_usd_eur = numeric(), source = character()) else out
 }
 
 # Derniere valeur connue (date_valeur la plus recente, derniere version), ou NULL

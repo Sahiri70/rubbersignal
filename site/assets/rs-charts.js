@@ -110,7 +110,8 @@
   }
 
   /* Courbes. o : { x, xFmt(label, long), series: [{ name, color, values, step }], yFmt, tipFmt,
-                    height, zero, endLabels, label, tipExtra(i) } */
+                    height, zero, endLabels, label, tipExtra(i),
+                    yDomain: [min, max] (échelle commune à des petits multiples), ref (ligne de référence) } */
   function line(host, o) {
     host.textContent = '';
     host.classList.add('chart');
@@ -122,12 +123,15 @@
     series.forEach(function (s) { s.values.forEach(function (v) { if (fin(v)) all.push(v); }); });
     var mn = Math.min.apply(null, all), mx = Math.max.apply(null, all);
     var pad = (mx - mn) * 0.1 || Math.abs(mx) * 0.05 || 1;
-    var tk = o.zero ? ticks(Math.min(0, mn), mx + pad, 4) : ticks(mn - pad, mx + pad, 4);
+    var tk = o.yDomain ? ticks(Math.min(o.yDomain[0], mn), Math.max(o.yDomain[1], mx), 4)
+      : o.zero ? ticks(Math.min(0, mn), mx + pad, 4) : ticks(mn - pad, mx + pad, 4);
     var n = o.x.length;
     var xs = function (i) { return g.l + (n === 1 ? (g.W - g.l - g.r) / 2 : i * (g.W - g.l - g.r) / (n - 1)); };
     var ys = function (v) { return g.t + (tk.hi - v) * (g.H - g.t - g.b) / (tk.hi - tk.lo); };
     var svg = S('svg', { viewBox: '0 0 ' + g.W + ' ' + g.H, role: 'img', 'aria-label': o.label || '' }, host);
     axes(svg, g, tk, ys, o.yFmt, o.x, xs, o.xFmt);
+    if (fin(o.ref) && o.ref >= tk.lo && o.ref <= tk.hi)
+      S('line', { x1: g.l, x2: g.W - g.r, y1: ys(o.ref), y2: ys(o.ref), style: 'stroke:var(--axis);stroke-width:1' }, svg);
 
     var ends = [];
     series.forEach(function (s, si) {

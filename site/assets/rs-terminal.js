@@ -153,6 +153,96 @@
       'Volume-weighted average price over the period. Source: Eurostat Comext, CN 4001 22 00.');
   }
 
+  // ── 1 bis. Autres origines africaines (RAPI-Afrique) ──────
+  function afFlags(m) {
+    var f = [];
+    if (m.revise) f.push(t('révisé par Eurostat', 'revised by Eurostat'));
+    if (m.faible_liquidite) f.push(t('faible liquidité (moins de ', 'low liquidity (below ') + RS.int(D.afrique.seuil_liquidite_t) + ' t)');
+    if (m.alerte_variation) f.push(t('variation de plus de 15 %', 'change above 15%'));
+    return f.join(', ');
+  }
+
+  function drawAfrique() {
+    var A = D.afrique, sec = $('afrique');
+    if (!A || !A.origines || !A.origines.length) { sec.hidden = true; return; }
+    sec.hidden = false;
+    var usd = state.cur === 'usd', unit = usd ? 'USD/kg' : '€/kg';
+    var nom = function (o) { return t(o.nom_fr, o.nom_en); };
+    var autres = A.origines.filter(function (o) { return !o.reference; });
+    var periode = RS.month(A.debut, true) + t(' à ', ' to ') + RS.month(A.fin, true);
+    // Phrase de lecture du dernier mois commun, formatée comme le reste du site
+    var der = null;
+    autres.forEach(function (o) { var i = lastWith(o.mois, 'ecart'); if (i >= 0 && (!der || o.mois[i].p > der)) der = o.mois[i].p; });
+    var au = autres.map(function (o) { var m = o.mois.filter(function (x) { return x.p === der; })[0]; return m && ok(m.ecart) ? { o: o, e: m.ecart } : null; })
+      .filter(Boolean).sort(function (a, b) { return a.e - b.e; });
+    $('af-phrase').textContent = au.length < 2 ? '' :
+      t('En ', 'In ') + RS.month(der, true) + t(', l’écart de prix rendu UE avec la Côte d’Ivoire va de ', ', the EU-delivered price gap to Côte d’Ivoire ranges from ') +
+      RS.pct(au[0].e, 1, true) + ' (' + nom(au[0].o) + t(') à ', ') to ') + RS.pct(au[au.length - 1].e, 1, true) + ' (' + nom(au[au.length - 1].o) + ').';
+
+    // Classement par volume de caoutchouc technique, prix moyen et écart à la CI
+    $('af-rk-sub').textContent = t('Caoutchouc technique (NC 4001 22 00), tonnes et prix moyen, de ', 'Technically specified rubber (CN 4001 22 00), tonnes and average price, ') + periode;
+    var tri = A.origines.slice().sort(function (a, b) { return (b.vol_tsnr_t || 0) - (a.vol_tsnr_t || 0); });
+    C.ranked($('af-rk'), tri.map(function (o) {
+      var prix = usd ? o.prix_usd_kg : o.prix_eur_kg;
+      return { name: nom(o), value: o.vol_tsnr_t, strong: o.reference,
+        text: RS.int(o.vol_tsnr_t) + ' t · ' + RS.num(prix, 3) + ' ' + unit + (o.reference ? '' : ' · ' + RS.pct(o.ecart_ci_pct, 1, true)) };
+    }));
+    $('af-rk-note').textContent = t('Prix moyen pondéré par les volumes sur la période ; écart en % avec la Côte d’Ivoire sur la même période. Source : Eurostat Comext.',
+      'Volume-weighted average price over the period; gap in % to Côte d’Ivoire over the same period. Source: Eurostat Comext.');
+
+    // Volumes des trois produits
+    $('af-prod-sub').textContent = t('Tonnes, de ', 'Tonnes, ') + periode;
+    C.table(clear($('af-prod')), [
+      { label: t('Origine', 'Origin'), left: true, get: nom },
+      { label: t('Caoutchouc technique', 'Technically specified'), get: function (o) { return RS.int(o.vol_tsnr_t); } },
+      { label: t('Autres formes sèches', 'Other dry forms'), get: function (o) { return RS.int(o.vol_autres_t); } },
+      { label: 'Latex', get: function (o) { return RS.int(o.vol_latex_t); } }
+    ], tri, t('NC 4001 22 00, 4001 29 00 et 4001 10 00 (nature T)', 'CN 4001 22 00, 4001 29 00 and 4001 10 00 (nature T)'), true);
+
+    // Petits multiples : écart à la CI, une origine par graphique, échelle commune
+    var lo = 0, hi = 0;
+    autres.forEach(function (o) { cut(o.mois).forEach(function (m) { if (ok(m.ecart)) { lo = Math.min(lo, m.ecart); hi = Math.max(hi, m.ecart); } }); });
+    var host = clear($('af-multiples'));
+    autres.forEach(function (o) {
+      var mo = cut(o.mois);
+      var card = RS.el('div', 'card chart-card', null, host);
+      RS.el('h3', null, nom(o), card);
+      RS.el('p', 'sub', t('Écart de prix avec la Côte d’Ivoire, en %. Négatif : moins cher que l’ivoirien.', 'Price gap to Côte d’Ivoire, in %. Negative: cheaper than Ivorian rubber.'), card);
+      var c = RS.el('div', null, null, card);
+      C.line(c, {
+        x: mo.map(function (m) { return m.p; }), xFmt: RS.month, height: 200, yDomain: [lo, hi], ref: 0,
+        series: [{ name: t('Écart avec la Côte d’Ivoire', 'Gap to Côte d’Ivoire'), color: S1, values: mo.map(function (m) { return m.ecart; }) }],
+        yFmt: function (v) { return RS.pct(v, 0); }, tipFmt: function (v) { return RS.pct(v, 1, true); },
+        tipExtra: function (i) {
+          var m = mo[i], fl = afFlags(m);
+          return RS.num(usd ? m.usd : m.eur, 3) + ' ' + unit + ' · ' + RS.int(m.vol_t) + ' t' + (fl ? ' · ' + fl : '');
+        },
+        label: t('Écart de prix ', 'Price gap ') + nom(o) + t(' / Côte d’Ivoire', ' vs Côte d’Ivoire')
+      });
+    });
+
+    // Tableau mensuel complet
+    var ci = A.origines.filter(function (o) { return o.reference; })[0];
+    var by = {};
+    A.origines.forEach(function (o) { by[o.code] = {}; o.mois.forEach(function (m) { by[o.code][m.p] = m; }); });
+    var mois = cut((ci ? ci.mois : autres[0].mois).map(function (m) { return m.p; })).slice().reverse();
+    var px = function (code, p) { var m = by[code][p]; return m ? RS.num(usd ? m.usd : m.eur, 3) : '—'; };
+    var cols = [{ label: t('Mois', 'Month'), left: true, get: function (p) { return RS.month(p, true); } },
+      { label: t('Côte d’Ivoire ', 'Côte d’Ivoire ') + unit, get: function (p) { return ci ? px(ci.code, p) : '—'; } }];
+    autres.forEach(function (o) {
+      cols.push({ label: nom(o) + ' ' + unit, get: function (p) { return px(o.code, p); } });
+      cols.push({ label: t('écart ', 'gap ') + o.code, get: function (p) { var m = by[o.code][p]; return m ? RS.pct(m.ecart, 1, true) : '—'; } });
+    });
+    cols.push({ label: t('Mentions', 'Flags'), left: true, get: function (p) {
+      var f = [];
+      autres.forEach(function (o) { var m = by[o.code][p]; var x = m ? afFlags(m) : ''; if (x) f.push(o.code + ' : ' + x); });
+      return f.join(' ; ') || '—';
+    } });
+    C.table(clear($('t-afrique')), cols, mois,
+      t('Tableau mensuel (prix : nature T ; écart : nature E ; méthode ', 'Monthly table (prices: nature T; gap: nature E; method ') + A.version +
+      t(' ; douanes mises à jour le ', '; customs updated ') + RS.date(A.maj_eurostat) + ')');
+  }
+
   // ── 2. Part du planteur ───────────────────────────────────
   function monthsBetween(a, b) {
     var out = [], y = +a.slice(0, 4), m = +a.slice(5, 7);
@@ -331,7 +421,7 @@
   }
   function drawAll() {
     t = RS.t;
-    syncFilters(); drawStatus(); drawKpis(); drawMatrice(); drawOrigines(); drawPlanteur(); drawReferences(); drawSignaux(); drawDonnees();
+    syncFilters(); drawStatus(); drawKpis(); drawMatrice(); drawOrigines(); drawAfrique(); drawPlanteur(); drawReferences(); drawSignaux(); drawDonnees();
   }
   document.addEventListener('click', function (ev) {
     var b = ev.target.closest ? ev.target.closest('[data-range],[data-cur]') : null;

@@ -61,7 +61,10 @@ test_that("Export : séries publiables seulement, aucune valeur sous licence", {
   d <- rs_site_donnees(dir, json_test(), validations = rs_validation_lire(tempfile()), aujourdhui = as.Date("2026-11-16"))
   ids <- vapply(d$catalogue, function(s) s$serie_id, character(1))
   expect_false(any(c("MRB_SMR20", "SGX_TSR20", "INDEXMUNDI") %in% ids))
-  expect_true(all(c("BM_TSR20", "RAPI_CI_CIF_USD", "APROMAC") %in% ids))
+  expect_true(all(c("BM_TSR20", "RAPI_CI_CIF_USD") %in% ids))
+  # 18/11/2026 : une série publiable sans aucune valeur n'est pas comptée (APROMAC est vide ici)
+  expect_false("APROMAC" %in% ids)
+  expect_true(all(vapply(d$catalogue, function(s) s$n > 0, logical(1))))
   out <- file.path(tempfile(), "site"); r <- rs_site_ecrire(d, out, dir)
   for (f in c("terminal.json", "terminal.js", "observations_publiques.csv")) {
     txt <- paste(readLines(file.path(out, f), warn = FALSE, encoding = "UTF-8"), collapse = "\n")

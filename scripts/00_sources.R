@@ -497,10 +497,13 @@ rs_hist_tsr20_maj <- function(date, prix_usd, source, indice,
 # n'est pas accepte par l'API) de NC 40012200, valeur (EUR) et quantite
 # (100 kg), un seul appel pour tous les partenaires. Renvoie le TEXTE brut
 # (sauvegarde dans data/raw/ par le script 06).
-rs_comext_requete <- function(partenaires = c(RS_RAPI_PARTENAIRE_CI, RS_RAPI_PARTENAIRES_ASIE), n_mois = 24) {
+# `produits` : un ou plusieurs codes NC (RAPI-Afrique : TSNR, autres formes, latex).
+rs_comext_requete <- function(partenaires = c(RS_RAPI_PARTENAIRE_CI, RS_RAPI_PARTENAIRES_ASIE), n_mois = 24,
+                              produits = RS_RAPI_PRODUIT) {
   c(list(format = "JSON", freq = "M", reporter = "EU"),
     stats::setNames(as.list(partenaires), rep("partner", length(partenaires))),
-    list(product = RS_RAPI_PRODUIT, flow = "1", indicators = "VALUE_IN_EUROS",
+    stats::setNames(as.list(produits), rep("product", length(produits))),
+    list(flow = "1", indicators = "VALUE_IN_EUROS",
          indicators = "QUANTITY_IN_100KG", lastTimePeriod = n_mois))
 }
 rs_comext_url <- function(q = rs_comext_requete()) httr::modify_url(RS_RAPI_URL_BASE, query = q)

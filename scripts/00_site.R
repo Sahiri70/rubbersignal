@@ -62,6 +62,47 @@ rs_site_origines <- function(obs, n = 6) {
   list(debut = mois[1], fin = mois[length(mois)], pays = lignes)
 }
 
+# RAPI-Afrique : historique mensuel par origine (TSNR) et résumé des n derniers
+# mois publiés pour la CI (volumes des trois produits, prix moyen pondéré).
+rs_site_afrique <- function(obs, n = 6) {
+  ci_q <- rs_site_points(obs, "COMEXT_QTE_CI"); ci_q <- ci_q[is.finite(ci_q$v), , drop = FALSE]
+  if (nrow(ci_q) == 0) return(NULL)
+  autres <- setdiff(RS_AFR_PARTENAIRES, RS_RAPI_PARTENAIRE_CI)
+  if (!any(vapply(autres, function(p) nrow(rs_site_points(obs, paste0("RAPI_", p, "_CIF_EUR"))) > 0, logical(1)))) return(NULL)
+  mois6 <- utils::tail(sort(ci_q$p), n)
+  sumq <- function(id) { q <- rs_site_points(obs, id); v <- q$v[match(mois6, q$p)]; if (any(is.finite(v))) round(sum(v, na.rm = TRUE) / 10) else 0 }
+  pond <- function(id_prix, id_q) {
+    pr <- rs_site_points(obs, id_prix); q <- rs_site_points(obs, id_q)
+    a <- pr$v[match(mois6, pr$p)]; w <- q$v[match(mois6, q$p)]; ok <- is.finite(a) & is.finite(w) & w > 0
+    if (any(ok)) round(sum(a[ok] * w[ok]) / sum(w[ok]), 3) else NA_real_
+  }
+  origines <- lapply(RS_AFR_PARTENAIRES, function(p) {
+    ci <- p == RS_RAPI_PARTENAIRE_CI; nm <- RS_AFR_NOMS[[p]]
+    ids <- if (ci) c(eur = "RAPI_CI_CIF_EUR", usd = "RAPI_CI_CIF_USD", ecart = NA)
+           else c(eur = paste0("RAPI_", p, "_CIF_EUR"), usd = paste0("RAPI_", p, "_CIF_USD"), ecart = paste0("RAPI_", p, "_ECART_CI"))
+    s <- list(eur = rs_site_points(obs, ids[["eur"]]), usd = rs_site_points(obs, ids[["usd"]]),
+              ecart = if (ci) NULL else rs_site_points(obs, ids[["ecart"]]), qte = rs_site_points(obs, rs_afr_id_brut("QTE", p)),
+              val = rs_site_points(obs, rs_afr_id_brut("VAL", p)))
+    g <- function(k, m) { x <- s[[k]]; if (is.null(x)) return(NA_real_); i <- match(m, x$p); if (is.na(i)) NA_real_ else x$v[i] }
+    mois <- lapply(sort(s$eur$p), function(m) {
+      i <- match(m, s$eur$p); qc <- s$eur$qc[i]
+      list(p = m, vol_t = if (is.finite(g("qte", m))) round(g("qte", m) / 10) else NA_real_,
+           eur = g("eur", m), usd = g("usd", m), ecart = if (ci) 0 else g("ecart", m),
+           faible_liquidite = grepl("faible_liquidite", qc), alerte_variation = grepl("alerte_variation", qc),
+           revise = isTRUE(any(s$qte$revise[s$qte$p == m], s$val$revise[s$val$p == m], na.rm = TRUE)))
+    })
+    pe <- pond(ids[["eur"]], rs_afr_id_brut("QTE", p)); pce <- pond("RAPI_CI_CIF_EUR", "COMEXT_QTE_CI")
+    list(code = p, nom_fr = nm[1], nom_en = nm[2], reference = ci,
+         vol_tsnr_t = sumq(rs_afr_id_brut("QTE", p)),
+         vol_autres_t = sumq(rs_afr_id_brut("QTE", p, "40012900")), vol_latex_t = sumq(rs_afr_id_brut("QTE", p, "40011000")),
+         prix_eur_kg = pe, prix_usd_kg = pond(ids[["usd"]], rs_afr_id_brut("QTE", p)),
+         ecart_ci_pct = if (ci) 0 else if (is.finite(pe) && is.finite(pce)) round((pe / pce - 1) * 100, 1) else NA_real_,
+         mois = mois)
+  })
+  list(version = rs_version_methode("rapi_afrique"), seuil_liquidite_t = RS_AFR_SEUIL_LIQUIDITE_T,
+       debut = mois6[1], fin = mois6[length(mois6)], origines = origines)
+}
+
 # Historique du RSCI (v2.1) : un point par mois de prix APROMAC
 #   apromac : data.frame(mois, prix_fcfa, type, source, date_publication, origine)
 rs_site_rsci_historique <- function(apromac, obs) {
@@ -132,6 +173,8 @@ rs_site_donnees <- function(dir_db = RS_DB_DIR, j = NULL, validations = rs_valid
       score_production = .rs_num1(z$score_production)))) else NULL
 
   # ── Catalogue des séries publiables (fiche IOSCO de chaque série)
+  # (séries sans aucune valeur exclues : le site ne compte que ce qui est publié)
+  pub <- pub[pub$serie_id %in% obs$serie_id, , drop = FALSE]
   catalogue <- lapply(seq_len(nrow(pub)), function(i) {
     s <- pub[i, ]; pts <- rs_site_points(obs, s$serie_id); n <- nrow(pts)
     list(serie_id = s$serie_id, libelle_fr = s$libelle_fr, libelle_en = s$libelle_en, frequence = s$frequence,
@@ -156,7 +199,11 @@ rs_site_donnees <- function(dir_db = RS_DB_DIR, j = NULL, validations = rs_valid
     rapi = list(statut = .rs_txt1(rapi$statut, "indisponible"), maj_eurostat = .rs_txt1(rapi$date_maj_eurostat),
                 version = .rs_txt1(rapi$version_methode, rs_version_methode("rapi_ci")), mois = mois,
                 origines = rs_site_origines(obs)),
-    rsci = list(version = rs_version_methode("rsci"), drc = RS_DRC_REFERENCE, historique = rsci_hist),
+    afrique = if (!is.null(af <- rs_site_afrique(obs)))
+      c(af, list(maj_eurostat = .rs_txt1(j$rapi_afrique$date_maj_eurostat, .rs_txt1(rapi$date_maj_eurostat)),
+                 statut = .rs_txt1(j$rapi_afrique$statut, "base"),
+                 phrase_fr = .rs_txt1(j$rapi_afrique$phrase_fr, ""), phrase_en = .rs_txt1(j$rapi_afrique$phrase_en, ""))) else NULL,
+    rsci =list(version = rs_version_methode("rsci"), drc = RS_DRC_REFERENCE, historique = rsci_hist),
     references = list(bm_tsr20 = ref("BM_TSR20"), fmi = ref("FMI_PRUBBUSDM")),
     pre_rsi = pre_rsi, volatilite = vol, meteo = meteo, catalogue = catalogue)
 }

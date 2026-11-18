@@ -55,8 +55,8 @@
       var rang = tri.indexOf(ci) + 1, second = tri[rang === 1 ? 1 : 0];
       if (ci) {
         fact(faits, t('Importations de l’UE depuis la Côte d’Ivoire, 6 mois', 'EU imports from Côte d’Ivoire, 6 months'), RS.int(ci.vol_t) + ' t',
-          rang === 1 && second ? RS.num(ci.vol_t / second.vol_t, 1) + t(' fois ', ' times ') + t(second.nom_fr, second.nom_en) + t(', deuxième des 5 origines suivies', ', second of the 5 origins tracked')
-            : t('rang ', 'rank ') + rang + t(' des 5 origines suivies', ' of the 5 origins tracked'));
+          rang === 1 && second ? RS.num(ci.vol_t / second.vol_t, 1) + t(' fois ', ' times ') + t(second.nom_fr, second.nom_en) + t(', deuxième origine', ', the second origin')
+            : t('rang ', 'rank ') + rang + t(' parmi les origines suivies', ' among the origins tracked'));
         fact(faits, t('Prix moyen rendu UE, Côte d’Ivoire, 6 mois', 'Average EU-delivered price, Côte d’Ivoire, 6 months'), RS.num(ci.prix_eur_kg, 3) + ' €/kg',
           second ? t(second.nom_fr, second.nom_en) + ' : ' + RS.num(second.prix_eur_kg, 3) + ' €/kg' : '');
       }
@@ -73,8 +73,11 @@
         t('chacune avec sa source, sa nature et sa méthode', 'each with its source, nature and method'));
       fact(bk, t('Valeurs datées et sourcées', 'Dated, sourced values'), RS.int(nObs),
         t('les révisions s’ajoutent, rien n’est effacé', 'revisions are added, nothing is deleted'));
-      fact(bk, t('Pays d’origine suivis', 'Origin countries tracked'), RS.int(o && o.pays ? o.pays.length : 0),
-        t('Côte d’Ivoire et quatre origines asiatiques', 'Côte d’Ivoire and four Asian origins'));
+      var nAs = o && o.pays ? o.pays.filter(function (p) { return p.code !== 'CI'; }).length : 0;
+      var nAf = D.afrique && D.afrique.origines ? D.afrique.origines.length : 1;
+      fact(bk, t('Pays d’origine suivis', 'Origin countries tracked'), RS.int(nAf + nAs),
+        nAf > 1 ? RS.int(nAf) + t(' origines africaines et ', ' African origins and ') + RS.int(nAs) + t(' asiatiques pour la comparaison', ' Asian ones for comparison')
+          : t('Côte d’Ivoire et ', 'Côte d’Ivoire and ') + RS.int(nAs) + t(' origines asiatiques', ' Asian origins'));
     }
 
     // Graphique : 12 derniers mois

@@ -768,8 +768,55 @@ section_rapi <- function(langue = "fr") {
          rs_rapi_phrase(der, langue), "\n\n", lecture, encadre, source_txt)
 }
 
-rapport_rapi_fr <- section_rapi("fr")
-rapport_rapi_en <- section_rapi("en")
+# Autres origines africaines (bloc `rapi_afrique`, script 06b) : dernier mois de
+# chaque origine, aucun calcul ici. Absente si le script 06b n'a pas tourné.
+afr <- donnees$rapi_afrique %||% list()
+
+section_afrique <- function(langue = "fr") {
+  fr <- langue == "fr"
+  if (length(afr) == 0) return("")
+  orig <- Filter(function(o) !isTRUE(o$reference) && !is.null(o$derniere), afr$origines %||% list())
+  if (length(orig) == 0) return("")
+  pct <- if (fr) " %" else "%"
+  fpct <- function(x) { s <- rs_rapi_fmt(x, 1, TRUE); if (s == "—") s else paste0(s, pct) }
+  seuil <- num(afr$seuils$faible_liquidite_t)
+  lignes <- vapply(orig, function(o) {
+    m <- o$derniere
+    d <- c(if (isTRUE(m$faible_liquidite)) (if (fr) "faible liquidité" else "low liquidity"),
+           if (isTRUE(m$alerte_variation)) (if (fr) "variation > 15 %" else "change > 15%"),
+           if (isTRUE(m$taux_source_secondaire)) (if (fr) "taux FRED (secondaire)" else "FRED rate (secondary)"))
+    paste0("| ", if (fr) o$nom_fr else o$nom_en, " | ", rs_mois_libelle(txt(m$periode), langue), " | ",
+           rs_fmt_milliers(m$vol_t, langue), " | ", rs_rapi_fmt(m$eur_kg, 3), " | ", rs_rapi_fmt(m$usd_kg, 3), " | ",
+           fpct(m$ecart_ci_pct), " | ", if (length(d) == 0) "—" else paste(d, collapse = ", "), " |\n")
+  }, character(1))
+  maj <- txt(afr$date_maj_eurostat, NA_character_)
+  etat <- if (!identical(txt(afr$statut), "ok"))
+    (if (fr) paste0("> ⚠️ *Eurostat indisponible cette semaine : valeurs reprises de la base (mise à jour Eurostat du ", rs_date_fr(maj), "). Elles ne sont pas nouvelles.*\n\n")
+     else paste0("> ⚠️ *Eurostat unavailable this week: values taken from the database (Eurostat update of ", rs_date_fr(maj), "). They are not new.*\n\n"))
+    else ""
+  paste0(
+    if (fr) "### Autres origines africaines — RAPI-Afrique\n\n" else "### Other African origins — RAPI-Africa\n\n",
+    etat,
+    if (fr) "| Origine | Mois | Volume (t) | €/kg | USD/kg | Écart à la CI | Drapeaux |\n|---|---|---|---|---|---|---|\n"
+    else "| Origin | Month | Volume (t) | €/kg | USD/kg | Gap to CI | Flags |\n|---|---|---|---|---|---|---|\n",
+    paste(lignes, collapse = ""), "\n",
+    txt(if (fr) afr$phrase_fr else afr$phrase_en), "\n\n",
+    if (fr) paste0("*Même mesure que RAPI-CI (NC 4001 22 00, prix rendu frontière UE). Nature : T (prix, volumes), E (écart). ",
+                   "Faible liquidité = moins de ", seuil, " t importées de l'origine dans le mois. Source : Eurostat Comext, mise à jour du ",
+                   rs_date_fr(maj), ". Version de méthode : ", txt(afr$version_methode, rs_version_methode("rapi_afrique")), ".*\n\n---\n\n")
+    else paste0("*Same measure as RAPI-CI (CN 4001 22 00, delivered EU-border price). Nature: T (prices, volumes), E (gap). ",
+                "Low liquidity = less than ", seuil, " t imported from the origin in the month. Source: Eurostat Comext, updated ",
+                rs_date_fr(maj), ". Method version: ", txt(afr$version_methode, rs_version_methode("rapi_afrique")), ".*\n\n---\n\n"))
+}
+
+# La section Afrique s'insère juste avant le trait de fin de la section RAPI-CI
+avec_afrique <- function(rapi_txt, afr_txt) {
+  if (!nzchar(afr_txt)) return(rapi_txt)
+  sub("\n---\n\n$", paste0("\n", afr_txt), rapi_txt)
+}
+rapport_rapi_fr <- avec_afrique(section_rapi("fr"), section_afrique("fr"))
+rapport_rapi_en <- avec_afrique(section_rapi("en"), section_afrique("en"))
+cat("   Section RAPI-Afrique :", if (length(afr) == 0) "absente (script 06b non exécuté)" else txt(afr$statut, "?"), "\n")
 cat("   Section RAPI-CI :", if (length(rapi) == 0) "absente (script 06 non exécuté)"
     else paste0(txt(rapi$statut, "?"), ", dernière période ", txt(rapi$derniere_periode, "—")), "\n")
 

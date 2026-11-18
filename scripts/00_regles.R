@@ -219,13 +219,15 @@ rs_date_fr <- function(d) if (is.null(d) || is.na(d)) "date inconnue" else forma
 
 RS_METHODES <- data.frame(
   cle        = c("prix_hebdo", "reference_mensuelle", "apromac", "rsci", "terrain",
-                 "pre_rsi", "volatilite", "rapi_ci"),
+                 "pre_rsi", "volatilite", "rapi_ci", "rapi_afrique"),
   version    = c("Prix hebdo v1", "Références mensuelles v1", "APROMAC v1", "RSCI v2.1",
-                 "Terrain v1", "Pré-RSI v2", "Volatilité v1", "RAPI-CI v1"),
+                 "Terrain v1", "Pré-RSI v2", "Volatilité v1", "RAPI-CI v1", "RAPI-Afrique v1"),
   # RSCI v2.1 (09/11/2026, decision de l'evaluateur) : taux USD/EUR = moyenne
   # mensuelle BCE du mois de reference TSR20, et non plus le taux du jour.
+  # RAPI-Afrique v1 (18/11/2026) : memes regles que RAPI-CI, etendues au Liberia,
+  # au Ghana, au Nigeria et au Cameroun (section 11 bis).
   date_effet = c("2026-11-03", "2026-11-03", "2026-11-03", "2026-11-09",
-                 "2026-11-03", "2026-11-03", "2026-11-03", "2026-11-03"),
+                 "2026-11-03", "2026-11-03", "2026-11-03", "2026-11-03", "2026-11-18"),
   stringsAsFactors = FALSE
 )
 
@@ -254,27 +256,29 @@ RS_LEGENDE_NATURE_EN <- "Nature: T = transaction, O = official, D = declaration,
 RS_REGISTRE_SERIES <- data.frame(
   serie = c("MRB_SMR20", "SGX_TSR20", "LGM", "RTAS_SG", "JPX_TOCOM", "SHFE_RU", "INDEXMUNDI",
             "BM_TSR20", "FMI_PRUBBUSDM", "APROMAC", "RSCI", "TERRAIN_CI", "PRE_RSI", "VOLATILITE",
-            "EUROSTAT_COMEXT", "RAPI_CI", "BCE_USD_EUR", "FRED_EXUSEU"),
+            "EUROSTAT_COMEXT", "RAPI_CI", "BCE_USD_EUR", "FRED_EXUSEU", "RAPI_AFRIQUE"),
   libelle = c("MRB SMR20 (ex-LGM)", "SGX-SICOM TSR20", "LGM / MRB (site officiel)", "rtas.sg (republication MRB / SGX)",
               "JPX / TOCOM RSS3", "SHFE RU", "IndexMundi",
               "Banque mondiale, Pink Sheet TSR20", "FMI, Global price of Rubber (FRED PRUBBUSDM)",
               "APROMAC, prix bord-champ", "RSCI (calcul RubberSignal Technologies)", "Releve terrain CI",
               "Pre-RSI (calcul RubberSignal Technologies)", "Fourchette de volatilite (calcul RubberSignal Technologies)",
-              "Eurostat Comext DS-045409 (importations UE, NC 4001 22 00)",
+              "Eurostat Comext DS-045409 (importations UE, NC 4001 10 00, 4001 22 00 et 4001 29 00)",
               "RAPI-CI (calcul RubberSignal Technologies : prix CIF UE, composite Asie, decote CI)",
-              "BCE, taux de reference USD/EUR", "FRED EXUSEU (Federal Reserve, USD/EUR mensuel)"),
+              "BCE, taux de reference USD/EUR", "FRED EXUSEU (Federal Reserve, USD/EUR mensuel)",
+              "RAPI-Afrique (calcul RubberSignal Technologies : prix CIF UE par origine africaine, ecart a la CI)"),
   publiable = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
                 TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE,
-                TRUE, TRUE, TRUE, TRUE),
+                TRUE, TRUE, TRUE, TRUE, TRUE),
   licence = c("sous licence", "sous licence", "sous licence", "sous licence", "sous licence",
               "sous licence", "sous licence", "CC BY 4.0", "donnees publiques",
               "publication officielle", "calcul RubberSignal Technologies (entrees publiables)",
               "saisie RubberSignal Technologies", "calcul RubberSignal Technologies", "calcul RubberSignal Technologies (entree BM)",
               "Eurostat : reutilisation libre avec mention de la source (decision 2011/833/UE)",
               "calcul RubberSignal Technologies (entrees Eurostat et BCE)",
-              "BCE : reutilisation libre avec mention de la source", "donnees publiques (Federal Reserve, via FRED)"),
+              "BCE : reutilisation libre avec mention de la source", "donnees publiques (Federal Reserve, via FRED)",
+              "calcul RubberSignal Technologies (entrees Eurostat et BCE)"),
   nature = c("O", "T", "O", "O", "T", "T", "O", "T", "T", "O", "E", "D", "E", "E",
-             "T", "T", "O", "O"),
+             "T", "T", "O", "O", "T"),
   stringsAsFactors = FALSE
 )
 
@@ -822,6 +826,121 @@ RS_RAPI_LIMITES_EN <- c(
   "customs values reflect contracts often signed several weeks before arrival: read the gap as a trend, not month by month;",
   "CN code 4001 22 00 pools several grades (TSR10, TSR20…);"
 )
+
+
+# ── 11 bis. RAPI-AFRIQUE v1 : AUTRES ORIGINES AFRICAINES (18/11/2026) ──
+# Meme source, memes formules et memes controles que RAPI-CI (section 11),
+# appliques a chaque origine africaine qui exporte chaque mois vers l'UE :
+#   prix CIF UE (EUR/kg)  = valeur declaree / (quantite en 100 kg x 100)
+#   USD/kg                = EUR/kg x taux USD/EUR moyen BCE du mois (FRED en secours)
+#   ecart a la CI (%)     = (prix CIF origine / prix CIF CI du meme mois - 1) x 100
+# Seuil de liquidite propre (500 t/mois) : ces origines exportent 10 a 30 fois
+# moins que la CI ; en dessous, le prix unitaire depend de quelques lots.
+# Produits suivis en volume : NC 4001 22 00 (TSNR, base des prix), 4001 29 00
+# (autres formes seches) et 4001 10 00 (latex). Les prix ne sont calcules que
+# sur le TSNR : les autres produits ne sont pas comparables entre eux.
+# Selection des origines : valeur TSNR chaque mois sur 2025-2026 (verifie le
+# 18/11/2026) ; Guinee et Gabon exclus (moins de 5 mois sur 9 en 2026).
+
+RS_AFR_PARTENAIRES <- c("CI", "LR", "GH", "NG", "CM")
+RS_AFR_NOMS <- list(CI = c("Côte d'Ivoire", "Côte d'Ivoire", "la Côte d'Ivoire"),
+                    LR = c("Liberia", "Liberia", "le Liberia"),
+                    GH = c("Ghana", "Ghana", "le Ghana"),
+                    NG = c("Nigeria", "Nigeria", "le Nigeria"),
+                    CM = c("Cameroun", "Cameroon", "le Cameroun"))
+RS_AFR_PRODUITS <- data.frame(
+  code = c("40012200", "40012900", "40011000"),
+  cle  = c("tsnr", "autres", "latex"),
+  libelle_nc = c("NC 4001 22 00", "NC 4001 29 00", "NC 4001 10 00"),
+  libelle_fr = c("caoutchouc techniquement spécifié (TSNR)", "autres formes sèches", "latex"),
+  libelle_en = c("technically specified rubber (TSNR)", "other dry forms", "latex"),
+  stringsAsFactors = FALSE)
+RS_AFR_SEUIL_LIQUIDITE_T <- 500
+
+# Identifiant de serie brute : le TSNR garde les identifiants RAPI-CI
+# (COMEXT_VAL_CI...) ; les autres produits portent leur code NC en suffixe.
+rs_afr_id_brut <- function(type, partenaire, produit = RS_RAPI_PRODUIT) {
+  stopifnot(type %in% c("VAL", "QTE"))
+  ifelse(produit == RS_RAPI_PRODUIT, paste0("COMEXT_", type, "_", partenaire),
+         paste0("COMEXT_", type, "_", partenaire, "_", produit))
+}
+
+# Tableau large par produit : periode, partenaire, produit, valeur_eur, quantite_100kg.
+# Reponse sans dimension produit -> produit = RS_RAPI_PRODUIT.
+rs_comext_large_produits <- function(long) {
+  if (!"product" %in% names(long)) long$product <- RS_RAPI_PRODUIT
+  morceaux <- lapply(unique(long$product), function(k) {
+    x <- rs_comext_large(long[long$product == k, , drop = FALSE])
+    if (nrow(x) == 0) return(NULL)
+    x$produit <- k; x
+  })
+  out <- do.call(rbind, morceaux)
+  if (is.null(out)) out <- data.frame(periode = character(), partenaire = character(), valeur_eur = numeric(),
+                                      quantite_100kg = numeric(), produit = character(), stringsAsFactors = FALSE)
+  out <- out[order(out$produit, out$periode, out$partenaire), , drop = FALSE]
+  rownames(out) <- NULL
+  attr(out, "updated") <- attr(long, "updated")
+  out
+}
+
+# Calcul par origine et par mois, sur le TSNR uniquement.
+#   large : periode, partenaire, valeur_eur, quantite_100kg (CI comprise, pour l'ecart)
+#   taux  : data.frame(periode, taux_usd_eur, source) ou NULL
+# Retour : une ligne par (origine hors CI, mois ou l'origine a une valeur ou une quantite).
+rs_afrique_calcul <- function(large, taux = NULL, origines = setdiff(RS_AFR_PARTENAIRES, RS_RAPI_PARTENAIRE_CI),
+                              seuil_t = RS_AFR_SEUIL_LIQUIDITE_T, seuil_var = RS_RAPI_SEUIL_VARIATION) {
+  vide <- data.frame(periode = character(), partenaire = character(), vol_t = numeric(), eur_kg = numeric(),
+                     usd_kg = numeric(), taux_usd_eur = numeric(), taux_source = character(), ci_eur_kg = numeric(),
+                     ecart_ci_pct = numeric(), faible_liquidite = logical(), variation_pct = numeric(),
+                     alerte_variation = logical(), stringsAsFactors = FALSE)
+  if (is.null(large) || nrow(large) == 0) return(vide)
+  ci <- large[large$partenaire == RS_RAPI_PARTENAIRE_CI, , drop = FALSE]
+  ci_eur <- rs_prix_cif_eur_kg(ci$valeur_eur, ci$quantite_100kg)
+  rows <- lapply(origines, function(p) {
+    s <- large[large$partenaire == p & (is.finite(large$valeur_eur) | is.finite(large$quantite_100kg)), , drop = FALSE]
+    if (nrow(s) == 0) return(NULL)
+    s <- s[order(s$periode), , drop = FALSE]
+    eur <- rs_prix_cif_eur_kg(s$valeur_eur, s$quantite_100kg)
+    vol <- ifelse(is.finite(s$quantite_100kg), s$quantite_100kg / 10, NA_real_)
+    ix  <- if (!is.null(taux) && nrow(taux) > 0) match(s$periode, taux$periode) else rep(NA_integer_, nrow(s))
+    t_val <- if (!is.null(taux) && nrow(taux) > 0) as.numeric(taux$taux_usd_eur[ix]) else rep(NA_real_, nrow(s))
+    t_src <- if (!is.null(taux) && nrow(taux) > 0) as.character(taux$source[ix]) else rep(NA_character_, nrow(s))
+    cie <- ci_eur[match(s$periode, ci$periode)]
+    idx <- rs_mois_index(s$periode)
+    prec <- c(NA_real_, utils::head(eur, -1))
+    consec <- c(FALSE, diff(idx) == 1)
+    var <- ifelse(consec & is.finite(eur) & is.finite(prec), (eur / prec - 1) * 100, NA_real_)
+    data.frame(periode = s$periode, partenaire = p, vol_t = vol, eur_kg = eur, usd_kg = eur * t_val,
+               taux_usd_eur = t_val, taux_source = t_src, ci_eur_kg = cie,
+               ecart_ci_pct = rs_decote_pct(eur, cie),
+               faible_liquidite = is.finite(vol) & vol < seuil_t,
+               variation_pct = var, alerte_variation = is.finite(var) & abs(var) > seuil_var * 100,
+               stringsAsFactors = FALSE)
+  })
+  out <- do.call(rbind, rows)
+  if (is.null(out)) return(vide)
+  rownames(out) <- NULL
+  out
+}
+
+# Phrase factuelle sur le dernier mois commun, construite uniquement a partir
+# des lignes de rs_afrique_calcul (aucun jugement).
+rs_afrique_phrase <- function(d, langue = "fr") {
+  fr <- langue == "fr"
+  if (is.null(d) || nrow(d) == 0) return(if (fr) "Aucune donnée douanière pour les autres origines africaines."
+                                         else "No customs data for the other African origins.")
+  per <- max(d$periode[is.finite(d$ecart_ci_pct)], na.rm = TRUE)
+  x <- d[d$periode == per & is.finite(d$ecart_ci_pct), , drop = FALSE]
+  if (nrow(x) == 0) return(if (fr) "Écart à la Côte d'Ivoire indisponible." else "Gap to Côte d'Ivoire unavailable.")
+  nom <- function(p) RS_AFR_NOMS[[p]][if (fr) 1 else 2]
+  x <- x[order(x$ecart_ci_pct), , drop = FALSE]
+  bas <- x[1, ]; haut <- x[nrow(x), ]
+  f <- function(v) rs_rapi_fmt(v, 1, signe = TRUE)
+  if (fr) paste0("En ", rs_mois_libelle(per, "fr"), ", parmi les autres origines africaines, l'écart de prix rendu UE avec la Côte d'Ivoire va de ",
+                 f(bas$ecart_ci_pct), " % (", nom(bas$partenaire), ") à ", f(haut$ecart_ci_pct), " % (", nom(haut$partenaire), ").")
+  else paste0("In ", rs_mois_libelle(per, "en"), ", among the other African origins, the EU-delivered price gap to Côte d'Ivoire ranges from ",
+              f(bas$ecart_ci_pct), "% (", nom(bas$partenaire), ") to ", f(haut$ecart_ci_pct), "% (", nom(haut$partenaire), ").")
+}
 
 
 # ── 12. PRESENTATION ET VALIDATION DE L'EVALUATEUR (16/11/2026) ──
