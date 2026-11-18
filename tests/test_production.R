@@ -115,3 +115,33 @@ test_that("carte : 24 pays, producteurs présents, points satellite dans le cadr
   expect_match(h, "img-src 'self' data:;", fixed = TRUE)                   # images servies par le site seulement
   expect_false(grepl("tiles\\.maps\\.eox\\.at|https://[^\"]*\\.jpg", h))
 })
+
+test_that("indicateur EUDR : données cohérentes, sources sous licence libre, aucune entreprise nommée", {
+  txt <- paste(readLines(file.path(racine, "site/data/eudr_bassins.js"), warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  e <- jsonlite::fromJSON(sub(";[[:space:]]*$", "", sub("^window.RS_EUDR = ", "", txt)), simplifyVector = FALSE)
+  expect_equal(e$version, "EUDR bassins v1")
+  expect_equal(e$date_reference_eudr, "2020-12-31")
+  expect_match(e$sources$foret, "JRC.*version 4.*10.2905/JRC.3KATEH8.*CC BY 4.0")
+  expect_match(e$sources$pertes, "Hansen.*v1.12.*CC BY 4.0")
+  ids <- vapply(e$bassins, function(b) b$id, character(1))
+  expect_setequal(ids, c("harbel", "toupah", "niete", "soubre"))
+  for (b in e$bassins) {
+    expect_true(b$foret_2020_ha <= b$surface_ha, info = b$id)
+    expect_true(b$perte_apres_2020_foret_ha <= b$foret_2020_ha, info = b$id)
+    expect_equal(sum(unlist(b$perte_foret_par_an)), b$perte_apres_2020_foret_ha, tolerance = 1, info = b$id)
+    expect_equal(sum(unlist(b$perte_par_an)[as.character(2021:2024)]),
+                 b$perte_apres_2020_foret_ha + b$perte_apres_2020_hors_foret_ha, tolerance = 1, info = b$id)
+    expect_equal(length(b$perte_par_an), 24)
+    expect_true(file.exists(file.path(racine, "site/assets/sat", paste0(b$id, "_eudr.jpg"))), info = b$id)
+  }
+  expect_false(grepl("Firestone|SAPH|HEVECAM|SIFCA|Bridgestone", txt, ignore.case = TRUE))   # données sans nom d'entreprise
+  js <- paste(readLines(file.path(racine, "site/assets/rs-terminal.js"), warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  expect_match(js, "t('Zone de ', 'Area around ') + lieu", fixed = TRUE)                     # titre géographique en mode EUDR
+  h <- paste(readLines(file.path(racine, "site/terminal.html"), warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  expect_match(h, "ne désigne aucun acteur", fixed = TRUE)
+  expect_match(h, '<script src="data/eudr_bassins.js"></script>', fixed = TRUE)
+  outil <- paste(readLines(file.path(racine, "scripts/outils/eudr_bassins.R"), warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  expect_match(outil, "GFC2020/LATEST/single-cog/JRC_GFC2020_V4_COG.tif", fixed = TRUE)
+  expect_match(outil, "GFC-2024-v1.12/Hansen_GFC-2024-v1.12_lossyear", fixed = TRUE)
+  expect_match(outil, "hl >= 21 & hl <= 24", fixed = TRUE)                                    # 2021 à 2024
+})

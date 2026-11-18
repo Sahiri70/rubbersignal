@@ -159,9 +159,26 @@
         <div class="card chart-card">
           <h3 id="sat-titre"></h3>
           <div class="sat-choix" id="sat-choix" role="group" aria-label="Vues satellite / Satellite views"></div>
+          <span class="seg sat-mode" role="group" aria-label="Couche / Layer">
+            <button type="button" data-sat-mode="image"><span lang="fr">Image 2016</span><span lang="en">2016 image</span></button>
+            <button type="button" data-sat-mode="eudr"><span lang="fr">Indicateur EUDR</span><span lang="en">EUDR indicator</span></button>
+          </span>
           <a id="sat-lien" href="#" target="_blank" rel="noopener"><img class="sat-img" id="sat-img" alt="" width="1024" height="768"></a>
+          <div class="legende-q" id="sat-leg-eudr" hidden></div>
           <p class="note" id="sat-legende"></p>
           <p class="sat-credit" id="sat-credit"></p>
+        </div>
+      </div>
+      <div class="card chart-card t-grid" id="eudr-card" hidden>
+        <h3 id="eudr-titre"></h3>
+        <p class="sub" id="eudr-sub"></p>
+        <div class="kpis" id="eudr-kpis"></div>
+        <p class="sub"><span lang="fr">Perte de couvert arboré par an dans tout le carré, en ha (Hansen, UMD). Les barres 2021 à 2024 sont postérieures à la date de référence EUDR.</span><span lang="en">Tree cover loss per year across the whole square, in ha (Hansen, UMD). Bars 2021 to 2024 are after the EUDR cut-off date.</span></p>
+        <div id="eudr-bars"></div>
+        <div id="t-eudr"></div>
+        <div class="callout">
+          <span lang="fr"><strong>Ce que cet indicateur dit, et ce qu'il ne dit pas.</strong> Il mesure, dans un carré d'environ 28 000 ha autour de chaque bassin, la surface classée forêt au 31/12/2020 par la carte de référence de la Commission (JRC) qui a perdu son couvert arboré ensuite (Hansen, UMD). Le carré dépasse les limites de toute exploitation : l'indicateur ne désigne aucun acteur. Une perte de couvert n'est pas une preuve de déforestation (coupe, chablis, erreur de classement). C'est un indicateur de risque pour orienter une diligence raisonnée EUDR, qui reste à faire parcelle par parcelle.</span>
+          <span lang="en"><strong>What this indicator says, and what it does not.</strong> Within a square of about 28,000 ha around each basin, it measures the area classed as forest on 31/12/2020 by the Commission's reference map (JRC) that later lost its tree cover (Hansen, UMD). The square extends beyond any single operation: the indicator points to no actor. Tree cover loss is not proof of deforestation (felling, windthrow, misclassification). It is a risk indicator to guide EUDR due diligence, which must still be done plot by plot.</span>
         </div>
       </div>
       <div class="t-grid two">
@@ -365,6 +382,7 @@
 
 <script src="data/terminal.js"></script>
 <script src="data/carte_afrique.js"></script>
+<script src="data/eudr_bassins.js"></script>
 <script src="assets/rs-charts.js"></script>
 <script src="assets/rs-budget.js"></script>
 <script src="assets/rs-terminal.js"></script>

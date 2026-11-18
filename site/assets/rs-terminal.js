@@ -244,7 +244,7 @@
   }
 
   // ── 1 ter. Zones de production (FAOSTAT, carte, vues satellite) ──
-  var prod = { sat: 0 };
+  var prod = { sat: 0, mode: 'image' };
   var SVGNS = 'http://www.w3.org/2000/svg';
   function svgEl(name, attrs, parent) {
     var e = document.createElementNS(SVGNS, name);
@@ -310,7 +310,9 @@
     var pinsXY = (P.zones || []).map(function (z) { return [(z.lon - K.bbox.xmin) * K.echelle, (K.bbox.ymax - z.lat) * K.echelle]; });
     labels.forEach(function (l) {
       var b = l.path.getBBox(), x = b.x + b.width / 2, y = b.y + b.height / 2 + 4;
-      for (var n = 0; n < 4 && pinsXY.some(function (q) { return Math.abs(q[0] - x) < 60 && Math.abs(q[1] - y + 6) < 22; }); n++) y -= 22;
+      // un point satellite couvre l'étiquette : on la place sous le point (côté mer pour les pays côtiers)
+      var pin = pinsXY.filter(function (q) { return Math.abs(q[0] - x) < 60 && Math.abs(q[1] - y + 6) < 22; })[0];
+      if (pin) { x = pin[0]; y = pin[1] + 36; }
       var tx = svgEl('text', { x: x.toFixed(1), y: y.toFixed(1), 'class': 'lbl', 'text-anchor': 'middle' }, svg);
       tx.textContent = l.txt;
     });
@@ -365,17 +367,78 @@
       b.type = 'button'; b.setAttribute('aria-pressed', i === prod.sat ? 'true' : 'false');
       b.addEventListener('click', function () { prod.sat = i; drawSatellite(); drawProductionPins(); });
     });
-    $('sat-titre').textContent = (prod.sat + 1) + '. ' + t(z.titre_fr, z.titre_en);
+    var E = window.RS_EUDR, eb = E && E.bassins ? E.bassins.filter(function (x) { return x.id === z.id; })[0] : null;
+    var eudr = prod.mode === 'eudr' && eb;
+    var mb = document.querySelectorAll('[data-sat-mode]');
+    for (var m = 0; m < mb.length; m++) {
+      mb[m].setAttribute('aria-pressed', mb[m].getAttribute('data-sat-mode') === (eudr ? 'eudr' : 'image') ? 'true' : 'false');
+      mb[m].disabled = !eb && mb[m].getAttribute('data-sat-mode') === 'eudr';
+    }
+    // En mode EUDR, nom géographique seulement : l'indicateur ne désigne aucun acteur
+    var lieu = t(z.titre_fr, z.titre_en).split(' : ')[0].split(': ')[0];
+    $('sat-titre').textContent = (prod.sat + 1) + '. ' + (eudr ? t('Zone de ', 'Area around ') + lieu : t(z.titre_fr, z.titre_en));
+    var src = eudr ? z.image.replace(/\.jpg$/, '_eudr.jpg') : z.image;
     var img = $('sat-img');
-    img.src = z.image; img.alt = t('Vue satellite 2016 : ', '2016 satellite view: ') + t(z.titre_fr, z.titre_en);
-    var lien = $('sat-lien'); lien.href = z.image; lien.title = t('Ouvrir l’image en taille réelle', 'Open the full-size image');
-    $('sat-legende').textContent = t(z.legende_fr, z.legende_en) + t(' Largeur de l’image : environ ', ' Image width: about ') + RS.num(z.largeur_km, 0) +
+    img.src = src; img.alt = (eudr ? t('Indicateur EUDR sur vue satellite 2016 : zone de ', 'EUDR indicator on 2016 satellite view: area around ') + lieu
+      : t('Vue satellite 2016 : ', '2016 satellite view: ') + t(z.titre_fr, z.titre_en));
+    var lien = $('sat-lien'); lien.href = src; lien.title = t('Ouvrir l’image en taille réelle', 'Open the full-size image');
+    var lg = clear($('sat-leg-eudr')); lg.hidden = !eudr;
+    if (eudr) [['eudr-foret', t('forêt au 31/12/2020 (JRC)', 'forest on 31/12/2020 (JRC)')],
+               ['eudr-rouge', t('perte de couvert après 2020 sur cette forêt', 'tree cover loss after 2020 on that forest')],
+               ['eudr-jaune', t('perte après 2020 hors forêt (plantations, cultures)', 'loss after 2020 outside forest (plantations, crops)')]].forEach(function (x) {
+      var s = RS.el('span', null, null, lg); RS.el('i', x[0], null, s); RS.el('span', null, x[1], s);
+    });
+    $('sat-legende').textContent = (eudr ? t('Carré d’environ ', 'Square of about ') + RS.int(eb.surface_ha) + t(' ha ; il dépasse les limites de toute exploitation.', ' ha; it extends beyond any single operation.')
+      : t(z.legende_fr, z.legende_en)) + t(' Largeur de l’image : environ ', ' Image width: about ') + RS.num(z.largeur_km, 0) +
       t(' km. Cliquez sur l’image pour la voir en taille réelle.', ' km. Click the image to see it full size.');
     var cr = clear($('sat-credit'));
-    RS.el('span', null, t('Image : ', 'Image: ') + P.satellite_credit + t('. Position : ', '. Location: ') + z.coordonnees + '. ', cr);
-    var a = RS.el('a', null, t('Source sur ce site de production', 'Source on this production site'), cr);
-    a.href = z.source; a.rel = 'noopener noreferrer nofollow'; a.target = '_blank';
+    RS.el('span', null, t('Image : ', 'Image: ') + P.satellite_credit + (eudr ? '. ' + E.sources.foret + '. ' + E.sources.pertes : '') +
+      t('. Position : ', '. Location: ') + z.coordonnees + '. ', cr);
+    if (!eudr) { var a = RS.el('a', null, t('Source sur ce site de production', 'Source on this production site'), cr);
+                 a.href = z.source; a.rel = 'noopener noreferrer nofollow'; a.target = '_blank'; }
+    drawEudr();
   }
+
+  // Indicateur EUDR des quatre bassins (outil scripts/outils/eudr_bassins.R)
+  function drawEudr() {
+    var E = window.RS_EUDR, P = D.production, card = $('eudr-card');
+    if (!E || !E.bassins || !E.bassins.length || !P) { card.hidden = true; return; }
+    card.hidden = false;
+    var zs = P.zones || [], z = zs[Math.min(prod.sat, zs.length - 1)];
+    var eb = E.bassins.filter(function (x) { return x.id === z.id; })[0] || E.bassins[0];
+    var lieu = function (id) { var zz = zs.filter(function (x) { return x.id === id; })[0]; return zz ? t(zz.titre_fr, zz.titre_en).split(' : ')[0].split(': ')[0] : id; };
+    $('eudr-titre').textContent = t('Indicateur de risque EUDR : zone de ', 'EUDR risk indicator: area around ') + lieu(eb.id);
+    $('eudr-sub').textContent = t('Date de référence EUDR : 31 décembre 2020. Calcul du ', 'EUDR cut-off date: 31 December 2020. Calculated ') + RS.date(E.date_calcul) + ' · ' + E.version;
+    var k = clear($('eudr-kpis'));
+    kpi(k, t('Forêt au 31/12/2020', 'Forest on 31/12/2020'), RS.int(eb.foret_2020_ha), 'ha', RS.pct(eb.part_foret_pct, 1) + t(' du carré (JRC, 10 m)', ' of the square (JRC, 10 m)'), 'E');
+    kpi(k, t('Perte de couvert après 2020, sur cette forêt', 'Tree cover loss after 2020, on that forest'), RS.num(eb.perte_apres_2020_foret_ha, 0), 'ha',
+      RS.pct(eb.part_perte_foret_pct, 1) + t(' de la forêt 2020 (Hansen, 2021-2024)', ' of 2020 forest (Hansen, 2021-2024)'), 'E');
+    kpi(k, t('Perte après 2020 hors forêt', 'Loss after 2020 outside forest'), RS.num(eb.perte_apres_2020_hors_foret_ha, 0), 'ha',
+      t('plantations, cultures, jachères : non visées par l’EUDR comme déforestation', 'plantations, crops, fallows: not EUDR deforestation'), 'E');
+    var ans = Object.keys(eb.perte_par_an);
+    C.bars($('eudr-bars'), {
+      x: ans, xFmt: function (a) { return String(a); }, values: ans.map(function (a) { return eb.perte_par_an[a]; }), color: 'var(--s1)',
+      name: t('Perte de couvert arboré, tout le carré', 'Tree cover loss, whole square'), height: 200,
+      yFmt: function (v) { return RS.int(v); }, tipFmt: function (v) { return RS.int(v) + ' ha'; },
+      tipExtra: function (i) { return +ans[i] > 2020 ? t('après la date de référence EUDR', 'after the EUDR cut-off date') : null; },
+      label: t('Perte de couvert arboré par an, 2001-2024 (ha)', 'Tree cover loss per year, 2001-2024 (ha)')
+    });
+    C.table(clear($('t-eudr')), [
+      { label: t('Zone', 'Area'), left: true, get: function (b) { return lieu(b.id); } },
+      { label: t('Surface du carré (ha)', 'Square area (ha)'), get: function (b) { return RS.int(b.surface_ha); } },
+      { label: t('Forêt 2020 (ha)', '2020 forest (ha)'), get: function (b) { return RS.int(b.foret_2020_ha); } },
+      { label: t('Perte après 2020 sur forêt (ha)', 'Loss after 2020 on forest (ha)'), get: function (b) { return RS.num(b.perte_apres_2020_foret_ha, 0); } },
+      { label: t('en % de la forêt 2020', '% of 2020 forest'), get: function (b) { return RS.pct(b.part_perte_foret_pct, 1); } },
+      { label: t('Perte après 2020 hors forêt (ha)', 'Loss after 2020 outside forest (ha)'), get: function (b) { return RS.num(b.perte_apres_2020_hors_foret_ha, 0); } },
+      { label: t('Perte 2001-2020 (ha)', 'Loss 2001-2020 (ha)'), get: function (b) { return RS.int(b.perte_2001_2020_ha); } }
+    ], E.bassins, t('Les quatre zones (nature E : calcul RubberSignal Technologies sur données JRC et UMD)', 'The four areas (nature E: RubberSignal Technologies calculation on JRC and UMD data)'), true);
+  }
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest ? ev.target.closest('[data-sat-mode]') : null;
+    if (!b || b.disabled) return;
+    prod.mode = b.getAttribute('data-sat-mode');
+    drawSatellite();
+  });
 
   // ── 2. Part du planteur ───────────────────────────────────
   function monthsBetween(a, b) {
