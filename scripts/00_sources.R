@@ -286,21 +286,17 @@ rs_extraire_apromac <- function(texte) {
 rs_articles_apromac <- function() {
   items <- list()
 
-  key <- Sys.getenv("NEWSAPI_KEY")
-  if (nzchar(key)) {
+  # 18/11/2026 : NewsAPI retiré (offre gratuite interdite en production) ;
+  # remplacé par les flux de recherche RSS de l'éditeur qui publie les prix APROMAC.
+  for (u in c("https://businessactuality.com/?s=apromac&feed=rss2",
+              "https://businessactuality.com/?s=prix+caoutchouc&feed=rss2")) {
     tryCatch({
-      from <- format(Sys.Date() - 28, "%Y-%m-%d")
-      for (q in c("APROMAC", "prix caoutchouc FCFA kg")) {
-        txt <- rs_get("https://newsapi.org/v2/everything",
-                      query = list(q = q, language = "fr", from = from,
-                                   sortBy = "publishedAt", pageSize = 50),
-                      headers = c("X-Api-Key" = key))
-        j <- jsonlite::fromJSON(txt, simplifyVector = FALSE)
-        for (a in j$articles)
-          items[[length(items) + 1]] <- list(src = "NewsAPI", url = a$url %||% "",
-                                             texte = paste(a$title %||% "", a$description %||% ""))
-      }
-    }, error = function(e) rs_msg("NewsAPI KO : ", conditionMessage(e)))
+      doc <- xml2::read_xml(rs_get(u, tries = 2))
+      for (it in xml2::xml_find_all(doc, "//item"))
+        items[[length(items) + 1]] <- list(src = "Business & Actuality TV (RSS)",
+                                           url = xml2::xml_text(xml2::xml_find_first(it, "link")),
+                                           texte = xml2::xml_text(xml2::xml_find_first(it, "title")))
+    }, error = function(e) rs_msg("RSS Business Actuality KO : ", conditionMessage(e)))
   }
 
   tryCatch({

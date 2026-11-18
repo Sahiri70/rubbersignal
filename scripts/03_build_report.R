@@ -914,20 +914,41 @@ source_hebdo_pied <- function(langue = "fr") {
 }
 
 # Actualités : liste datée ou mention explicite d'indisponibilité
+# v4.5 (18/11/2026) : actualités RSS (titre, éditeur, date, lien ; aucun texte
+# recopié), regroupées par catégorie ; annonces de prix APROMAC repérées dans
+# la presse, signalées « à vérifier » (jamais saisies automatiquement).
 section_actu <- function(langue = "fr") {
-  titre <- if (langue == "fr") "## 📰 Actualités de la semaine\n\n" else "## 📰 News of the week\n\n"
+  fr <- langue == "fr"
+  titre <- if (fr) "## 📰 Actualités de la semaine\n\n" else "## 📰 News of the week\n\n"
+  annonces <- Filter(function(a) txt(a$statut) %in% c("a_saisir", "ecart"), actu$annonces_apromac %||% list())
+  bloc_prix <- if (length(annonces) == 0) "" else paste0(
+    if (fr) "> 🔎 **Prix officiel repéré dans la presse, à vérifier par l'évaluateur avant saisie**\n"
+    else "> 🔎 **Official price spotted in the press, to be checked by the assessor before entry**\n",
+    paste(vapply(annonces, function(a) paste0(
+      "> - APROMAC ", rs_mois_libelle(txt(a$mois), langue), " : ", txt(a$prix_fcfa), " FCFA/kg — ", txt(a$source), ", ",
+      rs_date_fr(txt(a$date_pub, NA)),
+      if (identical(txt(a$statut), "ecart")) (if (fr) paste0(" (saisi : ", txt(a$prix_saisi), " FCFA/kg)") else paste0(" (entered: ", txt(a$prix_saisi), " FCFA/kg)")) else "",
+      if (nzchar(txt(a$lien))) paste0(" ([", if (fr) "article" else "article", "](", txt(a$lien), "))") else "", "\n"), character(1)), collapse = ""),
+    if (fr) "> *Un prix encore inconnu de la base n'entre dans aucun calcul tant qu'il n'est pas saisi et daté dans le fichier de référence ; un écart signale une valeur connue différente de celle de la presse.*\n\n"
+    else "> *A price not yet in the database enters no calculation until it is entered and dated in the reference file; a gap flags a known value that differs from the press.*\n\n")
   if (!actu_ok) {
-    return(paste0(titre, if (langue == "fr")
+    return(paste0(titre, bloc_prix, if (fr)
       paste0("*Actualités indisponibles cette semaine (", actu_raison, ").*\n\n---\n\n")
       else paste0("*News unavailable this week (",
-                  if (grepl("erreur", actu_raison)) "NewsAPI error"
-                  else if (grepl("filtre", actu_raison)) "no article passed the relevance filter"
-                  else "NewsAPI returned no article for our queries", ").*\n\n---\n\n")))
+                  if (grepl("aucune source", actu_raison)) "no news source responded"
+                  else if (grepl("caoutchouc", actu_raison)) "no headline concerned natural rubber"
+                  else "no headline published this week in our sources", ").*\n\n---\n\n")))
   }
   lignes <- vapply(actu_top, function(a) paste0(
-    "- **", txt(a$titre, "—"), "** — ", txt(a$source, "—"), ", ", txt(a$date_fr, "—"),
-    if (nzchar(txt(a$lien))) paste0(" ([lien](", txt(a$lien), "))") else "", "\n"), character(1))
-  paste0(titre, paste(lignes, collapse = ""), "\n---\n\n")
+    "- ", if (nzchar(txt(a$categorie_fr))) paste0("*", txt(if (fr) a$categorie_fr else a$categorie_en), "* · ") else "",
+    "**", txt(a$titre, "—"), "** — ", txt(a$source, "—"), ", ", txt(a$date_fr, "—"),
+    if (nzchar(txt(a$lien))) paste0(" ([", if (fr) "lien" else "link", "](", txt(a$lien), "))") else "", "\n"), character(1))
+  n_tot <- num(actu$total_articles)
+  pied <- if (fr) paste0("*", n_tot, " titres retenus cette semaine sur le caoutchouc naturel (flux RSS : Google News et éditeurs). ",
+                         "Titres et liens seulement ; le contenu appartient aux éditeurs.*\n\n")
+          else paste0("*", n_tot, " headlines on natural rubber kept this week (RSS feeds: Google News and publishers). ",
+                      "Headlines and links only; content belongs to the publishers.*\n\n")
+  paste0(titre, bloc_prix, paste(lignes, collapse = ""), "\n", pied, "---\n\n")
 }
 
 rapport_fr <- paste0(

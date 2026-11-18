@@ -221,13 +221,14 @@ RS_METHODES <- data.frame(
   cle        = c("prix_hebdo", "reference_mensuelle", "apromac", "rsci", "terrain",
                  "pre_rsi", "volatilite", "rapi_ci", "rapi_afrique"),
   version    = c("Prix hebdo v1", "Références mensuelles v1", "APROMAC v1", "RSCI v2.1",
-                 "Terrain v1", "Pré-RSI v2", "Volatilité v1", "RAPI-CI v1", "RAPI-Afrique v1"),
+                 "Terrain v1", "Pré-RSI v2.1", "Volatilité v1", "RAPI-CI v1", "RAPI-Afrique v1"),
   # RSCI v2.1 (09/11/2026, decision de l'evaluateur) : taux USD/EUR = moyenne
   # mensuelle BCE du mois de reference TSR20, et non plus le taux du jour.
   # RAPI-Afrique v1 (18/11/2026) : memes regles que RAPI-CI, etendues au Liberia,
   # au Ghana, au Nigeria et au Cameroun (section 11 bis).
+  # Pré-RSI v2.1 (18/11/2026) : géopolitique tirée des actualités RSS (script 02).
   date_effet = c("2026-11-03", "2026-11-03", "2026-11-03", "2026-11-09",
-                 "2026-11-03", "2026-11-03", "2026-11-03", "2026-11-03", "2026-11-18"),
+                 "2026-11-03", "2026-11-18", "2026-11-03", "2026-11-03", "2026-11-18"),
   stringsAsFactors = FALSE
 )
 
@@ -504,6 +505,26 @@ rs_pre_rsi_geo <- function(nb_articles) {
   n <- suppressWarnings(as.numeric(nb_articles))
   if (length(n) != 1 || !is.finite(n) || n <= 0) return(NA_real_)
   if (n <= 2) 50 else if (n <= 4) 60 else 70
+}
+
+# Pré-RSI v2.1 : composante géopolitique tirée du bloc `actualites` du JSON
+# (script 02). nb_articles = titres de la semaine marqués « tension ».
+# Collecte indisponible ou aucun titre de tension : NA (composante retirée).
+rs_geo_depuis_actualites <- function(actu, date_collecte = Sys.Date()) {
+  base <- list(source = "Actualités de la semaine (script 02, flux RSS), titres marqués « tension »",
+               date_debut = as.character(as.Date(date_collecte) - 7), date_fin = as.character(as.Date(date_collecte)))
+  if (is.null(actu) || !identical(actu$statut, "ok"))
+    return(c(list(nb_articles = NA_integer_, statut = "actualites_indisponibles",
+                  signal = "Données indisponibles (collecte d'actualités sans résultat)", articles = list()), base))
+  arts <- Filter(function(a) isTRUE(a$tension), actu$tous_articles %||% list())
+  nb <- length(arts)
+  if (nb == 0)
+    return(c(list(nb_articles = NA_integer_, statut = "aucun_article_tension",
+                  signal = "Aucun titre sur des tensions cette semaine — composante retirée", articles = list()), base))
+  signal <- if (nb <= 2) "Tensions mineures à surveiller" else if (nb <= 4) "Tensions modérées — risque sur l'offre"
+            else "Tensions significatives — impact potentiel"
+  c(list(nb_articles = nb, statut = "ok", signal = signal,
+         articles = lapply(arts, function(a) list(titre = a$titre, source = a$source, url = a$lien, date = a$date))), base)
 }
 
 rs_sens_prix <- function(score) {

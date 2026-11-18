@@ -172,6 +172,16 @@ rs_site_donnees <- function(dir_db = RS_DB_DIR, j = NULL, validations = rs_valid
       pluie_30j_mm = .rs_num1(z$pluie_30j_mm), temp_c = .rs_num1(z$temp_moyenne_c),
       score_production = .rs_num1(z$score_production)))) else NULL
 
+  # ── Actualités : titre, éditeur, date, lien, catégorie (liste blanche ; aucun texte recopié)
+  ac <- j$actualites
+  actualites <- if (is.list(ac) && identical(.rs_txt1(ac$statut), "ok") && length(ac$tous_articles) > 0) list(
+    date = .rs_txt1(ac$date_collecte), n = .rs_num1(ac$total_articles),
+    articles = lapply(utils::head(ac$tous_articles, 10), function(a) list(
+      titre = .rs_txt1(a$titre, ""), source = .rs_txt1(a$source, ""), date = .rs_txt1(a$date),
+      lien = if (grepl("^https://", .rs_txt1(a$lien, ""))) .rs_txt1(a$lien) else NA_character_,
+      categorie_fr = .rs_txt1(a$categorie_fr, ""), categorie_en = .rs_txt1(a$categorie_en, ""),
+      tension = isTRUE(a$tension)))) else NULL
+
   # ── Catalogue des séries publiables (fiche IOSCO de chaque série)
   # (séries sans aucune valeur exclues : le site ne compte que ce qui est publié)
   pub <- pub[pub$serie_id %in% obs$serie_id, , drop = FALSE]
@@ -205,7 +215,7 @@ rs_site_donnees <- function(dir_db = RS_DB_DIR, j = NULL, validations = rs_valid
                  phrase_fr = .rs_txt1(j$rapi_afrique$phrase_fr, ""), phrase_en = .rs_txt1(j$rapi_afrique$phrase_en, ""))) else NULL,
     rsci =list(version = rs_version_methode("rsci"), drc = RS_DRC_REFERENCE, historique = rsci_hist),
     references = list(bm_tsr20 = ref("BM_TSR20"), fmi = ref("FMI_PRUBBUSDM")),
-    pre_rsi = pre_rsi, volatilite = vol, meteo = meteo, catalogue = catalogue)
+    pre_rsi = pre_rsi, volatilite = vol, meteo = meteo, actualites = actualites, catalogue = catalogue)
 }
 
 # Écrit site/data/terminal.json, terminal.js (lisible sans serveur) et le CSV public

@@ -14,7 +14,7 @@
 #   4. Stocks mondiaux (indisponible : aucune source alimentée)
 #   5. Shipping / Fret maritime (WTI FRED + saisie datée data/reference/fret.csv)
 #   6. Terrain CI (relevé daté, data/reference/terrain_ci.csv)
-#   7. Géopolitique / Tensions (NewsAPI — automatique, clé en en-tête)
+#   7. Géopolitique / Tensions (actualités de la semaine, script 02 — Pré-RSI v2.1)
 #   + Pré-RSI composite 0-100 (non publié sous 3 composantes)
 # Usage   : source("scripts/04_collect_signals.R")
 # =============================================================
@@ -70,7 +70,7 @@ cat("  M3 Demande aval  :",
 cat("  M4 Stocks        : indisponible (aucune source alimentée)\n")
 cat("  M5 Shipping      : WTI FRED + saisie datée (data/reference/fret.csv)\n")
 cat("  M6 Terrain CI    : relevé daté (data/reference/terrain_ci.csv)\n")
-cat("  M7 Géopolitique  : automatique (NewsAPI)\n\n")
+cat("  M7 Géopolitique  : tensions dans les actualités de la semaine (script 02, flux RSS)\n\n")
 
 
 # ══════════════════════════════════════════════════════════════
@@ -602,10 +602,23 @@ cat(strrep("─", 50), "\n")
 cat("MODULE 7 — GÉOPOLITIQUE / TENSIONS\n")
 cat(strrep("─", 50), "\n\n")
 
-# v2.3 : clé NewsAPI en en-tête X-Api-Key (plus dans l'URL). Sans donnée
-# (clé absente, API en erreur, 0 article pertinent) : nb_articles = NA et
-# composante retirée du Pré-RSI (plus de « 0 article = aucune tension = 65/100 »).
+# Pré-RSI v2.1 (18/11/2026) : la géopolitique ne fait plus d'appel séparé à
+# NewsAPI. Elle compte les titres de la semaine sur le caoutchouc naturel qui
+# parlent de tensions (sanctions, grève, sécheresse, interdiction d'export…),
+# trouvés par la collecte d'actualités (script 02, bloc `actualites`).
+# Règle de score inchangée (rs_pre_rsi_geo) ; sans article : composante retirée.
 collecter_geopolitique <- function() {
+  cat(">> Tensions dans les actualités de la semaine (script 02)...\n")
+  f <- paste0("data/processed/rubbersignal_S", SEMAINE, "_", ANNEE, ".json")
+  actu <- if (file.exists(f)) tryCatch(read_json(f)$actualites, error = function(e) NULL) else NULL
+  g <- rs_geo_depuis_actualites(actu, DATE_COLLECTE)
+  cat("   ", g$signal, "\n", sep = "")
+  if (!identical(g$statut, "ok")) cat("::warning::Geopolitique : ", g$statut, " - composante retiree du Pre-RSI\n", sep = "")
+  g
+}
+
+# Ancienne collecte NewsAPI (avant Pré-RSI v2.1), conservée pour mémoire, non appelée.
+collecter_geopolitique_newsapi <- function() {
   cat(">> Actualités géopolitiques (NewsAPI)...\n")
   sans_donnee <- function(statut, signal) {
     cat("   ", signal, "\n", sep = "")

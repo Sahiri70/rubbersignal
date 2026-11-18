@@ -381,6 +381,7 @@
         { label: t('Poids effectif', 'Effective weight'), get: function (c) { return RS.pct(c.poids_effectif * 100, 1); } }
       ], p.composantes, t('Composantes (nature E, ', 'Components (nature E, ') + p.version + ')', true);
     }
+    drawActualites();
     var mh = clear($('meteo')), m = D.meteo;
     if (!m || !m.zones) { RS.el('p', 'note', t('Non disponible.', 'Not available.'), mh); return; }
     C.table(mh, [
@@ -389,6 +390,27 @@
       { label: t('Température (°C)', 'Temperature (°C)'), get: function (z) { return RS.num(z.temp_c, 1); } },
       { label: t('Score de production', 'Production score'), get: function (z) { return ok(z.score_production) ? RS.int(z.score_production) : '—'; } }
     ], m.zones, t('Relevé du ', 'Reading of ') + RS.date(m.date) + ' · ' + m.source, true);
+  }
+
+  // Actualités : titre, éditeur, date et lien (le contenu reste chez l'éditeur)
+  function drawActualites() {
+    var A = D.actualites, card = $('actu-card');
+    if (!A || !A.articles || !A.articles.length) { card.hidden = true; return; }
+    card.hidden = false;
+    var ul = clear($('actu'));
+    A.articles.forEach(function (a) {
+      var li = RS.el('li', null, null, ul);
+      var meta = RS.el('span', 'news-meta', null, li);
+      RS.el('span', 'tag', t(a.categorie_fr, a.categorie_en), meta);
+      if (a.tension) RS.el('span', 'tag', t('tension', 'tension'), meta);
+      RS.el('span', null, a.source + ' · ' + RS.date(a.date), meta);
+      if (a.lien) {
+        var l = RS.el('a', 'news-title', a.titre, li);
+        l.href = a.lien; l.rel = 'noopener noreferrer nofollow'; l.target = '_blank';
+      } else RS.el('span', 'news-title', a.titre, li);
+    });
+    $('actu-note').textContent = RS.int(A.n) + t(' titres retenus cette semaine (flux RSS : Google News et éditeurs). Titres et liens seulement : le contenu appartient aux éditeurs. « tension » : titre compté dans la composante géopolitique du Pré-RSI.',
+      ' headlines kept this week (RSS feeds: Google News and publishers). Headlines and links only: content belongs to the publishers. "tension": headline counted in the Pre-RSI geopolitics component.');
   }
 
   // ── 5. Données ────────────────────────────────────────────

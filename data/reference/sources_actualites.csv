@@ -1,0 +1,7 @@
+id,nom,type,langue,url,actif,note
+gn_fr_ci,"Google News (français, Côte d'Ivoire)",google_news,fr,https://news.google.com/rss/search?q=caoutchouc+OR+h%C3%A9v%C3%A9a+OR+hevea+when:7d&hl=fr&gl=CI&ceid=CI:fr,oui,"titres et liens vers les éditeurs ; agrégateur"
+gn_en_marche,"Google News (anglais, marché)",google_news,en,https://news.google.com/rss/search?q=%22natural+rubber%22+when:7d&hl=en-US&gl=US&ceid=US:en,oui,"titres et liens vers les éditeurs ; agrégateur"
+gn_en_afrique,"Google News (anglais, Afrique)",google_news,en,https://news.google.com/rss/search?q=rubber+Liberia+OR+Ghana+OR+Nigeria+OR+Cameroon+OR+Ivorian+when:7d&hl=en-US&gl=US&ceid=US:en,oui,"titres et liens vers les éditeurs ; agrégateur"
+gn_en_eudr,"Google News (anglais, EUDR)",google_news,en,https://news.google.com/rss/search?q=EUDR+rubber+when:14d&hl=en-US&gl=US&ceid=US:en,oui,"titres et liens vers les éditeurs ; agrégateur"
+ba_hevea,"Business & Actuality TV (recherche hévéa)",rss,fr,https://businessactuality.com/?s=h%C3%A9v%C3%A9a&feed=rss2,oui,"flux de recherche de l'éditeur ; annonces des prix APROMAC"
+ba_caoutchouc,"Business & Actuality TV (recherche caoutchouc)",rss,fr,https://businessactuality.com/?s=caoutchouc&feed=rss2,oui,"flux de recherche de l'éditeur ; annonces des prix APROMAC"

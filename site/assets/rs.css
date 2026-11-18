@@ -304,3 +304,10 @@ ul.plain li + li { margin-top: 4px; }
 @media (max-width: 520px) { .top .tools .btn { display: none; } .top .wrap { gap: 10px; } }
 .section .kpis { margin-top: 20px; }
 .section .timeline { margin-top: 24px; }
+/* Actualités du terminal : une ligne de métadonnées, puis le titre (lien vers l'éditeur) */
+ul.plain.news { list-style: none; padding-left: 0; display: grid; gap: 12px; margin-top: 12px; }
+ul.plain.news li + li { margin-top: 0; padding-top: 12px; border-top: 1px solid var(--grid); }
+.news-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12.5px; color: var(--muted); }
+.news-title { display: block; margin-top: 4px; font-size: 15px; color: var(--ink); line-height: 1.4; overflow-wrap: anywhere; }
+a.news-title { text-decoration: none; }
+a.news-title:hover, a.news-title:focus-visible { text-decoration: underline; }

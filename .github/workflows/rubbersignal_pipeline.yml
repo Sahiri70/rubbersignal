@@ -66,18 +66,15 @@ jobs:
 
       - name: Run Script 01 - Collect prices
         env:
-          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
           FRED_KEY: ${{ secrets.FRED_KEY }}
         run: Rscript scripts/01_collect_prices.R
 
-      - name: Run Script 02 - Collect news
-        env:
-          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
+      - name: Run Script 02 - Collect news (RSS feeds)
+        # Flux RSS publics (data/reference/sources_actualites.csv) : aucune cle
         run: Rscript scripts/02_collect_news.R
 
       - name: Run Script 04 - Collect signals
         env:
-          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
           EXCHANGERATE_KEY: ${{ secrets.EXCHANGERATE_KEY }}
           FRED_KEY: ${{ secrets.FRED_KEY }}
         run: Rscript scripts/04_collect_signals.R
