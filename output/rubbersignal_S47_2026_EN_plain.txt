@@ -32,7 +32,7 @@ Neutral — balanced market
 | Component | Measure | Price direction | Effective weight |
 |──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
 | Weather / supply (4 zones) | Supply score 69/100 — Offre normale — marché équilibré | → neutral | 35.7% (nominal 25%) |
-| Currencies (yuan) | Yuan fort (-2.24% vs moyenne 12 mois) — demande soutenue — USD/CNY 6.6793 (17/11/2026, ExchangeRate API (v6)) ; ref. 12-month average 6.8324 (FRED DEXCHUS) | ↑ up | 28.6% (nominal 20%) |
+| Currencies (yuan) | Yuan fort (-2.22% vs moyenne 12 mois) — demande soutenue — USD/CNY 6.6799 (18/11/2026, ExchangeRate API (v6)) ; ref. 12-month average 6.8313 (FRED DEXCHUS) | ↑ up | 28.6% (nominal 20%) |
 | Industrial demand | Score 40/100 — Demande faible — signal baissier (OECD industrial confidence: mean z 0.36, 3 countries) | ↓ down | 35.7% (nominal 25%) |
 | CI field data | No field report this week | — missing | 0% (nominal 15%) |
 | Geopolitics | Aucun article reçu cette semaine — donnée indisponible — component removed | — missing | 0% (nominal 15%) |
@@ -43,7 +43,7 @@ Outside the score:
 
 | Signal | Value |
 |──────────────────────────────|──────────────────────────────|
-| 💱 Malaysian ringgit (MYR) | Ringgit stable (1.61% vs moyenne 12 mois) — neutre — USD/MYR 4.0942 |
+| 💱 Malaysian ringgit (MYR) | Ringgit stable (1.6% vs moyenne 12 mois) — neutre — USD/MYR 4.0935 |
 | 🚢 Ocean freight | Unavailable: no dated source (BDI, CI-EU rate, Abidjan-Rotterdam transit time) |
 | 📦 Global stocks | Data unavailable |
 
@@ -129,6 +129,19 @@ Reading: gap = Ivorian EU CIF price ÷ Asian composite (Thailand, Indonesia, Mal
 
 Source: Eurostat Comext (DS-045409), CN 4001 22 00, updated 13/11/2026. USD/EUR rate: ECB monthly average (EXR.M.USD.EUR.SP00.A). Comparison: World Bank TSR20 (Pink Sheet), outside the index. RubberSignal Technologies calculation.
 
+Other African origins — RAPI-Africa
+
+| Origin | Month | Volume (t) | €/kg | USD/kg | Gap to CI | Flags |
+|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
+| Liberia | September 2026 | 1,774 | 2.105 | 2.423 | +0.7% | — |
+| Ghana | September 2026 | 2,021 | 2.084 | 2.400 | -0.3% | — |
+| Nigeria | September 2026 | 665 | 2.083 | 2.398 | -0.4% | — |
+| Cameroon | September 2026 | 1,189 | 2.035 | 2.342 | -2.7% | — |
+
+In September 2026, among the other African origins, the EU-delivered price gap to Côte d'Ivoire ranges from -2.7% (Cameroon) to +0.7% (Liberia).
+
+Same measure as RAPI-CI (CN 4001 22 00, delivered EU-border price). Nature: T (prices, volumes), E (gap). Low liquidity = less than 500 t imported from the origin in the month. Source: Eurostat Comext, updated 13/11/2026. Method version: RAPI-Afrique v1.
+
 ──────────────────────────────
 
 📰 News of the week
@@ -139,9 +152,9 @@ News unavailable this week (no article passed the relevance filter).
 
 RubberSignal Technologies — Natural Rubber Market Intelligence | West Africa & Global Markets
 
-weekly quote reserved (licence) | Monthly references: IMF (FRED PRUBBUSDM), World Bank (Pink Sheet) | EU customs: Eurostat Comext (DS-045409) | Report of November 17, 2026
+weekly quote reserved (licence) | Monthly references: IMF (FRED PRUBBUSDM), World Bank (Pink Sheet) | EU customs: Eurostat Comext (DS-045409) | Report of November 18, 2026
 
-Calculations prepared and checked by automated tools, including AI models. Automatic publication of 17/11/2026, pending validation by the responsible assessor (Martial Sahiri).
+Calculations prepared and checked by automated tools, including AI models. Automatic publication of 18/11/2026, pending validation by the responsible assessor (Martial Sahiri).
 
 Subscribe: rubbersignal.substack.com
 

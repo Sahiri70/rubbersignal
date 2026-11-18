@@ -1,6 +1,6 @@
 {
   "meta": {
-    "date_collecte": "2026-11-17",
+    "date_collecte": "2026-11-18",
     "semaine": 47,
     "annee": 2026,
     "source": "rubbersignal.com",
@@ -10,19 +10,19 @@
     "synthese": {
       "prix_actuel": null,
       "periode": "2026-11",
-      "date_source": "2026-11-17",
+      "date_source": "2026-11-18",
       "statut_fraicheur": "frais",
       "age_jours": 0,
       "prix_hebdo": {
         "valeur": null,
         "unite": "USD/kg",
         "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
-        "date_source": "2026-11-17",
+        "date_source": "2026-11-18",
         "methode": "Cotation quotidienne lue le jour de collecte (priorite LGM > MRB via rtas.sg > SGX > IndexMundi) ; perimee au-dela de 14 jours",
         "indice": "MRB_SMR20",
         "statut": "frais",
         "age_jours": 0,
-        "periode": "2026-11-17",
+        "periode": "2026-11-18",
         "publiable": false,
         "licence": "sous licence",
         "nature": "O",
@@ -60,7 +60,7 @@
         "unite_orig": "US cents/lb",
         "url": "https://fred.stlouisfed.org/series/PRUBBUSDM",
         "statut": "perime",
-        "age_jours_fin_periode": 48,
+        "age_jours_fin_periode": 49,
         "serie": "FMI_PRUBBUSDM",
         "publiable": true,
         "licence": "donnees publiques",
@@ -79,7 +79,7 @@
         "unite_orig": null,
         "url": "https://thedocs.worldbank.org/en/doc/74e8be41ceb20fa0da750cda2f6b9e4e-0050012026/related/CMO-Historical-Data-Monthly.xlsx",
         "statut": "derniere_valeur_disponible",
-        "age_jours_fin_periode": 17,
+        "age_jours_fin_periode": 18,
         "serie": "BM_TSR20",
         "publiable": true,
         "licence": "CC BY 4.0",
@@ -190,8 +190,8 @@
       "fcfa_par_usd": 596.92,
       "taux_eur_usd": 1.0989,
       "taux_date": "2026-11-17",
-      "spread_export_usd": 1.689,
-      "spread_export_pct": 67.6,
+      "spread_export_usd": 1.66,
+      "spread_export_pct": 67.2,
       "note": "Spread confidentiel — publication prevue RubberSignal V2",
       "valeur": 484,
       "unite": "FCFA/kg",
@@ -282,21 +282,21 @@
       "unite": "%",
       "periode": "2026-09",
       "source": "Calcul RubberSignal Technologies (APROMAC, Banque mondiale, BCE)",
-      "date_source": "2026-11-17",
+      "date_source": "2026-11-18",
       "publiable": true,
       "nature": "E",
       "version_methode": "RSCI v2.1",
       "date_effet_methode": "2026-11-09"
     },
     "marches_mondiaux": {
-      "date_cours": "2026-11-16",
+      "date_cours": "2026-11-17",
       "spread_sicom_lgm": null,
       "lgm": {
         "grade": "TSR20/SMR20",
         "bourse": "MRB/LGM (Malaisie)",
         "prix_usd": null,
         "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
-        "date_source": "2026-11-17",
+        "date_source": "2026-11-18",
         "statut_fraicheur": "frais"
       },
       "sicom": {
@@ -772,19 +772,19 @@
       "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
       "indice": "MRB_SMR20",
       "nb_sources": 2,
-      "divergence_max_pct": 9,
+      "divergence_max_pct": 9.6,
       "candidats": {
         "mrb": {
           "usd": null,
           "source": "MRB SMR20 FOB Dec 2026 (via rtas.sg)",
           "indice": "MRB_SMR20",
-          "date_source": "2026-11-17"
+          "date_source": "2026-11-18"
         },
         "sgx": {
           "usd": null,
           "source": "SGX TSR20 FOB Dec 2026 (reglement de la veille, via rtas.sg)",
           "indice": "SGX_TSR20",
-          "date_source": "2026-11-17"
+          "date_source": "2026-11-18"
         }
       }
     },
@@ -803,13 +803,13 @@
     },
     "fraicheur": {
       "tsr20_hebdo": "frais",
-      "tsr20_date_source": "2026-11-17",
+      "tsr20_date_source": "2026-11-18",
       "seuil_hebdo_jours": 14,
       "seuil_mensuel_jours": 45
     }
   },
   "actualites": {
-    "date_collecte": "2026-11-17",
+    "date_collecte": "2026-11-18",
     "statut": "indisponible",
     "raison": "2 articles bruts recus, aucun retenu par le filtre de pertinence",
     "source": "NewsAPI /v2/everything (7 derniers jours)",
@@ -902,7 +902,7 @@
   },
   "signaux_faibles": {
     "meta": {
-      "date_collecte": "2026-11-17",
+      "date_collecte": "2026-11-18",
       "semaine": 47,
       "annee": 2026,
       "version": "2.3"
@@ -912,31 +912,31 @@
         "Côte d'Ivoire": {
           "pays": "Côte d'Ivoire",
           "ville": "Abidjan",
-          "pluie_30j_mm": 77.8,
+          "pluie_30j_mm": 85.9,
           "temp_moyenne_c": 27.6,
-          "score_production": 58,
+          "score_production": 62,
           "signal_production": "Neutre"
         },
         "Thaïlande": {
           "pays": "Thaïlande",
           "ville": "Bangkok",
-          "pluie_30j_mm": 107.6,
-          "temp_moyenne_c": 29,
-          "score_production": 62,
+          "pluie_30j_mm": 115.1,
+          "temp_moyenne_c": 29.1,
+          "score_production": 64,
           "signal_production": "Neutre"
         },
         "Malaisie": {
           "pays": "Malaisie",
           "ville": "Kuala Lumpur",
-          "pluie_30j_mm": 387.4,
-          "temp_moyenne_c": 27.2,
-          "score_production": 85,
+          "pluie_30j_mm": 417.7,
+          "temp_moyenne_c": 27.1,
+          "score_production": 80,
           "signal_production": "Favorable"
         },
         "Indonésie": {
           "pays": "Indonésie",
           "ville": "Jakarta",
-          "pluie_30j_mm": 133.5,
+          "pluie_30j_mm": 130.1,
           "temp_moyenne_c": 29.6,
           "score_production": 68,
           "signal_production": "Neutre"
@@ -945,38 +945,38 @@
       "score_offre_mondiale": 69,
       "signal_offre": "Offre normale — marché équilibré",
       "source": "Open-Meteo (archive), cumul de pluie du mois",
-      "date_source": "2026-11-16"
+      "date_source": "2026-11-17"
     },
     "module2_devises": {
-      "USD_CNY": 6.6793,
-      "USD_MYR": 4.0942,
-      "USD_XOF": 596.01,
+      "USD_CNY": 6.6799,
+      "USD_MYR": 4.0935,
+      "USD_XOF": 596.38,
       "USD_IDR": 18276,
-      "USD_CHF": 0.8398,
+      "USD_CHF": 0.8407,
       "source": "ExchangeRate API (v6)",
-      "date": "2026-11-17",
+      "date": "2026-11-18",
       "statut": "ok",
       "alertes": [],
-      "signal_cny": "Yuan fort (-2.24% vs moyenne 12 mois) — demande soutenue",
-      "signal_myr": "Ringgit stable (1.61% vs moyenne 12 mois) — neutre",
-      "ecart_cny_pct": -2.24,
-      "ecart_myr_pct": 1.61,
+      "signal_cny": "Yuan fort (-2.22% vs moyenne 12 mois) — demande soutenue",
+      "signal_myr": "Ringgit stable (1.6% vs moyenne 12 mois) — neutre",
+      "ecart_cny_pct": -2.22,
+      "ecart_myr_pct": 1.6,
       "reference_cny": {
-        "valeur": 6.8324,
+        "valeur": 6.8313,
         "serie": "DEXCHUS",
         "source": "FRED DEXCHUS",
-        "debut": "2025-11-18",
+        "debut": "2025-11-19",
         "fin": "2026-11-13",
-        "n_obs": 248,
+        "n_obs": 247,
         "methode": "Moyenne des cotations quotidiennes des 365 derniers jours"
       },
       "reference_myr": {
-        "valeur": 4.0295,
+        "valeur": 4.029,
         "serie": "DEXMAUS",
         "source": "FRED DEXMAUS",
-        "debut": "2025-11-18",
+        "debut": "2025-11-19",
         "fin": "2026-11-13",
-        "n_obs": 248,
+        "n_obs": 247,
         "methode": "Moyenne des cotations quotidiennes des 365 derniers jours"
       }
     },
@@ -1025,10 +1025,10 @@
         "permis_constr": {
           "serie": "PERMIT",
           "nom": "Permis construction US",
-          "valeur": 1398,
-          "valeur_prec": 1403,
-          "variation_pct": -0.36,
-          "date": "2026-09-01"
+          "valeur": 1295,
+          "valeur_prec": 1398,
+          "variation_pct": -7.37,
+          "date": "2026-10-01"
         }
       },
       "confiance_industrie": {
@@ -1192,8 +1192,8 @@
       "signal": "Aucun article reçu cette semaine — donnée indisponible",
       "articles": [],
       "source": "NewsAPI (everything)",
-      "date_debut": "2026-11-10",
-      "date_fin": "2026-11-17"
+      "date_debut": "2026-11-11",
+      "date_fin": "2026-11-18"
     },
     "pre_rsi": {
       "score": 52,
@@ -1246,7 +1246,7 @@
       "unite": "score 0-100 (> 55 haussier, < 45 baissier)",
       "periode": "2026-W47",
       "source": "Calcul RubberSignal Technologies (modules 1, 2, 3, 6, 7 de ce fichier)",
-      "date_source": "2026-11-17",
+      "date_source": "2026-11-18",
       "publiable": true,
       "methode": "Somme pondérée des composantes disponibles (scores orientés prix), divisée par la somme de leurs poids ; poids nominaux météo 25 %, devises 20 %, demande 25 %, terrain 15 %, géopolitique 15 % (non backtestés) ; non publié sous 3 composantes. Analyse, pas un indice de prix.",
       "nature": "E",
@@ -1257,7 +1257,7 @@
   "monte_carlo": {
     "disponible": true,
     "meta": {
-      "date_simulation": "2026-11-17",
+      "date_simulation": "2026-11-18",
       "semaine": 47,
       "annee": 2026,
       "n_simulations": 10000,
@@ -1291,11 +1291,11 @@
     "unite": "volatilite annuelle (fraction)",
     "periode": "2021-10/2026-10",
     "source": "Calcul RubberSignal Technologies sur Banque mondiale Pink Sheet TSR20",
-    "date_source": "2026-11-17",
+    "date_source": "2026-11-18",
     "resultats": {
       "S4": {
         "horizon_sem": 4,
-        "date_horizon": "2026-12-15",
+        "date_horizon": "2026-12-16",
         "prix_depart": 2.55,
         "p05": 2.369,
         "p10": 2.409,
@@ -1312,7 +1312,7 @@
       },
       "S8": {
         "horizon_sem": 8,
-        "date_horizon": "2027-01-12",
+        "date_horizon": "2027-01-13",
         "prix_depart": 2.55,
         "p05": 2.3,
         "p10": 2.353,
@@ -1329,7 +1329,7 @@
       },
       "S12": {
         "horizon_sem": 12,
-        "date_horizon": "2027-02-09",
+        "date_horizon": "2027-02-10",
         "prix_depart": 2.55,
         "p05": 2.248,
         "p10": 2.312,
@@ -1346,7 +1346,7 @@
       },
       "S26": {
         "horizon_sem": 26,
-        "date_horizon": "2027-05-18",
+        "date_horizon": "2027-05-19",
         "prix_depart": 2.55,
         "p05": 2.117,
         "p10": 2.205,
@@ -1412,7 +1412,7 @@
     "statut": "ok",
     "nouvelle_extraction": true,
     "valeurs_issues_de": "API Eurostat du jour",
-    "date_extraction_valeurs": "2026-11-17",
+    "date_extraction_valeurs": "2026-11-18",
     "version_methode": "RAPI-CI v1",
     "date_effet_methode": "2026-11-03",
     "source": "Eurostat Comext (DS-045409)",
@@ -1431,9 +1431,9 @@
     "updated_eurostat": "2026-11-13T11:00:00+0100",
     "derniere_periode": "2026-09",
     "statut_fraicheur": "derniere_valeur_disponible",
-    "age_jours_maj_eurostat": 4,
-    "age_jours_fin_periode": 48,
-    "fichier_brut": "data/raw/comext_20261117.json",
+    "age_jours_maj_eurostat": 5,
+    "age_jours_fin_periode": 49,
+    "fichier_brut": "data/raw/comext_20261118.json",
     "taux_change": {
       "source_principale": "BCE, moyenne mensuelle du taux de reference USD/EUR (EXR.M.USD.EUR.SP00.A)",
       "url": "https://data-api.ecb.europa.eu/service/data/EXR/M.USD.EUR.SP00.A",
@@ -2769,10 +2769,642 @@
     ],
     "alertes": []
   },
+  "rapi_afrique": {
+    "statut": "ok",
+    "nouvelle_extraction": true,
+    "valeurs_issues_de": "API Eurostat du jour",
+    "date_extraction_valeurs": "2026-11-18",
+    "version_methode": "RAPI-Afrique v1",
+    "date_effet_methode": "2026-11-18",
+    "source": "Eurostat Comext (DS-045409)",
+    "url_source": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&freq=M&reporter=EU&partner=CI&partner=LR&partner=GH&partner=NG&partner=CM&product=40012200&product=40012900&product=40011000&flow=1&indicators=VALUE_IN_EUROS&indicators=QUANTITY_IN_100KG&lastTimePeriod=24",
+    "fichier_brut": "data/raw/comext_afrique_20261118.json",
+    "date_maj_eurostat": "2026-11-13",
+    "derniere_periode": "2026-09",
+    "statut_fraicheur": "derniere_valeur_disponible",
+    "produits": [
+      {
+        "code": "40012200",
+        "cle": "tsnr",
+        "libelle_nc": "NC 4001 22 00",
+        "libelle_fr": "caoutchouc techniquement spécifié (TSNR)",
+        "libelle_en": "technically specified rubber (TSNR)"
+      },
+      {
+        "code": "40012900",
+        "cle": "autres",
+        "libelle_nc": "NC 4001 29 00",
+        "libelle_fr": "autres formes sèches",
+        "libelle_en": "other dry forms"
+      },
+      {
+        "code": "40011000",
+        "cle": "latex",
+        "libelle_nc": "NC 4001 10 00",
+        "libelle_fr": "latex",
+        "libelle_en": "latex"
+      }
+    ],
+    "seuils": {
+      "faible_liquidite_t": 500,
+      "variation_pct": 15
+    },
+    "nature": {
+      "prix_cif": "T",
+      "ecart_ci": "E",
+      "volume": "T"
+    },
+    "publiable": true,
+    "licence": "Eurostat : reutilisation libre avec mention de la source (decision 2011/833/UE)",
+    "phrase_fr": "En septembre 2026, parmi les autres origines africaines, l'écart de prix rendu UE avec la Côte d'Ivoire va de -2.7 % (Cameroun) à +0.7 % (Liberia).",
+    "phrase_en": "In September 2026, among the other African origins, the EU-delivered price gap to Côte d'Ivoire ranges from -2.7% (Cameroon) to +0.7% (Liberia).",
+    "origines": [
+      {
+        "code": "CI",
+        "nom_fr": "Côte d'Ivoire",
+        "nom_en": "Côte d'Ivoire",
+        "volumes_6m_t": {
+          "tsnr": 190861,
+          "autres": 13205,
+          "latex": 2520
+        },
+        "reference": true
+      },
+      {
+        "code": "LR",
+        "nom_fr": "Liberia",
+        "nom_en": "Liberia",
+        "volumes_6m_t": {
+          "tsnr": 13146,
+          "autres": 20,
+          "latex": 1028
+        },
+        "derniere": {
+          "periode": "2026-09",
+          "vol_t": 1774,
+          "eur_kg": 2.105,
+          "usd_kg": 2.423,
+          "ecart_ci_pct": 0.7,
+          "faible_liquidite": false,
+          "alerte_variation": false,
+          "taux_source_secondaire": false
+        },
+        "mois": [
+          {
+            "periode": "2025-10",
+            "vol_t": 1633,
+            "eur_kg": 1.596,
+            "usd_kg": 1.856,
+            "ecart_ci_pct": -1.8,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2025-11",
+            "vol_t": 968,
+            "eur_kg": 1.627,
+            "usd_kg": 1.881,
+            "ecart_ci_pct": -4.7,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2025-12",
+            "vol_t": 1421,
+            "eur_kg": 1.827,
+            "usd_kg": 2.14,
+            "ecart_ci_pct": 4.7,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-01",
+            "vol_t": 1008,
+            "eur_kg": 1.773,
+            "usd_kg": 2.081,
+            "ecart_ci_pct": 1.1,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-02",
+            "vol_t": 849,
+            "eur_kg": 1.825,
+            "usd_kg": 2.157,
+            "ecart_ci_pct": 3.9,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-03",
+            "vol_t": 2621,
+            "eur_kg": 1.734,
+            "usd_kg": 2.005,
+            "ecart_ci_pct": -0.2,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-04",
+            "vol_t": 1653,
+            "eur_kg": 1.783,
+            "usd_kg": 2.088,
+            "ecart_ci_pct": -2.9,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-05",
+            "vol_t": 3427,
+            "eur_kg": 1.767,
+            "usd_kg": 2.063,
+            "ecart_ci_pct": -2.6,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-06",
+            "vol_t": 627,
+            "eur_kg": 1.882,
+            "usd_kg": 2.168,
+            "ecart_ci_pct": -0.9,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-07",
+            "vol_t": 3972,
+            "eur_kg": 1.962,
+            "usd_kg": 2.24,
+            "ecart_ci_pct": 1.4,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-08",
+            "vol_t": 1693,
+            "eur_kg": 2.048,
+            "usd_kg": 2.374,
+            "ecart_ci_pct": -1.7,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-09",
+            "vol_t": 1774,
+            "eur_kg": 2.105,
+            "usd_kg": 2.423,
+            "ecart_ci_pct": 0.7,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          }
+        ]
+      },
+      {
+        "code": "GH",
+        "nom_fr": "Ghana",
+        "nom_en": "Ghana",
+        "volumes_6m_t": {
+          "tsnr": 13217,
+          "autres": 1875,
+          "latex": 0
+        },
+        "derniere": {
+          "periode": "2026-09",
+          "vol_t": 2021,
+          "eur_kg": 2.084,
+          "usd_kg": 2.4,
+          "ecart_ci_pct": -0.3,
+          "faible_liquidite": false,
+          "alerte_variation": false,
+          "taux_source_secondaire": false
+        },
+        "mois": [
+          {
+            "periode": "2025-10",
+            "vol_t": 1462,
+            "eur_kg": 1.736,
+            "usd_kg": 2.019,
+            "ecart_ci_pct": 6.8,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2025-11",
+            "vol_t": 2313,
+            "eur_kg": 1.671,
+            "usd_kg": 1.931,
+            "ecart_ci_pct": -2.2,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2025-12",
+            "vol_t": 2289,
+            "eur_kg": 1.744,
+            "usd_kg": 2.042,
+            "ecart_ci_pct": -0.1,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-01",
+            "vol_t": 1497,
+            "eur_kg": 1.822,
+            "usd_kg": 2.139,
+            "ecart_ci_pct": 3.9,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-02",
+            "vol_t": 1283,
+            "eur_kg": 1.819,
+            "usd_kg": 2.151,
+            "ecart_ci_pct": 3.6,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-03",
+            "vol_t": 1000,
+            "eur_kg": 1.791,
+            "usd_kg": 2.07,
+            "ecart_ci_pct": 3,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-04",
+            "vol_t": 963,
+            "eur_kg": 1.814,
+            "usd_kg": 2.124,
+            "ecart_ci_pct": -1.2,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-05",
+            "vol_t": 2485,
+            "eur_kg": 1.849,
+            "usd_kg": 2.159,
+            "ecart_ci_pct": 1.9,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-06",
+            "vol_t": 2074,
+            "eur_kg": 1.869,
+            "usd_kg": 2.153,
+            "ecart_ci_pct": -1.6,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-07",
+            "vol_t": 2515,
+            "eur_kg": 1.881,
+            "usd_kg": 2.148,
+            "ecart_ci_pct": -2.7,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-08",
+            "vol_t": 3160,
+            "eur_kg": 2,
+            "usd_kg": 2.319,
+            "ecart_ci_pct": -4,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-09",
+            "vol_t": 2021,
+            "eur_kg": 2.084,
+            "usd_kg": 2.4,
+            "ecart_ci_pct": -0.3,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          }
+        ]
+      },
+      {
+        "code": "NG",
+        "nom_fr": "Nigeria",
+        "nom_en": "Nigeria",
+        "volumes_6m_t": {
+          "tsnr": 6870,
+          "autres": 0,
+          "latex": 0
+        },
+        "derniere": {
+          "periode": "2026-09",
+          "vol_t": 665,
+          "eur_kg": 2.083,
+          "usd_kg": 2.398,
+          "ecart_ci_pct": -0.4,
+          "faible_liquidite": false,
+          "alerte_variation": false,
+          "taux_source_secondaire": false
+        },
+        "mois": [
+          {
+            "periode": "2025-10",
+            "vol_t": 1013,
+            "eur_kg": 1.749,
+            "usd_kg": 2.034,
+            "ecart_ci_pct": 7.6,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2025-11",
+            "vol_t": 2460,
+            "eur_kg": 1.812,
+            "usd_kg": 2.095,
+            "ecart_ci_pct": 6.1,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2025-12",
+            "vol_t": 1068,
+            "eur_kg": 1.838,
+            "usd_kg": 2.152,
+            "ecart_ci_pct": 5.4,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-01",
+            "vol_t": 1068,
+            "eur_kg": 1.816,
+            "usd_kg": 2.131,
+            "ecart_ci_pct": 3.5,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-02",
+            "vol_t": 685,
+            "eur_kg": 1.851,
+            "usd_kg": 2.189,
+            "ecart_ci_pct": 5.4,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-03",
+            "vol_t": 242,
+            "eur_kg": 1.746,
+            "usd_kg": 2.018,
+            "ecart_ci_pct": 0.4,
+            "faible_liquidite": true,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-04",
+            "vol_t": 373,
+            "eur_kg": 1.834,
+            "usd_kg": 2.147,
+            "ecart_ci_pct": -0.2,
+            "faible_liquidite": true,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-05",
+            "vol_t": 1583,
+            "eur_kg": 1.824,
+            "usd_kg": 2.13,
+            "ecart_ci_pct": 0.5,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-06",
+            "vol_t": 2757,
+            "eur_kg": 1.931,
+            "usd_kg": 2.224,
+            "ecart_ci_pct": 1.7,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-07",
+            "vol_t": 867,
+            "eur_kg": 1.938,
+            "usd_kg": 2.213,
+            "ecart_ci_pct": 0.2,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-08",
+            "vol_t": 625,
+            "eur_kg": 2.092,
+            "usd_kg": 2.426,
+            "ecart_ci_pct": 0.4,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-09",
+            "vol_t": 665,
+            "eur_kg": 2.083,
+            "usd_kg": 2.398,
+            "ecart_ci_pct": -0.4,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          }
+        ]
+      },
+      {
+        "code": "CM",
+        "nom_fr": "Cameroun",
+        "nom_en": "Cameroon",
+        "volumes_6m_t": {
+          "tsnr": 5819,
+          "autres": 60,
+          "latex": 5381
+        },
+        "derniere": {
+          "periode": "2026-09",
+          "vol_t": 1189,
+          "eur_kg": 2.035,
+          "usd_kg": 2.342,
+          "ecart_ci_pct": -2.7,
+          "faible_liquidite": false,
+          "alerte_variation": false,
+          "taux_source_secondaire": false
+        },
+        "mois": [
+          {
+            "periode": "2025-10",
+            "vol_t": 1373,
+            "eur_kg": 1.647,
+            "usd_kg": 1.915,
+            "ecart_ci_pct": 1.4,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2025-11",
+            "vol_t": 564,
+            "eur_kg": 1.656,
+            "usd_kg": 1.914,
+            "ecart_ci_pct": -3.1,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2025-12",
+            "vol_t": 917,
+            "eur_kg": 1.616,
+            "usd_kg": 1.893,
+            "ecart_ci_pct": -7.4,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-01",
+            "vol_t": 1511,
+            "eur_kg": 1.608,
+            "usd_kg": 1.887,
+            "ecart_ci_pct": -8.3,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-02",
+            "vol_t": 328,
+            "eur_kg": 1.692,
+            "usd_kg": 2.001,
+            "ecart_ci_pct": -3.7,
+            "faible_liquidite": true,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-03",
+            "vol_t": 368,
+            "eur_kg": 1.597,
+            "usd_kg": 1.846,
+            "ecart_ci_pct": -8.1,
+            "faible_liquidite": true,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-04",
+            "vol_t": 990,
+            "eur_kg": 1.681,
+            "usd_kg": 1.968,
+            "ecart_ci_pct": -8.5,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-05",
+            "vol_t": 1698,
+            "eur_kg": 1.681,
+            "usd_kg": 1.963,
+            "ecart_ci_pct": -7.4,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-06",
+            "vol_t": 242,
+            "eur_kg": 1.742,
+            "usd_kg": 2.006,
+            "ecart_ci_pct": -8.3,
+            "faible_liquidite": true,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-07",
+            "vol_t": 769,
+            "eur_kg": 1.869,
+            "usd_kg": 2.134,
+            "ecart_ci_pct": -3.4,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-08",
+            "vol_t": 930,
+            "eur_kg": 1.899,
+            "usd_kg": 2.202,
+            "ecart_ci_pct": -8.9,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          },
+          {
+            "periode": "2026-09",
+            "vol_t": 1189,
+            "eur_kg": 2.035,
+            "usd_kg": 2.342,
+            "ecart_ci_pct": -2.7,
+            "faible_liquidite": false,
+            "alerte_variation": false,
+            "taux_source_secondaire": false
+          }
+        ]
+      }
+    ],
+    "alertes": []
+  },
   "rapport": {
     "titre_fr": "RubberSignal Technologies #47 | TSR20 Banque mondiale : 2.55 USD/kg (octobre 2026) | Semaine 47 - 2026",
     "titre_en": "RubberSignal Technologies #47 | TSR20 World Bank: 2.55 USD/kg (October 2026) | Week 47 - 2026",
-    "date_rapport": "2026-11-17",
+    "date_rapport": "2026-11-18",
     "semaine": 47,
     "fichier_fr": "output/rubbersignal_S47_2026_FR.md",
     "fichier_en": "output/rubbersignal_S47_2026_EN.md",
@@ -2797,7 +3429,8 @@
       "terrain": "Terrain v1",
       "pre_rsi": "Pré-RSI v2",
       "volatilite": "Volatilité v1",
-      "rapi_ci": "RAPI-CI v1"
+      "rapi_ci": "RAPI-CI v1",
+      "rapi_afrique": "RAPI-Afrique v1"
     }
   }
 }

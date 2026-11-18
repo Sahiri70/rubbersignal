@@ -32,7 +32,7 @@ Neutre — marché équilibré
 | Composante | Mesure | Sens pour le prix | Poids effectif |
 |──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
 | Météo / offre (4 zones) | Score d'offre 69/100 — Offre normale — marché équilibré | → neutre | 35.7 % (nominal 25 %) |
-| Devises (yuan) | Yuan fort (-2.24% vs moyenne 12 mois) — demande soutenue — USD/CNY 6.6793 (17/11/2026, ExchangeRate API (v6)) ; réf. moyenne 12 mois 6.8324 (FRED DEXCHUS) | ↑ hausse | 28.6 % (nominal 20 %) |
+| Devises (yuan) | Yuan fort (-2.22% vs moyenne 12 mois) — demande soutenue — USD/CNY 6.6799 (18/11/2026, ExchangeRate API (v6)) ; réf. moyenne 12 mois 6.8313 (FRED DEXCHUS) | ↑ hausse | 28.6 % (nominal 20 %) |
 | Demande industrielle | Score 40/100 — Demande faible — signal baissier (confiance industrielle OCDE : z moyen 0.36, 3 pays) | ↓ baisse | 35.7 % (nominal 25 %) |
 | Terrain CI | Pas de relevé terrain cette semaine | — absente | 0 % (nominal 15 %) |
 | Géopolitique | Aucun article reçu cette semaine — donnée indisponible — composante retirée | — absente | 0 % (nominal 15 %) |
@@ -43,7 +43,7 @@ Hors score :
 
 | Signal | Valeur |
 |──────────────────────────────|──────────────────────────────|
-| 💱 Ringgit malaisien (MYR) | Ringgit stable (1.61% vs moyenne 12 mois) — neutre — USD/MYR 4.0942 |
+| 💱 Ringgit malaisien (MYR) | Ringgit stable (1.6% vs moyenne 12 mois) — neutre — USD/MYR 4.0935 |
 | 🚢 Fret maritime | Indisponible : aucune source datée (BDI, tarif CI-UE, délai Abidjan-Rotterdam) |
 | 📦 Stocks mondiaux | Donnée indisponible |
 
@@ -129,6 +129,19 @@ Lecture : décote = prix CIF UE ivoirien ÷ composite asiatique (Thaïlande, Ind
 
 Source : Eurostat Comext (DS-045409), NC 4001 22 00, mise à jour du 13/11/2026. Taux USD/EUR : moyenne mensuelle BCE (EXR.M.USD.EUR.SP00.A). Comparaison : TSR20 Banque mondiale (Pink Sheet), hors indice. Calcul RubberSignal Technologies.
 
+Autres origines africaines — RAPI-Afrique
+
+| Origine | Mois | Volume (t) | €/kg | USD/kg | Écart à la CI | Drapeaux |
+|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|──────────────────────────────|
+| Liberia | septembre 2026 | 1 774 | 2.105 | 2.423 | +0.7 % | — |
+| Ghana | septembre 2026 | 2 021 | 2.084 | 2.400 | -0.3 % | — |
+| Nigeria | septembre 2026 | 665 | 2.083 | 2.398 | -0.4 % | — |
+| Cameroun | septembre 2026 | 1 189 | 2.035 | 2.342 | -2.7 % | — |
+
+En septembre 2026, parmi les autres origines africaines, l'écart de prix rendu UE avec la Côte d'Ivoire va de -2.7 % (Cameroun) à +0.7 % (Liberia).
+
+Même mesure que RAPI-CI (NC 4001 22 00, prix rendu frontière UE). Nature : T (prix, volumes), E (écart). Faible liquidité = moins de 500 t importées de l'origine dans le mois. Source : Eurostat Comext, mise à jour du 13/11/2026. Version de méthode : RAPI-Afrique v1.
+
 ──────────────────────────────
 
 📰 Actualités de la semaine
@@ -139,9 +152,9 @@ Actualités indisponibles cette semaine (2 articles bruts recus, aucun retenu pa
 
 RubberSignal Technologies — Intelligence marché caoutchouc naturel | Afrique de l'Ouest & marchés mondiaux
 
-cotation hebdomadaire réservée (licence) | Références mensuelles : FMI (FRED PRUBBUSDM), Banque mondiale (Pink Sheet) | Douanes UE : Eurostat Comext (DS-045409) | Rapport du 17/11/2026
+cotation hebdomadaire réservée (licence) | Références mensuelles : FMI (FRED PRUBBUSDM), Banque mondiale (Pink Sheet) | Douanes UE : Eurostat Comext (DS-045409) | Rapport du 18/11/2026
 
-Calculs préparés et contrôlés par des outils automatisés, dont des modèles d'IA. Publication automatique du 17/11/2026, en attente de validation par l'évaluateur responsable (Martial Sahiri).
+Calculs préparés et contrôlés par des outils automatisés, dont des modèles d'IA. Publication automatique du 18/11/2026, en attente de validation par l'évaluateur responsable (Martial Sahiri).
 
 Pour vous abonner : rubbersignal.substack.com
 

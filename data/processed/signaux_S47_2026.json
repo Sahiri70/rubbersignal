@@ -1,6 +1,6 @@
 {
   "meta": {
-    "date_collecte": "2026-11-17",
+    "date_collecte": "2026-11-18",
     "semaine": 47,
     "annee": 2026,
     "version": "2.3"
@@ -10,31 +10,31 @@
       "Côte d'Ivoire": {
         "pays": "Côte d'Ivoire",
         "ville": "Abidjan",
-        "pluie_30j_mm": 77.8,
+        "pluie_30j_mm": 85.9,
         "temp_moyenne_c": 27.6,
-        "score_production": 58,
+        "score_production": 62,
         "signal_production": "Neutre"
       },
       "Thaïlande": {
         "pays": "Thaïlande",
         "ville": "Bangkok",
-        "pluie_30j_mm": 107.6,
-        "temp_moyenne_c": 29,
-        "score_production": 62,
+        "pluie_30j_mm": 115.1,
+        "temp_moyenne_c": 29.1,
+        "score_production": 64,
         "signal_production": "Neutre"
       },
       "Malaisie": {
         "pays": "Malaisie",
         "ville": "Kuala Lumpur",
-        "pluie_30j_mm": 387.4,
-        "temp_moyenne_c": 27.2,
-        "score_production": 85,
+        "pluie_30j_mm": 417.7,
+        "temp_moyenne_c": 27.1,
+        "score_production": 80,
         "signal_production": "Favorable"
       },
       "Indonésie": {
         "pays": "Indonésie",
         "ville": "Jakarta",
-        "pluie_30j_mm": 133.5,
+        "pluie_30j_mm": 130.1,
         "temp_moyenne_c": 29.6,
         "score_production": 68,
         "signal_production": "Neutre"
@@ -43,38 +43,38 @@
     "score_offre_mondiale": 69,
     "signal_offre": "Offre normale — marché équilibré",
     "source": "Open-Meteo (archive), cumul de pluie du mois",
-    "date_source": "2026-11-16"
+    "date_source": "2026-11-17"
   },
   "module2_devises": {
-    "USD_CNY": 6.6793,
-    "USD_MYR": 4.0942,
-    "USD_XOF": 596.01,
+    "USD_CNY": 6.6799,
+    "USD_MYR": 4.0935,
+    "USD_XOF": 596.38,
     "USD_IDR": 18276,
-    "USD_CHF": 0.8398,
+    "USD_CHF": 0.8407,
     "source": "ExchangeRate API (v6)",
-    "date": "2026-11-17",
+    "date": "2026-11-18",
     "statut": "ok",
     "alertes": [],
-    "signal_cny": "Yuan fort (-2.24% vs moyenne 12 mois) — demande soutenue",
-    "signal_myr": "Ringgit stable (1.61% vs moyenne 12 mois) — neutre",
-    "ecart_cny_pct": -2.24,
-    "ecart_myr_pct": 1.61,
+    "signal_cny": "Yuan fort (-2.22% vs moyenne 12 mois) — demande soutenue",
+    "signal_myr": "Ringgit stable (1.6% vs moyenne 12 mois) — neutre",
+    "ecart_cny_pct": -2.22,
+    "ecart_myr_pct": 1.6,
     "reference_cny": {
-      "valeur": 6.8324,
+      "valeur": 6.8313,
       "serie": "DEXCHUS",
       "source": "FRED DEXCHUS",
-      "debut": "2025-11-18",
+      "debut": "2025-11-19",
       "fin": "2026-11-13",
-      "n_obs": 248,
+      "n_obs": 247,
       "methode": "Moyenne des cotations quotidiennes des 365 derniers jours"
     },
     "reference_myr": {
-      "valeur": 4.0295,
+      "valeur": 4.029,
       "serie": "DEXMAUS",
       "source": "FRED DEXMAUS",
-      "debut": "2025-11-18",
+      "debut": "2025-11-19",
       "fin": "2026-11-13",
-      "n_obs": 248,
+      "n_obs": 247,
       "methode": "Moyenne des cotations quotidiennes des 365 derniers jours"
     }
   },
@@ -123,10 +123,10 @@
       "permis_constr": {
         "serie": "PERMIT",
         "nom": "Permis construction US",
-        "valeur": 1398,
-        "valeur_prec": 1403,
-        "variation_pct": -0.36,
-        "date": "2026-09-01"
+        "valeur": 1295,
+        "valeur_prec": 1398,
+        "variation_pct": -7.37,
+        "date": "2026-10-01"
       }
     },
     "confiance_industrie": {
@@ -286,8 +286,8 @@
     "signal": "Aucun article reçu cette semaine — donnée indisponible",
     "articles": [],
     "source": "NewsAPI (everything)",
-    "date_debut": "2026-11-10",
-    "date_fin": "2026-11-17"
+    "date_debut": "2026-11-11",
+    "date_fin": "2026-11-18"
   },
   "pre_rsi": {
     "score": 52,
@@ -337,7 +337,7 @@
     "unite": "score 0-100 (> 55 haussier, < 45 baissier)",
     "periode": "2026-W47",
     "source": "Calcul RubberSignal Technologies (modules 1, 2, 3, 6, 7 de ce fichier)",
-    "date_source": "2026-11-17",
+    "date_source": "2026-11-18",
     "publiable": true,
     "methode": "Somme pondérée des composantes disponibles (scores orientés prix), divisée par la somme de leurs poids ; poids nominaux météo 25 %, devises 20 %, demande 25 %, terrain 15 %, géopolitique 15 % (non backtestés) ; non publié sous 3 composantes. Analyse, pas un indice de prix.",
     "nature": "E",
