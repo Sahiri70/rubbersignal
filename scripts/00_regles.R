@@ -219,16 +219,16 @@ rs_date_fr <- function(d) if (is.null(d) || is.na(d)) "date inconnue" else forma
 
 RS_METHODES <- data.frame(
   cle        = c("prix_hebdo", "reference_mensuelle", "apromac", "rsci", "terrain",
-                 "pre_rsi", "volatilite", "rapi_ci", "rapi_afrique"),
+                 "pre_rsi", "volatilite", "rapi_ci", "rapi_afrique", "faostat"),
   version    = c("Prix hebdo v1", "Références mensuelles v1", "APROMAC v1", "RSCI v2.1",
-                 "Terrain v1", "Pré-RSI v2.1", "Volatilité v1", "RAPI-CI v1", "RAPI-Afrique v1"),
+                 "Terrain v1", "Pré-RSI v2.1", "Volatilité v1", "RAPI-CI v1", "RAPI-Afrique v1", "Production FAOSTAT v1"),
   # RSCI v2.1 (09/11/2026, decision de l'evaluateur) : taux USD/EUR = moyenne
   # mensuelle BCE du mois de reference TSR20, et non plus le taux du jour.
   # RAPI-Afrique v1 (18/11/2026) : memes regles que RAPI-CI, etendues au Liberia,
   # au Ghana, au Nigeria et au Cameroun (section 11 bis).
   # Pré-RSI v2.1 (18/11/2026) : géopolitique tirée des actualités RSS (script 02).
   date_effet = c("2026-11-03", "2026-11-03", "2026-11-03", "2026-11-09",
-                 "2026-11-03", "2026-11-18", "2026-11-03", "2026-11-03", "2026-11-18"),
+                 "2026-11-03", "2026-11-18", "2026-11-03", "2026-11-03", "2026-11-18", "2026-11-18"),
   stringsAsFactors = FALSE
 )
 
@@ -257,7 +257,7 @@ RS_LEGENDE_NATURE_EN <- "Nature: T = transaction, O = official, D = declaration,
 RS_REGISTRE_SERIES <- data.frame(
   serie = c("MRB_SMR20", "SGX_TSR20", "LGM", "RTAS_SG", "JPX_TOCOM", "SHFE_RU", "INDEXMUNDI",
             "BM_TSR20", "FMI_PRUBBUSDM", "APROMAC", "RSCI", "TERRAIN_CI", "PRE_RSI", "VOLATILITE",
-            "EUROSTAT_COMEXT", "RAPI_CI", "BCE_USD_EUR", "FRED_EXUSEU", "RAPI_AFRIQUE"),
+            "EUROSTAT_COMEXT", "RAPI_CI", "BCE_USD_EUR", "FRED_EXUSEU", "RAPI_AFRIQUE", "FAOSTAT"),
   libelle = c("MRB SMR20 (ex-LGM)", "SGX-SICOM TSR20", "LGM / MRB (site officiel)", "rtas.sg (republication MRB / SGX)",
               "JPX / TOCOM RSS3", "SHFE RU", "IndexMundi",
               "Banque mondiale, Pink Sheet TSR20", "FMI, Global price of Rubber (FRED PRUBBUSDM)",
@@ -266,10 +266,11 @@ RS_REGISTRE_SERIES <- data.frame(
               "Eurostat Comext DS-045409 (importations UE, NC 4001 10 00, 4001 22 00 et 4001 29 00)",
               "RAPI-CI (calcul RubberSignal Technologies : prix CIF UE, composite Asie, decote CI)",
               "BCE, taux de reference USD/EUR", "FRED EXUSEU (Federal Reserve, USD/EUR mensuel)",
-              "RAPI-Afrique (calcul RubberSignal Technologies : prix CIF UE par origine africaine, ecart a la CI)"),
+              "RAPI-Afrique (calcul RubberSignal Technologies : prix CIF UE par origine africaine, ecart a la CI)",
+              "FAOSTAT (FAO), production, superficie recoltee et rendement du caoutchouc naturel (produit 836)"),
   publiable = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
                 TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE,
-                TRUE, TRUE, TRUE, TRUE, TRUE),
+                TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
   licence = c("sous licence", "sous licence", "sous licence", "sous licence", "sous licence",
               "sous licence", "sous licence", "CC BY 4.0", "donnees publiques",
               "publication officielle", "calcul RubberSignal Technologies (entrees publiables)",
@@ -277,9 +278,10 @@ RS_REGISTRE_SERIES <- data.frame(
               "Eurostat : reutilisation libre avec mention de la source (decision 2011/833/UE)",
               "calcul RubberSignal Technologies (entrees Eurostat et BCE)",
               "BCE : reutilisation libre avec mention de la source", "donnees publiques (Federal Reserve, via FRED)",
-              "calcul RubberSignal Technologies (entrees Eurostat et BCE)"),
+              "calcul RubberSignal Technologies (entrees Eurostat et BCE)",
+              "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)"),
   nature = c("O", "T", "O", "O", "T", "T", "O", "T", "T", "O", "E", "D", "E", "E",
-             "T", "T", "O", "O", "T"),
+             "T", "T", "O", "O", "T", "O"),
   stringsAsFactors = FALSE
 )
 
@@ -961,6 +963,80 @@ rs_afrique_phrase <- function(d, langue = "fr") {
                  f(bas$ecart_ci_pct), " % (", nom(bas$partenaire), ") à ", f(haut$ecart_ci_pct), " % (", nom(haut$partenaire), ").")
   else paste0("In ", rs_mois_libelle(per, "en"), ", among the other African origins, the EU-delivered price gap to Côte d'Ivoire ranges from ",
               f(bas$ecart_ci_pct), "% (", nom(bas$partenaire), ") to ", f(haut$ecart_ci_pct), "% (", nom(haut$partenaire), ").")
+}
+
+
+# ── 11 ter. PRODUCTION FAOSTAT v1 (18/11/2026) ───────────────
+# Source : FAOSTAT, domaine QCL (cultures), produit 836 « caoutchouc naturel
+# sous formes primaires », éléments 5510 production (t), 5312 superficie
+# récoltée (ha), 5412 rendement (kg/ha). Licence CC BY 4.0 (FAO).
+# Fichiers en vrac (bulks-faostat.fao.org) : Afrique, Asie, groupes de pays
+# (monde, Afrique, Asie). Données annuelles, publiées une fois par an : le
+# script 09 ne télécharge que si la date de mise à jour FAO a changé.
+# Nature par valeur, d'après le drapeau FAO : A (officiel) et X (organisation
+# internationale) -> O ; E (estimé), I (imputé), T (non officiel) -> E ;
+# M (manquant) -> valeur non enregistrée.
+
+RS_FAO_PRODUIT <- 836
+RS_FAO_ELEMENTS <- c(PROD = 5510, SURF = 5312, REND = 5412)
+RS_FAO_UNITES   <- c(PROD = "t", SURF = "ha", REND = "kg/ha")
+RS_FAO_ANNEE_MIN <- 2000
+RS_FAO_FICHIERS <- c("Production_Crops_Livestock_E_Africa", "Production_Crops_Livestock_E_Asia",
+                     "Production_Crops_Livestock_E_All_Area_Groups")
+RS_FAO_URL <- "https://bulks-faostat.fao.org/production/%s.zip"
+RS_FAO_PAGE <- "https://www.fao.org/faostat/en/#data/QCL"
+
+# code (identifiant RubberSignal), code de pays FAO, noms fr/en, groupe
+RS_FAO_PAYS <- data.frame(
+  code = c("CI", "GH", "LR", "NG", "CM", "GA", "GW", "GN", "CD", "CG", "CF",
+           "TH", "ID", "VN", "CN", "IN", "KH", "MY", "PH", "LA", "MM",
+           "WLD", "AFR", "ASI"),
+  fao = c(107, 81, 123, 159, 32, 74, 175, 90, 250, 46, 37,
+          216, 101, 237, 41, 100, 115, 131, 171, 120, 28,
+          5000, 5100, 5300),
+  nom_fr = c("Côte d'Ivoire", "Ghana", "Liberia", "Nigeria", "Cameroun", "Gabon", "Guinée-Bissau", "Guinée",
+             "RD Congo", "Congo", "Centrafrique",
+             "Thaïlande", "Indonésie", "Vietnam", "Chine", "Inde", "Cambodge", "Malaisie", "Philippines", "Laos", "Myanmar",
+             "Monde", "Afrique", "Asie"),
+  nom_en = c("Côte d'Ivoire", "Ghana", "Liberia", "Nigeria", "Cameroon", "Gabon", "Guinea-Bissau", "Guinea",
+             "DR Congo", "Congo", "Central African Republic",
+             "Thailand", "Indonesia", "Vietnam", "China", "India", "Cambodia", "Malaysia", "Philippines", "Laos", "Myanmar",
+             "World", "Africa", "Asia"),
+  groupe = c(rep("afrique", 11), rep("asie", 10), rep("total", 3)),
+  stringsAsFactors = FALSE)
+
+rs_fao_id <- function(element, code) paste0("FAO_", element, "_", code)
+
+rs_fao_nature <- function(flag) {
+  f <- toupper(ifelse(is.na(flag), "", trimws(flag)))
+  ifelse(f %in% c("", "A", "X", "P"), "O", ifelse(f == "M", NA_character_, "E"))
+}
+RS_FAO_FLAGS <- c(A = "valeur officielle", X = "valeur d'une organisation internationale",
+                  E = "valeur estimée", I = "valeur imputée", T = "valeur non officielle", P = "valeur provisoire")
+
+# Lecture d'un fichier FAOSTAT (format large Y2000, Y2000F…) -> format long :
+# code, element (PROD/SURF/REND), annee, valeur, flag. Seulement le produit 836
+# et les pays de RS_FAO_PAYS ; valeurs « M » ou vides ignorées.
+rs_fao_lire <- function(f, annee_min = RS_FAO_ANNEE_MIN) {
+  x <- utils::read.csv(f, check.names = FALSE, stringsAsFactors = FALSE, encoding = "UTF-8")
+  need <- c("Area Code", "Item Code", "Element Code")
+  if (!all(need %in% names(x))) stop("FAOSTAT : colonnes inattendues dans ", basename(f))
+  x <- x[x$`Item Code` == RS_FAO_PRODUIT & x$`Element Code` %in% RS_FAO_ELEMENTS & x$`Area Code` %in% RS_FAO_PAYS$fao, , drop = FALSE]
+  if (nrow(x) == 0) return(data.frame(code = character(), element = character(), annee = character(),
+                                      valeur = numeric(), flag = character(), stringsAsFactors = FALSE))
+  ans <- sub("^Y", "", grep("^Y[0-9]{4}$", names(x), value = TRUE))
+  ans <- ans[as.integer(ans) >= annee_min]
+  out <- do.call(rbind, lapply(ans, function(a) data.frame(
+    code = RS_FAO_PAYS$code[match(x$`Area Code`, RS_FAO_PAYS$fao)],
+    element = names(RS_FAO_ELEMENTS)[match(x$`Element Code`, RS_FAO_ELEMENTS)],
+    annee = a, valeur = suppressWarnings(as.numeric(x[[paste0("Y", a)]])),
+    flag = if (paste0("Y", a, "F") %in% names(x)) as.character(x[[paste0("Y", a, "F")]]) else "",
+    stringsAsFactors = FALSE)))
+  out$flag[is.na(out$flag)] <- ""
+  out <- out[is.finite(out$valeur) & !is.na(rs_fao_nature(out$flag)), , drop = FALSE]
+  out <- out[!duplicated(out[, c("code", "element", "annee")]), , drop = FALSE]
+  rownames(out) <- NULL
+  out
 }
 
 

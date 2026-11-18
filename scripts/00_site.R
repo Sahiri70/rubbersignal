@@ -103,6 +103,42 @@ rs_site_afrique <- function(obs, n = 6) {
        debut = mois6[1], fin = mois6[length(mois6)], origines = origines)
 }
 
+# Production FAOSTAT : dernière année par pays (production, surface, rendement,
+# nature d'après le drapeau FAO), parts du monde et de l'Afrique, historique de
+# production ; zones satellite (data/reference/zones_satellite.csv).
+rs_site_production <- function(obs, zones_f = "data/reference/zones_satellite.csv") {
+  pp <- rs_site_points(obs, rs_fao_id("PROD", "WLD"))
+  if (nrow(pp) == 0) return(NULL)
+  an <- max(pp$p)
+  serie <- function(e, code) rs_site_points(obs, rs_fao_id(e, code))
+  nat <- function(code) { h <- obs[obs$serie_id == rs_fao_id("PROD", code) & obs$date_valeur == an, , drop = FALSE]
+                          if (nrow(h)) h$nature[nrow(h)] else NA_character_ }
+  val <- function(e, code, a = an) { s <- serie(e, code); v <- s$v[match(a, s$p)]; if (length(v) && is.finite(v)) v else NA_real_ }
+  monde <- val("PROD", "WLD"); afr <- val("PROD", "AFR")
+  pays <- lapply(which(RS_FAO_PAYS$groupe != "total"), function(i) {
+    p <- RS_FAO_PAYS[i, ]; pr <- val("PROD", p$code)
+    h <- serie("PROD", p$code); h <- h[as.integer(h$p) >= 2010, , drop = FALSE]
+    list(code = p$code, nom_fr = p$nom_fr, nom_en = p$nom_en, groupe = p$groupe,
+         prod_t = pr, surf_ha = val("SURF", p$code), rend_kg_ha = val("REND", p$code),
+         prod_2020_t = val("PROD", p$code, "2020"), nature = nat(p$code),
+         part_monde_pct = if (is.finite(pr) && is.finite(monde) && monde > 0) round(100 * pr / monde, 2) else NA_real_,
+         part_afrique_pct = if (p$groupe == "afrique" && is.finite(pr) && is.finite(afr) && afr > 0) round(100 * pr / afr, 1) else NA_real_,
+         historique = lapply(seq_len(nrow(h)), function(k) list(p = h$p[k], v = h$v[k])))
+  })
+  zones <- if (file.exists(zones_f)) {
+    z <- utils::read.csv(zones_f, stringsAsFactors = FALSE, encoding = "UTF-8")
+    lapply(seq_len(nrow(z)), function(k) list(id = z$id[k], pays = z$pays[k], lat = z$lat[k], lon = z$lon[k],
+      image = paste0("assets/sat/", z$id[k], ".jpg"), titre_fr = z$titre_fr[k], titre_en = z$titre_en[k],
+      legende_fr = z$legende_fr[k], legende_en = z$legende_en[k], source = z$sources[k], coordonnees = z$coordonnees[k],
+      largeur_km = round(256 * z$nx[k] * 156543.03392 * cos(z$lat[k] * pi / 180) / 2^z$zoom[k] / 1000, 1)))
+  } else list()
+  list(version = rs_version_methode("faostat"), annee = an, monde_t = monde, afrique_t = afr, asie_t = val("PROD", "ASI"),
+       maj_fao = max(obs$date_source[startsWith(obs$serie_id, "FAO_")], na.rm = TRUE),
+       licence = "FAOSTAT, CC BY 4.0", pays = pays, zones = zones,
+       satellite_credit = "EOxCloudless 2016 https://cloudless.eox.at by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2016), CC BY 4.0",
+       carte_credit = "Natural Earth (domaine public)")
+}
+
 # Historique du RSCI (v2.1) : un point par mois de prix APROMAC
 #   apromac : data.frame(mois, prix_fcfa, type, source, date_publication, origine)
 rs_site_rsci_historique <- function(apromac, obs) {
@@ -215,6 +251,7 @@ rs_site_donnees <- function(dir_db = RS_DB_DIR, j = NULL, validations = rs_valid
                  phrase_fr = .rs_txt1(j$rapi_afrique$phrase_fr, ""), phrase_en = .rs_txt1(j$rapi_afrique$phrase_en, ""))) else NULL,
     rsci =list(version = rs_version_methode("rsci"), drc = RS_DRC_REFERENCE, historique = rsci_hist),
     references = list(bm_tsr20 = ref("BM_TSR20"), fmi = ref("FMI_PRUBBUSDM")),
+    production = rs_site_production(obs),
     pre_rsi = pre_rsi, volatilite = vol, meteo = meteo, actualites = actualites, catalogue = catalogue)
 }
 

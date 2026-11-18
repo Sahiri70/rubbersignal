@@ -243,6 +243,140 @@
       t(' ; douanes mises à jour le ', '; customs updated ') + RS.date(A.maj_eurostat) + ')');
   }
 
+  // ── 1 ter. Zones de production (FAOSTAT, carte, vues satellite) ──
+  var prod = { sat: 0 };
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  function svgEl(name, attrs, parent) {
+    var e = document.createElementNS(SVGNS, name);
+    for (var k in attrs) if (Object.prototype.hasOwnProperty.call(attrs, k)) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function classeProd(t) { return !ok(t) || t <= 0 ? 0 : t >= 1e6 ? 4 : t >= 1e5 ? 3 : t >= 25e3 ? 2 : 1; }
+  function tonnes(t) { return t >= 1e6 ? RS.num(t / 1e6, 2) + ' Mt' : t >= 1e4 ? RS.int(t / 1e3) + ' kt' : RS.int(t) + ' t'; }
+  function importUE(code) {
+    var A = D.afrique; if (!A || !A.origines) return null;
+    var o = A.origines.filter(function (x) { return x.code === code; })[0];
+    return o ? o.vol_tsnr_t : null;
+  }
+  function detailPays(p) {
+    if (!p) return '';
+    var P = D.production, imp = importUE(p.code);
+    return t(p.nom_fr, p.nom_en) + ' : ' + RS.int(p.prod_t) + t(' t en ', ' t in ') + P.annee +
+      (ok(p.part_afrique_pct) ? ' (' + RS.pct(p.part_afrique_pct, 1) + t(' de l’Afrique)', ' of Africa)') : '') +
+      ', ' + RS.int(p.surf_ha) + ' ha, ' + RS.int(p.rend_kg_ha) + ' kg/ha' +
+      (ok(imp) ? t('. Importations UE de caoutchouc technique sur 6 mois : ', '. EU imports of technically specified rubber over 6 months: ') + RS.int(imp) + ' t' : '') + '.';
+  }
+
+  function drawProduction() {
+    var P = D.production, K = window.RS_CARTE, sec = $('production');
+    if (!P || !P.pays || !K) { sec.hidden = true; return; }
+    sec.hidden = false;
+    var byCode = {}; P.pays.forEach(function (p) { byCode[p.code] = p; });
+    var afr = P.pays.filter(function (p) { return p.groupe === 'afrique' && ok(p.prod_t); }).sort(function (a, b) { return b.prod_t - a.prod_t; });
+    var ci = byCode.CI;
+    var monde = P.pays.filter(function (p) { return p.groupe !== 'total' && ok(p.prod_t); }).sort(function (a, b) { return b.prod_t - a.prod_t; });
+
+    // Tuiles
+    var k = clear($('prod-kpis'));
+    kpi(k, t('Production africaine ', 'African production ') + P.annee, tonnes(P.afrique_t), null,
+      RS.pct(100 * P.afrique_t / P.monde_t, 1) + t(' de la production mondiale', ' of world production'), 'O');
+    if (ci) kpi(k, t('Côte d’Ivoire ', 'Côte d’Ivoire ') + P.annee, tonnes(ci.prod_t), null,
+      t((monde.indexOf(ci) + 1) + 'e producteur mondial · ', 'No. ' + (monde.indexOf(ci) + 1) + ' world producer · ') + RS.pct(ci.part_afrique_pct, 0) + t(' de l’Afrique', ' of Africa'), ci.nature || 'O');
+    if (ci && ok(ci.prod_2020_t)) kpi(k, t('Côte d’Ivoire depuis 2020', 'Côte d’Ivoire since 2020'), RS.pct(100 * (ci.prod_t / ci.prod_2020_t - 1), 0, true), null,
+      RS.int(ci.prod_2020_t) + ' t → ' + RS.int(ci.prod_t) + ' t', 'O');
+
+    // Carte
+    $('carte-titre').textContent = t('Production de caoutchouc naturel par pays, ', 'Natural rubber production by country, ') + P.annee;
+    $('carte-sub').textContent = t('FAOSTAT (FAO), mise à jour du ', 'FAOSTAT (FAO), updated ') + RS.date(P.maj_fao) + t(' · fond de carte Natural Earth', ' · base map Natural Earth');
+    var host = clear($('carte'));
+    var svg = svgEl('svg', { viewBox: '0 0 ' + K.largeur + ' ' + K.hauteur, 'class': 'carte', role: 'img',
+      'aria-label': t('Carte de la production de caoutchouc naturel en Afrique de l’Ouest et centrale', 'Map of natural rubber production in West and Central Africa') }, host);
+    var detail = $('carte-detail');
+    var labels = [];
+    K.pays.forEach(function (c) {
+      var p = byCode[c.iso2], q = p ? classeProd(p.prod_t) : 0;
+      var path = svgEl('path', { d: c.d, 'class': 'pays' + (q ? ' q' + q + ' prod' : '') }, svg);
+      var tt = svgEl('title', {}, path); tt.textContent = p ? detailPays(p) : t(c.nom_fr, c.nom_en);
+      if (p && q) {
+        path.setAttribute('tabindex', '0'); path.setAttribute('role', 'button');
+        path.setAttribute('aria-label', detailPays(p));
+        var montrer = function () { detail.textContent = detailPays(p); };
+        path.addEventListener('pointerenter', montrer); path.addEventListener('focus', montrer); path.addEventListener('click', montrer);
+        if (p.prod_t >= 25e3) labels.push({ path: path, txt: t(p.nom_fr, p.nom_en) });
+      }
+    });
+    // Étiquettes au centre du pays, décalées vers le haut si un point satellite les couvre
+    var pinsXY = (P.zones || []).map(function (z) { return [(z.lon - K.bbox.xmin) * K.echelle, (K.bbox.ymax - z.lat) * K.echelle]; });
+    labels.forEach(function (l) {
+      var b = l.path.getBBox(), x = b.x + b.width / 2, y = b.y + b.height / 2 + 4;
+      for (var n = 0; n < 4 && pinsXY.some(function (q) { return Math.abs(q[0] - x) < 60 && Math.abs(q[1] - y + 6) < 22; }); n++) y -= 22;
+      var tx = svgEl('text', { x: x.toFixed(1), y: y.toFixed(1), 'class': 'lbl', 'text-anchor': 'middle' }, svg);
+      tx.textContent = l.txt;
+    });
+    (P.zones || []).forEach(function (z, i) {
+      var x = (z.lon - K.bbox.xmin) * K.echelle, y = (K.bbox.ymax - z.lat) * K.echelle;
+      var g = svgEl('g', { 'class': 'pin' + (i === prod.sat ? ' on' : ''), tabindex: '0', role: 'button',
+        'aria-label': t('Vue satellite : ', 'Satellite view: ') + t(z.titre_fr, z.titre_en) }, svg);
+      svgEl('circle', { cx: x.toFixed(1), cy: y.toFixed(1), r: 15 }, g);
+      svgEl('text', { x: x.toFixed(1), y: (y + 6).toFixed(1) }, g).textContent = String(i + 1);
+      var choisir = function () { prod.sat = i; drawSatellite(); drawProductionPins(); };
+      g.addEventListener('click', choisir);
+      g.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); choisir(); } });
+    });
+    var lg = clear($('carte-legende'));
+    [[4, '≥ 1 Mt'], [3, '100 kt – 1 Mt'], [2, '25 – 100 kt'], [1, '< 25 kt'], [0, t('non producteur ou non suivi', 'non-producer or not tracked')]].forEach(function (x) {
+      var s = RS.el('span', null, null, lg); RS.el('i', null, null, s).style.background = 'var(--q' + x[0] + ')'; RS.el('span', null, x[1], s);
+    });
+    var sp = RS.el('span', null, null, lg); RS.el('i', 'pinkey', null, sp); RS.el('span', null, t('vue satellite', 'satellite view'), sp);
+    detail.textContent = ci ? detailPays(ci) : '';
+
+    // Classement mondial (Côte d'Ivoire et pays africains mis en avant)
+    $('rang-sub').textContent = t('Production ', 'Production ') + P.annee + t(', tonnes (FAOSTAT). En couleur : pays africains.', ', tonnes (FAOSTAT). Coloured: African countries.');
+    C.ranked($('rang'), monde.slice(0, 12).map(function (p) {
+      return { name: t(p.nom_fr, p.nom_en), value: p.prod_t, strong: p.groupe === 'afrique', text: tonnes(p.prod_t) + ' · ' + RS.pct(p.part_monde_pct, 1) };
+    }));
+
+    // Tableau des producteurs africains
+    C.table(clear($('t-production')), [
+      { label: t('Pays', 'Country'), left: true, get: function (p) { return t(p.nom_fr, p.nom_en); } },
+      { label: t('Production (t)', 'Production (t)'), get: function (p) { return RS.int(p.prod_t); } },
+      { label: t('Part de l’Afrique', 'Share of Africa'), get: function (p) { return RS.pct(p.part_afrique_pct, 1); } },
+      { label: t('Surface (ha)', 'Area (ha)'), get: function (p) { return RS.int(p.surf_ha); } },
+      { label: t('Rendement (kg/ha)', 'Yield (kg/ha)'), get: function (p) { return RS.int(p.rend_kg_ha); } },
+      { label: t('Depuis 2020', 'Since 2020'), get: function (p) { return ok(p.prod_2020_t) && p.prod_2020_t > 0 ? RS.pct(100 * (p.prod_t / p.prod_2020_t - 1), 0, true) : '—'; } },
+      { label: t('Import UE 6 mois (t)', 'EU imports 6 months (t)'), get: function (p) { var v = importUE(p.code); return ok(v) ? RS.int(v) : '—'; } },
+      { label: 'Nature', left: true, get: function (p) { return p.nature || '—'; } }
+    ], afr, t('Producteurs africains, ', 'African producers, ') + P.annee + ' (' + P.version + t(', licence CC BY 4.0)', ', CC BY 4.0 licence)'), true);
+
+    drawSatellite();
+  }
+  function drawProductionPins() {
+    var pins = document.querySelectorAll('#carte .pin');
+    for (var i = 0; i < pins.length; i++) pins[i].setAttribute('class', 'pin' + (i === prod.sat ? ' on' : ''));
+  }
+  function drawSatellite() {
+    var P = D.production, zs = P.zones || [];
+    if (!zs.length) return;
+    var z = zs[Math.min(prod.sat, zs.length - 1)];
+    var choix = clear($('sat-choix'));
+    zs.forEach(function (x, i) {
+      var b = RS.el('button', null, (i + 1) + '. ' + t(x.titre_fr, x.titre_en).split(' : ')[0].split(': ')[0], choix);
+      b.type = 'button'; b.setAttribute('aria-pressed', i === prod.sat ? 'true' : 'false');
+      b.addEventListener('click', function () { prod.sat = i; drawSatellite(); drawProductionPins(); });
+    });
+    $('sat-titre').textContent = (prod.sat + 1) + '. ' + t(z.titre_fr, z.titre_en);
+    var img = $('sat-img');
+    img.src = z.image; img.alt = t('Vue satellite 2016 : ', '2016 satellite view: ') + t(z.titre_fr, z.titre_en);
+    var lien = $('sat-lien'); lien.href = z.image; lien.title = t('Ouvrir l’image en taille réelle', 'Open the full-size image');
+    $('sat-legende').textContent = t(z.legende_fr, z.legende_en) + t(' Largeur de l’image : environ ', ' Image width: about ') + RS.num(z.largeur_km, 0) +
+      t(' km. Cliquez sur l’image pour la voir en taille réelle.', ' km. Click the image to see it full size.');
+    var cr = clear($('sat-credit'));
+    RS.el('span', null, t('Image : ', 'Image: ') + P.satellite_credit + t('. Position : ', '. Location: ') + z.coordonnees + '. ', cr);
+    var a = RS.el('a', null, t('Source sur ce site de production', 'Source on this production site'), cr);
+    a.href = z.source; a.rel = 'noopener noreferrer nofollow'; a.target = '_blank';
+  }
+
   // ── 2. Part du planteur ───────────────────────────────────
   function monthsBetween(a, b) {
     var out = [], y = +a.slice(0, 4), m = +a.slice(5, 7);
@@ -550,7 +684,7 @@
   }
   function drawAll() {
     t = RS.t;
-    syncFilters(); drawStatus(); drawKpis(); drawMatrice(); drawOrigines(); drawAfrique(); drawPlanteur(); drawReferences(); drawBudget(); drawSignaux(); drawDonnees();
+    syncFilters(); drawStatus(); drawKpis(); drawMatrice(); drawOrigines(); drawAfrique(); drawProduction(); drawPlanteur(); drawReferences(); drawBudget(); drawSignaux(); drawDonnees();
   }
   document.addEventListener('click', function (ev) {
     var b = ev.target.closest ? ev.target.closest('[data-range],[data-cur]') : null;

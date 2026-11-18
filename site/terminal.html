@@ -22,6 +22,7 @@
     <nav class="nav" aria-label="Sections">
       <a href="#matrice"><span lang="fr">Prix CI</span><span lang="en">CI prices</span></a>
       <a href="#afrique"><span lang="fr">Afrique</span><span lang="en">Africa</span></a>
+      <a href="#production"><span lang="fr">Production</span><span lang="en">Production</span></a>
       <a href="#planteur"><span lang="fr">Planteur</span><span lang="en">Farmer</span></a>
       <a href="#references"><span lang="fr">Références</span><span lang="en">Benchmarks</span></a>
       <a href="#budget"><span lang="fr">Budget</span><span lang="en">Budget</span></a>
@@ -135,6 +136,46 @@
         <div class="callout">
           <span lang="fr"><strong>Limites à connaître.</strong> Ces origines exportent vers l'UE 10 à 30 fois moins que la Côte d'Ivoire : un mois sous 500 tonnes est signalé « faible liquidité », son prix dépend de quelques lots. Mêmes limites que pour la Côte d'Ivoire : prix rendu frontière UE, pas FOB ; plusieurs grades regroupés ; valeurs en douane de contrats signés plusieurs semaines plus tôt. Les prix ne sont calculés que pour le caoutchouc technique (TSNR) ; les autres formes sèches et le latex sont suivis en volume.</span>
           <span lang="en"><strong>Limits to keep in mind.</strong> These origins export 10 to 30 times less to the EU than Côte d'Ivoire: a month below 500 tonnes is flagged "low liquidity", as its price depends on a few lots. Same limits as for Côte d'Ivoire: delivered EU-border price, not FOB; several grades pooled; customs values of contracts signed weeks earlier. Prices are computed for technically specified rubber (TSNR) only; other dry forms and latex are tracked by volume.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1 ter. Zones de production (FAOSTAT, vues satellite) -->
+    <section class="t-section" id="production" hidden>
+      <h2><span lang="fr">Zones de production : où pousse le caoutchouc africain</span><span lang="en">Production areas: where African rubber grows</span></h2>
+      <p class="lead">
+        <span lang="fr">Production, surface et rendement par pays (FAOSTAT), et vues satellite de bassins de production. Cliquez sur un pays pour ses chiffres, sur un point orange pour sa vue satellite.</span>
+        <span lang="en">Production, area and yield by country (FAOSTAT), and satellite views of production basins. Click a country for its figures, an orange dot for its satellite view.</span>
+      </p>
+      <div class="kpis" id="prod-kpis"></div>
+      <div class="t-grid two">
+        <div class="card chart-card">
+          <h3 id="carte-titre"></h3>
+          <p class="sub" id="carte-sub"></p>
+          <div class="carte-wrap" id="carte"></div>
+          <div class="legende-q" id="carte-legende"></div>
+          <p class="note" id="carte-detail" aria-live="polite"></p>
+        </div>
+        <div class="card chart-card">
+          <h3 id="sat-titre"></h3>
+          <div class="sat-choix" id="sat-choix" role="group" aria-label="Vues satellite / Satellite views"></div>
+          <a id="sat-lien" href="#" target="_blank" rel="noopener"><img class="sat-img" id="sat-img" alt="" width="1024" height="768"></a>
+          <p class="note" id="sat-legende"></p>
+          <p class="sat-credit" id="sat-credit"></p>
+        </div>
+      </div>
+      <div class="t-grid two">
+        <div class="card chart-card">
+          <h3><span lang="fr">Où se place l'Afrique dans la production mondiale</span><span lang="en">Where Africa stands in world production</span></h3>
+          <p class="sub" id="rang-sub"></p>
+          <div id="rang"></div>
+        </div>
+        <div class="card">
+          <div id="t-production"></div>
+          <div class="callout">
+            <span lang="fr"><strong>Limites à connaître.</strong> FAOSTAT publie une fois par an, avec un an de décalage ; certaines valeurs sont des estimations de la FAO (nature E dans le tableau). Les vues satellite datent de 2016 (dernière mosaïque sous licence libre) : elles montrent le paysage, pas l'état actuel des parcelles, et ne permettent pas de vérifier une conformité EUDR.</span>
+            <span lang="en"><strong>Limits to keep in mind.</strong> FAOSTAT publishes once a year, one year behind; some values are FAO estimates (nature E in the table). The satellite views date from 2016 (the latest openly licensed mosaic): they show the landscape, not the current state of the plots, and cannot be used to check EUDR compliance.</span>
+          </div>
         </div>
       </div>
     </section>
@@ -323,6 +364,7 @@
 </footer>
 
 <script src="data/terminal.js"></script>
+<script src="data/carte_afrique.js"></script>
 <script src="assets/rs-charts.js"></script>
 <script src="assets/rs-budget.js"></script>
 <script src="assets/rs-terminal.js"></script>

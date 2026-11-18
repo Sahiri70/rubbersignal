@@ -95,6 +95,10 @@ jobs:
         # taux USD/EUR repris de la base (ecrits par le script 06)
         run: Rscript scripts/06b_collect_afrique.R
 
+      - name: Run Script 09 - FAOSTAT annual production
+        # Fichiers en vrac FAO sans cle ; telecharges seulement si la FAO a publie
+        run: Rscript scripts/09_collect_faostat.R
+
       - name: Run Script 03 - Build report
         run: Rscript scripts/03_build_report.R
 

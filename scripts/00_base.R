@@ -143,6 +143,18 @@ RS_DB_CATALOGUE <- do.call(rbind, c(
               "", p, "CIF frontière UE", grade))
     }))
   }),
+  # Production FAOSTAT v1 (18/11/2026) : production, superficie, rendement par pays
+  lapply(seq_len(nrow(RS_FAO_PAYS)), function(i) {
+    p <- RS_FAO_PAYS[i, ]
+    lib <- list(PROD = c("production de caoutchouc naturel", "natural rubber production"),
+                SURF = c("superficie récoltée d'hévéa", "rubber harvested area"),
+                REND = c("rendement de l'hévéa", "rubber yield"))
+    do.call(rbind, lapply(names(RS_FAO_ELEMENTS), function(e)
+      .rs_s(rs_fao_id(e, p$code), "FAOSTAT", paste0("FAOSTAT : ", lib[[e]][1], ", ", p$nom_fr),
+            paste0("FAOSTAT: ", lib[[e]][2], ", ", p$nom_en), "annuelle", RS_FAO_UNITES[[e]], "O",
+            "FAOSTAT (FAO), domaine QCL, produit 836", RS_FAO_PAGE, "Production FAOSTAT v1",
+            "", p$code, "production (plantation)", "caoutchouc naturel sous formes primaires (FAO 836)")))
+  }),
   # Séries calculées : prix CIF UE (EUR, USD) et écart à la CI, sur le TSNR
   lapply(setdiff(RS_AFR_PARTENAIRES, RS_RAPI_PARTENAIRE_CI), function(p) {
     nm <- RS_AFR_NOMS[[p]]
@@ -299,8 +311,9 @@ rs_db_ajouter <- function(nouv, dir = RS_DB_DIR) {
   nouv <- nouv[!ign, , drop = FALSE]
   res <- vide; res$n_ignorees <- sum(ign)
   if (nrow(nouv) == 0) return(res)
-  bad_date <- is.na(nouv$date_valeur) | !grepl("^[0-9]{4}-[0-9]{2}(-[0-9]{2})?$", nouv$date_valeur)
-  if (any(bad_date)) stop("Base : date_valeur invalide (AAAA-MM ou AAAA-MM-JJ) : ",
+  # AAAA pour les séries annuelles (FAOSTAT, 18/11/2026), AAAA-MM mensuelles, AAAA-MM-JJ quotidiennes
+  bad_date <- is.na(nouv$date_valeur) | !grepl("^[0-9]{4}(-[0-9]{2}(-[0-9]{2})?)?$", nouv$date_valeur)
+  if (any(bad_date)) stop("Base : date_valeur invalide (AAAA, AAAA-MM ou AAAA-MM-JJ) : ",
                           paste(unique(nouv$date_valeur[bad_date]), collapse = ", "))
   nouv$valeur <- as.numeric(rs_db_format_valeur(nouv$valeur))
   cle_n <- paste(nouv$serie_id, nouv$date_valeur, sep = "|")
