@@ -20,10 +20,11 @@
       <span class="brand">RubberSignal <span class="brand-2">Technologies</span></span><small>Terminal</small>
     </a>
     <nav class="nav" aria-label="Sections">
-      <a href="#matrice"><span lang="fr">Prix Afrique de l'Ouest</span><span lang="en">West Africa prices</span></a>
-      <a href="#afrique"><span lang="fr">Autres origines</span><span lang="en">Other origins</span></a>
-      <a href="#planteur"><span lang="fr">Part du planteur</span><span lang="en">Farmer share</span></a>
+      <a href="#matrice"><span lang="fr">Prix CI</span><span lang="en">CI prices</span></a>
+      <a href="#afrique"><span lang="fr">Afrique</span><span lang="en">Africa</span></a>
+      <a href="#planteur"><span lang="fr">Planteur</span><span lang="en">Farmer</span></a>
       <a href="#references"><span lang="fr">Références</span><span lang="en">Benchmarks</span></a>
+      <a href="#budget"><span lang="fr">Budget</span><span lang="en">Budget</span></a>
       <a href="#signaux"><span lang="fr">Signaux</span><span lang="en">Signals</span></a>
       <a href="#donnees"><span lang="fr">Données</span><span lang="en">Data</span></a>
     </nav>
@@ -201,6 +202,49 @@
       </div>
     </section>
 
+    <!-- 3 bis. Simulateur de budget d'achat -->
+    <section class="t-section" id="budget" hidden>
+      <h2><span lang="fr">Simulateur de budget d'achat</span><span lang="en">Purchase budget simulator</span></h2>
+      <p class="lead">
+        <span lang="fr">Combien prévoir pour vos achats des prochains mois, et avec quelle marge ? Le simulateur part du dernier TSR20 publié par la Banque mondiale et de sa volatilité passée. Vos chiffres restent dans votre navigateur : rien n'est envoyé.</span>
+        <span lang="en">How much should you budget for the coming months' purchases, and with what margin? The simulator starts from the latest World Bank TSR20 and its past volatility. Your figures stay in your browser: nothing is sent.</span>
+      </p>
+      <div class="t-grid two">
+        <div class="card">
+          <h3><span lang="fr">Vos achats</span><span lang="en">Your purchases</span></h3>
+          <form class="sim-form" id="sim-form" novalidate>
+            <label for="sim-volume"><span lang="fr">Volume acheté par mois (tonnes)</span><span lang="en">Volume bought per month (tonnes)</span></label>
+            <input id="sim-volume" type="number" inputmode="decimal" min="1" max="100000" step="1" value="100">
+            <span class="sim-label"><span lang="fr">Durée</span><span lang="en">Duration</span></span>
+            <span class="seg" role="group" aria-label="Durée / Duration">
+              <button type="button" data-sim-mois="3"><span lang="fr">3 mois</span><span lang="en">3 months</span></button>
+              <button type="button" data-sim-mois="6"><span lang="fr">6 mois</span><span lang="en">6 months</span></button>
+              <button type="button" data-sim-mois="12"><span lang="fr">12 mois</span><span lang="en">12 months</span></button>
+            </span>
+            <label for="sim-prime"><span lang="fr">Prime (+) ou décote (−) de votre contrat par rapport au TSR20 (USD/kg)</span><span lang="en">Your contract premium (+) or discount (−) versus TSR20 (USD/kg)</span></label>
+            <input id="sim-prime" type="number" inputmode="decimal" min="-1" max="2" step="0.01" value="0">
+            <p class="note" id="sim-prime-aide"></p>
+            <label for="sim-budget"><span lang="fr">Votre budget total (<span class="sim-dev">USD</span>, facultatif)</span><span lang="en">Your total budget (<span class="sim-dev">USD</span>, optional)</span></label>
+            <input id="sim-budget" type="number" inputmode="decimal" min="0" step="1000" placeholder="—">
+          </form>
+        </div>
+        <div class="card">
+          <h3 id="sim-titre"></h3>
+          <div class="kpis sim-kpis" id="sim-kpis"></div>
+          <p class="note" id="sim-budget-txt"></p>
+        </div>
+      </div>
+      <div class="card chart-card t-grid">
+        <h3><span lang="fr">Fourchette du prix TSR20, mois par mois</span><span lang="en">TSR20 price range, month by month</span></h3>
+        <p class="sub" id="sim-mois-sub"></p>
+        <div id="sim-mois"></div>
+        <div class="callout">
+          <span lang="fr"><strong>À lire avant d'utiliser.</strong> C'est une fourchette, pas une prévision : le modèle n'impose aucune tendance à la hausse ou à la baisse. 8 cas sur 10 tombent entre les bornes affichées (10 % et 90 %). La volatilité est estimée sur des moyennes mensuelles, qui lissent les variations au jour le jour. Le risque de change n'est pas simulé : la conversion en euros utilise un taux fixe. Pour un diagnostic sur vos prix réels, voir l'offre « Diagnostic » sur la page d'accueil.</span>
+          <span lang="en"><strong>Read before use.</strong> This is a range, not a forecast: the model imposes no upward or downward trend. 8 cases out of 10 fall between the bounds shown (10% and 90%). Volatility is estimated on monthly averages, which smooth day-to-day moves. Currency risk is not simulated: the euro conversion uses a fixed rate. For a diagnostic on your actual prices, see the "Diagnostic" offer on the home page.</span>
+        </div>
+      </div>
+    </section>
+
     <!-- 4. Signaux -->
     <section class="t-section" id="signaux">
       <h2><span lang="fr">Signaux de marché (analyse)</span><span lang="en">Market signals (analysis)</span></h2>
@@ -280,6 +324,7 @@
 
 <script src="data/terminal.js"></script>
 <script src="assets/rs-charts.js"></script>
+<script src="assets/rs-budget.js"></script>
 <script src="assets/rs-terminal.js"></script>
 </body>
 </html>

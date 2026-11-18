@@ -105,7 +105,7 @@ p { margin: 0; }
 .logo svg { flex: none; }
 .logo small { font-weight: 500; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; font-size: 11px; }
 .nav { display: none; gap: 20px; margin-left: 12px; font-size: 14px; }
-.nav a { text-decoration: none; color: var(--ink-2); }
+.nav a { text-decoration: none; color: var(--ink-2); white-space: nowrap; }
 .nav a:hover { color: var(--ink); }
 @media (min-width: 900px) { .nav { display: flex; } }
 .tools { margin-left: auto; display: flex; align-items: center; gap: 8px; }
@@ -311,3 +311,18 @@ ul.plain.news li + li { margin-top: 0; padding-top: 12px; border-top: 1px solid 
 .news-title { display: block; margin-top: 4px; font-size: 15px; color: var(--ink); line-height: 1.4; overflow-wrap: anywhere; }
 a.news-title { text-decoration: none; }
 a.news-title:hover, a.news-title:focus-visible { text-decoration: underline; }
+/* Simulateur de budget d'achat */
+.sim-form { display: grid; gap: 6px; margin-top: 12px; font-size: 13.5px; color: var(--ink-2); }
+.sim-form label, .sim-form .sim-label { margin-top: 10px; font-weight: 500; color: var(--ink); }
+.sim-form input { font: inherit; font-size: 15px; color: var(--ink); background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 10px; width: 100%; max-width: 260px; font-variant-numeric: tabular-nums; }
+.sim-form input:focus-visible { outline: 2px solid var(--s1); outline-offset: 1px; }
+.sim-form input[aria-invalid="true"] { border-color: var(--s2); }
+.sim-form .seg { justify-self: start; }
+.sim-form .note { margin: 2px 0 0; }
+.kpis.sim-kpis { grid-template-columns: 1fr; margin-top: 12px; }
+.sim-kpis .kpi { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 4px 12px; }
+.sim-kpis .kpi .label { min-height: 0; }
+.sim-kpis .kpi .value { grid-row: 1 / span 2; grid-column: 2; text-align: right; white-space: nowrap; }
+.linkbtn { font: inherit; color: var(--s1); background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }
+.linkbtn:focus-visible { outline: 2px solid var(--s1); outline-offset: 2px; }

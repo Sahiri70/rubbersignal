@@ -203,3 +203,15 @@ test_that("Pages du site : politique de contenu stricte, aucune ressource extern
     expect_false(grepl("fetch\\(|XMLHttpRequest|api[_-]?key", t, ignore.case = TRUE), info = f)
   }
 })
+
+test_that("Simulateur de budget v1 : script chargé, sans réseau, méthode au journal", {
+  h <- paste(readLines(file.path(racine, "site/terminal.html"), warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  js <- paste(readLines(file.path(racine, "site/assets/rs-budget.js"), warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  m <- paste(readLines(file.path(racine, "site/methode.html"), warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  expect_match(h, '<script src="assets/rs-budget.js"></script>', fixed = TRUE)
+  expect_true(regexpr("rs-budget.js", h) < regexpr("rs-terminal.js", h))       # chargé avant le terminal
+  expect_false(grepl("fetch[(]|XMLHttpRequest|sendBeacon|localStorage", js))    # rien n'est envoyé ni conservé
+  expect_match(js, "exp(drift + vol * z())", fixed = TRUE)                       # GBM sans tendance
+  expect_match(js, "-0.5 * sig * sig * dt", fixed = TRUE)
+  expect_match(m, "Simulateur de budget v1</span>", fixed = TRUE)
+})

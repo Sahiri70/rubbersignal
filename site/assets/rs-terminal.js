@@ -350,6 +350,113 @@
       t(' simulations sans tendance : amplitude compatible avec la volatilité passée, pas une prévision. Nature E, ', ' drift-free simulations: range consistent with past volatility, not a forecast. Nature E, ') + v.version + '.';
   }
 
+  // ── 3 bis. Simulateur de budget d'achat ───────────────────
+  var sim = { mois: 6 };
+  function moisPlus(p, k) {
+    var y = +p.slice(0, 4), m = +p.slice(5, 7) + k;
+    while (m > 12) { m -= 12; y += 1; }
+    return y + '-' + (m < 10 ? '0' : '') + m;
+  }
+  function lireNombre(id, min, max, facultatif) {
+    var el = $(id), raw = String(el.value).trim().replace(',', '.');
+    if (facultatif && raw === '') { el.removeAttribute('aria-invalid'); return null; }
+    var v = parseFloat(raw), bon = isFinite(v) && v >= min && v <= max;
+    if (bon) el.removeAttribute('aria-invalid'); else el.setAttribute('aria-invalid', 'true');
+    return bon ? v : NaN;
+  }
+  // Taux fixe pour l'affichage en euros : dernier mois douanier (prix USD ÷ prix EUR)
+  function tauxFixe() {
+    var ms = D.rapi.mois;
+    for (var i = ms.length - 1; i >= 0; i--) if (ok(ms[i].ci_usd) && ok(ms[i].ci_eur) && ms[i].ci_eur > 0) return { t: ms[i].ci_usd / ms[i].ci_eur, p: ms[i].p };
+    return null;
+  }
+  function montant(usd, fx) {
+    var eur = state.cur === 'eur' && fx, v = eur ? usd / fx.t : usd, u = eur ? ' €' : ' USD';
+    return Math.abs(v) >= 1e6 ? RS.num(v / 1e6, 2) + ' M' + u : RS.int(v) + u;
+  }
+
+  function drawBudget() {
+    var V = D.volatilite, sec = $('budget');
+    if (!V || !ok(V.depart) || !ok(V.volatilite_pct) || !window.RSBudget) { sec.hidden = true; return; }
+    sec.hidden = false;
+    var b = document.querySelectorAll('[data-sim-mois]');
+    for (var i = 0; i < b.length; i++) b[i].setAttribute('aria-pressed', +b[i].getAttribute('data-sim-mois') === sim.mois ? 'true' : 'false');
+
+    // Aide : écart moyen observé entre le prix ivoirien rendu UE et le TSR20 (6 derniers mois communs)
+    var ms = D.rapi.mois.filter(function (m) { return ok(m.ci_usd) && ok(m.tsr20_bm); }).slice(-6);
+    var aide = $('sim-prime-aide'); aide.textContent = '';
+    if (ms.length) {
+      var ec = ms.reduce(function (s, m) { return s + (m.ci_usd - m.tsr20_bm); }, 0) / ms.length;
+      RS.el('span', null, t('Repère : sur les ', 'Benchmark: over the last ') + ms.length +
+        t(' derniers mois publiés, le caoutchouc ivoirien rendu UE s’écarte en moyenne de ', ' published months, Ivorian rubber delivered to the EU differs on average by ') +
+        (ec >= 0 ? '+' : '') + RS.num(ec, 3) + t(' USD/kg du TSR20. ', ' USD/kg from TSR20. '), aide);
+      var bt = RS.el('button', 'linkbtn', t('Utiliser cet écart', 'Use this gap'), aide);
+      bt.type = 'button';
+      bt.addEventListener('click', function () { $('sim-prime').value = ec.toFixed(3); calculer(); });
+    }
+    calculer();
+  }
+
+  var attente = null;
+  function calculer() {
+    var V = D.volatilite, fx = tauxFixe();
+    var vol = lireNombre('sim-volume', 1, 100000), prime = lireNombre('sim-prime', -1, 2), budget = lireNombre('sim-budget', 0, 1e12, true);
+    var k = clear($('sim-kpis')), bt = $('sim-budget-txt'), hm = clear($('sim-mois'));
+    var debut = moisPlus(V.depart_periode, 1), fin = moisPlus(V.depart_periode, sim.mois);
+    $('sim-titre').textContent = t('Coût de vos achats, de ', 'Cost of your purchases, ') + RS.month(debut, true) + t(' à ', ' to ') + RS.month(fin, true);
+    if (!isFinite(vol) || !isFinite(prime) || (budget !== null && !isFinite(budget))) {
+      bt.textContent = t('Vérifiez les valeurs saisies (volume de 1 à 100 000 t, prime de −1 à +2 USD/kg).', 'Check the values entered (volume 1 to 100,000 t, premium −1 to +2 USD/kg).');
+      return;
+    }
+    var budgetUsd = budget === null ? null : (state.cur === 'eur' && fx ? budget * fx.t : budget);
+    var r = window.RSBudget.simuler({ prix0: V.depart, sigma: V.volatilite_pct / 100, mois: sim.mois, volume_t: vol, prime: prime, budget: budgetUsd || 0 });
+    var unitKg = state.cur === 'eur' && fx ? '€/kg' : 'USD/kg', conv = function (x) { return state.cur === 'eur' && fx ? x / fx.t : x; };
+    kpi(k, t('Coût total médian', 'Median total cost'), montant(r.cout.p50, fx), null, RS.int(vol * sim.mois) + t(' t achetées', ' t bought'), 'E');
+    kpi(k, t('8 cas sur 10 entre', '8 cases out of 10 between'), montant(r.cout.p10, fx), null, t('et ', 'and ') + montant(r.cout.p90, fx), 'E');
+    kpi(k, t('Prix moyen payé (médian)', 'Average price paid (median)'), RS.num(conv(r.prix_moyen.p50), 3), unitKg,
+      RS.num(conv(r.prix_moyen.p10), 3) + ' – ' + RS.num(conv(r.prix_moyen.p90), 3), 'E');
+    if (r.prob_depassement !== null)
+      kpi(k, t('Risque de dépasser votre budget', 'Risk of exceeding your budget'), RS.pct(r.prob_depassement * 100, 0), null,
+        t('budget de ', 'budget of ') + montant(budgetUsd, fx), 'E');
+    var lignes = [t('Budget qui couvre 9 cas sur 10 : ', 'Budget covering 9 cases out of 10: ') + montant(r.budget_p90, fx) + '.'];
+    if (state.cur === 'eur' && fx) lignes.push(t('Euros au taux fixe de ', 'Euros at the fixed rate of ') + RS.num(fx.t, 4) + t(' USD/€ (moyenne BCE, ', ' USD/€ (ECB average, ') + RS.month(fx.p, true) + ').');
+    var devs = document.querySelectorAll('.sim-dev');
+    for (var d = 0; d < devs.length; d++) devs[d].textContent = state.cur === 'eur' && fx ? '€' : 'USD';
+    lignes.push(t('Départ : TSR20 Banque mondiale, ', 'Start: World Bank TSR20, ') + RS.month(V.depart_periode, true) + t(' : ', ': ') + RS.num(V.depart, 2) +
+      t(' USD/kg ; volatilité annuelle ', ' USD/kg; annual volatility ') + RS.pct(V.volatilite_pct, 1) + ' (' + V.version + ', ' + RS.int(r.n) + t(' trajectoires).', ' paths).'));
+    bt.textContent = lignes.join(' ');
+
+    // Fourchette mensuelle du prix TSR20 (sans prime), échelle commune
+    $('sim-mois-sub').textContent = unitKg + t(' · bornes 10 % et 90 %, trait : médiane', ' · 10% and 90% bounds, mark: median');
+    var lo = conv(Math.min.apply(null, r.mois.map(function (x) { return x.p10; }))), hi = conv(Math.max.apply(null, r.mois.map(function (x) { return x.p90; })));
+    var pos = function (v) { return 100 * (conv(v) - lo) / (hi - lo); };
+    r.mois.forEach(function (x) {
+      var row = RS.el('div', 'range-row', null, hm);
+      RS.el('span', null, RS.month(moisPlus(V.depart_periode, x.m), false), row);
+      var tr = RS.el('div', 'range-track', null, row);
+      tr.title = RS.num(conv(x.p10), 2) + ' – ' + RS.num(conv(x.p90), 2) + ' ' + unitKg;
+      var band = RS.el('span', 'band', null, tr);
+      band.style.left = pos(x.p10) + '%'; band.style.width = Math.max(1, pos(x.p90) - pos(x.p10)) + '%';
+      RS.el('span', 'mid', null, tr).style.left = pos(x.p50) + '%';
+      var vals = RS.el('div', 'range-vals', null, row);
+      RS.el('span', null, RS.num(conv(x.p10), 2), vals);
+      RS.el('span', null, t('médiane ', 'median ') + RS.num(conv(x.p50), 2), vals);
+      RS.el('span', null, RS.num(conv(x.p90), 2), vals);
+    });
+  }
+  document.addEventListener('input', function (ev) {
+    if (!ev.target || !ev.target.closest || !ev.target.closest('#sim-form')) return;
+    clearTimeout(attente); attente = setTimeout(calculer, 150);
+  });
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest ? ev.target.closest('[data-sim-mois]') : null;
+    if (!b) return;
+    sim.mois = +b.getAttribute('data-sim-mois');
+    drawBudget();
+  });
+  var formSim = $('sim-form');
+  if (formSim) formSim.addEventListener('submit', function (ev) { ev.preventDefault(); calculer(); });
+
   // ── 4. Signaux ────────────────────────────────────────────
   var COMP = {
     meteo: ['Météo et offre', 'Weather and supply'], devises: ['Devises (yuan)', 'Currencies (yuan)'],
@@ -443,7 +550,7 @@
   }
   function drawAll() {
     t = RS.t;
-    syncFilters(); drawStatus(); drawKpis(); drawMatrice(); drawOrigines(); drawAfrique(); drawPlanteur(); drawReferences(); drawSignaux(); drawDonnees();
+    syncFilters(); drawStatus(); drawKpis(); drawMatrice(); drawOrigines(); drawAfrique(); drawPlanteur(); drawReferences(); drawBudget(); drawSignaux(); drawDonnees();
   }
   document.addEventListener('click', function (ev) {
     var b = ev.target.closest ? ev.target.closest('[data-range],[data-cur]') : null;
