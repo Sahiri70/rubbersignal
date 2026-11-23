@@ -1,9 +1,9 @@
 window.RS_DATA = {
   "meta": {
-    "genere_le": "2026-11-18",
-    "semaine": 47,
+    "genere_le": "2026-11-23",
+    "semaine": 48,
     "annee": 2026,
-    "date_collecte": "2026-11-18",
+    "date_collecte": "2026-11-23",
     "validation": {
       "statut": "en_attente",
       "date": null
@@ -14,12 +14,14 @@ window.RS_DATA = {
       "apromac": "APROMAC v1",
       "rsci": "RSCI v2.1",
       "terrain": "Terrain v1",
-      "pre_rsi": "Pré-RSI v2",
+      "pre_rsi": "Pré-RSI v2.1",
       "volatilite": "Volatilité v1",
       "rapi_ci": "RAPI-CI v1",
-      "rapi_afrique": "RAPI-Afrique v1"
+      "rapi_afrique": "RAPI-Afrique v1",
+      "faostat": "Production FAOSTAT v1"
     },
     "alertes": [
+      "TSR20 : ecart de 13.2 % entre sources (seuil 10 %)",
       "FMI, Global price of Rubber (FRED, serie PRUBBUSDM) : derniere valeur 2026-09, plus de 45 jours apres la fin du mois",
       "APROMAC : prix de 2026-11 absent du fichier de saisie ; dernier mois disponible 2026-09 (484 FCFA/kg, 2 mois de retard)"
     ],
@@ -1902,33 +1904,1635 @@ window.RS_DATA = {
       }
     ]
   },
+  "production": {
+    "version": "Production FAOSTAT v1",
+    "annee": "2024",
+    "monde_t": 14829085.3,
+    "afrique_t": 2152141.82,
+    "asie_t": 12183608.04,
+    "maj_fao": "2025-12-31",
+    "licence": "FAOSTAT, CC BY 4.0",
+    "pays": [
+      {
+        "code": "CI",
+        "nom_fr": "Côte d'Ivoire",
+        "nom_en": "Côte d'Ivoire",
+        "groupe": "afrique",
+        "prod_t": 1686599,
+        "surf_ha": 1027211,
+        "rend_kg_ha": 1641.9,
+        "prod_2020_t": 936061,
+        "nature": "O",
+        "part_monde_pct": 11.37,
+        "part_afrique_pct": 78.4,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 235048
+          },
+          {
+            "p": "2011",
+            "v": 238717
+          },
+          {
+            "p": "2012",
+            "v": 256613
+          },
+          {
+            "p": "2013",
+            "v": 289563
+          },
+          {
+            "p": "2014",
+            "v": 316135.87
+          },
+          {
+            "p": "2015",
+            "v": 350000
+          },
+          {
+            "p": "2016",
+            "v": 453000
+          },
+          {
+            "p": "2017",
+            "v": 580000
+          },
+          {
+            "p": "2018",
+            "v": 624136
+          },
+          {
+            "p": "2019",
+            "v": 780051
+          },
+          {
+            "p": "2020",
+            "v": 936061
+          },
+          {
+            "p": "2021",
+            "v": 1100386
+          },
+          {
+            "p": "2022",
+            "v": 1320145.36
+          },
+          {
+            "p": "2023",
+            "v": 1624824
+          },
+          {
+            "p": "2024",
+            "v": 1686599
+          }
+        ]
+      },
+      {
+        "code": "GH",
+        "nom_fr": "Ghana",
+        "nom_en": "Ghana",
+        "groupe": "afrique",
+        "prod_t": 136500,
+        "surf_ha": 151565,
+        "rend_kg_ha": 900.6,
+        "prod_2020_t": 69000,
+        "nature": "O",
+        "part_monde_pct": 0.92,
+        "part_afrique_pct": 6.3,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 20150
+          },
+          {
+            "p": "2011",
+            "v": 20185
+          },
+          {
+            "p": "2012",
+            "v": 20200
+          },
+          {
+            "p": "2013",
+            "v": 21440
+          },
+          {
+            "p": "2014",
+            "v": 22427
+          },
+          {
+            "p": "2015",
+            "v": 22427
+          },
+          {
+            "p": "2016",
+            "v": 22427
+          },
+          {
+            "p": "2017",
+            "v": 37000
+          },
+          {
+            "p": "2018",
+            "v": 41300
+          },
+          {
+            "p": "2019",
+            "v": 42200
+          },
+          {
+            "p": "2020",
+            "v": 69000
+          },
+          {
+            "p": "2021",
+            "v": 85000
+          },
+          {
+            "p": "2022",
+            "v": 117000
+          },
+          {
+            "p": "2023",
+            "v": 126400
+          },
+          {
+            "p": "2024",
+            "v": 136500
+          }
+        ]
+      },
+      {
+        "code": "LR",
+        "nom_fr": "Liberia",
+        "nom_en": "Liberia",
+        "groupe": "afrique",
+        "prod_t": 129900,
+        "surf_ha": 163697,
+        "rend_kg_ha": 793.5,
+        "prod_2020_t": 86500,
+        "nature": "O",
+        "part_monde_pct": 0.88,
+        "part_afrique_pct": 6,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 62100
+          },
+          {
+            "p": "2011",
+            "v": 62699.42
+          },
+          {
+            "p": "2012",
+            "v": 78334.65
+          },
+          {
+            "p": "2013",
+            "v": 74629.74
+          },
+          {
+            "p": "2014",
+            "v": 47460.46
+          },
+          {
+            "p": "2015",
+            "v": 58600
+          },
+          {
+            "p": "2016",
+            "v": 60500
+          },
+          {
+            "p": "2017",
+            "v": 63000
+          },
+          {
+            "p": "2018",
+            "v": 75400
+          },
+          {
+            "p": "2019",
+            "v": 89400
+          },
+          {
+            "p": "2020",
+            "v": 86500
+          },
+          {
+            "p": "2021",
+            "v": 101400
+          },
+          {
+            "p": "2022",
+            "v": 107100
+          },
+          {
+            "p": "2023",
+            "v": 120300
+          },
+          {
+            "p": "2024",
+            "v": 129900
+          }
+        ]
+      },
+      {
+        "code": "NG",
+        "nom_fr": "Nigeria",
+        "nom_en": "Nigeria",
+        "groupe": "afrique",
+        "prod_t": 65300,
+        "surf_ha": 172383,
+        "rend_kg_ha": 378.8,
+        "prod_2020_t": 51300,
+        "nature": "O",
+        "part_monde_pct": 0.44,
+        "part_afrique_pct": 3,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 79838.84
+          },
+          {
+            "p": "2011",
+            "v": 73172.28
+          },
+          {
+            "p": "2012",
+            "v": 66623.9
+          },
+          {
+            "p": "2013",
+            "v": 57000
+          },
+          {
+            "p": "2014",
+            "v": 52100
+          },
+          {
+            "p": "2015",
+            "v": 50800
+          },
+          {
+            "p": "2016",
+            "v": 52000
+          },
+          {
+            "p": "2017",
+            "v": 53000
+          },
+          {
+            "p": "2018",
+            "v": 56200
+          },
+          {
+            "p": "2019",
+            "v": 56300
+          },
+          {
+            "p": "2020",
+            "v": 51300
+          },
+          {
+            "p": "2021",
+            "v": 57200
+          },
+          {
+            "p": "2022",
+            "v": 58400
+          },
+          {
+            "p": "2023",
+            "v": 62200
+          },
+          {
+            "p": "2024",
+            "v": 65300
+          }
+        ]
+      },
+      {
+        "code": "CM",
+        "nom_fr": "Cameroun",
+        "nom_en": "Cameroon",
+        "groupe": "afrique",
+        "prod_t": 55700,
+        "surf_ha": 72175,
+        "rend_kg_ha": 771.7,
+        "prod_2020_t": 47100,
+        "nature": "O",
+        "part_monde_pct": 0.38,
+        "part_afrique_pct": 2.6,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 54864
+          },
+          {
+            "p": "2011",
+            "v": 55847.1
+          },
+          {
+            "p": "2012",
+            "v": 55110.19
+          },
+          {
+            "p": "2013",
+            "v": 55000
+          },
+          {
+            "p": "2014",
+            "v": 55000
+          },
+          {
+            "p": "2015",
+            "v": 52000
+          },
+          {
+            "p": "2016",
+            "v": 50000
+          },
+          {
+            "p": "2017",
+            "v": 53000
+          },
+          {
+            "p": "2018",
+            "v": 48200
+          },
+          {
+            "p": "2019",
+            "v": 47700
+          },
+          {
+            "p": "2020",
+            "v": 47100
+          },
+          {
+            "p": "2021",
+            "v": 48300
+          },
+          {
+            "p": "2022",
+            "v": 50500
+          },
+          {
+            "p": "2023",
+            "v": 53000
+          },
+          {
+            "p": "2024",
+            "v": 55700
+          }
+        ]
+      },
+      {
+        "code": "GA",
+        "nom_fr": "Gabon",
+        "nom_en": "Gabon",
+        "groupe": "afrique",
+        "prod_t": 27800,
+        "surf_ha": 17616,
+        "rend_kg_ha": 1578.1,
+        "prod_2020_t": 23700,
+        "nature": "O",
+        "part_monde_pct": 0.19,
+        "part_afrique_pct": 1.3,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 20000
+          },
+          {
+            "p": "2011",
+            "v": 21000
+          },
+          {
+            "p": "2012",
+            "v": 21939.56
+          },
+          {
+            "p": "2013",
+            "v": 22719.56
+          },
+          {
+            "p": "2014",
+            "v": 23599.85
+          },
+          {
+            "p": "2015",
+            "v": 24554.48
+          },
+          {
+            "p": "2016",
+            "v": 23624.63
+          },
+          {
+            "p": "2017",
+            "v": 23636.7
+          },
+          {
+            "p": "2018",
+            "v": 23300
+          },
+          {
+            "p": "2019",
+            "v": 24700
+          },
+          {
+            "p": "2020",
+            "v": 23700
+          },
+          {
+            "p": "2021",
+            "v": 25000
+          },
+          {
+            "p": "2022",
+            "v": 25700
+          },
+          {
+            "p": "2023",
+            "v": 26700
+          },
+          {
+            "p": "2024",
+            "v": 27800
+          }
+        ]
+      },
+      {
+        "code": "GW",
+        "nom_fr": "Guinée-Bissau",
+        "nom_en": "Guinea-Bissau",
+        "groupe": "afrique",
+        "prod_t": 25000,
+        "surf_ha": 20842,
+        "rend_kg_ha": 1199.5,
+        "prod_2020_t": 21000,
+        "nature": "O",
+        "part_monde_pct": 0.17,
+        "part_afrique_pct": 1.2,
+        "historique": [
+          {
+            "p": "2018",
+            "v": 17000
+          },
+          {
+            "p": "2019",
+            "v": 18200
+          },
+          {
+            "p": "2020",
+            "v": 21000
+          },
+          {
+            "p": "2021",
+            "v": 23000
+          },
+          {
+            "p": "2022",
+            "v": 23200
+          },
+          {
+            "p": "2023",
+            "v": 25000
+          },
+          {
+            "p": "2024",
+            "v": 25000
+          }
+        ]
+      },
+      {
+        "code": "GN",
+        "nom_fr": "Guinée",
+        "nom_en": "Guinea",
+        "groupe": "afrique",
+        "prod_t": 15245.78,
+        "surf_ha": 11937,
+        "rend_kg_ha": 1277.1,
+        "prod_2020_t": 15068.38,
+        "nature": "E",
+        "part_monde_pct": 0.1,
+        "part_afrique_pct": 0.7,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 14000
+          },
+          {
+            "p": "2011",
+            "v": 14245.52
+          },
+          {
+            "p": "2012",
+            "v": 14588.49
+          },
+          {
+            "p": "2013",
+            "v": 14395.57
+          },
+          {
+            "p": "2014",
+            "v": 14778.82
+          },
+          {
+            "p": "2015",
+            "v": 15239.61
+          },
+          {
+            "p": "2016",
+            "v": 14804.67
+          },
+          {
+            "p": "2017",
+            "v": 14820.22
+          },
+          {
+            "p": "2018",
+            "v": 14871.09
+          },
+          {
+            "p": "2019",
+            "v": 14953.68
+          },
+          {
+            "p": "2020",
+            "v": 15068.38
+          },
+          {
+            "p": "2021",
+            "v": 15149.85
+          },
+          {
+            "p": "2022",
+            "v": 15177.51
+          },
+          {
+            "p": "2023",
+            "v": 15211.64
+          },
+          {
+            "p": "2024",
+            "v": 15245.78
+          }
+        ]
+      },
+      {
+        "code": "CD",
+        "nom_fr": "RD Congo",
+        "nom_en": "DR Congo",
+        "groupe": "afrique",
+        "prod_t": 6500,
+        "surf_ha": 28456,
+        "rend_kg_ha": 228.4,
+        "prod_2020_t": 15214,
+        "nature": "O",
+        "part_monde_pct": 0.04,
+        "part_afrique_pct": 0.3,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 11458.76
+          },
+          {
+            "p": "2011",
+            "v": 11654.46
+          },
+          {
+            "p": "2012",
+            "v": 11775.95
+          },
+          {
+            "p": "2013",
+            "v": 9800
+          },
+          {
+            "p": "2014",
+            "v": 10900
+          },
+          {
+            "p": "2015",
+            "v": 11000
+          },
+          {
+            "p": "2016",
+            "v": 12000
+          },
+          {
+            "p": "2017",
+            "v": 13200
+          },
+          {
+            "p": "2018",
+            "v": 13600
+          },
+          {
+            "p": "2019",
+            "v": 15073
+          },
+          {
+            "p": "2020",
+            "v": 15214
+          },
+          {
+            "p": "2021",
+            "v": 12900
+          },
+          {
+            "p": "2022",
+            "v": 5900
+          },
+          {
+            "p": "2023",
+            "v": 6200
+          },
+          {
+            "p": "2024",
+            "v": 6500
+          }
+        ]
+      },
+      {
+        "code": "CG",
+        "nom_fr": "Congo",
+        "nom_en": "Congo",
+        "groupe": "afrique",
+        "prod_t": 2392.73,
+        "surf_ha": 2650,
+        "rend_kg_ha": 902.9,
+        "prod_2020_t": 2191.47,
+        "nature": "E",
+        "part_monde_pct": 0.02,
+        "part_afrique_pct": 0.1,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 1950
+          },
+          {
+            "p": "2011",
+            "v": 2100
+          },
+          {
+            "p": "2012",
+            "v": 2225.75
+          },
+          {
+            "p": "2013",
+            "v": 2259.6
+          },
+          {
+            "p": "2014",
+            "v": 2312.98
+          },
+          {
+            "p": "2015",
+            "v": 2400.28
+          },
+          {
+            "p": "2016",
+            "v": 2324.29
+          },
+          {
+            "p": "2017",
+            "v": 2294.1
+          },
+          {
+            "p": "2018",
+            "v": 2257.29
+          },
+          {
+            "p": "2019",
+            "v": 2223.38
+          },
+          {
+            "p": "2020",
+            "v": 2191.47
+          },
+          {
+            "p": "2021",
+            "v": 2372.28
+          },
+          {
+            "p": "2022",
+            "v": 2392.11
+          },
+          {
+            "p": "2023",
+            "v": 2413.8
+          },
+          {
+            "p": "2024",
+            "v": 2392.73
+          }
+        ]
+      },
+      {
+        "code": "CF",
+        "nom_fr": "Centrafrique",
+        "nom_en": "Central African Republic",
+        "groupe": "afrique",
+        "prod_t": 1204.31,
+        "surf_ha": 952,
+        "rend_kg_ha": 1265,
+        "prod_2020_t": 1216.43,
+        "nature": "E",
+        "part_monde_pct": 0.01,
+        "part_afrique_pct": 0.1,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 1050
+          },
+          {
+            "p": "2011",
+            "v": 1050
+          },
+          {
+            "p": "2012",
+            "v": 1060
+          },
+          {
+            "p": "2013",
+            "v": 1090
+          },
+          {
+            "p": "2014",
+            "v": 1110
+          },
+          {
+            "p": "2015",
+            "v": 1125
+          },
+          {
+            "p": "2016",
+            "v": 1150
+          },
+          {
+            "p": "2017",
+            "v": 1160
+          },
+          {
+            "p": "2018",
+            "v": 1181.06
+          },
+          {
+            "p": "2019",
+            "v": 1201.57
+          },
+          {
+            "p": "2020",
+            "v": 1216.43
+          },
+          {
+            "p": "2021",
+            "v": 1199.69
+          },
+          {
+            "p": "2022",
+            "v": 1205.9
+          },
+          {
+            "p": "2023",
+            "v": 1207.34
+          },
+          {
+            "p": "2024",
+            "v": 1204.31
+          }
+        ]
+      },
+      {
+        "code": "TH",
+        "nom_fr": "Thaïlande",
+        "nom_en": "Thailand",
+        "groupe": "asie",
+        "prod_t": 4789042,
+        "surf_ha": 3595300,
+        "rend_kg_ha": 1332,
+        "prod_2020_t": 4859666.1,
+        "nature": "O",
+        "part_monde_pct": 32.29,
+        "part_afrique_pct": null,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 3051781
+          },
+          {
+            "p": "2011",
+            "v": 3348897
+          },
+          {
+            "p": "2012",
+            "v": 4139403
+          },
+          {
+            "p": "2013",
+            "v": 4305069
+          },
+          {
+            "p": "2014",
+            "v": 4566260
+          },
+          {
+            "p": "2015",
+            "v": 4466063
+          },
+          {
+            "p": "2016",
+            "v": 4519000
+          },
+          {
+            "p": "2017",
+            "v": 4503101
+          },
+          {
+            "p": "2018",
+            "v": 4813527
+          },
+          {
+            "p": "2019",
+            "v": 4839952
+          },
+          {
+            "p": "2020",
+            "v": 4859666.1
+          },
+          {
+            "p": "2021",
+            "v": 4892451.18
+          },
+          {
+            "p": "2022",
+            "v": 4785779.31
+          },
+          {
+            "p": "2023",
+            "v": 4810349.82
+          },
+          {
+            "p": "2024",
+            "v": 4789042
+          }
+        ]
+      },
+      {
+        "code": "ID",
+        "nom_fr": "Indonésie",
+        "nom_en": "Indonesia",
+        "groupe": "asie",
+        "prod_t": 2262088,
+        "surf_ha": 3149277,
+        "rend_kg_ha": 718.3,
+        "prod_2020_t": 3037348,
+        "nature": "O",
+        "part_monde_pct": 15.25,
+        "part_afrique_pct": null,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 2734900
+          },
+          {
+            "p": "2011",
+            "v": 2990200
+          },
+          {
+            "p": "2012",
+            "v": 3012254
+          },
+          {
+            "p": "2013",
+            "v": 3107544
+          },
+          {
+            "p": "2014",
+            "v": 3153186
+          },
+          {
+            "p": "2015",
+            "v": 3145398
+          },
+          {
+            "p": "2016",
+            "v": 3307142
+          },
+          {
+            "p": "2017",
+            "v": 3680428
+          },
+          {
+            "p": "2018",
+            "v": 3630357
+          },
+          {
+            "p": "2019",
+            "v": 3448782
+          },
+          {
+            "p": "2020",
+            "v": 3037348
+          },
+          {
+            "p": "2021",
+            "v": 3045314
+          },
+          {
+            "p": "2022",
+            "v": 2717080.55
+          },
+          {
+            "p": "2023",
+            "v": 2240826
+          },
+          {
+            "p": "2024",
+            "v": 2262088
+          }
+        ]
+      },
+      {
+        "code": "VN",
+        "nom_fr": "Vietnam",
+        "nom_en": "Vietnam",
+        "groupe": "asie",
+        "prod_t": 1327473,
+        "surf_ha": 734821,
+        "rend_kg_ha": 1806.5,
+        "prod_2020_t": 1226096.16,
+        "nature": "O",
+        "part_monde_pct": 8.95,
+        "part_afrique_pct": null,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 751700
+          },
+          {
+            "p": "2011",
+            "v": 789635.06
+          },
+          {
+            "p": "2012",
+            "v": 877111
+          },
+          {
+            "p": "2013",
+            "v": 946865
+          },
+          {
+            "p": "2014",
+            "v": 961104
+          },
+          {
+            "p": "2015",
+            "v": 1012749.6
+          },
+          {
+            "p": "2016",
+            "v": 1035333.08
+          },
+          {
+            "p": "2017",
+            "v": 1094518.75
+          },
+          {
+            "p": "2018",
+            "v": 1137724.91
+          },
+          {
+            "p": "2019",
+            "v": 1182479.92
+          },
+          {
+            "p": "2020",
+            "v": 1226096.16
+          },
+          {
+            "p": "2021",
+            "v": 1272005.3
+          },
+          {
+            "p": "2022",
+            "v": 1338141.63
+          },
+          {
+            "p": "2023",
+            "v": 1270299.48
+          },
+          {
+            "p": "2024",
+            "v": 1327473
+          }
+        ]
+      },
+      {
+        "code": "CN",
+        "nom_fr": "Chine",
+        "nom_en": "China",
+        "groupe": "asie",
+        "prod_t": 877600,
+        "surf_ha": 746797,
+        "rend_kg_ha": 1175.2,
+        "prod_2020_t": 826348,
+        "nature": "O",
+        "part_monde_pct": 5.92,
+        "part_afrique_pct": null,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 690812
+          },
+          {
+            "p": "2011",
+            "v": 750852
+          },
+          {
+            "p": "2012",
+            "v": 802255
+          },
+          {
+            "p": "2013",
+            "v": 864806
+          },
+          {
+            "p": "2014",
+            "v": 840171
+          },
+          {
+            "p": "2015",
+            "v": 816103
+          },
+          {
+            "p": "2016",
+            "v": 815938
+          },
+          {
+            "p": "2017",
+            "v": 817366
+          },
+          {
+            "p": "2018",
+            "v": 824093
+          },
+          {
+            "p": "2019",
+            "v": 839909
+          },
+          {
+            "p": "2020",
+            "v": 826348
+          },
+          {
+            "p": "2021",
+            "v": 871600
+          },
+          {
+            "p": "2022",
+            "v": 861675
+          },
+          {
+            "p": "2023",
+            "v": 897323
+          },
+          {
+            "p": "2024",
+            "v": 877600
+          }
+        ]
+      },
+      {
+        "code": "IN",
+        "nom_fr": "Inde",
+        "nom_en": "India",
+        "groupe": "asie",
+        "prod_t": 876000,
+        "surf_ha": 383995,
+        "rend_kg_ha": 2281.3,
+        "prod_2020_t": 685000,
+        "nature": "O",
+        "part_monde_pct": 5.91,
+        "part_afrique_pct": null,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 862000
+          },
+          {
+            "p": "2011",
+            "v": 800000
+          },
+          {
+            "p": "2012",
+            "v": 900000
+          },
+          {
+            "p": "2013",
+            "v": 900000
+          },
+          {
+            "p": "2014",
+            "v": 940000
+          },
+          {
+            "p": "2015",
+            "v": 944504.26
+          },
+          {
+            "p": "2016",
+            "v": 950600.4
+          },
+          {
+            "p": "2017",
+            "v": 713000
+          },
+          {
+            "p": "2018",
+            "v": 660000
+          },
+          {
+            "p": "2019",
+            "v": 702000
+          },
+          {
+            "p": "2020",
+            "v": 685000
+          },
+          {
+            "p": "2021",
+            "v": 749000
+          },
+          {
+            "p": "2022",
+            "v": 843000
+          },
+          {
+            "p": "2023",
+            "v": 849000
+          },
+          {
+            "p": "2024",
+            "v": 876000
+          }
+        ]
+      },
+      {
+        "code": "KH",
+        "nom_fr": "Cambodge",
+        "nom_en": "Cambodia",
+        "groupe": "asie",
+        "prod_t": 527200,
+        "surf_ha": 319700,
+        "rend_kg_ha": 1649,
+        "prod_2020_t": 358700,
+        "nature": "O",
+        "part_monde_pct": 3.56,
+        "part_afrique_pct": null,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 42250
+          },
+          {
+            "p": "2011",
+            "v": 51339
+          },
+          {
+            "p": "2012",
+            "v": 64525
+          },
+          {
+            "p": "2013",
+            "v": 85200
+          },
+          {
+            "p": "2014",
+            "v": 97100
+          },
+          {
+            "p": "2015",
+            "v": 126800
+          },
+          {
+            "p": "2016",
+            "v": 145200
+          },
+          {
+            "p": "2017",
+            "v": 193300
+          },
+          {
+            "p": "2018",
+            "v": 220100
+          },
+          {
+            "p": "2019",
+            "v": 287638
+          },
+          {
+            "p": "2020",
+            "v": 358700
+          },
+          {
+            "p": "2021",
+            "v": 374300
+          },
+          {
+            "p": "2022",
+            "v": 394700
+          },
+          {
+            "p": "2023",
+            "v": 511800
+          },
+          {
+            "p": "2024",
+            "v": 527200
+          }
+        ]
+      },
+      {
+        "code": "MY",
+        "nom_fr": "Malaisie",
+        "nom_en": "Malaysia",
+        "groupe": "asie",
+        "prod_t": 386512,
+        "surf_ha": 1134136,
+        "rend_kg_ha": 340.8,
+        "prod_2020_t": 514702,
+        "nature": "O",
+        "part_monde_pct": 2.61,
+        "part_afrique_pct": null,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 939243.79
+          },
+          {
+            "p": "2011",
+            "v": 996337.04
+          },
+          {
+            "p": "2012",
+            "v": 923020
+          },
+          {
+            "p": "2013",
+            "v": 826424.36
+          },
+          {
+            "p": "2014",
+            "v": 668613
+          },
+          {
+            "p": "2015",
+            "v": 722122
+          },
+          {
+            "p": "2016",
+            "v": 673513
+          },
+          {
+            "p": "2017",
+            "v": 740138
+          },
+          {
+            "p": "2018",
+            "v": 603329
+          },
+          {
+            "p": "2019",
+            "v": 639830
+          },
+          {
+            "p": "2020",
+            "v": 514702
+          },
+          {
+            "p": "2021",
+            "v": 469669
+          },
+          {
+            "p": "2022",
+            "v": 377047
+          },
+          {
+            "p": "2023",
+            "v": 347900
+          },
+          {
+            "p": "2024",
+            "v": 386512
+          }
+        ]
+      },
+      {
+        "code": "PH",
+        "nom_fr": "Philippines",
+        "nom_en": "Philippines",
+        "groupe": "asie",
+        "prod_t": 364556.59,
+        "surf_ha": 221797,
+        "rend_kg_ha": 1643.7,
+        "prod_2020_t": 422407.1,
+        "nature": "O",
+        "part_monde_pct": 2.46,
+        "part_afrique_pct": null,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 395237.15
+          },
+          {
+            "p": "2011",
+            "v": 425704.83
+          },
+          {
+            "p": "2012",
+            "v": 442998.16
+          },
+          {
+            "p": "2013",
+            "v": 444817.7
+          },
+          {
+            "p": "2014",
+            "v": 453052.48
+          },
+          {
+            "p": "2015",
+            "v": 398136.64
+          },
+          {
+            "p": "2016",
+            "v": 362625.97
+          },
+          {
+            "p": "2017",
+            "v": 406984.45
+          },
+          {
+            "p": "2018",
+            "v": 423370.9
+          },
+          {
+            "p": "2019",
+            "v": 431674.76
+          },
+          {
+            "p": "2020",
+            "v": 422407.1
+          },
+          {
+            "p": "2021",
+            "v": 430635.74
+          },
+          {
+            "p": "2022",
+            "v": 415749.65
+          },
+          {
+            "p": "2023",
+            "v": 378818.13
+          },
+          {
+            "p": "2024",
+            "v": 364556.59
+          }
+        ]
+      },
+      {
+        "code": "LA",
+        "nom_fr": "Laos",
+        "nom_en": "Laos",
+        "groupe": "asie",
+        "prod_t": 350300,
+        "surf_ha": 196534,
+        "rend_kg_ha": 1782.4,
+        "prod_2020_t": 201600,
+        "nature": "O",
+        "part_monde_pct": 2.36,
+        "part_afrique_pct": null,
+        "historique": [
+          {
+            "p": "2013",
+            "v": 42000
+          },
+          {
+            "p": "2014",
+            "v": 58400
+          },
+          {
+            "p": "2015",
+            "v": 66400
+          },
+          {
+            "p": "2016",
+            "v": 70600
+          },
+          {
+            "p": "2017",
+            "v": 78300
+          },
+          {
+            "p": "2018",
+            "v": 131900
+          },
+          {
+            "p": "2019",
+            "v": 182000
+          },
+          {
+            "p": "2020",
+            "v": 201600
+          },
+          {
+            "p": "2021",
+            "v": 225700
+          },
+          {
+            "p": "2022",
+            "v": 288200
+          },
+          {
+            "p": "2023",
+            "v": 317400
+          },
+          {
+            "p": "2024",
+            "v": 350300
+          }
+        ]
+      },
+      {
+        "code": "MM",
+        "nom_fr": "Myanmar",
+        "nom_en": "Myanmar",
+        "groupe": "asie",
+        "prod_t": 330300,
+        "surf_ha": 399821,
+        "rend_kg_ha": 826.1,
+        "prod_2020_t": 274265,
+        "nature": "O",
+        "part_monde_pct": 2.23,
+        "part_afrique_pct": null,
+        "historique": [
+          {
+            "p": "2010",
+            "v": 126200
+          },
+          {
+            "p": "2011",
+            "v": 147300
+          },
+          {
+            "p": "2012",
+            "v": 161800
+          },
+          {
+            "p": "2013",
+            "v": 174100
+          },
+          {
+            "p": "2014",
+            "v": 194900
+          },
+          {
+            "p": "2015",
+            "v": 208741
+          },
+          {
+            "p": "2016",
+            "v": 221670
+          },
+          {
+            "p": "2017",
+            "v": 238030
+          },
+          {
+            "p": "2018",
+            "v": 275487.08
+          },
+          {
+            "p": "2019",
+            "v": 264943
+          },
+          {
+            "p": "2020",
+            "v": 274265
+          },
+          {
+            "p": "2021",
+            "v": 283373
+          },
+          {
+            "p": "2022",
+            "v": 310763
+          },
+          {
+            "p": "2023",
+            "v": 322200
+          },
+          {
+            "p": "2024",
+            "v": 330300
+          }
+        ]
+      }
+    ],
+    "zones": [
+      {
+        "id": "harbel",
+        "pays": "LR",
+        "lat": 6.283,
+        "lon": -10.35,
+        "image": "assets/sat/harbel.jpg",
+        "titre_fr": "Harbel, Liberia : plantation Firestone",
+        "titre_en": "Harbel, Liberia: Firestone plantation",
+        "legende_fr": "Au nord-ouest, blocs rectangulaires et pistes d'une plantation industrielle ; en bas, la piste de l'aéroport Roberts. Harbel est au cœur de la concession Firestone, la plus grande plantation d'hévéas d'Afrique de l'Ouest.",
+        "legende_en": "To the north-west, rectangular blocks and tracks of an industrial plantation; at the bottom, the Roberts airport runway. Harbel lies at the heart of the Firestone concession, West Africa's largest rubber plantation.",
+        "source": "https://en.wikipedia.org/wiki/Firestone_Natural_Rubber_Company",
+        "coordonnees": "Wikipedia, Harbel (6°17′N, 10°21′O)",
+        "largeur_km": 19.5
+      },
+      {
+        "id": "toupah",
+        "pays": "CI",
+        "lat": 5.319,
+        "lon": -4.5651,
+        "image": "assets/sat/toupah.jpg",
+        "titre_fr": "Toupah, Côte d'Ivoire : plantation de la SAPH",
+        "titre_en": "Toupah, Côte d'Ivoire: SAPH plantation",
+        "legende_fr": "À l'ouest, grille régulière de parcelles bordées de pistes : plantation industrielle. Toupah (région de Dabou) est un site historique de la Société africaine de plantations d'hévéas (SAPH, groupe SIFCA). Brume partielle sur la mosaïque 2016.",
+        "legende_en": "To the west, a regular grid of plots edged by tracks: an industrial plantation. Toupah (Dabou area) is a historic site of the Société africaine de plantations d'hévéas (SAPH, SIFCA group). Partial haze on the 2016 mosaic.",
+        "source": "https://www.aip.ci/cote-divoire-aip-la-saph-inaugure-trois-projets-sociaux-a-toupah-okpoyou-et-nouvel-ousrou/",
+        "coordonnees": "OpenStreetMap (Nominatim), Toupah",
+        "largeur_km": 19.5
+      },
+      {
+        "id": "niete",
+        "pays": "CM",
+        "lat": 2.7153,
+        "lon": 10.0571,
+        "image": "assets/sat/niete.jpg",
+        "titre_fr": "Niété, Cameroun : plantation HEVECAM",
+        "titre_en": "Niété, Cameroon: HEVECAM plantation",
+        "legende_fr": "Grille de grands blocs rectangulaires et cités ouvrières (à droite) : plantation industrielle de la HEVECAM, à environ 40 km de Kribi.",
+        "legende_en": "A grid of large rectangular blocks and workers' housing (right): the HEVECAM industrial plantation, about 40 km from Kribi.",
+        "source": "https://fr.journalducameroun.com/cameroun-hevecam-fait-peau-neuve-pour-prevenir-la-chute-de-production/",
+        "coordonnees": "OpenStreetMap (Nominatim), Niété",
+        "largeur_km": 19.5
+      },
+      {
+        "id": "soubre",
+        "pays": "CI",
+        "lat": 5.785,
+        "lon": -6.5933,
+        "image": "assets/sat/soubre.jpg",
+        "titre_fr": "Soubré, Côte d'Ivoire : bassin villageois",
+        "titre_en": "Soubré, Côte d'Ivoire: smallholder basin",
+        "legende_fr": "Mosaïque de petites parcelles villageoises autour de la ville (à droite) et du chantier du barrage de Soubré (2016). Les petits planteurs produisent l'essentiel du caoutchouc ivoirien ; à 10 m, on ne distingue pas l'hévéa du cacao.",
+        "legende_en": "A patchwork of small village plots around the town (right) and the Soubré dam construction site (2016). Smallholders grow most Ivorian rubber; at 10 m, rubber cannot be told apart from cocoa.",
+        "source": "https://www.fao.org/faostat/en/#data/QCL",
+        "coordonnees": "OpenStreetMap (Nominatim), Soubré",
+        "largeur_km": 19.5
+      }
+    ],
+    "satellite_credit": "EOxCloudless 2016 https://cloudless.eox.at by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2016), CC BY 4.0",
+    "carte_credit": "Natural Earth (domaine public)"
+  },
   "pre_rsi": {
     "score": 52,
     "signal_fr": "Neutre — marché équilibré",
     "signal_en": "Neutral — balanced market",
-    "periode": "2026-W47",
-    "version": "Pré-RSI v2",
+    "periode": "2026-W48",
+    "version": "Pré-RSI v2.1",
     "nature": "E",
     "composantes": [
       {
         "cle": "meteo",
         "score": 50,
         "poids_nominal": 0.25,
-        "poids_effectif": 0.3571,
+        "poids_effectif": 0.2941,
         "sens": "neutre"
       },
       {
         "cle": "devises",
         "score": 70,
         "poids_nominal": 0.2,
-        "poids_effectif": 0.2857,
+        "poids_effectif": 0.2353,
         "sens": "hausse"
       },
       {
         "cle": "demande",
         "score": 40,
         "poids_nominal": 0.25,
-        "poids_effectif": 0.3571,
+        "poids_effectif": 0.2941,
         "sens": "baisse"
       },
       {
@@ -1940,10 +3544,10 @@ window.RS_DATA = {
       },
       {
         "cle": "geo",
-        "score": null,
+        "score": 50,
         "poids_nominal": 0.15,
-        "poids_effectif": 0,
-        "sens": "absente"
+        "poids_effectif": 0.1765,
+        "sens": "neutre"
       }
     ]
   },
@@ -1957,7 +3561,7 @@ window.RS_DATA = {
     "horizons": [
       {
         "sem": 4,
-        "date": "2026-12-16",
+        "date": "2026-12-21",
         "p10": 2.409,
         "p25": 2.474,
         "p50": 2.551,
@@ -1966,7 +3570,7 @@ window.RS_DATA = {
       },
       {
         "sem": 8,
-        "date": "2027-01-13",
+        "date": "2027-01-18",
         "p10": 2.353,
         "p25": 2.444,
         "p50": 2.548,
@@ -1975,7 +3579,7 @@ window.RS_DATA = {
       },
       {
         "sem": 12,
-        "date": "2027-02-10",
+        "date": "2027-02-15",
         "p10": 2.312,
         "p25": 2.419,
         "p50": 2.547,
@@ -1984,7 +3588,7 @@ window.RS_DATA = {
       },
       {
         "sem": 26,
-        "date": "2027-05-19",
+        "date": "2027-05-24",
         "p10": 2.205,
         "p25": 2.361,
         "p50": 2.547,
@@ -1995,35 +3599,131 @@ window.RS_DATA = {
   },
   "meteo": {
     "source": "Open-Meteo (archive), cumul de pluie du mois",
-    "date": "2026-11-17",
+    "date": "2026-11-22",
     "zones": [
       {
         "pays": "Côte d'Ivoire",
         "ville": "Abidjan",
-        "pluie_30j_mm": 85.9,
+        "pluie_30j_mm": 80.2,
         "temp_c": 27.6,
-        "score_production": 62
+        "score_production": 60
       },
       {
         "pays": "Thaïlande",
         "ville": "Bangkok",
-        "pluie_30j_mm": 115.1,
-        "temp_c": 29.1,
-        "score_production": 64
+        "pluie_30j_mm": 94.6,
+        "temp_c": 29.4,
+        "score_production": 57
       },
       {
         "pays": "Malaisie",
         "ville": "Kuala Lumpur",
-        "pluie_30j_mm": 417.7,
+        "pluie_30j_mm": 387.3,
         "temp_c": 27.1,
-        "score_production": 80
+        "score_production": 85
       },
       {
         "pays": "Indonésie",
         "ville": "Jakarta",
-        "pluie_30j_mm": 130.1,
-        "temp_c": 29.6,
-        "score_production": 68
+        "pluie_30j_mm": 158,
+        "temp_c": 29.3,
+        "score_production": 74
+      }
+    ]
+  },
+  "actualites": {
+    "date": "2026-11-23",
+    "n": 30,
+    "articles": [
+      {
+        "titre": "L’APROMAC annonce le prix d’achat du caoutchouc fixé à 578 FCFA/kg pour le mois de novembre 2026",
+        "source": "AIP - Agence Ivoirienne de Presse",
+        "date": "2026-11-22",
+        "lien": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQazZDcEpldzBpTmhaOG5sbnBiUUFPS1hKMlczVHhDSzk2Zi1GWGQzMHNTLVN3aWFOdDN2UTBWeGlyYVRpRTlWSURablRJSUpNZG52SEg1RXBGdkZ6SjdvaUllT0EtYTFEbFZpZXQ2VTRmandrUWlEbHZwQm9uUmZ3bGRod2k1aW5vU3FnZ1l1ZS1yUkJJaHVXaFhSQ0NRcDdqblZ2WVJPNWhsazFNNV9MYk1RN2o?oc=5",
+        "categorie_fr": "Côte d'Ivoire",
+        "categorie_en": "Côte d'Ivoire",
+        "tension": false
+      },
+      {
+        "titre": "Ivory Coast: 800 million FCFA for a solar plant at a rubber factory",
+        "source": "Bénin Web TV",
+        "date": "2026-11-22",
+        "lien": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOejF4RW9VS1NZdl9OUS1TSjdWdmV1QUowU3hydmRTYWZ5SXFodEhTYVlfSE1XN0VsOGNvLTViRURJYUNqckFEN01HaDFLZ180ODJ3dWxoSzJzdFZIcGV1TVozWFRmZzZRdXRNQ2ZQY1ZVNDdYZy1lSVYzTTkwZXYta1dWM3YtbjZ5UkJqTHJUZUJYSTlWNGpr?oc=5",
+        "categorie_fr": "Côte d'Ivoire",
+        "categorie_en": "Côte d'Ivoire",
+        "tension": false
+      },
+      {
+        "titre": "Côte d’Ivoire : 800 millions de FCFA pour une centrale solaire dans une usine de caoutchouc",
+        "source": "Bénin Web TV",
+        "date": "2026-11-22",
+        "lien": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNYzhRTlRKVEFhaGt4UHk1U2ZONXRSRTFwb0JFMi1KUHZSa3Zib1VvUzhZVzFvVUVsXzlmUGNHaW5xZUpBWnVveTMwd2FyUy1FMW9EV0czUDNzb0RGMHQ2aWNOZGRkLTNfOU1UY1dva1JxMnhHcU9RZ21GTUF4cjZxdG5FdjExSTRJQmZsQm94b2c4N1B3SW51WktmcFB1b2VOZE9NWlNsdmhRaTB6Z0RFag?oc=5",
+        "categorie_fr": "Côte d'Ivoire",
+        "categorie_en": "Côte d'Ivoire",
+        "tension": false
+      },
+      {
+        "titre": "Côte d'Ivoire : Smart Energy équipera l'usine de caoutchouc de CTCI à Alépé d'une centrale solaire de 1,5 MWc",
+        "source": "Energies Media",
+        "date": "2026-11-21",
+        "lien": "https://news.google.com/rss/articles/CBMiywFBVV95cUxPNWxYZzR3cDhVX184ZUV0eXZOUm5kRUlOSHp6U2hyck9CVV9DdW13M2RLRmtBS1B0OXhDNGtIWVEwcWQzWnVmSS11RVFfUzN3VnJFbExzQTB6SDVIM2pfTVNRY05OS3oteXlBVXhoLTRDeDhocTNyUDFWcVExaHhDeXFxcUc2bzNsclROdENGV2J1UldBeWl0WXhGd3ZwUlhac2lWd2tYVHVjMmZfQU5udy1vMlJDUDM2RkI3eVI2UE9peVoyNzhRZzNuUQ?oc=5",
+        "categorie_fr": "Côte d'Ivoire",
+        "categorie_en": "Côte d'Ivoire",
+        "tension": false
+      },
+      {
+        "titre": "Côte d’Ivoire-AIP/ Le préfet du Cavally exhorte les coopératives à investir dans la transformation du caoutchouc",
+        "source": "AIP - Agence Ivoirienne de Presse",
+        "date": "2026-11-19",
+        "lien": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNZ0ZmcDJCclU5UWVtSXlBVS0ybE9VTVdqWmFmSE1qZGhFemhBNUtfSk1GcXQ5UGFGMEZNVWxYbWZHYmxBOHVWbjJuQ202SmFhSTV6UXNZY0FsMFdPazRlenZmVUtMNWU3WlBWZnVhU01ienU3eTdPZ0hBOXVoeXlzOFQzNUdoZVNlNUVZSDRabHQyekdPMTBHQmdGc2tBd3hyczlUU3JHbVUxVWdIeGY5dkpMX2tabXRSVWhvQk15TEZ4b2NvZkh0NWxn?oc=5",
+        "categorie_fr": "Côte d'Ivoire",
+        "categorie_en": "Côte d'Ivoire",
+        "tension": false
+      },
+      {
+        "titre": "Côte d’Ivoire-AIP/ Filière hévéa : une faitière veut fédérer toutes les coopératives du Cavally et du Guémon pour la défense de leurs intérêts - AIP - Agence Ivoirienne de Presse",
+        "source": "AIP - Agence Ivoirienne de Presse",
+        "date": "2026-11-19",
+        "lien": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxNVHJYeFg5X0Rkd184N0JOOHhXcDVTYXQ3WDBpMWJteHBaWlUtZm9pNzBPUGZYQVVHVHZPbzdPYXFhOHp2czFCTU03dHpKT3lGbFA5OTBocUpsNWJmck9SMHFhVGk4VXlBQ19MS2R2XzhHa1BIcEFKLWFzNTQtRVNORi1nNHBieFI0M1hSYUh5Z2pEQUtkQzdpdXhNRC1HYkZZMVlsWHVDQmhKcVpQQ1k3SEVEX3FmTUdjeDNhMFZmQnpvTTVEMEFxR29zZG14WXlNTkdGMFFaRHZSRGFqRkt5VFNGSlhMVnFtZGh0QlFodw?oc=5",
+        "categorie_fr": "Côte d'Ivoire",
+        "categorie_en": "Côte d'Ivoire",
+        "tension": false
+      },
+      {
+        "titre": "Côte d’Ivoire-AIP/Les usiniers du caoutchouc naturel explorent des solutions pour réduire leurs coûts énergétiques",
+        "source": "AIP - Agence Ivoirienne de Presse",
+        "date": "2026-11-19",
+        "lien": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxQeDZydmpzSHdvS2taSEE0eHI4aDZrem8yMWx5SHJXdlBEc1g5VEFDWVlXeS05YUZkWWYwMDdNZTFQQlpCQlZJREN5cE41ZVhHX0FQdWxidHhhbl9yUk1mRVh6dGc3QTdGMGw1RW5LQ2ZGVEJEMmlveC15T0Q5S2lHQU1NNkRNN2FiUXRhWUZfcUdwbTRNZ0tIeGpaOEhQbVlHNTJQRmh1WnpPazVjQzlJa1pXVmlDdThEOWZnV0QzMHlWYVhxc0dMMlZMYzI3ZjRHWkxBT21Mb18?oc=5",
+        "categorie_fr": "Côte d'Ivoire",
+        "categorie_en": "Côte d'Ivoire",
+        "tension": false
+      },
+      {
+        "titre": "Côte d’Ivoire-AIP/Le sous-préfet d’Attobrou mobilise les acteurs de la filière hévéa contre les vols de fonds de tasse",
+        "source": "AIP - Agence Ivoirienne de Presse",
+        "date": "2026-11-19",
+        "lien": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPMkl4NmZmRGdqWVdST09SUnN2N2FzUEtBTjNTZ0FOTE1ReEpZVEF3ZWxRemZmX1puTmQ2WnRIQTZiOGlTV3ZKbmY1dThFNXdTZHhlWW5Qcy1VdlU3cldfX3Fja0ttVDVqMW9uTHdNSVctb2oxU0JNbVJTQzF6MTZKMUxtLV9td0RkVXh5VXpOUENLRXpRR0l6VnlxUlhrR0RVbU96Q1R6N1NMR3hyT3ZYYkZPWDZVeDJGNHNtN1lrbXotLUdfcGlNREtUMVpEbk9ibGc?oc=5",
+        "categorie_fr": "Côte d'Ivoire",
+        "categorie_en": "Côte d'Ivoire",
+        "tension": false
+      },
+      {
+        "titre": "Rubber Board policies not behind price fall, unrestricted imports not allowed: Chairman",
+        "source": "Mathrubhumi English",
+        "date": "2026-11-23",
+        "lien": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOWXF0dDZyX3dKUzRHY1k2YWxxbk5HZ3JQdV9iSmo1SzlfcmFnT28teFQ4c3ctWUdSVlBpVzRuTnlZb3Y2RXMtZ1pwQlVrM1g1OTJrbFVDVVJFdEVSUlNySDdSYVVqd3E2aHNPdmRPMERESGVHNFRCSC1UR2RhSUhNWld6N2pzdlJLSFR2RDRtdnJLQlNLT08zb21vUHI3ZWVIQWpsXzZfWmkwSGhzSVVYVC0zUDN0RmQwZW4zZNIBwgFBVV95cUxPZURPdWVHMDBDc09WUlR5QldiM3hIRWsxaFhRWlhuZjhmMjZHWFRiUnlFaVlfdDRiV3JzVW9FeHBCbkpIcFcyM1NEdFZ0eW5nUFhjaDQ1d3k4VlRoUUhrSzFleEtFaloyNGg1dGZ2SllMNkMwWTJEaGlHZGZrWVM1SVNNY2dVMC02ZDIxQjd3V3A2ZzB3UzgybGJfZS11QXhEVkxPb3VpcVNESjhFV2Vua01RakRpS3RGMkVBQTFaV0wyUQ?oc=5",
+        "categorie_fr": "Marché mondial",
+        "categorie_en": "World market",
+        "tension": false
+      },
+      {
+        "titre": "Les exportations de caoutchouc ont atteint 2,547 milliards de dollars, soit une baisse de 16,6 % en volume.",
+        "source": "Vietnam.vn",
+        "date": "2026-11-23",
+        "lien": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPZWN5V1ZTT3VoS0NIVkZya0paaC1tSnBNZkFfUFJQLXBLSmd0M0dyMlZMa0QyTkdPcHg5WlI3bUhxdlBJM1ZfRHlsbmJhRVdwNGh3cjdFcFR0cWptOENMejYxeVhteEdlNnZCY2xId3RmLTMzRm9sTFlMT245WmtyWW51V0RrQkE?oc=5",
+        "categorie_fr": "Marché mondial",
+        "categorie_en": "World market",
+        "tension": false
       }
     ]
   },
@@ -2084,8 +3784,8 @@ window.RS_DATA = {
       "source": "Calcul RubberSignal Technologies (APROMAC, Banque mondiale, BCE)",
       "url": null,
       "version": "RSCI v2.1",
-      "n": 4,
-      "derniere_date": "2026-11-18",
+      "n": 5,
+      "derniere_date": "2026-11-23",
       "derniere_valeur": 63.6
     },
     {
@@ -2099,9 +3799,9 @@ window.RS_DATA = {
       "source": "BCE (via Frankfurter, repli API BCE)",
       "url": "https://api.frankfurter.dev",
       "version": "sans objet (donnée source)",
-      "n": 3,
-      "derniere_date": "2026-11-17",
-      "derniere_valeur": 1.0989
+      "n": 4,
+      "derniere_date": "2026-11-20",
+      "derniere_valeur": 1.099
     },
     {
       "serie_id": "BCE_USD_EUR_M",
@@ -2732,6 +4432,1086 @@ window.RS_DATA = {
       "n": 20,
       "derniere_date": "2026-09",
       "derniere_valeur": 7348.4
+    },
+    {
+      "serie_id": "FAO_PROD_CI",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Côte d'Ivoire",
+      "libelle_en": "FAOSTAT: natural rubber production, Côte d'Ivoire",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1686599
+    },
+    {
+      "serie_id": "FAO_SURF_CI",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Côte d'Ivoire",
+      "libelle_en": "FAOSTAT: rubber harvested area, Côte d'Ivoire",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1027211
+    },
+    {
+      "serie_id": "FAO_REND_CI",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Côte d'Ivoire",
+      "libelle_en": "FAOSTAT: rubber yield, Côte d'Ivoire",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1641.9
+    },
+    {
+      "serie_id": "FAO_PROD_GH",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Ghana",
+      "libelle_en": "FAOSTAT: natural rubber production, Ghana",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 136500
+    },
+    {
+      "serie_id": "FAO_SURF_GH",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Ghana",
+      "libelle_en": "FAOSTAT: rubber harvested area, Ghana",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 151565
+    },
+    {
+      "serie_id": "FAO_REND_GH",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Ghana",
+      "libelle_en": "FAOSTAT: rubber yield, Ghana",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 900.6
+    },
+    {
+      "serie_id": "FAO_PROD_LR",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Liberia",
+      "libelle_en": "FAOSTAT: natural rubber production, Liberia",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 129900
+    },
+    {
+      "serie_id": "FAO_SURF_LR",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Liberia",
+      "libelle_en": "FAOSTAT: rubber harvested area, Liberia",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 23,
+      "derniere_date": "2024",
+      "derniere_valeur": 163697
+    },
+    {
+      "serie_id": "FAO_REND_LR",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Liberia",
+      "libelle_en": "FAOSTAT: rubber yield, Liberia",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 23,
+      "derniere_date": "2024",
+      "derniere_valeur": 793.5
+    },
+    {
+      "serie_id": "FAO_PROD_NG",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Nigeria",
+      "libelle_en": "FAOSTAT: natural rubber production, Nigeria",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 65300
+    },
+    {
+      "serie_id": "FAO_SURF_NG",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Nigeria",
+      "libelle_en": "FAOSTAT: rubber harvested area, Nigeria",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 172383
+    },
+    {
+      "serie_id": "FAO_REND_NG",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Nigeria",
+      "libelle_en": "FAOSTAT: rubber yield, Nigeria",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 378.8
+    },
+    {
+      "serie_id": "FAO_PROD_CM",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Cameroun",
+      "libelle_en": "FAOSTAT: natural rubber production, Cameroon",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 55700
+    },
+    {
+      "serie_id": "FAO_SURF_CM",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Cameroun",
+      "libelle_en": "FAOSTAT: rubber harvested area, Cameroon",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 72175
+    },
+    {
+      "serie_id": "FAO_REND_CM",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Cameroun",
+      "libelle_en": "FAOSTAT: rubber yield, Cameroon",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 771.7
+    },
+    {
+      "serie_id": "FAO_PROD_GA",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Gabon",
+      "libelle_en": "FAOSTAT: natural rubber production, Gabon",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 27800
+    },
+    {
+      "serie_id": "FAO_SURF_GA",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Gabon",
+      "libelle_en": "FAOSTAT: rubber harvested area, Gabon",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 17616
+    },
+    {
+      "serie_id": "FAO_REND_GA",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Gabon",
+      "libelle_en": "FAOSTAT: rubber yield, Gabon",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1578.1
+    },
+    {
+      "serie_id": "FAO_PROD_GW",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Guinée-Bissau",
+      "libelle_en": "FAOSTAT: natural rubber production, Guinea-Bissau",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 7,
+      "derniere_date": "2024",
+      "derniere_valeur": 25000
+    },
+    {
+      "serie_id": "FAO_SURF_GW",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Guinée-Bissau",
+      "libelle_en": "FAOSTAT: rubber harvested area, Guinea-Bissau",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 7,
+      "derniere_date": "2024",
+      "derniere_valeur": 20842
+    },
+    {
+      "serie_id": "FAO_REND_GW",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Guinée-Bissau",
+      "libelle_en": "FAOSTAT: rubber yield, Guinea-Bissau",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 7,
+      "derniere_date": "2024",
+      "derniere_valeur": 1199.5
+    },
+    {
+      "serie_id": "FAO_PROD_GN",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Guinée",
+      "libelle_en": "FAOSTAT: natural rubber production, Guinea",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 15245.78
+    },
+    {
+      "serie_id": "FAO_SURF_GN",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Guinée",
+      "libelle_en": "FAOSTAT: rubber harvested area, Guinea",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 11937
+    },
+    {
+      "serie_id": "FAO_REND_GN",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Guinée",
+      "libelle_en": "FAOSTAT: rubber yield, Guinea",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1277.1
+    },
+    {
+      "serie_id": "FAO_PROD_CD",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, RD Congo",
+      "libelle_en": "FAOSTAT: natural rubber production, DR Congo",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 6500
+    },
+    {
+      "serie_id": "FAO_SURF_CD",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, RD Congo",
+      "libelle_en": "FAOSTAT: rubber harvested area, DR Congo",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 28456
+    },
+    {
+      "serie_id": "FAO_REND_CD",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, RD Congo",
+      "libelle_en": "FAOSTAT: rubber yield, DR Congo",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 228.4
+    },
+    {
+      "serie_id": "FAO_PROD_CG",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Congo",
+      "libelle_en": "FAOSTAT: natural rubber production, Congo",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 2392.73
+    },
+    {
+      "serie_id": "FAO_SURF_CG",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Congo",
+      "libelle_en": "FAOSTAT: rubber harvested area, Congo",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 2650
+    },
+    {
+      "serie_id": "FAO_REND_CG",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Congo",
+      "libelle_en": "FAOSTAT: rubber yield, Congo",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 902.9
+    },
+    {
+      "serie_id": "FAO_PROD_CF",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Centrafrique",
+      "libelle_en": "FAOSTAT: natural rubber production, Central African Republic",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1204.31
+    },
+    {
+      "serie_id": "FAO_SURF_CF",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Centrafrique",
+      "libelle_en": "FAOSTAT: rubber harvested area, Central African Republic",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 952
+    },
+    {
+      "serie_id": "FAO_REND_CF",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Centrafrique",
+      "libelle_en": "FAOSTAT: rubber yield, Central African Republic",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1265
+    },
+    {
+      "serie_id": "FAO_PROD_TH",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Thaïlande",
+      "libelle_en": "FAOSTAT: natural rubber production, Thailand",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 4789042
+    },
+    {
+      "serie_id": "FAO_SURF_TH",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Thaïlande",
+      "libelle_en": "FAOSTAT: rubber harvested area, Thailand",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 3595300
+    },
+    {
+      "serie_id": "FAO_REND_TH",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Thaïlande",
+      "libelle_en": "FAOSTAT: rubber yield, Thailand",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1332
+    },
+    {
+      "serie_id": "FAO_PROD_ID",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Indonésie",
+      "libelle_en": "FAOSTAT: natural rubber production, Indonesia",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 2262088
+    },
+    {
+      "serie_id": "FAO_SURF_ID",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Indonésie",
+      "libelle_en": "FAOSTAT: rubber harvested area, Indonesia",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 3149277
+    },
+    {
+      "serie_id": "FAO_REND_ID",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Indonésie",
+      "libelle_en": "FAOSTAT: rubber yield, Indonesia",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 718.3
+    },
+    {
+      "serie_id": "FAO_PROD_VN",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Vietnam",
+      "libelle_en": "FAOSTAT: natural rubber production, Vietnam",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1327473
+    },
+    {
+      "serie_id": "FAO_SURF_VN",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Vietnam",
+      "libelle_en": "FAOSTAT: rubber harvested area, Vietnam",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 734821
+    },
+    {
+      "serie_id": "FAO_REND_VN",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Vietnam",
+      "libelle_en": "FAOSTAT: rubber yield, Vietnam",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1806.5
+    },
+    {
+      "serie_id": "FAO_PROD_CN",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Chine",
+      "libelle_en": "FAOSTAT: natural rubber production, China",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 877600
+    },
+    {
+      "serie_id": "FAO_SURF_CN",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Chine",
+      "libelle_en": "FAOSTAT: rubber harvested area, China",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 746797
+    },
+    {
+      "serie_id": "FAO_REND_CN",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Chine",
+      "libelle_en": "FAOSTAT: rubber yield, China",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1175.2
+    },
+    {
+      "serie_id": "FAO_PROD_IN",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Inde",
+      "libelle_en": "FAOSTAT: natural rubber production, India",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 876000
+    },
+    {
+      "serie_id": "FAO_SURF_IN",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Inde",
+      "libelle_en": "FAOSTAT: rubber harvested area, India",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 383995
+    },
+    {
+      "serie_id": "FAO_REND_IN",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Inde",
+      "libelle_en": "FAOSTAT: rubber yield, India",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 2281.3
+    },
+    {
+      "serie_id": "FAO_PROD_KH",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Cambodge",
+      "libelle_en": "FAOSTAT: natural rubber production, Cambodia",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 527200
+    },
+    {
+      "serie_id": "FAO_SURF_KH",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Cambodge",
+      "libelle_en": "FAOSTAT: rubber harvested area, Cambodia",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 319700
+    },
+    {
+      "serie_id": "FAO_REND_KH",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Cambodge",
+      "libelle_en": "FAOSTAT: rubber yield, Cambodia",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1649
+    },
+    {
+      "serie_id": "FAO_PROD_MY",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Malaisie",
+      "libelle_en": "FAOSTAT: natural rubber production, Malaysia",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 386512
+    },
+    {
+      "serie_id": "FAO_SURF_MY",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Malaisie",
+      "libelle_en": "FAOSTAT: rubber harvested area, Malaysia",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1134136
+    },
+    {
+      "serie_id": "FAO_REND_MY",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Malaisie",
+      "libelle_en": "FAOSTAT: rubber yield, Malaysia",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 340.8
+    },
+    {
+      "serie_id": "FAO_PROD_PH",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Philippines",
+      "libelle_en": "FAOSTAT: natural rubber production, Philippines",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 364556.59
+    },
+    {
+      "serie_id": "FAO_SURF_PH",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Philippines",
+      "libelle_en": "FAOSTAT: rubber harvested area, Philippines",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 221797
+    },
+    {
+      "serie_id": "FAO_REND_PH",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Philippines",
+      "libelle_en": "FAOSTAT: rubber yield, Philippines",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1643.7
+    },
+    {
+      "serie_id": "FAO_PROD_LA",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Laos",
+      "libelle_en": "FAOSTAT: natural rubber production, Laos",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 12,
+      "derniere_date": "2024",
+      "derniere_valeur": 350300
+    },
+    {
+      "serie_id": "FAO_SURF_LA",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Laos",
+      "libelle_en": "FAOSTAT: rubber harvested area, Laos",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 12,
+      "derniere_date": "2024",
+      "derniere_valeur": 196534
+    },
+    {
+      "serie_id": "FAO_REND_LA",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Laos",
+      "libelle_en": "FAOSTAT: rubber yield, Laos",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 12,
+      "derniere_date": "2024",
+      "derniere_valeur": 1782.4
+    },
+    {
+      "serie_id": "FAO_PROD_MM",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Myanmar",
+      "libelle_en": "FAOSTAT: natural rubber production, Myanmar",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 330300
+    },
+    {
+      "serie_id": "FAO_SURF_MM",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Myanmar",
+      "libelle_en": "FAOSTAT: rubber harvested area, Myanmar",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 399821
+    },
+    {
+      "serie_id": "FAO_REND_MM",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Myanmar",
+      "libelle_en": "FAOSTAT: rubber yield, Myanmar",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 826.1
+    },
+    {
+      "serie_id": "FAO_PROD_WLD",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Monde",
+      "libelle_en": "FAOSTAT: natural rubber production, World",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 14829085.3
+    },
+    {
+      "serie_id": "FAO_SURF_WLD",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Monde",
+      "libelle_en": "FAOSTAT: rubber harvested area, World",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 13222162
+    },
+    {
+      "serie_id": "FAO_REND_WLD",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Monde",
+      "libelle_en": "FAOSTAT: rubber yield, World",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1121.5
+    },
+    {
+      "serie_id": "FAO_PROD_AFR",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Afrique",
+      "libelle_en": "FAOSTAT: natural rubber production, Africa",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 2152141.82
+    },
+    {
+      "serie_id": "FAO_SURF_AFR",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Afrique",
+      "libelle_en": "FAOSTAT: rubber harvested area, Africa",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1669485
+    },
+    {
+      "serie_id": "FAO_REND_AFR",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Afrique",
+      "libelle_en": "FAOSTAT: rubber yield, Africa",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1289.1
+    },
+    {
+      "serie_id": "FAO_PROD_ASI",
+      "libelle_fr": "FAOSTAT : production de caoutchouc naturel, Asie",
+      "libelle_en": "FAOSTAT: natural rubber production, Asia",
+      "frequence": "annuelle",
+      "unite": "t",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 12183608.04
+    },
+    {
+      "serie_id": "FAO_SURF_ASI",
+      "libelle_fr": "FAOSTAT : superficie récoltée d'hévéa, Asie",
+      "libelle_en": "FAOSTAT: rubber harvested area, Asia",
+      "frequence": "annuelle",
+      "unite": "ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 11214575
+    },
+    {
+      "serie_id": "FAO_REND_ASI",
+      "libelle_fr": "FAOSTAT : rendement de l'hévéa, Asie",
+      "libelle_en": "FAOSTAT: rubber yield, Asia",
+      "frequence": "annuelle",
+      "unite": "kg/ha",
+      "nature": "O",
+      "licence": "CC BY 4.0 (FAO, conditions d'utilisation des bases statistiques)",
+      "source": "FAOSTAT (FAO), domaine QCL, produit 836",
+      "url": "https://www.fao.org/faostat/en/#data/QCL",
+      "version": "Production FAOSTAT v1",
+      "n": 25,
+      "derniere_date": "2024",
+      "derniere_valeur": 1086.4
     },
     {
       "serie_id": "RAPI_LR_CIF_EUR",
