@@ -384,6 +384,7 @@
     var lien = $('sat-lien'); lien.href = src; lien.title = t('Ouvrir l’image en taille réelle', 'Open the full-size image');
     var lg = clear($('sat-leg-eudr')); lg.hidden = !eudr;
     if (eudr) [['eudr-foret', t('forêt au 31/12/2020 (JRC)', 'forest on 31/12/2020 (JRC)')],
+               ['eudr-hevea', t('hévéa en 2024 (Forest Data Partnership)', 'rubber in 2024 (Forest Data Partnership)')],
                ['eudr-rouge', t('perte de couvert après 2020 sur cette forêt', 'tree cover loss after 2020 on that forest')],
                ['eudr-jaune', t('perte après 2020 hors forêt (plantations, cultures)', 'loss after 2020 outside forest (plantations, crops)')]].forEach(function (x) {
       var s = RS.el('span', null, null, lg); RS.el('i', x[0], null, s); RS.el('span', null, x[1], s);
@@ -392,7 +393,7 @@
       : t(z.legende_fr, z.legende_en)) + t(' Largeur de l’image : environ ', ' Image width: about ') + RS.num(z.largeur_km, 0) +
       t(' km. Cliquez sur l’image pour la voir en taille réelle.', ' km. Click the image to see it full size.');
     var cr = clear($('sat-credit'));
-    RS.el('span', null, t('Image : ', 'Image: ') + P.satellite_credit + (eudr ? '. ' + E.sources.foret + '. ' + E.sources.pertes : '') +
+    RS.el('span', null, t('Image : ', 'Image: ') + P.satellite_credit + (eudr ? '. ' + E.sources.foret + '. ' + E.sources.pertes + (E.sources.hevea ? '. ' + E.sources.hevea : '') : '') +
       t('. Position : ', '. Location: ') + z.coordonnees + '. ', cr);
     if (!eudr) { var a = RS.el('a', null, t('Source sur ce site de production', 'Source on this production site'), cr);
                  a.href = z.source; a.rel = 'noopener noreferrer nofollow'; a.target = '_blank'; }
@@ -415,6 +416,12 @@
       RS.pct(eb.part_perte_foret_pct, 1) + t(' de la forêt 2020 (Hansen, 2021-2024)', ' of 2020 forest (Hansen, 2021-2024)'), 'E');
     kpi(k, t('Perte après 2020 hors forêt', 'Loss after 2020 outside forest'), RS.num(eb.perte_apres_2020_hors_foret_ha, 0), 'ha',
       t('plantations, cultures, jachères : non visées par l’EUDR comme déforestation', 'plantations, crops, fallows: not EUDR deforestation'), 'E');
+    if (eb.hevea_2024_ha != null) {
+      kpi(k, t('Hévéa en 2024', 'Rubber in 2024'), RS.int(eb.hevea_2024_ha), 'ha',
+        RS.pct(eb.part_hevea_2024_pct, 1) + t(' du carré ; ', ' of the square; ') + RS.int(eb.hevea_2020_ha) + t(' ha en 2020 (FDP)', ' ha in 2020 (FDP)'), 'E');
+      kpi(k, t('Nouvel hévéa sur forêt 2020', 'New rubber on 2020 forest'), RS.num(eb.hevea_nouveau_sur_foret_2020_ha, 1), 'ha',
+        t('plantation probable sur une forêt après la date de référence EUDR', 'probable planting on forest after the EUDR cut-off date'), 'E');
+    }
     var ans = Object.keys(eb.perte_par_an);
     C.bars($('eudr-bars'), {
       x: ans, xFmt: function (a) { return String(a); }, values: ans.map(function (a) { return eb.perte_par_an[a]; }), color: 'var(--s1)',
@@ -430,8 +437,11 @@
       { label: t('Perte après 2020 sur forêt (ha)', 'Loss after 2020 on forest (ha)'), get: function (b) { return RS.num(b.perte_apres_2020_foret_ha, 0); } },
       { label: t('en % de la forêt 2020', '% of 2020 forest'), get: function (b) { return RS.pct(b.part_perte_foret_pct, 1); } },
       { label: t('Perte après 2020 hors forêt (ha)', 'Loss after 2020 outside forest (ha)'), get: function (b) { return RS.num(b.perte_apres_2020_hors_foret_ha, 0); } },
-      { label: t('Perte 2001-2020 (ha)', 'Loss 2001-2020 (ha)'), get: function (b) { return RS.int(b.perte_2001_2020_ha); } }
-    ], E.bassins, t('Les quatre zones (nature E : calcul RubberSignal Technologies sur données JRC et UMD)', 'The four areas (nature E: RubberSignal Technologies calculation on JRC and UMD data)'), true);
+      { label: t('Perte 2001-2020 (ha)', 'Loss 2001-2020 (ha)'), get: function (b) { return RS.int(b.perte_2001_2020_ha); } },
+      { label: t('Hévéa 2020 (ha)', 'Rubber 2020 (ha)'), get: function (b) { return b.hevea_2020_ha == null ? '–' : RS.int(b.hevea_2020_ha); } },
+      { label: t('Hévéa 2024 (ha)', 'Rubber 2024 (ha)'), get: function (b) { return b.hevea_2024_ha == null ? '–' : RS.int(b.hevea_2024_ha); } },
+      { label: t('Nouvel hévéa sur forêt 2020 (ha)', 'New rubber on 2020 forest (ha)'), get: function (b) { return b.hevea_nouveau_sur_foret_2020_ha == null ? '–' : RS.num(b.hevea_nouveau_sur_foret_2020_ha, 1); } }
+    ], E.bassins, t('Les quatre zones (nature E : calcul RubberSignal Technologies sur données JRC, UMD et Forest Data Partnership)', 'The four areas (nature E: RubberSignal Technologies calculation on JRC, UMD and Forest Data Partnership data)'), true);
   }
   document.addEventListener('click', function (ev) {
     var b = ev.target.closest ? ev.target.closest('[data-sat-mode]') : null;

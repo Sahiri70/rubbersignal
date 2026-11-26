@@ -352,4 +352,4 @@ a.news-title:hover, a.news-title:focus-visible { text-decoration: underline; }
 .sat-img { width: 100%; height: auto; display: block; border-radius: 8px; margin-top: 12px; background: var(--surface-2); aspect-ratio: 4 / 3; object-fit: cover; }
 .sat-credit { font-size: 11.5px; color: var(--muted); margin-top: 6px; overflow-wrap: anywhere; }
 .sat-mode { margin-top: 10px; }
-.legende-q i.eudr-foret { background: #1baf7a; } .legende-q i.eudr-rouge { background: #e34948; } .legende-q i.eudr-jaune { background: #eda100; }
+.legende-q i.eudr-foret { background: #1baf7a; } .legende-q i.eudr-rouge { background: #e34948; } .legende-q i.eudr-jaune { background: #eda100; } .legende-q i.eudr-hevea { background: #2f6fd0; }

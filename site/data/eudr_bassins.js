@@ -1,10 +1,11 @@
 window.RS_EUDR = {
-  "version": "EUDR bassins v1",
-  "date_calcul": "2026-11-18",
+  "version": "EUDR bassins v1.1",
+  "date_calcul": "2026-11-26",
   "date_reference_eudr": "2020-12-31",
   "sources": {
     "foret": "JRC Global Forest Cover 2020, version 4 (10 m), European Commission, Joint Research Centre, doi:10.2905/JRC.3KATEH8, CC BY 4.0",
     "pertes": "Hansen et al. (2013), Global Forest Change 2024 v1.12, University of Maryland, CC BY 4.0",
+    "hevea": "Forest Data Partnership (2026), Community models 2026a, rubber probability (10 m), Produced by Google for the Forest Data Partnership, CC BY 4.0",
     "image": "EOxCloudless 2016, EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2016), CC BY 4.0"
   },
   "bassins": [
@@ -48,7 +49,13 @@ window.RS_EUDR = {
         "2024": 105.2
       },
       "part_foret_pct": 11.1,
-      "part_perte_foret_pct": 12.81
+      "part_perte_foret_pct": 12.81,
+      "hevea_seuil": 0.5,
+      "hevea_2020_ha": 4287,
+      "hevea_2024_ha": 3757,
+      "part_hevea_2024_pct": 13.3,
+      "hevea_nouveau_ha": 1410,
+      "hevea_nouveau_sur_foret_2020_ha": 7.5
     },
     {
       "id": "toupah",
@@ -90,7 +97,13 @@ window.RS_EUDR = {
         "2024": 0.8
       },
       "part_foret_pct": 2,
-      "part_perte_foret_pct": 3.49
+      "part_perte_foret_pct": 3.49,
+      "hevea_seuil": 0.5,
+      "hevea_2020_ha": 6065,
+      "hevea_2024_ha": 9810,
+      "part_hevea_2024_pct": 34.7,
+      "hevea_nouveau_ha": 4313.9,
+      "hevea_nouveau_sur_foret_2020_ha": 6.5
     },
     {
       "id": "niete",
@@ -132,7 +145,13 @@ window.RS_EUDR = {
         "2024": 303.7
       },
       "part_foret_pct": 28.3,
-      "part_perte_foret_pct": 9.02
+      "part_perte_foret_pct": 9.02,
+      "hevea_seuil": 0.5,
+      "hevea_2020_ha": 711,
+      "hevea_2024_ha": 2263,
+      "part_hevea_2024_pct": 8,
+      "hevea_nouveau_ha": 1731.2,
+      "hevea_nouveau_sur_foret_2020_ha": 0
     },
     {
       "id": "soubre",
@@ -174,7 +193,13 @@ window.RS_EUDR = {
         "2024": 0
       },
       "part_foret_pct": 1.1,
-      "part_perte_foret_pct": 2.62
+      "part_perte_foret_pct": 2.62,
+      "hevea_seuil": 0.5,
+      "hevea_2020_ha": 1029,
+      "hevea_2024_ha": 2418,
+      "part_hevea_2024_pct": 8.6,
+      "hevea_nouveau_ha": 1464.4,
+      "hevea_nouveau_sur_foret_2020_ha": 3.9
     }
   ]
 };

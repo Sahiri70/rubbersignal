@@ -119,10 +119,12 @@ test_that("carte : 24 pays, producteurs présents, points satellite dans le cadr
 test_that("indicateur EUDR : données cohérentes, sources sous licence libre, aucune entreprise nommée", {
   txt <- paste(readLines(file.path(racine, "site/data/eudr_bassins.js"), warn = FALSE, encoding = "UTF-8"), collapse = "\n")
   e <- jsonlite::fromJSON(sub(";[[:space:]]*$", "", sub("^window.RS_EUDR = ", "", txt)), simplifyVector = FALSE)
-  expect_equal(e$version, "EUDR bassins v1")
+  expect_equal(e$version, "EUDR bassins v1.1")
   expect_equal(e$date_reference_eudr, "2020-12-31")
   expect_match(e$sources$foret, "JRC.*version 4.*10.2905/JRC.3KATEH8.*CC BY 4.0")
   expect_match(e$sources$pertes, "Hansen.*v1.12.*CC BY 4.0")
+  expect_match(e$sources$hevea, "Forest Data Partnership.*2026a.*Produced by Google for the Forest Data Partnership.*CC BY 4.0")
+  expect_false(grepl("Bearer|ya29\\.|x-goog-user-project", txt))                               # aucun jeton d'accès publié
   ids <- vapply(e$bassins, function(b) b$id, character(1))
   expect_setequal(ids, c("harbel", "toupah", "niete", "soubre"))
   for (b in e$bassins) {
@@ -132,6 +134,10 @@ test_that("indicateur EUDR : données cohérentes, sources sous licence libre, a
     expect_equal(sum(unlist(b$perte_par_an)[as.character(2021:2024)]),
                  b$perte_apres_2020_foret_ha + b$perte_apres_2020_hors_foret_ha, tolerance = 1, info = b$id)
     expect_equal(length(b$perte_par_an), 24)
+    expect_equal(b$hevea_seuil, 0.5, info = b$id)
+    expect_true(b$hevea_2024_ha <= b$surface_ha && b$hevea_2020_ha <= b$surface_ha, info = b$id)
+    expect_true(b$hevea_nouveau_sur_foret_2020_ha <= min(b$hevea_nouveau_ha, b$foret_2020_ha), info = b$id)
+    expect_true(b$hevea_nouveau_ha <= b$hevea_2024_ha, info = b$id)
     expect_true(file.exists(file.path(racine, "site/assets/sat", paste0(b$id, "_eudr.jpg"))), info = b$id)
   }
   expect_false(grepl("Firestone|SAPH|HEVECAM|SIFCA|Bridgestone", txt, ignore.case = TRUE))   # données sans nom d'entreprise
@@ -144,4 +150,12 @@ test_that("indicateur EUDR : données cohérentes, sources sous licence libre, a
   expect_match(outil, "GFC2020/LATEST/single-cog/JRC_GFC2020_V4_COG.tif", fixed = TRUE)
   expect_match(outil, "GFC-2024-v1.12/Hansen_GFC-2024-v1.12_lossyear", fixed = TRUE)
   expect_match(outil, "hl >= 21 & hl <= 24", fixed = TRUE)                                    # 2021 à 2024
+  expect_match(outil, "forestdatapartnership/2026a/rubber", fixed = TRUE)
+  expect_match(outil, "FDP_SEUIL <- 0.5", fixed = TRUE)
+  expect_match(outil, 'on.exit(setGDALconfig("GDAL_HTTP_HEADERS", ""), add = TRUE)', fixed = TRUE) # en-tête retiré après lecture
+  expect_false(grepl("print-access-token[^\n]*(cat|print|writeLines|message)\\(", outil))       # jeton jamais affiché
+  expect_match(js, "eudr-hevea", fixed = TRUE)
+  m <- paste(readLines(file.path(racine, "site/methode.html"), warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  expect_match(m, "EUDR bassins v1.1", fixed = TRUE)
+  expect_match(m, "produite par Google pour le Forest Data Partnership", fixed = TRUE)
 })
